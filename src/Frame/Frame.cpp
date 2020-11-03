@@ -1,6 +1,6 @@
 #include "Frame.hpp"
 
-Frame::Frame(const uint32_t n)    // payload size
+Frame::Frame(const uint32_t n)    // payload size in bytes
 {
     //
     // On code le preambule ADSB
@@ -17,7 +17,9 @@ Frame::Frame(const uint32_t n)    // payload size
     //
     // On alloue l'espace memoire associé aux données + 24b CRC
     //    
-    array.resize(1 + (n/8) + 3); // in bytes
+    config.resize   (2); // in bytes
+    array.resize    (n); // in bytes
+    crc_field.resize(4); // in bytes
 }
 
 
@@ -29,13 +31,27 @@ Frame::~Frame()
 
 void Frame::set_type(const uint8_t v)
 {
-    array[0] = v;
+    config[0] = v;
 }
 
 
 uint8_t Frame::get_type()
 {
-    return array[0];
+    return config[0];
+}
+
+
+uint32_t Frame::get_size()
+{
+    return ((uint32_t)config[1]) + 1;
+}
+
+
+void Frame::set_size(const uint32_t v)
+{
+    assert(v >=   1);
+    assert(v <= 256);
+    config[1] =(v - 1);
 }
 
 
@@ -63,8 +79,11 @@ void Frame::get_payload(const std::vector<uint8_t>& v)
 }
 
 
-void Frame::get_frame(std::vector<uint8_t>& buff)
+void Frame::get_frame_bits(std::vector<uint8_t>& buff)
 {
+    // calcul de la taille de la trame en bits
+    const uint32_t ll = header.size() + 8 * (config.size() + data.size() + crc.size());
+#if 0
     const uint32_t ll = header.size() + (8 * array.size() + 32); // header + 8 * (data + type + payload)
     if( buff.size() != ll )
     {
@@ -86,11 +105,13 @@ void Frame::get_frame(std::vector<uint8_t>& buff)
             buff[hs + 8 * i + j] = (array[i] >> j) & 0x01;
         }
     }
+#endif
 }
 
 
-void Frame::fill_frame(std::vector<uint8_t>& buff)
+void Frame::fill_frame_bits(std::vector<uint8_t>& buff)
 {
+#if 0
     const uint32_t ll = header.size() + (8 * array.size() + 32); // header + 8 * (data + type + payload)
     if( buff.size() != ll )
     {
@@ -118,8 +139,8 @@ void Frame::fill_frame(std::vector<uint8_t>& buff)
         {
             buff[hs + 8 * i + j] = (array[i] >> j) & 0x01;
         }
-        header[i]
     }
+#endif
 }
 
 

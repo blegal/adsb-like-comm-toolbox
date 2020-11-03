@@ -1,8 +1,8 @@
 #ifndef _RadioUSRP_
 #define _RadioUSRP_
 
-#include "Radio.hpp"
-#include "../couleur.h"
+#include "../Radio.hpp"
+#include "../../couleur.h"
 
 #include <uhd/usrp/multi_usrp.hpp>
 #include <uhd.h>

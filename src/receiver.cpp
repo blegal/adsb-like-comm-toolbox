@@ -17,10 +17,10 @@
 #include "liste_avion.h"  // qui inclut avion.h
 
 #include "Acquisition/Radio.hpp"
-#include "Acquisition/RadioUSRP.hpp"
-#include "Acquisition/RadioHackRF.hpp"
-#include "Acquisition/RadioFichierRAW.hpp"
-#include "Acquisition/RadioFichierUHD.hpp"
+#include "Acquisition/Radio/RadioUSRP.hpp"
+#include "Acquisition/Radio/RadioHackRF.hpp"
+#include "Acquisition/File/RadioFichierRAW.hpp"
+#include "Acquisition/File/RadioFichierUHD.hpp"
 
 //#include "detecteur.h"
 //#include "detecteur8par8.h"

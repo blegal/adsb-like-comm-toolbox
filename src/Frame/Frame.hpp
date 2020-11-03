@@ -11,12 +11,6 @@
 
 using namespace std;
 
-#define PREAMBULE   8
-#define TYPE        8
-#define PAYLOAD   128
-#define CRC        24
-#define TOTAL      (PREAMBULE+TYPE+PAYLOAD+CRC)
-
 #define FRAME_INFOS         0x01
 #define FRAME_NEW_IMAGE     0x02
 #define FRAME_END_IMAGE     0x04
@@ -27,7 +21,9 @@ using namespace std;
 class Frame{
 protected:
     vector<uint8_t> header;
-    vector<uint8_t> array;
+    vector<uint8_t> config;
+    vector<uint8_t> payload;
+    vector<uint8_t> crc_field;
 
 public :
     Frame(const uint32_t n);    // payload size
@@ -48,13 +44,21 @@ public :
     uint8_t  data        (const uint32_t pos); // a value from the payload
     void     set_payload (const uint32_t pos, const int8_t value); // a value from the payload
 
-    uint8_t* data_to_emit();    // the pointer to the payload field
     uint8_t* header_to_emit();
-    uint32_t data_size();      // the pointer to the payload field
-    uint32_t header_size();    // the pointer to the payload field
+    uint8_t* conf_to_emit();
+    uint8_t* data_to_emit();    // the pointer to the payload field
+    uint8_t* crc_to_emit();
 
-    void get_frame (std::vector<uint8_t>& v);
-    void fill_frame(std::vector<uint8_t>& buff);
+    uint32_t header_size();  // the length of the preambule     in bits
+    uint32_t conf_size();    // the length of the configuration in bytes
+    uint32_t data_size();    // the length of the payload       in bytes
+    uint32_t crc_size();     // the length of the crc field     in bytes
+
+    uint32_t get_size();                    // set payload size in bytes
+    void     set_size(const uint32_t v);    // get payload size in bytes
+
+    void get_frame_bits (std::vector<uint8_t>& v);
+    void fill_frame_bits(std::vector<uint8_t>& buff);
 
 };
 
