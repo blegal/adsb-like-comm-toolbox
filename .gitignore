@@ -1,0 +1,4 @@
+build/*
+draw-curves/build/*
+test-hackrf/build/*
+*.o
