@@ -1,7 +1,7 @@
 #ifndef _RadioHackRF_
 #define _RadioHackRF_
 
-#include "../Acquisition/Radio.hpp"
+#include "../../Acquisition/Radio.hpp"
 #include <libhackrf/hackrf.h>
 
 /*
