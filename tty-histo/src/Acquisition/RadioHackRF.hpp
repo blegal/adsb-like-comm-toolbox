@@ -1,9 +1,8 @@
 #ifndef _RadioHackRF_
 #define _RadioHackRF_
 
-#include "../../Acquisition/Radio.hpp"
+#include "Radio.hpp"
 #include <libhackrf/hackrf.h>
-#include <mutex>
 
 /*
   freq=<float>    Desired tune frequency in Hz. Valid range from 1M to 6G. (default 100M: 100000000)
@@ -25,31 +24,25 @@ private :
     double fech_hz;
     bool amplifier;
     bool antenna;
-    uint32_t txvga_gain;
+    uint32_t vga_gain;
+    uint32_t lna_gain;
 
     int N;  //nbre ech
     int nEchantillons;  //nbre ech
     hackrf_device* device = NULL;
 
-    bool txFinished;
+    bool rxFinished;
 
     int8_t* buffer;
 
-    std::mutex g_i_mutex;  // protects g_i
-
 public :
-    RadioHackRF( float s_fc, float s_fe );
+    RadioHackRF( float s_fc, float s_fe);
 	~RadioHackRF();
 
     void initialize();
-    void close();
 
-    void start_engine();
-    void stop_engine ();
-
-    void emission(vector<int8_t>& cbuffer);
-
-    void reception( std::vector< std::complex<float> >& cbuffer);
+    void reception(vector<complex<float> >& cbuffer);
+    void reception(std::vector<int16_t>& I, std::vector<int16_t>& Q);
 
     void reset();
 
@@ -65,20 +58,20 @@ public :
     void set_antenna_enable(bool value);
     bool get_antenna_enable( );
 
-    void     set_txvga_gain(uint32_t value);
-    uint32_t get_txvga_gain( );
-    void     inc_txvga_gain();
-    void     dec_txvga_gain();
+    void     set_vga_gain(uint32_t value);
+    uint32_t get_vga_gain( );
+
+    void     set_lna_gain(uint32_t value);
+    uint32_t get_lna_gain( );
 
     void     set_nb_samples(uint32_t value);
     uint32_t get_nb_samples( );
 
 private:
-    static int tx_callback(hackrf_transfer* transfer);
-    int tx_callback(unsigned char *buf, uint32_t len);
+    static int rx_callback(hackrf_transfer* transfer);
+    int rx_callback(unsigned char *buf, uint32_t len);
 
-    uint32_t byte_emitted;
-    uint32_t byte_to_send;
+    uint32_t byte_received;
 
 };
 

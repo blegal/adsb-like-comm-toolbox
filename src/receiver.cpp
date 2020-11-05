@@ -37,6 +37,11 @@
 #include "./Conversion/ConversionNEON.hpp"
 #include "./Conversion/ConversionAVX2.hpp"
 
+#include "./Frame/Frame.hpp"
+#include "./Sampling/Down/DownSampling.hpp"
+#include "./PPM/Demodulator/PPM_Demodulator.hpp"
+
+
 #include "couleur.h"
 
 using namespace std;
@@ -106,7 +111,6 @@ int main(int argc, char* argv[])
 	printf("%s",KRED);
 
 	while ((c = getopt_long(argc, argv, "be:p:f:n:s:vt8",long_options, &option_index)) != -1) {
-		int this_option_optind = optind ? optind : 1;
 		switch (c) {
 			case 0:
 			    printf ("%soption %s%s", long_options[option_index].name, KNRM, KRED);
@@ -249,9 +253,7 @@ int main(int argc, char* argv[])
         for (uint32_t k = 1;  k < len; k++) {
             minv = minv < buffer_abs[k] ? minv : buffer_abs[k];
             maxv = maxv > buffer_abs[k] ? maxv : buffer_abs[k];
-//            cout << buffer_abs[k] << " ";
         }
-//        cout <<  endl;
 
 		// ============== detection & decodage ================
 		int k=0;
@@ -270,10 +272,35 @@ int main(int argc, char* argv[])
 					s = detecteur->getValue( 0 );
 				}
 
-//				printf("%3d :: %f\n", k, s);
+				if (s > ps_min){
 
-				if (s > ps_min){ 
-					// -------- on a une trame : ech --------------
+//                    printf("On a detecté qqchose !\n");
+                    Frame g( 16 );
+
+					// -------- on a une trame : ech
+					std::vector<int8_t> buff_5( 4 * g.frame_bits() );
+                    for (int j=0; j < buff_5.size(); j += 1){
+                        int32_t v = buffer_abs[k+j];
+                        v = (v > +127) ? +127 : v;
+                        v = (v < -127) ? -127 : v;
+                        buff_5[j]   = v;
+                    }
+
+                    DownSampling down(2);
+                    std::vector<int8_t> buff_6;
+                    down.execute( buff_5, buff_6 );
+
+                    PPM_Demodulator ppd;
+                    std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));
+                    ppd.execute(buff_6, buff_7);
+
+                    bool isOK = g.fill_frame_bits( buff_7 );
+                    if( isOK )
+                    {
+                        printf("%1.3f : ", s);
+                        g.dump_frame();
+                    }
+                    //cout << "crc check = " << g.validate_crc() << endl;
 
 					//
 					// On a sur-echantillonné par un facteur 2

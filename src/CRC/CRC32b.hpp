@@ -15,6 +15,7 @@ public :
 	~CRC32b();
 
     uint32_t execute( std::vector<uint8_t>& v );
+    uint32_t execute( std::vector<uint8_t>& v, uint32_t R );
 };
 
 #endif

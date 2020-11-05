@@ -7,11 +7,12 @@ message("${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_CXX_FLAGS "-Ofast -march=native -mtune=native -I/usr/local/opt/hackrf/include")
+set(CMAKE_CXX_FLAGS "-Wall -Ofast -march=native -mtune=native -I/usr/local/opt/hackrf/include")
 #SET(CMAKE_EXE_LINKER_FLAGS "/usr/local/opt/hackrf/lib/libhackrf.a /usr/local/opt/libusb/lib/libusb-1.0.a -framework CoreFoundation -framework IOKit")
-SET(CMAKE_EXE_LINKER_FLAGS "-lhackrf")
+SET(CMAKE_EXE_LINKER_FLAGS "-L/usr/local/opt/hackrf/lib -lhackrf")
 
 set(SOURCE_FILES
+        src/CRC/CRC32b.cpp
         src/Frame/Frame.cpp
         src/Conversion/Conversion.cpp
         src/Conversion/ConversionScalar.cpp
@@ -62,18 +63,25 @@ message("${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_CXX_FLAGS "-Ofast -march=native -mtune=native -I/usr/local/opt/hackrf/include")
+set(CMAKE_CXX_FLAGS "-Wall -Ofast -march=native -mtune=native -I/usr/local/opt/hackrf/include")
 #SET(CMAKE_EXE_LINKER_FLAGS "/usr/local/opt/hackrf/lib/libhackrf.a /usr/local/opt/libusb/lib/libusb-1.0.a -framework CoreFoundation -framework IOKit")
-SET(CMAKE_EXE_LINKER_FLAGS "-lhackrf")
+SET(CMAKE_EXE_LINKER_FLAGS "-L/usr/local/opt/hackrf/lib -lhackrf")
 
 set(SOURCE_FILES
+        src/CRC/CRC32b.cpp
         src/Frame/Frame.cpp
         src/Acquisition/Radio.cpp
         src/Emitter/Radio/RadioHackRF.cpp
         src/Emitter/File/RadioFichierRAW.cpp
+
         src/PPM/Modulator/PPM_Modulator.cpp
         src/IQ/Insertion/IQ_Insertion.cpp
         src/Sampling/Up/UpSampling.cpp
+
+        src/PPM/Demodulator/PPM_Demodulator.cpp
+        src/IQ/Removing/IQ_Removing.cpp
+        src/Sampling/Down/DownSampling.cpp
+
         src/emitter.cpp
         )
 

@@ -79,7 +79,7 @@ float Longitude(int trame[120], float latitude){
 int CRC(int trame[120]){
 				
 	bitset<25> crc       = 0b0000000000000000000000000;
-	bitset<25> polynome2 = 0b1111111111111010000001001;
+//	bitset<25> polynome2 = 0b1111111111111010000001001;
 	bitset<25> polynome  = 0b1001000000101111111111111;
 
 	for(int q=8; q <33; q++){

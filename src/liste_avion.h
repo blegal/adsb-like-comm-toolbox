@@ -19,7 +19,7 @@ private :
 	map<int, int> cle;   // oaci, num_liste
 public :
 	Liste_Avion();
-	~Liste_Avion();
+	virtual ~Liste_Avion();
 	int search(int oaci);  //retourne num_liste
 	void append(Avion avion);
 	Avion find(int num);

@@ -15,8 +15,8 @@ RadioHackRF::RadioHackRF(float s_fc, float s_fe) : Radio(s_fc, s_fe)
     fech_hz   = s_fe;
     amplifier = false;
     antenna   = false;
-    vga_gain  = 40;
-    lna_gain  = 32;
+    vga_gain  = 30;//40;
+    lna_gain  = 16;//32;
 
     //
     // On veut une seconde de signal pour ne rien rater...
@@ -24,10 +24,10 @@ RadioHackRF::RadioHackRF(float s_fc, float s_fe) : Radio(s_fc, s_fe)
     nEchantillons          = (2 * s_fe);
     const uint32_t symbols = (nEchantillons + 262144 - 1) / 262144;
     N                      = 262144 * symbols;
+
     rxFinished    = false;
     byte_received = 0;
-
-    buffer     = new int8_t[N];
+    buffer        = new int8_t[N];
 }
 
 RadioHackRF::~RadioHackRF()
@@ -62,7 +62,6 @@ void RadioHackRF::initialize(){
     modules.push_back("000000000000000075b068dc317bae07");
 
     int result;
-    const char* serial_number = NULL;
     result = hackrf_init();
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_init() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
@@ -87,12 +86,12 @@ void RadioHackRF::initialize(){
         exit( -1 );
     }
 
-    set_freq          ( freq_hz );
-    set_sample_rate   ( fech_hz );
-    set_amp_enable    (   false );
-    set_antenna_enable(   false );
-    set_vga_gain      (      40 );
-    set_lna_gain      (      32 );
+    set_freq          ( freq_hz   );
+    set_sample_rate   ( fech_hz   );
+    set_amp_enable    ( amplifier );
+    set_antenna_enable( antenna   );
+    set_vga_gain      ( vga_gain  );
+    set_lna_gain      ( lna_gain  );
 }
 
 void RadioHackRF::set_freq(double value)

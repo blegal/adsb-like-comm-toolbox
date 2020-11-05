@@ -15,18 +15,20 @@ RadioHackRF::RadioHackRF(float s_fc, float s_fe) : Radio(s_fc, s_fe)
     fech_hz   = s_fe;
     amplifier = false;
     antenna   = false;
-    txvga_gain  = 32;
+    vga_gain  =  8;
+    lna_gain  = 20;
 
     //
     // On veut une seconde de signal pour ne rien rater...
     //
     nEchantillons          = (2 * s_fe);
+//    const uint32_t echanti = (2 * s_fe);
     const uint32_t symbols = (nEchantillons + 262144 - 1) / 262144;
     N                      = 262144 * symbols;
-    txFinished    = false;
-    byte_emitted  = 0;
-    byte_to_send  = 0;
-    buffer        = new int8_t[N];
+    rxFinished    = false;
+    byte_received = 0;
+
+    buffer     = new int8_t[N];
 }
 
 RadioHackRF::~RadioHackRF()
@@ -36,59 +38,31 @@ RadioHackRF::~RadioHackRF()
 }
 
 
-int RadioHackRF::tx_callback(hackrf_transfer* transfer)
-{
-    RadioHackRF *obj = (RadioHackRF*) transfer->tx_ctx;
-    return obj->tx_callback(transfer->buffer, transfer->valid_length);
+int RadioHackRF::rx_callback(hackrf_transfer* transfer) {
+    RadioHackRF *obj = (RadioHackRF *) transfer->rx_ctx;
+    return obj->rx_callback(transfer->buffer, transfer->valid_length);
 }
 
 
-int RadioHackRF::tx_callback(unsigned char *buf, uint32_t len)
+int RadioHackRF::rx_callback(unsigned char *buf, uint32_t len)
 {
-    const std::lock_guard<std::mutex> lock(g_i_mutex);
-    //
-    // On efface le buffer car on a rien a emmettre
-    //
-    if( txFinished == true )
-    {
-        memset(buf, 0, len);
-        return 0;
-    }
-
-    const uint32_t waiting  = byte_to_send - byte_emitted;       // nombre de données en attente de transfert
-    const uint32_t to_send  = (waiting <= len) ? waiting : len;  // nombre de données que l'on peut envoyer sur ce time slot
-    const uint32_t to_clear = len - to_send;                     // nombre de données que l'on ne possede pas... 
-
-    printf(" - waiting  = %d\n", waiting);
-    printf(" - to_send  = %d\n", to_send);
-    printf(" - to_clear = %d\n", to_clear);
-
-    memcpy(buf,           buffer + byte_emitted, to_send); // 
-    memset(buf + to_send, 0,                   to_clear); //
-
-    if( to_clear != 0 )
-    {
-        printf(" transfer is finished = %d\n", to_send);
-        txFinished = true;
-    }
-    else{
-        printf(" transfer is pending = %d\n", to_send);
-        txFinished    = false;
-        byte_emitted += to_send;                                   // on met à jour le nombre de données émises
-    }
-
-
+    memcpy(buffer +  byte_received, buf, len);
+    byte_received += len;
+    if( byte_received >= N )
+        rxFinished = true;
+    else
+        rxFinished = false;
     return 0;
 }
 
 
-void RadioHackRF::initialize()
-{
+void RadioHackRF::initialize(){
     std::vector<std::string> modules;
-    modules.push_back("000000000000000075b068dc317bae07");
     modules.push_back("000000000000000026b468dc33776d8f");
+    modules.push_back("000000000000000075b068dc317bae07");
 
     int result;
+    const char* serial_number = NULL;
     result = hackrf_init();
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_init() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
@@ -117,9 +91,9 @@ void RadioHackRF::initialize()
     set_sample_rate   ( fech_hz );
     set_amp_enable    (   false );
     set_antenna_enable(   false );
-    set_txvga_gain    (      32 );
+    set_vga_gain      (      20 );
+    set_lna_gain      (       8 );
 }
-
 
 void RadioHackRF::set_freq(double value)
 {
@@ -192,104 +166,91 @@ bool RadioHackRF::get_antenna_enable( )
     return antenna;
 }
 
+// vgain=<x>       VGA gain in dB. Valid values are: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, list. list lists valid values and exits. (default 22)
 
-void RadioHackRF::inc_txvga_gain()
+void RadioHackRF::set_vga_gain(uint32_t value)
 {
-    const int32_t  value = get_txvga_gain() + 1;
-    const int32_t nvalue = (value > 47) ? 47 : value;
-    set_txvga_gain( nvalue );
-}
-
-void RadioHackRF::dec_txvga_gain()
-{
-    const int32_t  value = get_txvga_gain() - 1;
-    const int32_t nvalue = (value < 0) ? 0 : value;
-    set_txvga_gain( nvalue );
-}
-
-void RadioHackRF::set_txvga_gain(uint32_t value)
-{
-    fprintf(stderr, "call hackrf_set_txvga_gain(%u => %u)\n", txvga_gain, value);
+    fprintf(stderr, "call hackrf_set_vga_gain(%u => %u)\n", vga_gain, value);
     assert( value   >=  0 );
-    assert( value   <= 47 );
+    assert( value   <= 62 );
+    assert( value%2 == 0 );
 
-    txvga_gain = value;
-    int32_t result  = hackrf_set_txvga_gain(device, txvga_gain);
+    vga_gain = value;
+    int32_t result  = hackrf_set_vga_gain(device, vga_gain);
     if( result != HACKRF_SUCCESS ) {
-        fprintf(stderr, "hackrf_set_txvga_gain() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
+        fprintf(stderr, "hackrf_set_vga_gain() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
         exit( -1 );
     }
 }
 
 
-uint32_t RadioHackRF::get_txvga_gain( )
+uint32_t RadioHackRF::get_vga_gain( )
 {
-    return txvga_gain;
+    return vga_gain;
 }
 
-void RadioHackRF::start_engine( )
+//  lgain=<x>      (Rx only) LNA gain in dB. Valid values are: 0, 8, 16, 24, 32, 40, list. list lists valid values and exits. (default 16)
+
+void RadioHackRF::set_lna_gain(uint32_t value)
 {
-    fprintf(stderr, "(II) RadioHackRF::start_engine() is executed...\n");
-    const std::lock_guard<std::mutex> lock(g_i_mutex);
+    fprintf(stderr, "call hackrf_set_lna_gain(%u => %u)\n", lna_gain, value);
+    assert( value   >=  0 );
+    assert( value   <= 40 );
+    assert( value%8 ==  0 );
 
-    txFinished    = true;
-    byte_emitted  = 0;
-    byte_to_send  = 0;
+    lna_gain = value;
+    int32_t result = hackrf_set_lna_gain(device, lna_gain);
+    if( result != HACKRF_SUCCESS ) {
+        fprintf(stderr, "hackrf_set_lna_gain() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
+        exit( -1 );
+    }
+}
 
-    const int result = hackrf_start_tx(device, tx_callback, (void *)this);
+uint32_t RadioHackRF::get_lna_gain( )
+{
+    return lna_gain;
+}
+
+
+
+void RadioHackRF::reception( std::vector< std::complex<float> >& cbuffer)
+{
+    byte_received = 0;
+    rxFinished    = false;
+
+    int result = hackrf_start_rx(device, rx_callback, (void *)this);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_start_rx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
         exit( -1 );
     }
-}
 
-void RadioHackRF::stop_engine( )
-{
-    fprintf(stderr, "(II) RadioHackRF::stop_engine() is executed...\n");
-    while(txFinished == false)
+    while( (hackrf_is_streaming(device) != HACKRF_TRUE) )
     {
         usleep(1000); // queue empty
     }
 
-    const int result = hackrf_stop_tx(device);
+    while(rxFinished == false)
+    {
+        usleep(1000); // queue empty
+    }
+
+    result = hackrf_stop_rx(device);
     if( result != HACKRF_SUCCESS )
     {
-        fprintf(stderr, "hackrf_stop_tx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
-    }
-}
-
-void RadioHackRF::emission( std::vector<int8_t>& cbuffer )
-{
-    if( hackrf_is_streaming(device) != HACKRF_TRUE )
-    {
-        printf("(EE) The hackrf device is currently stopped, it is impossible to transfer data...\n");
+        fprintf(stderr, "hackrf_stop_rx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
         exit( -1 );
     }
 
-    byte_emitted = 0;
-    byte_to_send = cbuffer.size();
-    memcpy(buffer, cbuffer.data(), byte_to_send);
-
-    txFinished   = false;   // On debloque le processus de transmission
-
-//    int result = hackrf_start_tx(device, tx_callback, (void *)this);
-//    if( result != HACKRF_SUCCESS ) {
-//        fprintf(stderr, "hackrf_start_rx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-//        exit( -1 );
-//    }
-
-    while(txFinished == false)
+    if( cbuffer.size() != (N/2) ) // Nombre de symbols et non d'echantillons
     {
-        usleep(1000); // queue empty
+        cbuffer.resize(N/2);
     }
 
-//    result = hackrf_stop_tx(device);
-//    if( result != HACKRF_SUCCESS )
-//    {
-//        fprintf(stderr, "hackrf_stop_tx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-//        exit( -1 );
-//    }
+    for(uint32_t i = 0; i < N; i += 2)
+    {
+        std::complex<float> value( (float)buffer[i], (float)buffer[i+1] );
+        cbuffer[i/2] = value;
+    }
 }
 
 void RadioHackRF::set_nb_samples(uint32_t value)
@@ -311,18 +272,44 @@ uint32_t RadioHackRF::get_nb_samples( )
     return nEchantillons/2;
 }
 
-
-void RadioHackRF::reception( std::vector< std::complex<float> >& cbuffer)
+void RadioHackRF::reception(std::vector<int16_t>& I, std::vector<int16_t>& Q)
 {
+    byte_received = 0;
+    rxFinished    = false;
 
+    int result = hackrf_start_rx(device, rx_callback, (void *)this);
+    if( result != HACKRF_SUCCESS ) {
+        fprintf(stderr, "hackrf_start_rx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
+        exit( -1 );
+    }
+
+    while( (hackrf_is_streaming(device) != HACKRF_TRUE) )
+    {
+        usleep(1000); // queue empty
+    }
+
+    while(rxFinished == false)
+    {
+        usleep(1000); // queue empty
+    }
+
+    result = hackrf_stop_rx(device);
+    if( result != HACKRF_SUCCESS )
+    {
+        fprintf(stderr, "hackrf_stop_rx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
+        exit( -1 );
+    }
+
+    if( I.size() != nEchantillons ) I.resize(nEchantillons);
+    if( Q.size() != nEchantillons ) Q.resize(nEchantillons);
+
+    const uint32_t taille = 2 * nEchantillons;
+    for(uint32_t i = 0; i < taille; i += 2)
+    {
+        I[i/2] = buffer[i  ];
+        Q[i/2] = buffer[i+1];
+    }
 }
-
-
-void RadioHackRF::close()
-{
-
-}
-
 
 void RadioHackRF::reset()
 {

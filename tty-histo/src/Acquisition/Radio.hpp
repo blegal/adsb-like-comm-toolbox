@@ -6,8 +6,8 @@
 #include <cstdlib>
 #include <complex>
 #include <vector>
-#include <cstring>
 #include <cassert>
+#include <cstring>
 
 using namespace std;
 
@@ -21,9 +21,9 @@ protected:
 
 public :
     Radio( float s_fc, float s_fe);
-	virtual ~Radio();
+	~Radio();
     virtual void initialize() = 0;
-    virtual void reception(std::vector< std::complex<float> >& cbuffer) = 0;
+    virtual void reception( std::vector< std::complex<float> >& cbuffer) = 0;
     virtual void reset() = 0;
     virtual bool alive();
 };

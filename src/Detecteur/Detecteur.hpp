@@ -16,7 +16,7 @@ protected :
 public :
 	Detecteur(const uint32_t size);
 
-	~Detecteur();
+	virtual ~Detecteur();
 
     virtual void execute(float* buffer) = 0;
 
