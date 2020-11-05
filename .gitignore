@@ -1,4 +1,10 @@
 build/*
+cmake-build-debug/*
 draw-curves/build/*
 test-hackrf/build/*
 *.o
+.idea/*
+tty-histo/cmake-build-debug/*
+tty-histo/build/*
+tty-histo/.idea/*
+.DS_Store
