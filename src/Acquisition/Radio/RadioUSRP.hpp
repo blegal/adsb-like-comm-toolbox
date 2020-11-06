@@ -17,7 +17,10 @@ public :
 	~RadioUSRP();
     void initialize();
     void reception(vector<complex<float> >& buffer);
-    void reset();
+
+    virtual void reset();
+    virtual void start_engine();
+    virtual void stop_engine ();
 };
 
 #endif

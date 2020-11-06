@@ -16,6 +16,10 @@ public :
     void initialize();
     void reception(vector<complex<float> >& cbuffer);
     void reset();
+
+    void start_engine();
+    void stop_engine ();
+
 };
 
 #endif

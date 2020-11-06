@@ -41,6 +41,9 @@ public :
 
     void initialize();
 
+    virtual void start_engine();
+    virtual void stop_engine ();
+
     void reception(vector<complex<float> >& cbuffer);
     void reception(std::vector<int16_t>& I, std::vector<int16_t>& Q);
 

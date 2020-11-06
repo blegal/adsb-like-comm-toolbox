@@ -26,6 +26,9 @@ public :
     virtual void reception(std::vector< std::complex<float> >& cbuffer) = 0;
     virtual void reset() = 0;
     virtual bool alive();
+
+    virtual void start_engine() = 0;
+    virtual void stop_engine () = 0;
 };
 
 #endif

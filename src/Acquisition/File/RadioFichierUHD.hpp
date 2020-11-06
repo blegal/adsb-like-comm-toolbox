@@ -15,7 +15,12 @@ public :
 
     void initialize();
     void reception(vector<complex<float> >& cbuffer);
+
     void reset();
+
+    virtual void start_engine();
+    virtual void stop_engine ();
+
 };
 
 #endif

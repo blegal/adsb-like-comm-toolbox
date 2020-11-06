@@ -60,3 +60,15 @@ void RadioFichierRAW::reset()
 }
 
 
+void RadioFichierRAW::start_engine()
+{
+
+}
+
+
+void RadioFichierRAW::stop_engine()
+{
+
+}
+
+

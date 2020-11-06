@@ -87,3 +87,14 @@ void RadioFichierUHD::reset()
     fprintf(stderr, "RadioFichier::reset() not implemented yet !\n");
     exit( -1 );
 }
+
+
+void RadioFichierUHD::start_engine()
+{
+
+}
+
+void RadioFichierUHD::stop_engine()
+{
+
+}

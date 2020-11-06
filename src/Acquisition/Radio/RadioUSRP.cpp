@@ -46,8 +46,19 @@ void RadioUSRP::reception(vector<complex<float> >& buffer)
         num_rx_samps += rx_stream->recv(&buffer.at(num_rx_samps), N - num_rx_samps, md);
 }
 
-void RadioUSRP::reset(){
+void RadioUSRP::reset()
+{
     usrp->issue_stream_cmd(uhd::stream_cmd_t::STREAM_MODE_STOP_CONTINUOUS);
 	rx_stream.reset();
 	usrp.reset();
+}
+
+void RadioUSRP::start_engine()
+{
+
+}
+
+void RadioUSRP::stop_engine()
+{
+
 }

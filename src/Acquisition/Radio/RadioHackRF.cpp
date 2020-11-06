@@ -211,6 +211,16 @@ uint32_t RadioHackRF::get_lna_gain( )
 }
 
 
+void RadioHackRF::start_engine()
+{
+
+}
+
+void RadioHackRF::stop_engine()
+{
+
+}
+
 
 void RadioHackRF::reception( std::vector< std::complex<float> >& cbuffer)
 {
