@@ -46,11 +46,11 @@ void Detecteur_AVX2::execute(float *buffer){
 	v_buf1 = _mm256_hadd_ps(v_buf1, v_ps2);  // hadd 4 16 0 0 4 16 0 0
 	_mm256_store_ps(ps2, v_buf1);
 
-	float somme = ps2[1] + ps2[5];
+	float somme = 8.0f * (ps2[1] + ps2[5]);
 	float ps = ps2[0] + ps2[4];
-	somme = somme*8;
+//	somme = somme*8;
 //	return (ps/sqrt(somme));
-	array[0] = (ps/sqrt(somme));
+	array[0] = (ps / sqrt(somme));
 
 #else
 	cout << "AVX2 decoding is not available on this platform..." << endl;

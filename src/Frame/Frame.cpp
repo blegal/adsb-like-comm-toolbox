@@ -284,7 +284,7 @@ void Frame::dump_frame()
         case FRAME_EMPTY     : printf(str_FRAME_EMPTY     ); break;
         default              : printf("FRAME_UNKNOWN "    ); break;
     }
-    printf(" | %3d bytes | ", (uint32_t)c[1]);
+    printf(" | %3d bytes | ", ((uint32_t)c[1])+1);
 
     uint8_t* p = payload_to_emit();     // the pointer to the payload field
 #if 0

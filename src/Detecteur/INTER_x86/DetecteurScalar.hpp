@@ -1,7 +1,7 @@
 #ifndef _DetecteurScalar_
 #define _DetecteurScalar_
 
-#include "Detecteur.hpp"
+#include "../Detecteur.hpp"
 
 
 class DetecteurScalar : public Detecteur{

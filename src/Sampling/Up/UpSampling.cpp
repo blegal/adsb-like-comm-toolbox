@@ -25,6 +25,6 @@ void UpSampling::execute(std::vector<int8_t>& ibuffer, std::vector<int8_t>& obuf
     {
         int8_t value = ibuffer[i];
         for(uint32_t j = 0 ; j < scale; j += 1)
-            obuffer[scale*i+j] = value;
+            obuffer[scale * i + j] = value;
     }
 }

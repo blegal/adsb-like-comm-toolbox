@@ -27,9 +27,9 @@ set(SOURCE_FILES
         src/IQ/Removing/IQ_Removing.cpp
         src/Sampling/Down/DownSampling.cpp
         src/Detecteur/Detecteur.cpp
-        src/Detecteur/DetecteurScalar.cpp
-        src/Detecteur/Detecteur_NEON.cpp
-        src/Detecteur/Detecteur_AVX2.cpp
+        src/Detecteur/INTER_x86/DetecteurScalar.cpp
+        src/Detecteur/INTRA_NEON/Detecteur_NEON.cpp
+        src/Detecteur/INTRA_AVX2/Detecteur_AVX2.cpp
         src/receiver.cpp
         )
 
@@ -71,7 +71,7 @@ set(SOURCE_FILES
         src/CRC/CRC32b.cpp
         src/Frame/Frame.cpp
         src/Acquisition/Radio.cpp
-        src/Emitter/Radio/RadioHackRF.cpp
+        src/Emitter/Radio/RadioEmitterHackRF.cpp
         src/Emitter/File/RadioFichierRAW.cpp
 
         src/PPM/Modulator/PPM_Modulator.cpp

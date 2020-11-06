@@ -1,4 +1,4 @@
-#include "RadioHackRF.hpp"
+#include "RadioEmitterHackRF.hpp"
 #include <unistd.h>
 
 typedef enum {
@@ -9,7 +9,7 @@ typedef enum {
 
 #define FREQ_ONE_MHZ (1000000ll)
 
-RadioHackRF::RadioHackRF(float s_fc, float s_fe) : Radio(s_fc, s_fe)
+RadioEmitterHackRF::RadioEmitterHackRF(float s_fc, float s_fe) : Radio(s_fc, s_fe)
 {
     freq_hz   = s_fc;
     fech_hz   = s_fe;
@@ -29,21 +29,21 @@ RadioHackRF::RadioHackRF(float s_fc, float s_fe) : Radio(s_fc, s_fe)
     buffer        = new int8_t[N];
 }
 
-RadioHackRF::~RadioHackRF()
+RadioEmitterHackRF::~RadioEmitterHackRF()
 {
     hackrf_close( device );
     delete[] buffer;
 }
 
 
-int RadioHackRF::tx_callback(hackrf_transfer* transfer)
+int RadioEmitterHackRF::tx_callback(hackrf_transfer* transfer)
 {
-    RadioHackRF *obj = (RadioHackRF*) transfer->tx_ctx;
+    RadioEmitterHackRF *obj = (RadioEmitterHackRF*) transfer->tx_ctx;
     return obj->tx_callback(transfer->buffer, transfer->valid_length);
 }
 
 
-int RadioHackRF::tx_callback(unsigned char *buf, uint32_t len)
+int RadioEmitterHackRF::tx_callback(unsigned char *buf, uint32_t len)
 {
     const std::lock_guard<std::mutex> lock(g_i_mutex);
     //
@@ -82,7 +82,7 @@ int RadioHackRF::tx_callback(unsigned char *buf, uint32_t len)
 }
 
 
-void RadioHackRF::initialize()
+void RadioEmitterHackRF::initialize()
 {
     std::vector<std::string> modules;
     modules.push_back("000000000000000075b068dc317bae07");
@@ -121,7 +121,7 @@ void RadioHackRF::initialize()
 }
 
 
-void RadioHackRF::set_freq(double value)
+void RadioEmitterHackRF::set_freq(double value)
 {
     freq_hz = value;
     fprintf(stderr, "call hackrf_set_freq(%f Hz/%.03f MHz)\n", freq_hz, ((double)freq_hz/(double)FREQ_ONE_MHZ) );
@@ -133,13 +133,13 @@ void RadioHackRF::set_freq(double value)
 }
 
 
-double RadioHackRF::get_freq( )
+double RadioEmitterHackRF::get_freq( )
 {
     return freq_hz;
 }
 
 
-void RadioHackRF::set_sample_rate(double value)
+void RadioEmitterHackRF::set_sample_rate(double value)
 {
     fech_hz = value;
     fprintf(stderr, "call hackrf_set_sample_rate(%f Hz/%.03f MHz)\n", fech_hz, ((double)fech_hz/(double)FREQ_ONE_MHZ) );
@@ -151,13 +151,13 @@ void RadioHackRF::set_sample_rate(double value)
 }
 
 
-double RadioHackRF::get_sample_rate( )
+double RadioEmitterHackRF::get_sample_rate( )
 {
     return fech_hz;
 }
 
 
-void RadioHackRF::set_amp_enable(bool value)
+void RadioEmitterHackRF::set_amp_enable(bool value)
 {
     fprintf(stderr, "call hackrf_set_amp_enable(%u => %u)\n", amplifier, value);
     amplifier = value;
@@ -169,13 +169,13 @@ void RadioHackRF::set_amp_enable(bool value)
 }
 
 
-bool RadioHackRF::get_amp_enable( )
+bool RadioEmitterHackRF::get_amp_enable( )
 {
     return amplifier;
 }
 
 
-void RadioHackRF::set_antenna_enable(bool value)
+void RadioEmitterHackRF::set_antenna_enable(bool value)
 {
     fprintf(stderr, "call hackrf_set_antenna_enable(%u => %u)\n", antenna, value);
     antenna = value;
@@ -187,27 +187,27 @@ void RadioHackRF::set_antenna_enable(bool value)
 }
 
 
-bool RadioHackRF::get_antenna_enable( )
+bool RadioEmitterHackRF::get_antenna_enable( )
 {
     return antenna;
 }
 
 
-void RadioHackRF::inc_txvga_gain()
+void RadioEmitterHackRF::inc_txvga_gain()
 {
     const int32_t  value = get_txvga_gain() + 1;
     const int32_t nvalue = (value > 47) ? 47 : value;
     set_txvga_gain( nvalue );
 }
 
-void RadioHackRF::dec_txvga_gain()
+void RadioEmitterHackRF::dec_txvga_gain()
 {
     const int32_t  value = get_txvga_gain() - 1;
     const int32_t nvalue = (value < 0) ? 0 : value;
     set_txvga_gain( nvalue );
 }
 
-void RadioHackRF::set_txvga_gain(uint32_t value)
+void RadioEmitterHackRF::set_txvga_gain(uint32_t value)
 {
     fprintf(stderr, "call hackrf_set_txvga_gain(%u => %u)\n", txvga_gain, value);
     assert( value   >=  0 );
@@ -222,14 +222,14 @@ void RadioHackRF::set_txvga_gain(uint32_t value)
 }
 
 
-uint32_t RadioHackRF::get_txvga_gain( )
+uint32_t RadioEmitterHackRF::get_txvga_gain( )
 {
     return txvga_gain;
 }
 
-void RadioHackRF::start_engine( )
+void RadioEmitterHackRF::start_engine( )
 {
-    fprintf(stderr, "(II) RadioHackRF::start_engine() is executed...\n");
+    fprintf(stderr, "(II) RadioEmitterHackRF::start_engine() is executed...\n");
     const std::lock_guard<std::mutex> lock(g_i_mutex);
 
     txFinished    = true;
@@ -243,9 +243,9 @@ void RadioHackRF::start_engine( )
     }
 }
 
-void RadioHackRF::stop_engine( )
+void RadioEmitterHackRF::stop_engine( )
 {
-    fprintf(stderr, "(II) RadioHackRF::stop_engine() is executed...\n");
+    fprintf(stderr, "(II) RadioEmitterHackRF::stop_engine() is executed...\n");
     while(txFinished == false)
     {
         usleep(1000); // queue empty
@@ -259,7 +259,7 @@ void RadioHackRF::stop_engine( )
     }
 }
 
-void RadioHackRF::emission( std::vector<int8_t>& cbuffer )
+void RadioEmitterHackRF::emission( std::vector<int8_t>& cbuffer )
 {
     if( hackrf_is_streaming(device) != HACKRF_TRUE )
     {
@@ -292,9 +292,9 @@ void RadioHackRF::emission( std::vector<int8_t>& cbuffer )
 //    }
 }
 
-void RadioHackRF::set_nb_samples(uint32_t value)
+void RadioEmitterHackRF::set_nb_samples(uint32_t value)
 {
-    fprintf(stderr, "call RadioHackRF::set_nb_samples(%u)\n", value);
+    fprintf(stderr, "call RadioEmitterHackRF::set_nb_samples(%u)\n", value);
     nEchantillons = 2 * value;                                          // 2x car voie I et Q
     const uint32_t symbols = (nEchantillons + 262144 - 1) / 262144;     // nombre de paquets de 256k
     N                      = 262144 * symbols;                          // taille du buffer
@@ -306,26 +306,26 @@ void RadioHackRF::set_nb_samples(uint32_t value)
     fprintf(stderr, "---- N (%u)\n", N);
 }
 
-uint32_t RadioHackRF::get_nb_samples( )
+uint32_t RadioEmitterHackRF::get_nb_samples( )
 {
     return nEchantillons/2;
 }
 
 
-void RadioHackRF::reception( std::vector< std::complex<float> >& cbuffer)
+void RadioEmitterHackRF::reception( std::vector< std::complex<float> >& cbuffer)
 {
 
 }
 
 
-void RadioHackRF::close()
+void RadioEmitterHackRF::close()
 {
 
 }
 
 
-void RadioHackRF::reset()
+void RadioEmitterHackRF::reset()
 {
-    fprintf(stderr, "RadioHackRF::reset() not implemented yet !\n");
+    fprintf(stderr, "RadioEmitterHackRF::reset() not implemented yet !\n");
     exit( -1 );
 }

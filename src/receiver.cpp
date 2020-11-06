@@ -12,7 +12,6 @@
 #include <unistd.h>
 #include <chrono>
 #include <getopt.h>
-//#include <immintrin.h>
 
 #include "liste_avion.h"  // qui inclut avion.h
 
@@ -22,12 +21,10 @@
 #include "Acquisition/File/RadioFichierRAW.hpp"
 #include "Acquisition/File/RadioFichierUHD.hpp"
 
-//#include "detecteur.h"
-//#include "detecteur8par8.h"
 
 #include "./Detecteur/Detecteur.hpp"
-#include "./Detecteur/DetecteurScalar.hpp"
-#include "./Detecteur/Detecteur_NEON.hpp"
+#include "Detecteur/INTER_x86/DetecteurScalar.hpp"
+#include "Detecteur/INTRA_NEON/Detecteur_NEON.hpp"
 
 #include "decodage.h"
 
@@ -53,19 +50,9 @@ using namespace std;
 */
 int main(int argc, char* argv[])
 {
-
-	int trame[120];
-	Liste_Avion *liste_avion;
-	liste_avion = new Liste_Avion();
-
-	int nbtrame = 0; // nbre trame ...
-	int nbtrametotal = 0;
-	int adsbtotal = 0;
-	int bonftctotal = 0;
-	int boncrctotal = 0;
-	int adsb = 0;
-	int bonftc = 0;
-	int boncrc = 0;
+	uint32_t nbTramesDetectees = 0; // nbre trame ...
+    uint32_t nbTotalTrames = 0;
+    uint32_t nbBonsCRCs = 0;
 
 	int c; //getopt
 	int basique = 0;
@@ -195,7 +182,7 @@ int main(int argc, char* argv[])
 	cout << endl;
 
 #if 1
-	DetecteurScalar* detecteur      = new DetecteurScalar();
+	Detecteur* detecteur      = new DetecteurScalar();
 #endif
 #if defined(__ARM_NEON)
 	Detecteur_NEON*  detecteur      = new Detecteur_NEON();
@@ -238,15 +225,12 @@ int main(int argc, char* argv[])
 	{
 		auto np1 = chrono::high_resolution_clock::now();
 
-		//
-		// On recupere les données depuis la source
-		//
         radio->reception(buffer);
 
-		// =============== cplx => abs() ==============
 		vector<float> buffer_abs;
 		cplx2abs(verbose, &buffer, &buffer_abs);
 
+#if 0
         float minv = buffer_abs[0];
         float maxv = buffer_abs[0];
         uint32_t len = buffer.size();
@@ -254,11 +238,12 @@ int main(int argc, char* argv[])
             minv = minv < buffer_abs[k] ? minv : buffer_abs[k];
             maxv = maxv > buffer_abs[k] ? maxv : buffer_abs[k];
         }
+#endif
 
 		// ============== detection & decodage ================
 		int k=0;
 		while ( k <= (buffer_abs.size() - 480)){ //480 = taille trame (ech)
-			//cout << "k :" << k << endl;
+
 			float s;
 			float* addr = buffer_abs.data() + k;
 
@@ -274,7 +259,8 @@ int main(int argc, char* argv[])
 
 				if (s > ps_min){
 
-//                    printf("On a detecté qqchose !\n");
+                    nbTramesDetectees++;    // On vient de detecter qqchose
+
                     Frame g( 16 );
 
 					// -------- on a une trame : ech
@@ -295,76 +281,15 @@ int main(int argc, char* argv[])
                     ppd.execute(buff_6, buff_7);
 
                     bool isOK = g.fill_frame_bits( buff_7 );
+                    nbTotalTrames += isOK;
                     if( isOK )
                     {
+                        nbTotalTrames++;        // C'est bien une trame ADSB-like
+                        nbBonsCRCs   += g.validate_crc();
                         printf("%1.3f : ", s);
                         g.dump_frame();
                     }
-                    //cout << "crc check = " << g.validate_crc() << endl;
-
-					//
-					// On a sur-echantillonné par un facteur 2
-					//
-
-					for (int j=0; j < 480; j = j+4){	// 120 symbole => 240 bits emits PPM x 2
-						if (
-						      ( buffer_abs[k+j] + buffer_abs[k+j+1] ) >= ( buffer_abs[k+j+2] + buffer_abs[k+j+3] )
-						    ){
-							trame[j/4] = 1;	
-						} else {
-						    trame[j/4] = 0;
-						}
-					}
-
-					// --------- on a une trame demodulee : symb ------------
-					if (
-					        (trame[ 8] == 1) && (trame[ 9] == 0) &&
-					        (trame[10] == 0) && (trame[11] == 0) &&
-					        (trame[12] == 1)
-					   ){
-						// -------------- on a une trame ads-b -----------------
-						k += 479;
-						Decodage* decode = new Decodage();
-						decode->decodage(s, verbose, aff_trame, trame, liste_avion);
-						adsb ++;
-						bonftc += decode->get_bonftc();
-						boncrc += decode->get_boncrc();
-						delete decode;
-					}
-
-					nbtrame++;
-					nbtrametotal++;	
 				}
-			} else {
-				__attribute__ ((aligned (16))) float s8[8];
-				//detecteur8par8->detection(s8, addr);
-				exit( 0 );
-				for (int kk=0; kk < 8; kk++){
-					if (*(s8 + kk) > ps_min){ 
-						// -------- on a une trame : ech --------------
-						for (int j=0; j < 480; j = j+4){
-							if ((buffer_abs[k + kk + j] + buffer_abs[k + kk + j +1]) >= (buffer_abs[k + kk + j +2] + buffer_abs[k + kk + j +3])){
-								trame[j/4] = 1;	
-							} else {trame[j/4] = 0;}
-						}
-						// --------- on a une trame demodulee : symb ------------
-						if ((trame[8] == 1) &&  (trame[9] == 0) && (trame[10] == 0) && (trame[11] == 0) && (trame[12] == 1)){
-							// -------------- on a une trame ads-b -----------------
-							Decodage* decode = new Decodage();
-							decode->decodage(*(s8 + kk), verbose,  aff_trame, trame, liste_avion);
-							k+=471;
-							kk = 8;
-							adsb ++;
-							bonftc += decode->get_bonftc();
-							boncrc += decode->get_boncrc();
-							delete decode;
-						}
-
-						nbtrame++;
-						nbtrametotal++;	
-					}
-				}
-				k +=8;
 			}
 			k++;
 		}
@@ -372,47 +297,26 @@ int main(int argc, char* argv[])
 		auto np2 = chrono::high_resolution_clock::now();
 
 		if (verbose) {
-			cout << endl <<  "Temps np :" << chrono::duration_cast<chrono::microseconds>(np2 - np1).count() << "us"<< endl;
-			cout << "\nnombre de trames : "<< nbtrame << endl;
-			cout << "\nnombre de trames ads-b : "<< adsb << endl;
-			cout << "\nnombre de trames ads-b avec bon crc : "<< boncrc << endl;
-			cout << "\nnombre de trames ads-b avec bon ftc : "<< bonftc << endl;
+			cout << "nombre de trames detectees : " << nbTramesDetectees << endl;
+            cout << "nombre de trames like      : " << nbTotalTrames     << endl;
+            cout << "nombre de trames bon crc   : " << nbBonsCRCs        << endl;
+            cout << "Temps total : " << chrono::duration_cast<chrono::milliseconds>(np2 - np1).count() << " ms" << endl;
 		}
 
-		adsbtotal += adsb;
-		boncrctotal += boncrc;
-		bonftctotal += bonftc;
-		nbtrame = 0;
-		adsb = 0;
-		bonftc = 0;
-		boncrc = 0;
+        nbBonsCRCs += nbBonsCRCs;
+        nbTramesDetectees = 0;
 	}
 
 
 	// =============== AFFICHAGE FINAL =====================
 	printf("\n================================================================\n");
 
-	cout << "liste des avions :" << endl;
-	(*liste_avion).print();
-
 	auto end = chrono::high_resolution_clock::now();
 
-	cout << "\nnombre total de trames : "<< nbtrametotal << endl;
-	cout << "\nnombre total de trames ads-b : "<< adsbtotal << endl;
-	cout << "\nnombre total de trames ads-b avec bon crc : "<< boncrctotal << endl;
-	cout << "\nnombre total de trames ads-b avec bon ftc : "<< bonftctotal << endl;
-
-	cout << "\n\nTemps total : " << chrono::duration_cast<chrono::microseconds>(end - start).count() << " us" << endl;
-	cout << "\n\nTemps total : " << chrono::duration_cast<chrono::seconds>(end - start).count() << " s" << endl;
- 	cout << "- precision: ";
-    	typedef typename std::chrono::high_resolution_clock::period P;// type of time unit
-   	if (ratio_less_equal<P,nano>::value) {
-      		// convert to and print as nanoseconds
-       		typedef typename ratio_multiply<P,giga>::type TT;
-       		cout << fixed << double(TT::num)/TT::den << " ns" << endl;
-    	}
-
-
+    cout << "nombre de trames detectees : " << nbTramesDetectees << endl;
+    cout << "nombre de trames like      : " << nbTotalTrames     << endl;
+    cout << "nombre de trames bon crc   : " << nbBonsCRCs        << endl;
+	cout << "Temps total : " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms" << endl;
 	
 
 	//if (!fichier) radio->reset();
@@ -420,7 +324,6 @@ int main(int argc, char* argv[])
 	//delete radio;
 	//delete detecteur8par8;
 	delete detecteur;
-	delete liste_avion;
 
 	return 0;
 }

@@ -1,7 +1,7 @@
 #ifndef _Detecteur_AVX2_
 #define _Detecteur_AVX2_
 
-#include "Detecteur.hpp"
+#include "../Detecteur.hpp"
 
 
 class Detecteur_AVX2 : public Detecteur{

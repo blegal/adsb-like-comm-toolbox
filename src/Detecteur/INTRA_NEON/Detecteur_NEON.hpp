@@ -1,7 +1,7 @@
 #ifndef _Detecteur_NEON_
 #define _Detecteur_NEON_
 
-#include "Detecteur.hpp"
+#include "../Detecteur.hpp"
 
 
 class Detecteur_NEON : public Detecteur{

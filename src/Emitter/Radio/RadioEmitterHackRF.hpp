@@ -1,5 +1,5 @@
-#ifndef _RadioHackRF_
-#define _RadioHackRF_
+#ifndef _RadioEmitterHackRF_
+#define _RadioEmitterHackRF_
 
 #include "../../Acquisition/Radio.hpp"
 #include <libhackrf/hackrf.h>
@@ -18,7 +18,7 @@
   pwidle=<float> (Tx only) Value in negative dB of I/Q constant carrier power when idle (default 0: silent)
 */
 
-class RadioHackRF : public Radio{
+class RadioEmitterHackRF : public Radio{
 
 private :
     double freq_hz;
@@ -38,8 +38,8 @@ private :
     std::mutex g_i_mutex;  // protects g_i
 
 public :
-    RadioHackRF( float s_fc, float s_fe );
-	~RadioHackRF();
+    RadioEmitterHackRF( float s_fc, float s_fe );
+	~RadioEmitterHackRF();
 
     void initialize();
     void close();
