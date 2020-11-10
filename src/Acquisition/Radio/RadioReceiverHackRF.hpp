@@ -17,7 +17,7 @@
   pwidle=<float> (Tx only) Value in negative dB of I/Q constant carrier power when idle (default 0: silent)
 */
 
-class RadioHackRF : public Radio{
+class RadioReceiverHackRF : public Radio{
 
 private :
     double freq_hz;
@@ -27,25 +27,21 @@ private :
     uint32_t vga_gain;
     uint32_t lna_gain;
 
-    int N;  //nbre ech
     int nEchantillons;  //nbre ech
     hackrf_device* device = NULL;
-
-    bool rxFinished;
 
     int8_t* buffer;
 
 public :
-    RadioHackRF( float s_fc, float s_fe);
-	~RadioHackRF();
+    RadioReceiverHackRF(float s_fc, float s_fe);
+	~RadioReceiverHackRF();
 
     void initialize();
 
-    virtual void start_engine();
-    virtual void stop_engine ();
+    void start_engine();
+    void stop_engine ();
 
     void reception(vector<complex<float> >& cbuffer);
-    void reception(std::vector<int16_t>& I, std::vector<int16_t>& Q);
 
     void reset();
 
@@ -74,8 +70,11 @@ private:
     static int rx_callback(hackrf_transfer* transfer);
     int rx_callback(unsigned char *buf, uint32_t len);
 
-    uint32_t byte_received;
+    uint32_t count_samples();
 
+    uint32_t ptr_read;
+    uint32_t ptr_write;
+    uint32_t buff_length;
 };
 
 #endif

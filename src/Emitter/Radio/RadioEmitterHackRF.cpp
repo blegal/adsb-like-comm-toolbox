@@ -161,7 +161,8 @@ void RadioEmitterHackRF::set_amp_enable(bool value)
 {
     fprintf(stderr, "call hackrf_set_amp_enable(%u => %u)\n", amplifier, value);
     amplifier = value;
-    int32_t result = hackrf_set_amp_enable(device, (uint8_t)amplifier);
+    const uint8_t control = amplifier ? 14 : 0;                         // Pour activer l'amplificateur la valeur a fournir
+    int32_t result = hackrf_set_amp_enable(device, (uint8_t)control);   // doit etre 14, 0 sinon...
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_amp_enable() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
         exit( -1 );

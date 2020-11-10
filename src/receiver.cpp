@@ -1,23 +1,17 @@
 #include <iostream>
 #include <complex>
-#include <cstdio>
-#include <cstdlib>
-#include <fstream>
 #include <vector>
 #include <math.h>
 #include <bitset>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <chrono>
 #include <getopt.h>
 
-#include "liste_avion.h"  // qui inclut avion.h
-
 #include "Acquisition/Radio.hpp"
 #include "Acquisition/Radio/RadioUSRP.hpp"
-#include "Acquisition/Radio/RadioHackRF.hpp"
+#include "Acquisition/Radio/RadioReceiverHackRF.hpp"
 #include "Acquisition/File/RadioFichierRAW.hpp"
 #include "Acquisition/File/RadioFichierUHD.hpp"
 
@@ -195,7 +189,7 @@ int main(int argc, char* argv[])
     Radio* radio;
     if( mode_radio == "radio" && filename == "hackrf" )
     {
-        radio = new RadioHackRF(fc, fe);
+        radio = new RadioReceiverHackRF(fc, fe);
     }
     else if( mode_radio == "radio" && filename == "uhd" )
     {

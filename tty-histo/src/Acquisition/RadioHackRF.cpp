@@ -29,6 +29,8 @@ RadioHackRF::RadioHackRF(float s_fc, float s_fe) : Radio(s_fc, s_fe)
     byte_received = 0;
 
     buffer     = new int8_t[N];
+    ptr_read   = 0;
+    ptr_write  = 0;
 }
 
 RadioHackRF::~RadioHackRF()

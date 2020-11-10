@@ -307,6 +307,71 @@ void Frame::dump_frame()
 }
 
 
+template< typename T >
+std::string int_to_hex( T i )
+{
+    std::stringstream stream;
+    stream << std::setfill ('0') << std::setw(sizeof(T)*2) << std::hex << (uint32_t)i;
+    return stream.str();
+}
+
+std::string Frame::to_string()
+{
+    std::string outp = "";
+
+    uint8_t* h = header_to_emit();
+    for(uint32_t i = 0; i < header_size(); i += 1)
+        outp += std::to_string(h[i]);
+    outp += " | ";
+
+    uint8_t* c = conf_to_emit();
+    switch ( c[0] )
+    {
+        case FRAME_INFOS     : outp += str_FRAME_INFOS;     break;
+        case FRAME_NEW_IMAGE : outp += str_FRAME_NEW_IMAGE; break;
+        case FRAME_END_IMAGE : outp += str_FRAME_END_IMAGE; break;
+        case FRAME_NEW_LINE  : outp += str_FRAME_NEW_LINE;  break;
+        case FRAME_END_LINE  : outp += str_FRAME_END_LINE;  break;
+        case FRAME_EMPTY     : outp += str_FRAME_EMPTY;     break;
+        default              : outp += "FRAME_UNKNOWN ";    break;
+    }
+
+    outp += " | " + std::to_string(((uint32_t)c[1])+1) + " bytes | ";
+
+    uint8_t* p = payload_to_emit();     // the pointer to the payload field
+//    outp += "\033[1;33m";
+    outp += "0x";
+    for(uint32_t i = 0; i < payload_size(); i += 1)
+        outp += int_to_hex<uint8_t>( p[i] );
+//    outp += "\033[0m";
+    outp += " | ";
+
+    uint32_t* r = (uint32_t*)crc_to_emit();
+    outp += "CRC32b = ";
+//    outp += "\033[1;32m";
+    outp += "0x";
+    outp += int_to_hex<uint32_t>( r[0] );
+//    outp += "\033[0m";
+    outp += " | ";
+
+    if( validate_crc() == true )
+    {
+        outp += "CRC is ";
+//        outp += "\033[1;31m";
+        outp += "OK ...";
+//        outp += "\033[0m";
+    }
+    else
+    {
+        outp += "CRC is ";
+//        outp += "\033[1;31m";
+        outp += "KO !!!";
+//        outp += "\033[0m";
+    }
+
+    return outp;
+}
+
 uint8_t* Frame::conf_to_emit()
 {
     return config.data();

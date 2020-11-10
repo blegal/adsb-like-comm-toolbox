@@ -8,6 +8,8 @@
 #include <vector>
 #include <cstring>
 #include <cassert>
+#include <iostream>
+#include <iomanip>
 
 #include "../CRC/CRC32b.hpp"
 
@@ -65,6 +67,7 @@ public :
     uint32_t crc_size();          // the length of the crc field     in bytes
 
     void dump_frame();
+    std::string to_string();
 
     void get_frame_bits (std::vector<uint8_t>& v);
     bool fill_frame_bits(const std::vector<uint8_t>& buff);

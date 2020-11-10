@@ -8,8 +8,8 @@ message("${CMAKE_SOURCE_DIR}/cmake/Modules/")
 set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_CXX_FLAGS "-Wall -Ofast -march=native -mtune=native -I/usr/local/opt/hackrf/include")
-#SET(CMAKE_EXE_LINKER_FLAGS "/usr/local/opt/hackrf/lib/libhackrf.a /usr/local/opt/libusb/lib/libusb-1.0.a -framework CoreFoundation -framework IOKit")
-SET(CMAKE_EXE_LINKER_FLAGS "-L/usr/local/opt/hackrf/lib -lhackrf")
+SET(CMAKE_EXE_LINKER_FLAGS "/usr/local/opt/hackrf/lib/libhackrf.a /usr/local/opt/libusb/lib/libusb-1.0.a -framework CoreFoundation -framework IOKit")
+#SET(CMAKE_EXE_LINKER_FLAGS "-L/usr/local/opt/hackrf/lib -lhackrf")
 
 set(SOURCE_FILES
         src/CRC/CRC32b.cpp
@@ -20,7 +20,7 @@ set(SOURCE_FILES
         src/Conversion/ConversionAVX2.cpp
         src/Acquisition/Radio.cpp
         src/Acquisition/Radio/RadioUSRP.cpp
-        src/Acquisition/Radio/RadioHackRF.cpp
+        src/Acquisition/Radio/RadioReceiverHackRF.cpp
         src/Acquisition/File/RadioFichierRAW.cpp
         src/Acquisition/File/RadioFichierUHD.cpp
         src/PPM/Demodulator/PPM_Demodulator.cpp
@@ -100,3 +100,43 @@ target_link_libraries(adsb_emitter
         ${Boost_SYSTEM_LIBRARY}
         )
 
+
+
+
+
+cmake_minimum_required(VERSION 3.5)
+
+project(tty_histo)
+
+SET(CMAKE_CXX_STANDARD 14)
+
+SET(CMAKE_CXX_FLAGS        "-O2 -march=native -mtune=native")
+SET(CMAKE_EXE_LINKER_FLAGS "-lncurses")
+
+SET(SOURCE_FILES
+        ../src/tty_histo.cpp
+        )
+
+add_executable(tty_histo ${SOURCE_FILES})
+target_link_libraries(tty_histo)
+
+
+
+
+cmake_minimum_required(VERSION 3.5)
+
+project(tty_emitter)
+
+SET(CMAKE_CXX_STANDARD 14)
+
+SET(CMAKE_CXX_FLAGS        "-O2 -march=native -mtune=native")
+SET(CMAKE_EXE_LINKER_FLAGS "-lncurses")
+
+SET(SOURCE_FILES
+        src/CRC/CRC32b.cpp
+        src/Frame/Frame.cpp
+        src/tty_emitter.cpp
+        )
+
+add_executable(tty_emitter ${SOURCE_FILES})
+target_link_libraries(tty_emitter)

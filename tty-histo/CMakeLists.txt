@@ -8,9 +8,8 @@ SET(CMAKE_CXX_FLAGS        "-Ofast -g0 -march=native -mtune=native")
 SET(CMAKE_EXE_LINKER_FLAGS "-lncurses")
 
 SET(SOURCE_FILES
-        src/tty_histo.cpp
+        ../src/tty_histo.cpp
         )
 
 add_executable(tty_histo ${SOURCE_FILES})
 target_link_libraries(tty_histo)
-
