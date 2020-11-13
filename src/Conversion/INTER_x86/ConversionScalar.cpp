@@ -1,5 +1,17 @@
 #include "ConversionScalar.hpp"
 
+
+ConversionScalar::ConversionScalar()
+{
+
+}
+
+ConversionScalar::~ConversionScalar()
+{
+
+}
+
+
 void ConversionScalar::execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out)
 {
     for(int kk = 0; kk < buffer_in->size(); kk += 1)

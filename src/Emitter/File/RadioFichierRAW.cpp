@@ -1,9 +1,16 @@
 #include "RadioFichierRAW.hpp"
 
 
-RadioFichierRAW::RadioFichierRAW(std::string filen) : Radio(0, 0)
+RadioFichierRAW::RadioFichierRAW(std::string filen) : Emitter(0, 0)
 {
     filename = filen;
+    stream   = nullptr;
+}
+
+
+RadioFichierRAW::RadioFichierRAW(Parameters& param) : Emitter(0, 0)
+{
+    filename = param.toString("filename");
     stream   = nullptr;
 }
 

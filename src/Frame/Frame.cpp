@@ -130,7 +130,7 @@ void Frame::get_frame_bits(std::vector<uint8_t>& buff)
         {
             (*ptr++) = (v >> (7-q)) & 0x01;
         }
-        printf("\n");
+//        printf("\n");
     }
 
     const uint8_t* p = payload_to_emit();

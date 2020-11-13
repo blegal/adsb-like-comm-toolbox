@@ -7,6 +7,12 @@ RadioFichierRAW::RadioFichierRAW(std::string filen) : Radio(0, 0)
 }
 
 
+RadioFichierRAW::RadioFichierRAW(Parameters& param) : Radio(0, 0)
+{
+    filename = param.toString("filename");
+}
+
+
 RadioFichierRAW::~RadioFichierRAW()
 {
 

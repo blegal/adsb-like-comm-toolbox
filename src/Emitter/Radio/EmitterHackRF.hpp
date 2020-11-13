@@ -2,6 +2,10 @@
 #define _RadioEmitterHackRF_
 
 #include "../../Acquisition/Radio.hpp"
+#include "../../RingBuff/RingBuff.hpp"
+#include "../../Tools/Parameters.hpp"
+#include "../Emitter.hpp"
+
 #include <libhackrf/hackrf.h>
 #include <mutex>
 
@@ -18,28 +22,25 @@
   pwidle=<float> (Tx only) Value in negative dB of I/Q constant carrier power when idle (default 0: silent)
 */
 
-class RadioEmitterHackRF : public Radio{
-
+class EmitterHackRF : public Emitter{
 private :
-    double freq_hz;
-    double fech_hz;
+//    double freq_hz;
+//    double fech_hz;
     bool amplifier;
     bool antenna;
     uint32_t txvga_gain;
 
-    int N;  //nbre ech
-    int nEchantillons;  //nbre ech
     hackrf_device* device = NULL;
 
-    bool txFinished;
-
-    int8_t* buffer;
+    RingBuff buff;
 
     std::mutex g_i_mutex;  // protects g_i
 
 public :
-    RadioEmitterHackRF( float s_fc, float s_fe );
-	~RadioEmitterHackRF();
+    EmitterHackRF(float s_fc, float s_fe );
+    EmitterHackRF(Parameters& param);
+
+	~EmitterHackRF();
 
     void initialize();
     void close();
@@ -70,15 +71,9 @@ public :
     void     inc_txvga_gain();
     void     dec_txvga_gain();
 
-    void     set_nb_samples(uint32_t value);
-    uint32_t get_nb_samples( );
-
 private:
     static int tx_callback(hackrf_transfer* transfer);
     int tx_callback(unsigned char *buf, uint32_t len);
-
-    uint32_t byte_emitted;
-    uint32_t byte_to_send;
 
 };
 

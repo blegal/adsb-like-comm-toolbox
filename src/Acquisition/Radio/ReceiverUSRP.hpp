@@ -7,14 +7,14 @@
 #include <uhd/usrp/multi_usrp.hpp>
 #include <uhd.h>
 
-class RadioUSRP : public Radio{
+class ReceiverUSRP : public Radio{
 private :
 	uhd::usrp::multi_usrp::sptr usrp;              // Le pointeur vers l'USRP
     uhd::rx_streamer::sptr rx_stream;
 
 public :
-    RadioUSRP( float s_fc, float s_fe);
-	~RadioUSRP();
+    ReceiverUSRP(float s_fc, float s_fe);
+	~ReceiverUSRP();
     void initialize();
     void reception(vector<complex<float> >& buffer);
 

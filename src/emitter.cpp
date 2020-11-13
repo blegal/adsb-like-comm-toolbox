@@ -19,6 +19,8 @@
 
 #include "./Frame/Frame.hpp"
 
+#include "./Tools/Parameters.hpp"
+
 #include "./PPM/Modulator/PPM_Modulator.hpp"
 #include "./Sampling/Up/UpSampling.hpp"
 #include "./IQ/Insertion/IQ_Insertion.hpp"
@@ -27,7 +29,7 @@
 #include "./Sampling/Down//DownSampling.hpp"
 #include "./PPM/Demodulator/PPM_Demodulator.hpp"
 
-#include "./Emitter/Radio/RadioEmitterHackRF.hpp"
+#include "./Emitter/Radio/EmitterHackRF.hpp"
 #include "./Emitter/File/RadioFichierRAW.hpp"
 
 #include "couleur.h"
@@ -36,21 +38,11 @@
 bool isFinished = false;
 
 void my_ctrl_c_handler(int s){
-    printf("Caught signal %d\n",s);
+    //printf("Caught signal %d\n",s);
     isFinished = true;
 }
 
 
-
-template <class T>
-void dump(std::vector<T>& v)
-{
-    for (uint32_t i = 0; i < v.size(); i += 1)
-    {
-        std::cout << (int32_t)v.at(i) << " ";
-    }
-    std::cout << std::endl;
-}
 
 using namespace std;
 
@@ -59,7 +51,8 @@ using namespace std;
 	4 ech = 1 symb
 	1 trame = 120 symb = 480 ech
 */
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
     //
     //  On gere manuellement le CTRL-C afin de quitter proprement le programme
     //  apres avoir eteint la radio logicielle...
@@ -71,24 +64,46 @@ int main(int argc, char* argv[]) {
     sigIntHandler.sa_flags = 0;
     sigaction(SIGINT, &sigIntHandler, NULL);
 
-
     int c; //getopt
 
-    float fc = 433000000;
-    float fe = 1000000;
+    Parameters param;
+
+    param.set("mode_radio",   "radio");
+    param.set("filename",   "hackrf");
+
+    param.set("fc", 433000000.0f);
+    param.set("fe",   1000000.0f);
+    param.set("tx_gain",   40);
+    param.set("antenna",    1);
+    param.set("amplifier",  0);
+
+    param.set("payload", 433000000.0f);
+
+    param.set("sleep_time",   1000000.0f);
+
+    param.set("verbose",   false);
+
+    param.set("max_frames",   1000000);
+
 
     static struct option long_options[] =
             {
-                    {"radio", required_argument, NULL, 'r'}, // a partir d'un fichier
-                    {"file",  required_argument, NULL, 'f'}, // a partir d'un fichier
+                    {"radio",    required_argument, NULL, 'r'}, // a partir d'un fichier
+                    {"file",     required_argument, NULL, 'f'}, // a partir d'un fichier
 
-                    {"fc",    required_argument, NULL, 'p'}, // changer la frequence de la porteuse
-                    {"fe",    required_argument, NULL, 'e'}, // changer la frequence echantillonnage
+                    {"fc",       required_argument, NULL, 'c'}, // changer la frequence de la porteuse
+                    {"fe",       required_argument, NULL, 'e'}, // changer la frequence echantillonnage
+
+                    {"verbose",  no_argument, NULL, 'v'}, // changer la frequence de la porteuse
+                    {"sleep",    required_argument, NULL, 's'}, // changer la frequence echantillonnage
+                    {"payload",  required_argument, NULL, 'p'}, // changer la frequence de la porteuse
+                    {"tx_gain",  required_argument, NULL, 'g'}, // changer la frequence echantillonnage
+
+                    {"max_frames",  required_argument, NULL, 'm'}, // changer la frequence echantillonnage
+
                     {NULL, 0,                    NULL, 0}
             };
 
-    std::string mode_radio = "radio";
-    std::string filename = "hackrf";
 
     int option_index = 0;
 
@@ -109,27 +124,52 @@ int main(int argc, char* argv[]) {
                 printf("\n");
                 break;
 
-            case 'p':
-                fc = atof(optarg);
-                printf("%soption fc = %f Hz%s\n", KNRM, fc, KRED);
+            case 'c':
+                param.set("fc",   atof(optarg));
+                printf("%soption fc = %f Hz%s\n", KNRM, param.toFloat("fc"), KRED);
                 break;
 
             case 'e' :
-                fe = atof(optarg);
-                printf("%soption fe = %f Hz%s\n", KNRM, fe, KRED);
+                param.set("fe",   atof(optarg));
+                printf("%soption fe = %f Hz%s\n", KNRM, param.toFloat("fe"), KRED);
                 break;
 
             case '?':
                 break;
 
             case 'r':
-                mode_radio = "radio";
-                filename = optarg;
+                param.set("mode_radio",   "radio");
+                param.set("filename",   optarg);
                 break;
 
             case 'f':
-                mode_radio = "file";
-                filename = optarg;
+                param.set("mode_radio",   "file");
+                param.set("filename",   optarg);
+                break;
+
+            case 'v' :
+                param.set("verbose",   1);
+                printf("%soption verbose = 1%s\n", KNRM, KRED);
+                break;
+
+            case 'p' :
+                param.set("payload",   atoi(optarg));
+                printf("%soption payload = %d%s\n", KNRM, param.toInt("payload"), KRED);
+                break;
+
+            case 'm' :
+                param.set("max_frames",   atoi(optarg));
+                printf("%soption max_frames = %d%s\n", KNRM, param.toInt("max_frames"), KRED);
+                break;
+
+            case 's' :
+                param.set("sleep_time",   atoi(optarg));
+                printf("%soption sleep = %d us%s\n", KNRM, param.toInt("sleep_time"), KRED);
+                break;
+
+            case 'g' :
+                param.set("tx_gain",   atoi(optarg));
+                printf("%soption tx_gain = %d dB%s\n", KNRM, param.toInt("tx_gain"), KRED);
                 break;
 
             default:
@@ -147,13 +187,16 @@ int main(int argc, char* argv[]) {
     //
     // We create the frame
     //
+    if( 0 )
     {
-        Frame f(16);
+        const uint32_t payload    = param.toInt("payload");
+
+        Frame f(payload);
 
         //
         // We fill the frame content
         //
-        for (uint32_t i = 0; i < 16; i += 1)
+        for (uint32_t i = 0; i < payload; i += 1)
             f.data(i, i);
         f.compute_crc();
 
@@ -203,42 +246,43 @@ int main(int argc, char* argv[]) {
         std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));
         ppd.execute(buff_6, buff_7);
 
-        Frame g(16);
+        Frame g(payload);
         g.fill_frame_bits(buff_7);
         g.dump_frame();
     }
 
-#if 1
-    RadioEmitterHackRF* radio = nullptr;
-    if( mode_radio == "radio" && filename == "hackrf" )
+    const uint32_t sleep_time = param.toInt("sleep_time");
+    const uint32_t payload    = param.toInt("payload");
+    const uint32_t verbose    = param.toInt("verbose");
+
+    EmitterHackRF*   radio = nullptr;
+//    RadioFichierRAW* radio = nullptr;
+//    Emitter* e;
+    if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" )
     {
-        radio = new RadioEmitterHackRF(fc, fe);
+        radio = new EmitterHackRF(param.toFloat("fc"), param.toFloat("fe"));
     }
-#else
-    RadioFichierRAW* radio = nullptr;
-    if( mode_radio == "file" )
-    {
-        radio = new RadioFichierRAW( filename );
-    }
-#endif
+
+//    if( mode_radio == "file" )
+//    {
+//        radio = new RadioFichierRAW( filename );
+//    }
     else
     {
         cout << "oups !" << endl;
-        cout << "mode_radio = " << mode_radio << endl;
-        cout << "filename   = " << filename   << endl;
+        cout << "mode_radio = " << param.toString("mode_radio") << endl;
+        cout << "filename   = " << param.toString("filename")   << endl;
         exit( -1 );
     }
 
     radio->initialize();
     radio->start_engine();
+    radio->set_txvga_gain( param.toInt("tx_gain") );
 
-    usleep( 1000000 );
+    usleep( param.toInt("sleep_time") );
 
-    radio->set_txvga_gain( 40 );
 
-    uint32_t k = 0;
-
-    Frame f( 16 );
+    Frame f( param.toInt("payload") );
     PPM_Modulator ppm( 120 );
     UpSampling up(2);
     IQ_Insertion iqi;
@@ -248,15 +292,27 @@ int main(int argc, char* argv[]) {
     std::vector<int8_t>  buff_3;
     std::vector<int8_t>  buff_4;
 
+    uint32_t nFrames = 0;
+
+    auto start = std::chrono::system_clock::now(); // This and "end"'s type is std::chrono::time_point
+
+    const uint32_t sleep_time = param.toInt("sleep_time");
+    const uint32_t payload    = param.toInt("payload");
+    const uint32_t verbose    = param.toInt("verbose");
+
     while( isFinished == false )
     {
-        usleep( 1000000 );
+        usleep( sleep_time );
 
-        for( uint32_t i = 0; i < 16; i +=1 )
-            f.data(i, i+k);
+        for( uint32_t i = 0; i < payload; i +=1 )
+            f.data(i, i + nFrames);
 
         f.compute_crc();
-        f.dump_frame();
+
+        if( verbose == true )
+        {
+            f.dump_frame();
+        }
 
         f.get_frame_bits( buff_1 );
 
@@ -268,8 +324,19 @@ int main(int argc, char* argv[]) {
 
         radio->emission(buff_4);
 
-        k += 1;
+        nFrames += 1;
     }
+
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+
+    std::cout << std::endl;
+    std::cout << "Nombre de trames emises  (frames)  = " << nFrames << std::endl;
+    std::cout << "Temps total d'émission   (seconds) = " << elapsed.count() << std::endl;
+    std::cout << "Trames par seconde       (frames)  = " << (nFrames/elapsed.count()) << std::endl;
+    std::cout << "Débit emis par seconde   (bits)    = " << (nFrames/elapsed.count()*f.frame_bits()) << std::endl;
+    std::cout << "Débit utile par seconde  (bytes)   = " << (nFrames/elapsed.count()*payload) << std::endl;
+    std::cout << "Débit utile par seconde  (bits)    = " << (nFrames/elapsed.count()*payload*8) << std::endl;
 
     radio->stop_engine();
     radio->close();

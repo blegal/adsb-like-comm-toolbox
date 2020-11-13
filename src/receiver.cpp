@@ -1,41 +1,67 @@
 #include <iostream>
+
+#include <cmath>
 #include <complex>
-#include <vector>
-#include <math.h>
-#include <bitset>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstring>
 #include <chrono>
+
+#include <vector>
+
+#include <cstdio>
+#include <cstdlib>
 #include <getopt.h>
+#include <signal.h>
 
-#include "Acquisition/Radio.hpp"
-#include "Acquisition/Radio/RadioUSRP.hpp"
-#include "Acquisition/Radio/RadioReceiverHackRF.hpp"
-#include "Acquisition/File/RadioFichierRAW.hpp"
-#include "Acquisition/File/RadioFichierUHD.hpp"
 
+//
+//  Definition des modules permettant d'utiliser le module Radio (SdR)
+//
+
+#include "./Acquisition/Radio.hpp"
+#include "./Acquisition/File/RadioFichierRAW.hpp"
+#include "./Acquisition/File/RadioFichierUHD.hpp"
+#include "./Acquisition/Radio/ReceiverUSRP.hpp"
+#include "./Acquisition/Radio/RadioHackRF.hpp"
+#include "./Acquisition/Radio/ReceiverHackRF.hpp"
+
+
+//
+//  Conversion des nombres complexes => module flottant
+//
+
+#include "./Conversion/INTER_x86/ConversionScalar.hpp"
+#include "./Conversion/INTER_NEON/ConversionNEON.hpp"
+#include "./Conversion/INTER_AVX2/ConversionAVX2.hpp"
+
+
+//
+//  Correlateur permettant de détecter le prologue des trames ADSB
+//
 
 #include "./Detecteur/Detecteur.hpp"
-#include "Detecteur/INTER_x86/DetecteurScalar.hpp"
-#include "Detecteur/INTRA_NEON/Detecteur_NEON.hpp"
+#include "./Detecteur/INTER_x86/DetecteurScalar.hpp"
+#include "./Detecteur/INTRA_NEON/Detecteur_NEON.hpp"
+#include "./Detecteur/INTRA_AVX2/Detecteur_AVX2.hpp"
+//#include "Detecteur/INTER_AVX2/Detecteur_NEON.hpp"
 
-#include "decodage.h"
 
-#include "abs.h"
-
-#include "./Conversion/ConversionScalar.hpp"
-#include "./Conversion/ConversionNEON.hpp"
-#include "./Conversion/ConversionAVX2.hpp"
 
 #include "./Frame/Frame.hpp"
 #include "./Sampling/Down/DownSampling.hpp"
 #include "./PPM/Demodulator/PPM_Demodulator.hpp"
 
+#include "abs.h"
 
 #include "couleur.h"
 
 using namespace std;
+
+bool isFinished = false;
+
+void my_ctrl_c_handler(int s){
+    printf("Caught signal %d\n",s);
+    isFinished = true;
+}
 
 /*   ============================== MAIN =========================== */
 /*
@@ -44,45 +70,58 @@ using namespace std;
 */
 int main(int argc, char* argv[])
 {
+
+    struct sigaction sigIntHandler;
+    sigIntHandler.sa_handler = my_ctrl_c_handler;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+    sigaction(SIGINT, &sigIntHandler, NULL);
+
+
 	uint32_t nbTramesDetectees = 0; // nbre trame ...
     uint32_t nbTotalTrames = 0;
     uint32_t nbBonsCRCs = 0;
 
 	int c; //getopt
-	int basique = 0;
-    float fc = 1090e6;
-    float fe = 4e6;
-	int verbose = 0;
-	int aff_trame = 1;
+
+    float fc = 433000000;
+    float fe = 1000000;
+
+    uint32_t payload = 16; // Nombre de bytes utiles par frame
+
+	bool verbose = 0;
 	float ps_min = 0.75;
 	int Np = 10000;
-	int huit = 0;
+
 	static struct option long_options[] =
 	{
-		{"verbose", no_argument,         NULL, 'v'},  		// affiche temps sur chaque boucle Np + cplx => abs
-		{"trame",   no_argument,         NULL, 't'},   		// DESACTIVE affiche toutes les trames adsb reçues
-		{"seuil",   required_argument,   NULL, 's'}, 	// pour changer la valeur min de la correlation (synchro)
-		{"np",      required_argument,   NULL, 'n'}, 		// pour changer le nombre de boucle Np (ie nbre echantillon*200000) // Np = 10 => 0.5 s
-		{"huit",    no_argument,         NULL, '8'},  // detecteur8par8 -- plus rapide
+		{"verbose", no_argument,         NULL, 'v'},  // affiche temps sur chaque boucle Np + cplx => abs
+		{"seuil",   required_argument,   NULL, 's'},  // pour changer la valeur min de la correlation (synchro)
+		{"np",      required_argument,   NULL, 'n'},  // pour changer le nombre de boucle Np (ie nbre echantillon*200000) // Np = 10 => 0.5 s
 
 		{"conv",    required_argument,   NULL, 'c'}, // a partir d'un fichier
 		{"corr",    required_argument,   NULL, 'd'}, // a partir d'un fichier
-		{"radio",   required_argument,   NULL, 'r'}, // a partir d'un fichier
-		{"file",    required_argument,   NULL, 'f'}, // a partir d'un fichier
 
-		{"fc",      required_argument,   NULL, 'p'}, // changer la frequence de la porteuse
-		{"fe",      required_argument,   NULL, 'e'}, // changer la frequence echantillonnage
-		{"basique", no_argument,         NULL, 'b'}, // detecteur_basique -- plus lent
-		{NULL,      0,                   NULL, 0}
+		{"radio",   required_argument,   NULL, 'r'}, // a partir d'un fichier
+		{"file",    required_argument,   NULL, 'F'}, // a partir d'un fichier
+
+		{"fc",      required_argument,   NULL, 'f'}, // changer la frequence de la porteuse
+        {"fe",      required_argument,   NULL, 'e'}, // changer la frequence echantillonnage
+
+        {"payload", required_argument,   NULL, 'p'}, // changer la frequence echantillonnage
+
+		{NULL,      0,                  NULL, 0}
 	};
 
     std::string mode_radio = "txt";
     std::string filename   = "../data/data_uhd.txt";
 
+    std::string mode_conv = "scalar";
+    std::string mode_corr = "scalar";
 
 	int option_index = 0;
 
-	vector<complex<float> > buffer(200000); // Notre buffer à nous dans le programme
+	vector<complex<float> > buffer( fe/2 ); // Notre buffer à nous dans le programme
 	vector<complex<float> > buffer_fichier;
 
     cout << "par Florian LOUPIAS - Février 2020" << endl;
@@ -99,10 +138,14 @@ int main(int argc, char* argv[])
 				printf ("%s with arg %s%s", optarg, KNRM, KRED);
 			    printf ("\n");
 			    break;
-			case 'p':
-				fc = atof(optarg);
-				printf("%soption fc = %f Hz%s\n", KNRM, fc, KRED);
-				break;
+            case 'f':
+                fc = atof(optarg);
+                printf("%soption fc = %f Hz%s\n", KNRM, fc, KRED);
+                break;
+            case 'p':
+                payload = atoi(optarg);
+                printf("%soption payload = %d bytes%s\n", KNRM, payload, KRED);
+                break;
 			case 'e' :
 				fe = atof(optarg);
 				printf("%soption fe = %f Hz%s\n", KNRM, fe, KRED);
@@ -127,37 +170,26 @@ int main(int argc, char* argv[])
 			    verbose = 1;
 				printf("%soption verbose%s\n", KNRM, KRED);
 			    break;
-			case 'b':
-			    basique = 1;
-				printf("%soption basique%s\n", KNRM, KRED);
-			    break;
-			case 't':
-			    aff_trame = 0;
-				printf("%soption trame : pas d'affichage%s\n", KNRM, KRED);
-			    break;
-			case '8' :
-				huit = 1;
-				printf("%soption huit%s\n",KNRM, KRED);
 
             case '?':
                 break;
 
-            //{"conv",    required_argument,   NULL, 'c'}, // a partir d'un fichier
             case 'c':
+                mode_conv = optarg;
+                printf("%soption mode_conv = %s%s\n", KNRM, mode_conv.c_str(), KRED);
                 break;
 
-            //{"corr",    required_argument,   NULL, 'd'}, // a partir d'un fichier
             case 'd':
+                mode_corr = optarg;
+                printf("%soption mode_corr = %s%s\n", KNRM, mode_corr.c_str(), KRED);
                 break;
 
-            //{"radio",   required_argument,   NULL, 'r'}, // a partir d'un fichier
             case 'r':
                 mode_radio = "radio";
                 filename   = optarg;
                 break;
 
-            //{"file",    required_argument,   NULL, 'f'}, // a partir d'un fichier
-            case 'f':
+            case 'F':
                 mode_radio = "file";
                 filename   = optarg;
                 break;
@@ -175,25 +207,27 @@ int main(int argc, char* argv[])
 	printf("%s",KNRM);
 	cout << endl;
 
-#if 1
-	Detecteur* detecteur      = new DetecteurScalar();
-#endif
-#if defined(__ARM_NEON)
-	Detecteur_NEON*  detecteur      = new Detecteur_NEON();
-#endif
+
+
+
 	//	Detecteur*      detecteur      = new Detecteur();
 //	Detecteur8par8* detecteur8par8 = new Detecteur8par8();
 
-	//=============== INITIALISATION RADIO ================
-
+	//
+	// Selection du module SDR employé dans le programme
+	//
     Radio* radio;
     if( mode_radio == "radio" && filename == "hackrf" )
     {
-        radio = new RadioReceiverHackRF(fc, fe);
+        radio = new ReceiverHackRF(fc, fe);
+    }
+    else if( mode_radio == "radio" && filename == "hackrf-old" )
+    {
+        radio = new RadioHackRF(fc, fe);
     }
     else if( mode_radio == "radio" && filename == "uhd" )
     {
-        radio = new RadioUSRP(fc, fe);
+        radio = new ReceiverUSRP(fc, fe);
     }
     else if( mode_radio == "file" && (filename.find(".raw") != -1) )
     {
@@ -211,54 +245,110 @@ int main(int argc, char* argv[])
         exit( -1 );
     }
 
+    //
+    // Selection du module de correlation employé dans le programme
+    //
+
+    Detecteur* detect;
+    if( mode_corr == "scalar" )
+        detect = new DetecteurScalar();
+    else if( mode_corr == "AVX2" )
+        detect = new Detecteur_AVX2();
+    else if( mode_corr == "NEON" )
+        detect = new Detecteur_NEON();
+    else
+    {
+        std::cout << "(EE) Le type de module de Correlation demandé n'est actuellement pas dispnible :" << std::endl;
+        std::cout << "(EE) type = " << mode_corr                                                        << std::endl;
+        exit( -1 );
+    }
+
+
+    //
+    // Selection du module de conversion employé dans le programme
+    //
+
+    Conversion* conv;
+    if( mode_conv == "scalar" )
+        conv = new ConversionScalar();
+    else if( mode_conv == "AVX2" )
+        conv = new ConversionAVX2();
+    else if( mode_conv == "NEON" )
+        conv = new ConversionNEON();
+    else
+    {
+        std::cout << "(EE) Le type de module de Conversion demandé n'est actuellement pas dispnible :" << std::endl;
+        std::cout << "(EE) type = " << mode_corr                                                        << std::endl;
+        exit( -1 );
+    }
+
+    //
+    // Selection du module de conversion employé dans le programme
+    //
+
+    Frame f( payload );
+
+    //
+    // Selection du module de conversion employé dans le programme
+    //
+
     radio->initialize();
+    radio->start_engine();
 
-    auto start = chrono::high_resolution_clock::now();
+    auto start = std::chrono::system_clock::now();
 
-	while( radio->alive() )
+    //
+    // Selection du module de conversion employé dans le programme
+    //
+
+    double timer_reception     = 0.0;
+    double timer_conv_cplx     = 0.0;
+    double timer_detecteur     = 0.0;
+    double timer_extraction    = 0.0;
+    double timer_down_sampling = 0.0;
+    double timer_demodulator   = 0.0;
+    double timer_parsing       = 0.0;
+
+    //
+    // Selection du module de conversion employé dans le programme
+    //
+
+	while( radio->alive() && (isFinished == false) )
 	{
-		auto np1 = chrono::high_resolution_clock::now();
+        auto depart    = chrono::high_resolution_clock::now();
 
         radio->reception(buffer);
+
+        auto reception = chrono::high_resolution_clock::now();
+        timer_reception += chrono::duration_cast<chrono::nanoseconds>(reception - depart).count();
 
 		vector<float> buffer_abs;
 		cplx2abs(verbose, &buffer, &buffer_abs);
 
-#if 0
-        float minv = buffer_abs[0];
-        float maxv = buffer_abs[0];
-        uint32_t len = buffer.size();
-        for (uint32_t k = 1;  k < len; k++) {
-            minv = minv < buffer_abs[k] ? minv : buffer_abs[k];
-            maxv = maxv > buffer_abs[k] ? maxv : buffer_abs[k];
-        }
-#endif
+        auto conv_cplx = chrono::high_resolution_clock::now();
+        timer_conv_cplx += chrono::duration_cast<chrono::nanoseconds>(conv_cplx - reception).count();
 
 		// ============== detection & decodage ================
-		int k=0;
-		while ( k <= (buffer_abs.size() - 480)){ //480 = taille trame (ech)
 
-			float s;
+		int k=0;
+		while ( k <= (buffer_abs.size() - f.frame_bits())){
+
+            auto start_loop = chrono::high_resolution_clock::now();
+
 			float* addr = buffer_abs.data() + k;
 
-			if (!huit){
-				if (!basique){
-					detecteur->execute(addr);
-					s = detecteur->getValue( 0 );
-				}
-				else{
-					detecteur->execute(addr);
-					s = detecteur->getValue( 0 );
-				}
+			detect->execute(addr);
+			const float s = detect->getValue( 0 );
 
-				if (s > ps_min){
+                auto detecteur = chrono::high_resolution_clock::now();
+                timer_detecteur += chrono::duration_cast<chrono::nanoseconds>(detecteur - start_loop).count();
 
-                    nbTramesDetectees++;    // On vient de detecter qqchose
-
-                    Frame g( 16 );
+				if (s > ps_min)
+				{
+                    nbTramesDetectees +=1;    // On vient de detecter qqchose
 
 					// -------- on a une trame : ech
-					std::vector<int8_t> buff_5( 4 * g.frame_bits() );
+					std::vector<int8_t> buff_5( 4 * f.frame_bits() );
                     for (int j=0; j < buff_5.size(); j += 1){
                         int32_t v = buffer_abs[k+j];
                         v = (v > +127) ? +127 : v;
@@ -266,58 +356,80 @@ int main(int argc, char* argv[])
                         buff_5[j]   = v;
                     }
 
+                    auto extraction   = chrono::high_resolution_clock::now();
+                    timer_extraction += chrono::duration_cast<chrono::nanoseconds>(extraction - detecteur).count();
+
                     DownSampling down(2);
                     std::vector<int8_t> buff_6;
                     down.execute( buff_5, buff_6 );
+
+                    auto down_sampling   = chrono::high_resolution_clock::now();
+                    timer_down_sampling += chrono::duration_cast<chrono::nanoseconds>(down_sampling - extraction).count();
 
                     PPM_Demodulator ppd;
                     std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));
                     ppd.execute(buff_6, buff_7);
 
-                    bool isOK = g.fill_frame_bits( buff_7 );
-                    nbTotalTrames += isOK;
+                    auto demodulator   = chrono::high_resolution_clock::now();
+                    timer_demodulator += chrono::duration_cast<chrono::nanoseconds>(demodulator - down_sampling).count();
+
+                    bool isOK = f.fill_frame_bits( buff_7 );
+
                     if( isOK )
                     {
-                        nbTotalTrames++;        // C'est bien une trame ADSB-like
-                        nbBonsCRCs   += g.validate_crc();
-                        printf("%1.3f : ", s);
-                        g.dump_frame();
+                        nbTotalTrames += 1;        // C'est bien une trame ADSB-like
+                        nbBonsCRCs    += f.validate_crc();
+
+                        if( verbose )
+                        {
+                            printf("%1.3f : ", s);
+                            f.dump_frame();
+                        }
+
+                        k += f.frame_bits() - 1; // On saute tous les bits qui composaient notre trame...
                     }
+
+                    auto parsing   = chrono::high_resolution_clock::now();
+                    timer_parsing += chrono::duration_cast<chrono::nanoseconds>(parsing - demodulator).count();
 				}
-			}
 			k++;
 		}
-		// ============== affichage resultats partiels ================
-		auto np2 = chrono::high_resolution_clock::now();
 
-		if (verbose) {
-			cout << "nombre de trames detectees : " << nbTramesDetectees << endl;
-            cout << "nombre de trames like      : " << nbTotalTrames     << endl;
-            cout << "nombre de trames bon crc   : " << nbBonsCRCs        << endl;
-            cout << "Temps total : " << chrono::duration_cast<chrono::milliseconds>(np2 - np1).count() << " ms" << endl;
-		}
-
-        nbBonsCRCs += nbBonsCRCs;
-        nbTramesDetectees = 0;
 	}
 
 
 	// =============== AFFICHAGE FINAL =====================
 	printf("\n================================================================\n");
 
-	auto end = chrono::high_resolution_clock::now();
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
 
-    cout << "nombre de trames detectees : " << nbTramesDetectees << endl;
-    cout << "nombre de trames like      : " << nbTotalTrames     << endl;
-    cout << "nombre de trames bon crc   : " << nbBonsCRCs        << endl;
-	cout << "Temps total : " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms" << endl;
-	
+    printf("\n");
+    std::cout << "nombre de trames detectees : " << nbTramesDetectees << std::endl;
+    std::cout << "nombre de trames like      : " << nbTotalTrames     << std::endl;
+    std::cout << "nombre de trames bon crc   : " << nbBonsCRCs        << std::endl;
+    printf("\n");
+    std::cout << "Nombre de trames emises  (frames)  = " << nbBonsCRCs                                  << std::endl;
+    std::cout << "Temps total d'émission   (seconds) = " << elapsed.count()                             << std::endl;
+    std::cout << "Trames par seconde       (frames)  = " << (nbBonsCRCs/elapsed.count())                << std::endl;
+    std::cout << "Débit emis par seconde   (bits)    = " << (nbBonsCRCs/elapsed.count()*f.frame_bits()) << std::endl;
+    std::cout << "Débit utile par seconde  (bytes)   = " << (nbBonsCRCs/elapsed.count()*payload)        << std::endl;
+    std::cout << "Débit utile par seconde  (bits)    = " << (nbBonsCRCs/elapsed.count()*payload*8)      << std::endl;
+    printf("\n");
+    std::cout << "Temps total : " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms" << std::endl;
+    std::cout << " -  timer_reception     = " << (timer_reception/1000/1000)     << " ms" << std::endl;
+    std::cout << " -  timer_conv_cplx     = " << (timer_conv_cplx/1000/1000)     << " ms" << std::endl;
+    std::cout << " -  timer_detecteur     = " << (timer_detecteur/1000/1000)     << " ms" << std::endl;
+    std::cout << " -  timer_extraction    = " << (timer_extraction/1000/1000)    << " ms" << std::endl;
+    std::cout << " -  timer_down_sampling = " << (timer_down_sampling/1000/1000) << " ms" << std::endl;
+    std::cout << " -  timer_demodulator   = " << (timer_demodulator/1000/1000)   << " ms" << std::endl;
+    std::cout << " -  timer_parsing       = " << (timer_parsing/1000/1000)       << " ms" << std::endl;
 
-	//if (!fichier) radio->reset();
+    printf("\n");
 
-	//delete radio;
-	//delete detecteur8par8;
-	delete detecteur;
+    delete radio;
+    delete detect;
+    delete conv;
 
 	return 0;
 }

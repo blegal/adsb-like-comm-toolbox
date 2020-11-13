@@ -1,18 +1,18 @@
-#include "RadioUSRP.hpp"
+#include "ReceiverUSRP.hpp"
 
-RadioUSRP::RadioUSRP(float s_fc, float s_fe) : Radio(s_fc, s_fe)
+ReceiverUSRP::ReceiverUSRP(float s_fc, float s_fe) : Radio(s_fc, s_fe)
 {
     fc = s_fc;
     fe = s_fe;
     N = 200000; //N = 200000 => 50 ms
 }
 
-RadioUSRP::~RadioUSRP()
+ReceiverUSRP::~ReceiverUSRP()
 {
 
 }
 
-void RadioUSRP::initialize(){
+void ReceiverUSRP::initialize(){
 	printf("%s",KYEL);
 
     string usrp_addr("type=b100");           // L'adresse de l'USRP est écrite en dur pour l'instant
@@ -37,7 +37,7 @@ void RadioUSRP::initialize(){
 	printf("%s", KNRM);
 }
 
-void RadioUSRP::reception(vector<complex<float> >& buffer)
+void ReceiverUSRP::reception(vector<complex<float> >& buffer)
 {
     uhd::rx_metadata_t md;                     // Des metadata
     int num_rx_samps = 0;                     // Nombre d'echantillons reçus
@@ -46,19 +46,19 @@ void RadioUSRP::reception(vector<complex<float> >& buffer)
         num_rx_samps += rx_stream->recv(&buffer.at(num_rx_samps), N - num_rx_samps, md);
 }
 
-void RadioUSRP::reset()
+void ReceiverUSRP::reset()
 {
     usrp->issue_stream_cmd(uhd::stream_cmd_t::STREAM_MODE_STOP_CONTINUOUS);
 	rx_stream.reset();
 	usrp.reset();
 }
 
-void RadioUSRP::start_engine()
+void ReceiverUSRP::start_engine()
 {
 
 }
 
-void RadioUSRP::stop_engine()
+void ReceiverUSRP::stop_engine()
 {
 
 }

@@ -10,7 +10,13 @@
 
 class Conversion
 {
-  virtual void execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out) = 0;
+public:
+
+    Conversion();
+
+    virtual ~Conversion();
+
+    virtual void execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out) = 0;
 };
 
 #endif

@@ -74,6 +74,7 @@ void ReceiverHackRF::initialize(){
     std::vector<std::string> modules;
     modules.push_back("000000000000000026b468dc33776d8f");
     modules.push_back("000000000000000075b068dc317bae07");
+    modules.push_back("0000000000000000088869dc242e9d1b");
 
     int result;
     result = hackrf_init();
@@ -263,7 +264,7 @@ void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer)
         fprintf(stderr, "ReceiverHackRF::reception() failed because device is not steraming: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
         exit( -1 );
     }
-    std::cout << "(II) ---- There exist " << buff.NumElements() << " bytes available" << std::endl;
+//    std::cout << "(II) ---- There exist " << buff.NumElements() << " bytes available" << std::endl;
 
     const uint32_t toRead = 2 * cbuffer.size(); // le buffer parle en bytes (et non en nombre de couples I/Q)
     //
@@ -288,7 +289,7 @@ void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer)
 
     int8_t* buf = new int8_t[toRead];
     uint32_t nRead = buff.Read(buf, toRead);
-    std::cout << "(II) --> reading.. nRead = " << nRead << " bytes" << std::endl;
+//    std::cout << "(II) --> reading.. nRead = " << nRead << " bytes" << std::endl;
     if( nRead != toRead )
     {
         fprintf(stderr, "ReceiverHackRF::reception() failed: the number of data to read is different than the resquest (%d)\n", toRead);

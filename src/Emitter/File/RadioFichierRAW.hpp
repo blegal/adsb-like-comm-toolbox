@@ -2,14 +2,18 @@
 #define _RadioFichierRAW_
 
 #include "../../Acquisition/Radio.hpp"
+#include "../../Tools/Parameters.hpp"
+#include "../Emitter.hpp"
 
-class RadioFichierRAW : public Radio{
+class RadioFichierRAW : public Emitter{
 private :
     std::string filename;
     FILE* stream;
 
 public :
     RadioFichierRAW(std::string filen);
+    RadioFichierRAW(Parameters& param);
+
 	~RadioFichierRAW();
 
     void initialize();
