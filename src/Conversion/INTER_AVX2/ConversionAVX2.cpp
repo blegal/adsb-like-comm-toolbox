@@ -1,4 +1,5 @@
 #include "ConversionAVX2.hpp"
+#include <immintrin.h>
 
 
 ConversionAVX2::ConversionAVX2()
@@ -12,17 +13,83 @@ ConversionAVX2::~ConversionAVX2()
 }
 
 
+void computeAbsolute2 (const std::complex<float>* __restrict cplxIn, float* __restrict absOut, const int length)
+{
+    for (int i = 0; i < length; i += 8)
+    {
+        // load 8 complex values (--> 16 floats overall) into two SIMD registers
+        const __m256 inLo = _mm256_loadu_ps (reinterpret_cast<const float*> (cplxIn + i    ));
+        const __m256 inHi = _mm256_loadu_ps (reinterpret_cast<const float*> (cplxIn + i + 4));
+
+        // seperates the real and imaginary part, however values are in a wrong order
+        const __m256 re = _mm256_shuffle_ps (inLo, inHi, _MM_SHUFFLE (2, 0, 2, 0));
+        const __m256 im = _mm256_shuffle_ps (inLo, inHi, _MM_SHUFFLE (3, 1, 3, 1));
+
+        // do the heavy work on the unordered vectors
+        const __m256 abs = _mm256_sqrt_ps (_mm256_add_ps (_mm256_mul_ps (re, re), _mm256_mul_ps (im, im)));
+
+        // reorder values prior to storing
+        __m256d ordered = _mm256_permute4x64_pd (_mm256_castps_pd(abs), _MM_SHUFFLE(3,1,2,0));
+        _mm256_storeu_ps (absOut + i, _mm256_castpd_ps(ordered));
+    }
+}
+
+
+void MyAbsolute (const std::complex<float>* __restrict cplxIn,
+                       float* __restrict absOut, const int length)
+{
+    const float* pIn1 = reinterpret_cast<const float*> (cplxIn);
+    const float* pIn2 = reinterpret_cast<const float*> (cplxIn) + 4;
+          float* pOut = reinterpret_cast<      float*> (absOut);
+
+    //
+    //  On traite 1 * SIMD à la fois
+    //
+    for (int i = 0; i < length; i += 8)
+    {
+        // load 8 complex values (--> 16 floats overall) into two SIMD registers
+        const __m256 inLo = _mm256_loadu_ps ( pIn1 ); pIn1 += 8;
+        const __m256 inHi = _mm256_loadu_ps ( pIn2 ); pIn2 += 8;
+
+        // seperates the real and imaginary part, however values are in a wrong order
+        const __m256 re = _mm256_shuffle_ps (inLo, inHi, _MM_SHUFFLE (2, 0, 2, 0));
+        const __m256 im = _mm256_shuffle_ps (inLo, inHi, _MM_SHUFFLE (3, 1, 3, 1));
+        const __m256 abs = _mm256_sqrt_ps (_mm256_add_ps (_mm256_mul_ps (re, re), _mm256_mul_ps (im, im)));
+
+        // reorder values prior to storing
+        __m256d ordered = _mm256_permute4x64_pd (_mm256_castps_pd(abs), _MM_SHUFFLE(3,1,2,0));
+        _mm256_storeu_ps (pOut, _mm256_castpd_ps(ordered));
+        pOut += 8;
+    }
+
+    //
+    //
+    //
+    if( length & 0x07 )
+    {
+        printf("Oups il reste des données !\n");
+        exit( -1 );
+    }
+}
+
+
 void ConversionAVX2::execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out)
 {
-    for(int kk = 0; kk < buffer_in->size(); kk += 1)
+    if( buffer_in->size() != buffer_out->size() )
+        buffer_out->resize( buffer_in->size() );
+
+    MyAbsolute( buffer_in->data(), buffer_out->data(), buffer_in->size() );
+/*
+    const uint32_t ll = buffer_in->size();
+    for(int kk = 0; kk < ll; kk += 1)
     {
         std::complex<float> c = buffer_in->at(kk);
         const float breal = real( c );
         const float bimag = imag( c );
         const float resul = sqrt( breal * breal + bimag * bimag);
-        buffer_out->push_back(resul);
+        buffer_out->data()[ll] = resul;
     }
-
+*/
     /*
 			int kk = 0;
 			while (kk < (buffer->size() - 8)){

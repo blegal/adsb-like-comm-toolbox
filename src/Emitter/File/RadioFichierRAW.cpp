@@ -1,21 +1,21 @@
 #include "RadioFichierRAW.hpp"
 
 
-RadioFichierRAW::RadioFichierRAW(std::string filen) : Emitter(0, 0)
+EmitterFichierRAW::EmitterFichierRAW(std::string filen) : Emitter(0, 0)
 {
     filename = filen;
     stream   = nullptr;
 }
 
 
-RadioFichierRAW::RadioFichierRAW(Parameters& param) : Emitter(0, 0)
+EmitterFichierRAW::EmitterFichierRAW(Parameters& param) : Emitter(0, 0)
 {
     filename = param.toString("filename");
     stream   = nullptr;
 }
 
 
-RadioFichierRAW::~RadioFichierRAW()
+EmitterFichierRAW::~EmitterFichierRAW()
 {
     if (stream != NULL){
         fclose( stream );
@@ -23,7 +23,7 @@ RadioFichierRAW::~RadioFichierRAW()
 }
 
 
-void RadioFichierRAW::initialize()
+void EmitterFichierRAW::initialize()
 {
     stream = fopen(filename.c_str(), "w");
 
@@ -34,7 +34,19 @@ void RadioFichierRAW::initialize()
 }
 
 
-void RadioFichierRAW::close()
+void EmitterFichierRAW::start_engine()
+{
+
+}
+
+
+void EmitterFichierRAW::stop_engine ()
+{
+
+}
+
+
+void EmitterFichierRAW::close()
 {
     if (stream == nullptr){
         fprintf(stderr, "RadioFichierRAW::close() error during file close operation (%s) !\n", filename.c_str());
@@ -48,49 +60,39 @@ void RadioFichierRAW::close()
 
 #define _STORE_ZERO_
 
-void RadioFichierRAW::emission( std::vector<int8_t>& cbuffer )
+void EmitterFichierRAW::emission( std::vector<int8_t>& cbuffer )
 {
-
-
-    const uint32_t length = 262144;
-
     // On genere "length" données aléatoires
 #ifdef _STORE_ZERO_
+    const uint32_t length = cbuffer.size() / 2;
     int8_t* buff = new int8_t[length];
     for(int i = 0; i < length; i += 1)
-        buff[i] = 0;//(rand()%33) - 16;
-
-    // On copie ces données dans le flux
+        buff[i] = (rand()%3) - 1;
     fwrite(buff, length, sizeof(int8_t), stream);
-    std::cout << "Writing " << length << " data in file\n";
 #endif
 
     // On genere copie les N données "length" dans le fichier
     fwrite(cbuffer.data(), cbuffer.size(), sizeof(int8_t), stream);
-    std::cout << "Writing " << cbuffer.size() << " data in file\n";
+//    std::cout << "Writing " << cbuffer.size() << " data in file\n";
 
 #ifdef _STORE_ZERO_
     // On genere "length" données aléatoires
     for(int i = 0; i < length; i += 1)
-        buff[i] = 0;//(rand()%33) - 16;
-
+        buff[i] = (rand()%3) - 1;
     // On copie ces données dans le flux
     fwrite(buff, length, sizeof(int8_t), stream);
-    std::cout << "Writing " << length << " data in file\n";
-
     // On nettoye le contexte
     delete[] buff;
 #endif
 }
 
-
-void RadioFichierRAW::reception( std::vector< std::complex<float> >& cbuffer )
+void EmitterFichierRAW::set_txvga_gain(uint32_t value)
 {
 
 }
 
 
-void RadioFichierRAW::reset()
+void EmitterFichierRAW::reset()
 {
     fprintf(stderr, "RadioFichierRAW::reset() not implemented yet !\n");
     exit( -1 );

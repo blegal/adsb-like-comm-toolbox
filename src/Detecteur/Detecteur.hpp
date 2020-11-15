@@ -19,6 +19,7 @@ public :
 	virtual ~Detecteur();
 
     virtual void execute(float* buffer) = 0;
+    virtual void execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer) = 0;
 
     virtual uint32_t nElements();
 

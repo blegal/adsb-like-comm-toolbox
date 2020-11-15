@@ -24,6 +24,7 @@
 #include "./Acquisition/Radio/RadioHackRF.hpp"
 #include "./Acquisition/Radio/ReceiverHackRF.hpp"
 
+//#define _TIME_PROFILE_
 
 //
 //  Conversion des nombres complexes => module flottant
@@ -42,6 +43,7 @@
 #include "./Detecteur/INTER_x86/DetecteurScalar.hpp"
 #include "./Detecteur/INTRA_NEON/Detecteur_NEON.hpp"
 #include "./Detecteur/INTRA_AVX2/Detecteur_AVX2.hpp"
+#include "./Detecteur/INTER_AVX2/DetecteurINTER_AVX2.hpp"
 //#include "Detecteur/INTER_AVX2/Detecteur_NEON.hpp"
 
 
@@ -50,8 +52,6 @@
 #include "./Sampling/Down/DownSampling.hpp"
 #include "./PPM/Demodulator/PPM_Demodulator.hpp"
 
-#include "abs.h"
-
 #include "couleur.h"
 
 using namespace std;
@@ -59,8 +59,23 @@ using namespace std;
 bool isFinished = false;
 
 void my_ctrl_c_handler(int s){
-    printf("Caught signal %d\n",s);
+    if( isFinished == true )
+    {
+        exit( -1 );
+    }
     isFinished = true;
+}
+
+void show(std::vector<float>& v)
+{
+    const uint32_t ll = v.size();
+    for(uint32_t i = 0; i < ll; i += 1)
+    {
+        if( i%16 == 0 )
+            printf("\n");
+        printf("%1.3f ", v[i]);
+    }
+    printf("\n");
 }
 
 /*   ============================== MAIN =========================== */
@@ -92,6 +107,7 @@ int main(int argc, char* argv[])
 	bool verbose = 0;
 	float ps_min = 0.75;
 	int Np = 10000;
+    bool mode_inter = false;
 
 	static struct option long_options[] =
 	{
@@ -109,6 +125,9 @@ int main(int argc, char* argv[])
         {"fe",      required_argument,   NULL, 'e'}, // changer la frequence echantillonnage
 
         {"payload", required_argument,   NULL, 'p'}, // changer la frequence echantillonnage
+
+        {"inter",   no_argument,         NULL, 'I'}, // changer la frequence echantillonnage
+        {"intra",   no_argument,         NULL, 'i'}, // changer la frequence echantillonnage
 
 		{NULL,      0,                  NULL, 0}
 	};
@@ -194,15 +213,24 @@ int main(int argc, char* argv[])
                 filename   = optarg;
                 break;
 
+            case 'I':
+                mode_inter = true;
+                break;
+
+            case 'i':
+                mode_inter = false;
+                break;
+
 		    default:
 			    printf ("?? getopt returned character code 0%o ??\n", c);
 		}
 	}
 	if (optind < argc) {
 		printf ("non-option ARGV-elements: ");
-	while (optind < argc)
-	    printf ("%s ", argv[optind++]);
-	printf ("\n");
+        while (optind < argc)
+            printf ("%s ", argv[optind++]);
+            printf ("\n");
+            exit( -1 );
 	}
 	printf("%s",KNRM);
 	cout << endl;
@@ -269,18 +297,20 @@ int main(int argc, char* argv[])
     //
 
     Conversion* conv;
-    if( mode_conv == "scalar" )
+    if( mode_conv == "scalar" ){
         conv = new ConversionScalar();
-    else if( mode_conv == "AVX2" )
+    } else if( mode_conv == "AVX2" ) {
         conv = new ConversionAVX2();
-    else if( mode_conv == "NEON" )
+    } else if( mode_conv == "NEON" ) {
         conv = new ConversionNEON();
+    }
     else
     {
         std::cout << "(EE) Le type de module de Conversion demandé n'est actuellement pas dispnible :" << std::endl;
         std::cout << "(EE) type = " << mode_corr                                                        << std::endl;
         exit( -1 );
     }
+
 
     //
     // Selection du module de conversion employé dans le programme
@@ -301,6 +331,7 @@ int main(int argc, char* argv[])
     // Selection du module de conversion employé dans le programme
     //
 
+#ifdef _TIME_PROFILE_
     double timer_reception     = 0.0;
     double timer_conv_cplx     = 0.0;
     double timer_detecteur     = 0.0;
@@ -308,6 +339,7 @@ int main(int argc, char* argv[])
     double timer_down_sampling = 0.0;
     double timer_demodulator   = 0.0;
     double timer_parsing       = 0.0;
+#endif
 
     //
     // Selection du module de conversion employé dans le programme
@@ -315,39 +347,64 @@ int main(int argc, char* argv[])
 
 	while( radio->alive() && (isFinished == false) )
 	{
+#ifdef _TIME_PROFILE_
         auto depart    = chrono::high_resolution_clock::now();
+#endif
 
         radio->reception(buffer);
 
-        auto reception = chrono::high_resolution_clock::now();
+#ifdef _TIME_PROFILE_
+        auto reception   = chrono::high_resolution_clock::now();
         timer_reception += chrono::duration_cast<chrono::nanoseconds>(reception - depart).count();
+#endif
 
 		vector<float> buffer_abs;
-		cplx2abs(verbose, &buffer, &buffer_abs);
+        conv->execute( &buffer, &buffer_abs );
 
-        auto conv_cplx = chrono::high_resolution_clock::now();
+#ifdef _TIME_PROFILE_
+        auto conv_cplx   = chrono::high_resolution_clock::now();
         timer_conv_cplx += chrono::duration_cast<chrono::nanoseconds>(conv_cplx - reception).count();
+#endif
+
 
 		// ============== detection & decodage ================
+
+
+        vector<float> buffer_detect;
+        if( mode_inter == true )
+        {
+            detect->execute(&buffer_abs, &buffer_detect);
+#ifdef _TIME_PROFILE_
+            auto detecteur   = chrono::high_resolution_clock::now();
+            timer_detecteur += chrono::duration_cast<chrono::nanoseconds>(detecteur - conv_cplx).count();
+#endif
+        }
+
 
 		int k=0;
 		while ( k <= (buffer_abs.size() - f.frame_bits())){
 
+#ifdef _TIME_PROFILE_
             auto start_loop = chrono::high_resolution_clock::now();
-
-			float* addr = buffer_abs.data() + k;
-
-			detect->execute(addr);
-			const float s = detect->getValue( 0 );
-
-                auto detecteur = chrono::high_resolution_clock::now();
+            auto detecteur  = chrono::high_resolution_clock::now();
+#endif
+		    float s;
+            if( mode_inter == false ) {
+                float *addr = buffer_abs.data() + k;
+                detect->execute(addr);
+                 s = detect->getValue(0);
+#ifdef _TIME_PROFILE_
+                detecteur        = chrono::high_resolution_clock::now();
                 timer_detecteur += chrono::duration_cast<chrono::nanoseconds>(detecteur - start_loop).count();
+#endif
+            }else{
+                s = buffer_detect[k];
+            }
 
-				if (s > ps_min)
-				{
-                    nbTramesDetectees +=1;    // On vient de detecter qqchose
+            if (s > ps_min)
+            {
+                nbTramesDetectees +=1;    // On vient de detecter qqchose
 
-					// -------- on a une trame : ech
 					std::vector<int8_t> buff_5( 4 * f.frame_bits() );
                     for (int j=0; j < buff_5.size(); j += 1){
                         int32_t v = buffer_abs[k+j];
@@ -356,22 +413,28 @@ int main(int argc, char* argv[])
                         buff_5[j]   = v;
                     }
 
+#ifdef _TIME_PROFILE_
                     auto extraction   = chrono::high_resolution_clock::now();
                     timer_extraction += chrono::duration_cast<chrono::nanoseconds>(extraction - detecteur).count();
+#endif
 
                     DownSampling down(2);
                     std::vector<int8_t> buff_6;
                     down.execute( buff_5, buff_6 );
 
+#ifdef _TIME_PROFILE_
                     auto down_sampling   = chrono::high_resolution_clock::now();
                     timer_down_sampling += chrono::duration_cast<chrono::nanoseconds>(down_sampling - extraction).count();
+#endif
 
                     PPM_Demodulator ppd;
                     std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));
                     ppd.execute(buff_6, buff_7);
 
+#ifdef _TIME_PROFILE_
                     auto demodulator   = chrono::high_resolution_clock::now();
                     timer_demodulator += chrono::duration_cast<chrono::nanoseconds>(demodulator - down_sampling).count();
+#endif
 
                     bool isOK = f.fill_frame_bits( buff_7 );
 
@@ -389,12 +452,13 @@ int main(int argc, char* argv[])
                         k += f.frame_bits() - 1; // On saute tous les bits qui composaient notre trame...
                     }
 
+#ifdef _TIME_PROFILE_
                     auto parsing   = chrono::high_resolution_clock::now();
                     timer_parsing += chrono::duration_cast<chrono::nanoseconds>(parsing - demodulator).count();
+#endif
 				}
 			k++;
 		}
-
 	}
 
 
@@ -410,13 +474,18 @@ int main(int argc, char* argv[])
     std::cout << "nombre de trames bon crc   : " << nbBonsCRCs        << std::endl;
     printf("\n");
     std::cout << "Nombre de trames emises  (frames)  = " << nbBonsCRCs                                  << std::endl;
+
+printf("%s", KGRN);
     std::cout << "Temps total d'émission   (seconds) = " << elapsed.count()                             << std::endl;
+printf("%s", KNRM);
+
     std::cout << "Trames par seconde       (frames)  = " << (nbBonsCRCs/elapsed.count())                << std::endl;
     std::cout << "Débit emis par seconde   (bits)    = " << (nbBonsCRCs/elapsed.count()*f.frame_bits()) << std::endl;
     std::cout << "Débit utile par seconde  (bytes)   = " << (nbBonsCRCs/elapsed.count()*payload)        << std::endl;
     std::cout << "Débit utile par seconde  (bits)    = " << (nbBonsCRCs/elapsed.count()*payload*8)      << std::endl;
     printf("\n");
     std::cout << "Temps total : " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms" << std::endl;
+#ifdef _TIME_PROFILE_
     std::cout << " -  timer_reception     = " << (timer_reception/1000/1000)     << " ms" << std::endl;
     std::cout << " -  timer_conv_cplx     = " << (timer_conv_cplx/1000/1000)     << " ms" << std::endl;
     std::cout << " -  timer_detecteur     = " << (timer_detecteur/1000/1000)     << " ms" << std::endl;
@@ -424,7 +493,7 @@ int main(int argc, char* argv[])
     std::cout << " -  timer_down_sampling = " << (timer_down_sampling/1000/1000) << " ms" << std::endl;
     std::cout << " -  timer_demodulator   = " << (timer_demodulator/1000/1000)   << " ms" << std::endl;
     std::cout << " -  timer_parsing       = " << (timer_parsing/1000/1000)       << " ms" << std::endl;
-
+#endif
     printf("\n");
 
     delete radio;

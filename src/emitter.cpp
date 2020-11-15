@@ -38,7 +38,10 @@
 bool isFinished = false;
 
 void my_ctrl_c_handler(int s){
-    //printf("Caught signal %d\n",s);
+    if( isFinished == true )
+    {
+        exit( -1 );
+    }
     isFinished = true;
 }
 
@@ -77,9 +80,9 @@ int main(int argc, char* argv[])
     param.set("antenna",    1);
     param.set("amplifier",  0);
 
-    param.set("payload", 433000000.0f);
+    param.set("payload", 16);
 
-    param.set("sleep_time",   1000000.0f);
+    param.set("sleep_time",   100000);
 
     param.set("verbose",   false);
 
@@ -251,22 +254,16 @@ int main(int argc, char* argv[])
         g.dump_frame();
     }
 
-    const uint32_t sleep_time = param.toInt("sleep_time");
-    const uint32_t payload    = param.toInt("payload");
-    const uint32_t verbose    = param.toInt("verbose");
 
-    EmitterHackRF*   radio = nullptr;
-//    RadioFichierRAW* radio = nullptr;
-//    Emitter* e;
+    Emitter*   radio = nullptr;
     if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" )
     {
         radio = new EmitterHackRF(param.toFloat("fc"), param.toFloat("fe"));
     }
-
-//    if( mode_radio == "file" )
-//    {
-//        radio = new RadioFichierRAW( filename );
-//    }
+    else if( param.toString("mode_radio") == "file" )
+    {
+        radio = new EmitterFichierRAW( param.toString("filename") );
+    }
     else
     {
         cout << "oups !" << endl;
@@ -325,6 +322,12 @@ int main(int argc, char* argv[])
         radio->emission(buff_4);
 
         nFrames += 1;
+
+        //
+        // On gere le critere d'arret associé aux nombre MAXIMUM de trames à emettre
+        //
+        if( nFrames == param.toInt("max_frames") )
+            isFinished = true;
     }
 
     auto end = std::chrono::system_clock::now();

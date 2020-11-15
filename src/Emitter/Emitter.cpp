@@ -1,7 +1,7 @@
 #include "Emitter.hpp"
 
 
-Emitter::Emitter(float s_fc, float s_fe)
+Emitter::Emitter(const float s_fc, const float s_fe)
 {
     freq_hz    =  s_fc;
     fech_hz    =  s_fe;

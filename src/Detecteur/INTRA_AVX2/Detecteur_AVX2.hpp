@@ -11,6 +11,8 @@ public :
 	Detecteur_AVX2();
 
     virtual void execute(float* buffer);
+
+    virtual void execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer);
 };
 
 #endif

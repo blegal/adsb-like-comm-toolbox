@@ -26,7 +26,7 @@ protected:
 
 public :
 
-    Emitter(float s_fc, float s_fe );
+    Emitter(const float s_fc, const float s_fe );
 
     Emitter(Parameters& param);
 
@@ -37,6 +37,8 @@ public :
     virtual void start_engine() = 0;
     virtual void stop_engine () = 0;
     virtual void reset()        = 0;
+
+    virtual void set_txvga_gain(uint32_t value) = 0;
 
     virtual void emission(vector<int8_t>& cbuffer) = 0;
 
