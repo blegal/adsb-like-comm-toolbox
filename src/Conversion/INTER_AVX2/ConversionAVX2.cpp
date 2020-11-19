@@ -17,19 +17,15 @@ void computeAbsolute2 (const std::complex<float>* __restrict cplxIn, float* __re
 {
     for (int i = 0; i < length; i += 8)
     {
-        // load 8 complex values (--> 16 floats overall) into two SIMD registers
         const __m256 inLo = _mm256_loadu_ps (reinterpret_cast<const float*> (cplxIn + i    ));
         const __m256 inHi = _mm256_loadu_ps (reinterpret_cast<const float*> (cplxIn + i + 4));
 
-        // seperates the real and imaginary part, however values are in a wrong order
         const __m256 re = _mm256_shuffle_ps (inLo, inHi, _MM_SHUFFLE (2, 0, 2, 0));
         const __m256 im = _mm256_shuffle_ps (inLo, inHi, _MM_SHUFFLE (3, 1, 3, 1));
 
-        // do the heavy work on the unordered vectors
         const __m256 abs = _mm256_sqrt_ps (_mm256_add_ps (_mm256_mul_ps (re, re), _mm256_mul_ps (im, im)));
 
-        // reorder values prior to storing
-        __m256d ordered = _mm256_permute4x64_pd (_mm256_castps_pd(abs), _MM_SHUFFLE(3,1,2,0));
+        const __m256d ordered = _mm256_permute4x64_pd (_mm256_castps_pd(abs), _MM_SHUFFLE(3,1,2,0));
         _mm256_storeu_ps (absOut + i, _mm256_castpd_ps(ordered));
     }
 }
@@ -38,26 +34,20 @@ void computeAbsolute2 (const std::complex<float>* __restrict cplxIn, float* __re
 void MyAbsolute (const std::complex<float>* __restrict cplxIn,
                        float* __restrict absOut, const int length)
 {
-    const float* pIn1 = reinterpret_cast<const float*> (cplxIn);
-    const float* pIn2 = reinterpret_cast<const float*> (cplxIn) + 4;
-          float* pOut = reinterpret_cast<      float*> (absOut);
+    const float* pIn1 = reinterpret_cast<const float*> (cplxIn + 0);
+    const float* pIn2 = reinterpret_cast<const float*> (cplxIn + 4);
+          float* pOut = absOut;
 
-    //
-    //  On traite 1 * SIMD à la fois
-    //
     for (int i = 0; i < length; i += 8)
     {
-        // load 8 complex values (--> 16 floats overall) into two SIMD registers
-        const __m256 inLo = _mm256_loadu_ps ( pIn1 ); pIn1 += 8;
-        const __m256 inHi = _mm256_loadu_ps ( pIn2 ); pIn2 += 8;
+        const __m256 inLo = _mm256_loadu_ps ( pIn1 ); pIn1 += 16;
+        const __m256 inHi = _mm256_loadu_ps ( pIn2 ); pIn2 += 16;
 
-        // seperates the real and imaginary part, however values are in a wrong order
-        const __m256 re = _mm256_shuffle_ps (inLo, inHi, _MM_SHUFFLE (2, 0, 2, 0));
-        const __m256 im = _mm256_shuffle_ps (inLo, inHi, _MM_SHUFFLE (3, 1, 3, 1));
+        const __m256 re  = _mm256_shuffle_ps (inLo, inHi, _MM_SHUFFLE (2, 0, 2, 0));
+        const __m256 im  = _mm256_shuffle_ps (inLo, inHi, _MM_SHUFFLE (3, 1, 3, 1));
         const __m256 abs = _mm256_sqrt_ps (_mm256_add_ps (_mm256_mul_ps (re, re), _mm256_mul_ps (im, im)));
 
-        // reorder values prior to storing
-        __m256d ordered = _mm256_permute4x64_pd (_mm256_castps_pd(abs), _MM_SHUFFLE(3,1,2,0));
+        const __m256d ordered = _mm256_permute4x64_pd (_mm256_castps_pd(abs), _MM_SHUFFLE(3,1,2,0));
         _mm256_storeu_ps (pOut, _mm256_castpd_ps(ordered));
         pOut += 8;
     }
