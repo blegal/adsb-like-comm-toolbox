@@ -74,8 +74,11 @@ int main(int argc, char* argv[])
     param.set("mode_radio",   "radio");
     param.set("filename",   "hackrf");
 
-    param.set("fc", 433000000.0f);
-    param.set("fe",   1000000.0f);
+    param.set("fc",      433000000.0);
+    param.set("fe",        1000000.0);
+    param.set("fe_real",   1000000.0);
+
+    param.set("surEch",     1);
     param.set("tx_gain",   40);
     param.set("antenna",    1);
     param.set("amplifier",  0);
@@ -97,16 +100,17 @@ int main(int argc, char* argv[])
                     {"fc",       required_argument, NULL, 'c'}, // changer la frequence de la porteuse
                     {"fe",       required_argument, NULL, 'e'}, // changer la frequence echantillonnage
 
-                    {"verbose",  no_argument, NULL, 'v'}, // changer la frequence de la porteuse
-                    {"sleep",    required_argument, NULL, 's'}, // changer la frequence echantillonnage
-                    {"payload",  required_argument, NULL, 'p'}, // changer la frequence de la porteuse
-                    {"tx_gain",  required_argument, NULL, 'g'}, // changer la frequence echantillonnage
+                    {"verbose",           no_argument, NULL, 'v'}, // changer la frequence de la porteuse
+                    {"sleep",       required_argument, NULL, 's'}, // changer la frequence echantillonnage
+                    {"payload",     required_argument, NULL, 'p'}, // changer la frequence de la porteuse
+                    {"tx_gain",     required_argument, NULL, 'g'}, // changer la frequence echantillonnage
+                    {"up_sampling", required_argument, NULL, 'U'}, // changer la frequence echantillonnage
 
                     {"max_frames",  required_argument, NULL, 'm'}, // changer la frequence echantillonnage
+                    {"ppm",  required_argument, NULL, 'P'}, // changer la frequence echantillonnage
 
                     {NULL, 0,                    NULL, 0}
             };
-
 
     int option_index = 0;
 
@@ -128,13 +132,19 @@ int main(int argc, char* argv[])
                 break;
 
             case 'c':
-                param.set("fc",   atof(optarg));
+                param.set("fc",   std::stod(optarg));
                 printf("%soption fc = %f Hz%s\n", KNRM, param.toFloat("fc"), KRED);
                 break;
 
             case 'e' :
-                param.set("fe",   atof(optarg));
-                printf("%soption fe = %f Hz%s\n", KNRM, param.toFloat("fe"), KRED);
+                param.set("fe",   std::stod(optarg));
+                param.set("fe_real",  param.toDouble("surEch") * param.toDouble("fe"));
+//                printf("%soption fe = %f Hz%s\n", KNRM, param.toFloat("fe"), KRED);
+                break;
+
+            case 'U' :
+                param.set("surEch",   std::atoi(optarg));
+                param.set("fe_real",  param.toDouble("surEch") * param.toDouble("fe"));
                 break;
 
             case '?':
@@ -156,23 +166,28 @@ int main(int argc, char* argv[])
                 break;
 
             case 'p' :
-                param.set("payload",   atoi(optarg));
+                param.set("payload",   std::atoi(optarg));
                 printf("%soption payload = %d%s\n", KNRM, param.toInt("payload"), KRED);
                 break;
 
             case 'm' :
-                param.set("max_frames",   atoi(optarg));
+                param.set("max_frames",   std::atoi(optarg));
                 printf("%soption max_frames = %d%s\n", KNRM, param.toInt("max_frames"), KRED);
                 break;
 
             case 's' :
-                param.set("sleep_time",   atoi(optarg));
+                param.set("sleep_time",   std::atoi(optarg));
                 printf("%soption sleep = %d us%s\n", KNRM, param.toInt("sleep_time"), KRED);
                 break;
 
             case 'g' :
-                param.set("tx_gain",   atoi(optarg));
+                param.set("tx_gain",   std::atoi(optarg));
                 printf("%soption tx_gain = %d dB%s\n", KNRM, param.toInt("tx_gain"), KRED);
+                break;
+
+            case 'P' :
+                param.set("crystal_correct",   std::atoi(optarg));
+                printf("%soption crystal_correct = %d dB%s\n", KNRM, param.toInt("crystal_correct"), KRED);
                 break;
 
             default:
@@ -186,6 +201,7 @@ int main(int argc, char* argv[])
     }
     printf("%s", KNRM);
     cout << endl;
+
 
     //
     // We create the frame
@@ -254,11 +270,10 @@ int main(int argc, char* argv[])
         g.dump_frame();
     }
 
-
     Emitter*   radio = nullptr;
     if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" )
     {
-        radio = new EmitterHackRF(param.toFloat("fc"), param.toFloat("fe"));
+        radio = new EmitterHackRF(param.toDouble("fc"), param.toDouble("fe_real"));
     }
     else if( param.toString("mode_radio") == "file" )
     {
@@ -275,13 +290,14 @@ int main(int argc, char* argv[])
     radio->initialize();
     radio->start_engine();
     radio->set_txvga_gain( param.toInt("tx_gain") );
-
     usleep( param.toInt("sleep_time") );
 
-
     Frame f( param.toInt("payload") );
+
     PPM_Modulator ppm( 120 );
-    UpSampling up(2);
+
+    UpSampling up( 2 * param.toInt("surEch") ); // 2 necessaire pour le recepteur x fois pour le DAC
+
     IQ_Insertion iqi;
 
     std::vector<uint8_t> buff_1(8 + 8 * (2 + 16 + 4));
@@ -289,14 +305,56 @@ int main(int argc, char* argv[])
     std::vector<int8_t>  buff_3;
     std::vector<int8_t>  buff_4;
 
-    uint32_t nFrames = 0;
-
-    auto start = std::chrono::system_clock::now(); // This and "end"'s type is std::chrono::time_point
-
     const uint32_t sleep_time = param.toInt("sleep_time");
     const uint32_t payload    = param.toInt("payload");
     const uint32_t verbose    = param.toInt("verbose");
 
+    const uint32_t fc_v      = param.toFloat("fc"     ) / 1000000;
+    const uint32_t fe_v      = param.toFloat("fe"     ) / 1000000;
+    const uint32_t fe_real_v = param.toFloat("fe_real") / 1000000;
+
+    printf("(II) Launching the receiver application :\n");
+    printf("(II) -> Modulation frequency    : %4d MHz\n",    fc_v);
+    printf("(II) -> Symbol sampling freq.   : %4d MHz\n",    fe_v);
+    printf("(II) -> Real sampling frequency : %4d MHz\n",    fe_real_v);
+    printf("(II) -> Sampling factor for DAC : %2dx\n",       param.toInt("surEch"));
+    printf("(II)\n");
+
+    const int32_t crystal_correct_ppm = param.toInt("crystal_correct");
+    if( crystal_correct_ppm != 0 )
+    {
+        double freq_hz        = param.toDouble("fc");
+        double sample_rate_hz = param.toDouble("fe");
+
+        sample_rate_hz = (uint32_t)((double)sample_rate_hz * (1000000.0 - crystal_correct_ppm)/1000000.0+0.5);
+        freq_hz        = freq_hz * (1000000.0 - crystal_correct_ppm)/1000000.0;
+
+        double real_rate_hz = param.toDouble("surEch") * sample_rate_hz;
+
+        param.set("fc",           freq_hz);
+        param.set("fe",    sample_rate_hz);
+        param.set("fe_real", real_rate_hz);
+
+        printf("(II) -> Corrected modulation frequency    : %4d MHz\n",    fc_v);
+        printf("(II) -> Corrected symbol sampling freq.   : %4d MHz\n",    fe_v);
+        printf("(II) -> Corrected real sampling frequency : %4d MHz\n",    fe_real_v);
+        printf("(II)\n");
+    }
+
+    printf("(II) ADSB-like configuration parameters :\n");
+    printf("(II) -> ADSB-like payload length  : %d bytes\n", f.payload_size());
+    printf("(II) -> ADSB-like frame length    : %d bits\n",  f.frame_bits());
+    printf("(II) -> Time delay between frames : %d us\n",    param.toInt("sleep_time"));
+    printf("(II)\n");
+    printf("(II) HackRF module configuration :\n");
+    printf("(II) -> VGA transmitter gain value : %d\n",      param.toInt("tx_gain"));
+    printf("(II) -> HackRF antenna parameter   : enable\n" );
+    printf("(II) -> HackRF amplifier parameter : disable\n");
+
+
+    auto start = std::chrono::system_clock::now(); // This and "end"'s type is std::chrono::time_point
+
+    uint32_t nFrames = 0;
     while( isFinished == false )
     {
         usleep( sleep_time );
@@ -313,13 +371,13 @@ int main(int argc, char* argv[])
 
         f.get_frame_bits( buff_1 );
 
-        ppm.execute(buff_1, buff_2);
+        ppm.execute( buff_1, buff_2 );
 
         up.execute( buff_2, buff_3 );
 
         iqi.execute( buff_3, buff_4 );
 
-        radio->emission(buff_4);
+        radio->emission( buff_4 );
 
         nFrames += 1;
 
