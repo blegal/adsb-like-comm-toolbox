@@ -23,7 +23,7 @@ inline int getnum(char* line, char** real, char** img)
 
 void RadioFichierUHD::initialize()
 {
-    FILE* stream = fopen(filename.c_str(), "r");
+    FILE* stream = fopen(filename.c_str(), "rb");
     float vmin = +10000000;
     float vmax = -10000000;
     if (stream == NULL){
@@ -52,7 +52,7 @@ void RadioFichierUHD::initialize()
     float scale = 120.0f / fmax( fabs(vmin), fabs(vmax) );
     for(int i=0; i< (2*data.size()); i+=1)
         rtp[i] = ptr[i] * scale;
-    FILE* f = fopen("data.raw", "w");
+    FILE* f = fopen("data.raw", "wb");
     fwrite(rtp, 1, 2 * data.size(), f);
     fclose(f);
 #endif

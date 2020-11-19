@@ -23,7 +23,7 @@ void RadioFichierRAW::initialize()
 {
     auto start   = chrono::high_resolution_clock::now();
 
-    FILE* stream = fopen(filename.c_str(), "r");
+    FILE* stream = fopen(filename.c_str(), "rb");
 
     if (stream == NULL){
         fprintf(stderr, "RadioFichier::initialize() error during file openning (%s) !\n", filename.c_str());
