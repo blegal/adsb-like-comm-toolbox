@@ -25,7 +25,7 @@ EmitterFichierRAW::~EmitterFichierRAW()
 
 void EmitterFichierRAW::initialize()
 {
-    stream = fopen(filename.c_str(), "w");
+    stream = fopen(filename.c_str(), "wb");
 
     if (stream == nullptr){
         fprintf(stderr, "RadioFichierRAW::initialize() error during file openning (%s) !\n", filename.c_str());
