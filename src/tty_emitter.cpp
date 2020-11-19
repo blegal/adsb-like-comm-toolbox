@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     uint32_t antenna          =         1;
 
     std::string filename = "frame_set.txt";
-    FILE* stream = fopen( filename.c_str(), "w" );
+    FILE* stream = fopen( filename.c_str(), "wb" );
     if( stream == NULL )
     {
         printf("Erreur lors de l'ouverture du fichier (%s)\n", filename.c_str());
