@@ -5,12 +5,12 @@ Frame::Frame(const uint32_t n, const uint8_t type)    // payload size in bytes
     //
     // On code le preambule ADSB
     //
-    header.push_back( 1 );
-    header.push_back( 1 );
+    header.push_back( 1 );  //
+    header.push_back( 1 );  //
     header.push_back( 2 );
     header.push_back( 0 );
-    header.push_back( 0 );
-    header.push_back( 2 );
+    header.push_back( 0 );  //
+    header.push_back( 2 );  // 0 0
     header.push_back( 2 );
     header.push_back( 2 );
 
@@ -82,7 +82,9 @@ void Frame::set_payload(const std::vector<uint8_t>& v)
         std::cout << "Error in Frame::set_payload(v.size() = " << v.size() << ")" << std::endl;
         exit( -1 );
     }
-    for(uint32_t i = 0; i < v.size(); i += 1)
+
+    const uint32_t ll = v.size();
+    for(uint32_t i = 0; i < ll; i += 1)
     {
         payload[i] = v[i];
     }
@@ -97,7 +99,9 @@ void Frame::get_payload(std::vector<uint8_t>& v)
         std::cout << "Error in Frame::get_payload(v.size() = " << v.size() << ")" << std::endl;
         exit( -1 );
     }
-    for(uint32_t i = 0; i < payload.size(); i += 1)
+
+    const uint32_t ll = payload.size();
+    for(uint32_t i = 0; i < ll; i += 1)
     {
         v[i] = payload[i];
     }
@@ -117,15 +121,18 @@ void Frame::get_frame_bits(std::vector<uint8_t>& buff)
     uint8_t* ptr = buff.data();
 
     const uint8_t* h = header_to_emit();
-    for(uint32_t i = 0; i < header_size(); i += 1)
+    const uint32_t hh = header_size();
+    for(uint32_t i = 0; i < hh; i += 1)
     {
         (*ptr++) = h[i];
     }
 
-    const uint8_t* c = conf_to_emit();
-    for(uint32_t i = 0; i < conf_size(); i += 1)
+    const uint8_t* c  = conf_to_emit();
+    const uint32_t qq = conf_size();
+    for(uint32_t i = 0; i < qq; i += 1)
     {
         const uint8_t v = c[i];
+#pragma clang loop unroll(full)
         for( uint32_t q = 0; q < 8 ; q += 1 )
         {
             (*ptr++) = (v >> (7-q)) & 0x01;
@@ -134,9 +141,11 @@ void Frame::get_frame_bits(std::vector<uint8_t>& buff)
     }
 
     const uint8_t* p = payload_to_emit();
-    for(uint32_t i = 0; i < payload_size(); i += 1)
+    const uint32_t pp = payload_size();
+    for(uint32_t i = 0; i < pp; i += 1)
     {
         const uint8_t v = p[i];
+#pragma clang loop unroll(full)
         for( uint32_t q = 0; q < 8 ; q += 1 )
         {
             (*ptr++) = (v >> (7-q)) & 0x01;
@@ -144,9 +153,11 @@ void Frame::get_frame_bits(std::vector<uint8_t>& buff)
     }
 
     const uint8_t* r = crc_to_emit();         //
-    for(uint32_t i = 0; i < crc_size(); i += 1)
+    const uint32_t tt = crc_size();
+    for(uint32_t i = 0; i < tt; i += 1)
     {
         const uint8_t v = r[i];
+#pragma clang loop unroll(full)
         for( uint32_t q = 0; q < 8 ; q += 1 )
         {
             (*ptr++) = (v >> (7-q)) & 0x01;
@@ -179,7 +190,8 @@ bool Frame::fill_frame_bits(const std::vector<uint8_t>& in_buff)
     //  We fill the preambule field with the right amount of bits
     //
     uint8_t* h = header_to_emit();
-    for(uint32_t i = 0; i < header_size(); i += 1)
+    const uint32_t hh = header_size();
+    for(uint32_t i = 0; i < hh; i += 1)
     {
         h[i] = (*ptr_in++);
     }
@@ -188,9 +200,11 @@ bool Frame::fill_frame_bits(const std::vector<uint8_t>& in_buff)
     //  We fill the configuration header field with the right amount of bits
     //
     uint8_t* c = conf_to_emit();
-    for(uint32_t i = 0; i < conf_size(); i += 1)
+    const uint32_t cc = conf_size();
+    for(uint32_t i = 0; i < cc; i += 1)
     {
         uint8_t v = 0;
+#pragma clang loop unroll(full)
         for( uint32_t q = 0; q < 8 ; q += 1 )
         {
             v = (v << 1) | (*ptr_in++);
@@ -218,6 +232,7 @@ bool Frame::fill_frame_bits(const std::vector<uint8_t>& in_buff)
     for(uint32_t i = 0; i < p_length; i += 1)
     {
         uint8_t v = 0;
+#pragma clang loop unroll(full)
         for( uint32_t q = 0; q < 8 ; q += 1 )
         {
             v = (v << 1) | (*ptr_in++);
@@ -226,9 +241,11 @@ bool Frame::fill_frame_bits(const std::vector<uint8_t>& in_buff)
     }
 
     uint8_t* r = crc_to_emit();         //
-    for(uint32_t i = 0; i < crc_size(); i += 1)
+    const uint32_t cr = crc_size();
+    for(uint32_t i = 0; i < cr; i += 1)
     {
         uint8_t v = 0;
+#pragma clang loop unroll(full)
         for( uint32_t q = 0; q < 8 ; q += 1 )
         {
             v = (v << 1) | (*ptr_in++);
@@ -339,34 +356,25 @@ std::string Frame::to_string()
     outp += " | " + std::to_string(((uint32_t)c[1])+1) + " bytes | ";
 
     uint8_t* p = payload_to_emit();     // the pointer to the payload field
-//    outp += "\033[1;33m";
     outp += "0x";
     for(uint32_t i = 0; i < payload_size(); i += 1)
         outp += int_to_hex<uint8_t>( p[i] );
-//    outp += "\033[0m";
     outp += " | ";
 
     uint32_t* r = (uint32_t*)crc_to_emit();
     outp += "CRC32b = ";
-//    outp += "\033[1;32m";
     outp += "0x";
     outp += int_to_hex<uint32_t>( r[0] );
-//    outp += "\033[0m";
     outp += " | ";
 
+    outp += "CRC is ";
     if( validate_crc() == true )
     {
-        outp += "CRC is ";
-//        outp += "\033[1;31m";
         outp += "OK ...";
-//        outp += "\033[0m";
     }
     else
     {
-        outp += "CRC is ";
-//        outp += "\033[1;31m";
         outp += "KO !!!";
-//        outp += "\033[0m";
     }
 
     return outp;
