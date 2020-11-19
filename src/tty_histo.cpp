@@ -186,7 +186,7 @@ int main(int argc, char *argv[]) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    FILE* stream = fopen( filename.c_str(), "r" );
+    FILE* stream = fopen( filename.c_str(), "rb" );
     if( stream == NULL )
     {
         printf("Erreur lors de l'ouverture du fichier (%s)\n", filename.c_str());
