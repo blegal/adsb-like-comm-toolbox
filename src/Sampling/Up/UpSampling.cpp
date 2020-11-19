@@ -20,11 +20,13 @@ void UpSampling::execute(std::vector<int8_t>& ibuffer, std::vector<int8_t>& obuf
         obuffer.resize(scale * ibuffer.size());
     }
 
-    uint32_t ll = ibuffer.size();
+    const uint32_t ll = ibuffer.size();
     for(uint32_t i = 0 ; i < ll; i += 1)
     {
-        int8_t value = ibuffer[i];
+        const int8_t value = ibuffer[i];
         for(uint32_t j = 0 ; j < scale; j += 1)
+        {
             obuffer[scale * i + j] = value;
+        }
     }
 }
