@@ -80,32 +80,22 @@ string Parameters::toString(const string p){
 }
 
 int Parameters::toInt(const string p){
-	string w = param(p);
-//	cout << "parameter toInt() = " << p << " = " << w << endl;
-	return stoi( w );
+    string w = param(p);
+    return std::stoi( w );
 }
 
 long Parameters::toLong(const string p){
-	return stol( param(p) );
+	return std::stol( param(p) );
 }
 
 float Parameters::toFloat(const string p){
-	return stof( param(p) );
+	return std::stof( param(p) );
 }
 
 double Parameters::toDouble(const string p){
-	return stod( param(p) );
+	return std::stod( param(p) );
 }
 
 bool Parameters::toBool(const string p){
 	return toInt( p );
-	/*
-	string v = param(p);
-	if( v ==  "true" ) return true;
-	if( v ==     "1" ) return true;
-	if( v == "false" ) return false;
-	if( v ==     "0" ) return false;
-	assert( false );
-	return false;
-*/
 }
