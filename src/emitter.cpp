@@ -91,6 +91,7 @@ int main(int argc, char* argv[])
 
     param.set("max_frames",   1000000);
 
+    param.set("crystal_correct",   0);
 
     static struct option long_options[] =
             {
@@ -271,7 +272,7 @@ int main(int argc, char* argv[])
     }
 
     Emitter*   radio = nullptr;
-    if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" )
+    if( (param.toString("mode_radio") == "radio") && (param.toString("filename") == "hackrf") )
     {
         radio = new EmitterHackRF(param.toDouble("fc"), param.toDouble("fe_real"));
     }
@@ -300,8 +301,8 @@ int main(int argc, char* argv[])
 
     IQ_Insertion iqi;
 
-    std::vector<uint8_t> buff_1(8 + 8 * (2 + 16 + 4));
-    std::vector<int8_t>  buff_2(8 + 8 * (2 + 16 + 4));
+    std::vector<uint8_t> buff_1( f.frame_bits() );
+    std::vector<int8_t>  buff_2( f.frame_bits() );
     std::vector<int8_t>  buff_3;
     std::vector<int8_t>  buff_4;
 

@@ -30,7 +30,8 @@ Parameters::~Parameters(){
 
 string Parameters::param(const string p){
 	string r = liste[p];
-//	cout << "GET Parameters[" << p << "] = " << r << endl;
+	if( r == "" )
+    	cout << "GET Parameters[" << p << "] = " << r << endl;
 	assert( r != "" );
 	return r;
 }

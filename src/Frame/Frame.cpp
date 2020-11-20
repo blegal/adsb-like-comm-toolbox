@@ -113,7 +113,7 @@ void Frame::get_frame_bits(std::vector<uint8_t>& buff)
     const uint32_t ll = header.size() + 8 * (config.size() + payload.size() + crc_field.size());
     if( buff.size() != ll )
     {
-        std::cout << "Error in Frame::fill_frame_bits, the number of received bits ( buff.size() = " << buff.size() << ")" << endl;
+        std::cout << "Error in Frame::get_frame_bits, the number of received bits ( buff.size() = " << buff.size() << ")" << endl;
         std::cout << "      is not adapted to the Frame object." << std::endl;
         exit( -1 );
     }

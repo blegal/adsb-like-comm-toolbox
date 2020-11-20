@@ -26,7 +26,7 @@ void RadioFichierRAW::initialize()
     FILE* stream = fopen(filename.c_str(), "rb");
 
     if (stream == NULL){
-        fprintf(stderr, "RadioFichier::initialize() error during file openning (%s) !\n", filename.c_str());
+        fprintf(stderr, "RadioFichierRAW::initialize() error during file openning (%s) !\n", filename.c_str());
         exit( -1 );
     }
 

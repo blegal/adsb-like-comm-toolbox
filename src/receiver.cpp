@@ -118,6 +118,7 @@ int main(int argc, char* argv[])
     param.set("mode_inter", false);
     param.set("dump_first_frame", false);
 
+    param.set("crystal_correct",   0);
 
 	static struct option long_options[] =
 	{
@@ -327,7 +328,7 @@ int main(int argc, char* argv[])
     printf("(II) -> ADSB-like frame length    : %d bits\n",  f.frame_bits());
     printf("(II)\n");
     printf("(II) HackRF module configuration :\n");
-    printf("(II) -> VGA transmitter gain value : %d\n",      param.toInt("tx_gain"));
+//    printf("(II) -> VGA transmitter gain value : %d\n",      param.toInt("tx_gain"));
     printf("(II) -> HackRF antenna parameter   : enable\n" );
     printf("(II) -> HackRF amplifier parameter : disable\n");
 
