@@ -309,14 +309,10 @@ int main(int argc, char* argv[])
     const uint32_t payload    = param.toInt("payload");
     const uint32_t verbose    = param.toInt("verbose");
 
-    const uint32_t fc_v      = param.toFloat("fc"     ) / 1000000;
-    const uint32_t fe_v      = param.toFloat("fe"     ) / 1000000;
-    const uint32_t fe_real_v = param.toFloat("fe_real") / 1000000;
-
-    printf("(II) Launching the receiver application :\n");
-    printf("(II) -> Modulation frequency    : %4d MHz\n",    fc_v);
-    printf("(II) -> Symbol sampling freq.   : %4d MHz\n",    fe_v);
-    printf("(II) -> Real sampling frequency : %4d MHz\n",    fe_real_v);
+    printf("(II) Launching the emitter application :\n");
+    printf("(II) -> Modulation frequency    : %4d MHz\n",    (uint32_t)(param.toDouble("fc"     )/1000000.0));
+    printf("(II) -> Symbol sampling freq.   : %4d MHz\n",    (uint32_t)(param.toDouble("fe"     )/1000000.0));
+    printf("(II) -> Real sampling frequency : %4d MHz\n",    (uint32_t)(param.toDouble("fe_real")/1000000.0));
     printf("(II) -> Sampling factor for DAC : %2dx\n",       param.toInt("surEch"));
     printf("(II)\n");
 
@@ -335,9 +331,9 @@ int main(int argc, char* argv[])
         param.set("fe",    sample_rate_hz);
         param.set("fe_real", real_rate_hz);
 
-        printf("(II) -> Corrected modulation frequency    : %4d MHz\n",    fc_v);
-        printf("(II) -> Corrected symbol sampling freq.   : %4d MHz\n",    fe_v);
-        printf("(II) -> Corrected real sampling frequency : %4d MHz\n",    fe_real_v);
+        printf("(II) -> Corrected modulation frequency    : %4d MHz\n",    (uint32_t)(param.toDouble("fc"     )/1000000.0));
+        printf("(II) -> Corrected symbol sampling freq.   : %4d MHz\n",    (uint32_t)(param.toDouble("fe"     )/1000000.0));
+        printf("(II) -> Corrected real sampling frequency : %4d MHz\n",    (uint32_t)(param.toDouble("fe_real")/1000000.0));
         printf("(II)\n");
     }
 
@@ -348,7 +344,8 @@ int main(int argc, char* argv[])
     printf("(II)\n");
     printf("(II) HackRF module configuration :\n");
     printf("(II) -> VGA transmitter gain value : %d\n",      param.toInt("tx_gain"));
-    printf("(II) -> HackRF antenna parameter   : enable\n" );
+    printf("(II) -> VGA transmitter gain value : %d\n",      param.toInt("tx_gain"));
+    printf("(II) -> HackRF antenna parameter   : disable\n" );
     printf("(II) -> HackRF amplifier parameter : disable\n");
 
 

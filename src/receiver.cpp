@@ -12,6 +12,7 @@
 #include <getopt.h>
 #include <signal.h>
 
+#include "./Tools/Parameters.hpp"
 
 //
 //  Definition des modules permettant d'utiliser le module Radio (SdR)
@@ -43,7 +44,6 @@
 #include "./Detecteur/INTER_x86/DetecteurScalar.hpp"
 #include "./Detecteur/INTRA_NEON/Detecteur_NEON.hpp"
 #include "./Detecteur/INTRA_AVX2/Detecteur_AVX2.hpp"
-#include "./Detecteur/INTER_AVX2/DetecteurINTER_AVX2.hpp"
 //#include "Detecteur/INTER_AVX2/Detecteur_NEON.hpp"
 
 
@@ -92,22 +92,32 @@ int main(int argc, char* argv[])
     sigIntHandler.sa_flags = 0;
     sigaction(SIGINT, &sigIntHandler, NULL);
 
-
 	uint32_t nbTramesDetectees = 0; // nbre trame ...
-    uint32_t nbTotalTrames = 0;
-    uint32_t nbBonsCRCs = 0;
+    uint32_t nbTotalTrames     = 0;
+    uint32_t nbBonsCRCs        = 0;
 
 	int c; //getopt
 
-    float fc = 433000000;
-    float fe = 1000000;
+    Parameters param;
 
-    uint32_t payload = 16; // Nombre de bytes utiles par frame
+    param.set("mode_radio",   "radio");
+    param.set("filename",   "hackrf");
 
-	bool verbose = 0;
-	float ps_min = 0.75;
-	int Np = 10000;
-    bool mode_inter = false;
+    param.set("fc",      433000000.0);
+    param.set("fe",        1000000.0);
+
+    param.set("mode_conv",        "scalar");
+    param.set("mode_corr",        "scalar");
+
+    param.set("payload", 16);
+
+    param.set("verbose", false);
+
+    param.set("ps_min", 0.75f);
+
+    param.set("mode_inter", false);
+    param.set("dump_first_frame", false);
+
 
 	static struct option long_options[] =
 	{
@@ -128,20 +138,13 @@ int main(int argc, char* argv[])
 
         {"inter",   no_argument,         NULL, 'I'}, // changer la frequence echantillonnage
         {"intra",   no_argument,         NULL, 'i'}, // changer la frequence echantillonnage
+        {"dumpf",   no_argument,         NULL, 'D'}, // changer la frequence echantillonnage
+
 
 		{NULL,      0,                  NULL, 0}
 	};
 
-    std::string mode_radio = "txt";
-    std::string filename   = "../data/data_uhd.txt";
-
-    std::string mode_conv = "scalar";
-    std::string mode_corr = "scalar";
-
 	int option_index = 0;
-
-	vector<complex<float> > buffer( fe/2 ); // Notre buffer à nous dans le programme
-	vector<complex<float> > buffer_fichier;
 
     cout << "par Florian LOUPIAS - Février 2020" << endl;
     cout << "par Bertrand LE GAL - Octobre 2020" << endl;
@@ -157,68 +160,62 @@ int main(int argc, char* argv[])
 				printf ("%s with arg %s%s", optarg, KNRM, KRED);
 			    printf ("\n");
 			    break;
+
             case 'f':
-                fc = atof(optarg);
-                printf("%soption fc = %f Hz%s\n", KNRM, fc, KRED);
+                param.set("fc",   std::stod(optarg));
                 break;
+
+            case 'e' :
+                param.set("fe",   std::stod(optarg));
+                break;
+
             case 'p':
-                payload = atoi(optarg);
-                printf("%soption payload = %d bytes%s\n", KNRM, payload, KRED);
+                param.set("payload",   std::atoi(optarg));
                 break;
-			case 'e' :
-				fe = atof(optarg);
-				printf("%soption fe = %f Hz%s\n", KNRM, fe, KRED);
-				break;
+
 			case 's':
-		        ps_min = atof(optarg);
-			    if ((ps_min > 1) || (ps_min < 0)){
-				 ps_min = 0.75;
-				 printf("erreur : --produit_scalaire ou -s compris entre 0 et 1");
-			    	cout <<" ==>  option produit_scalaire : "<< ps_min << endl;
-			    } else printf("%soption produit_scalaire : %f%s\n", KNRM, ps_min, KRED);
+                param.set("ps_min",   std::stof(optarg));
+			    if ( (param.toFloat("ps_min") > 1.0f) || (param.toFloat("ps_min") < 0.0f)) {
+                    printf("erreur : --produit_scalaire (ps_min) doit etre compris entre 0 et 1\n");
+                    exit( -1 );
+                }
 			    break;
-			case 'n':
-		        Np = atoi(optarg);
-			    if ((Np < 1)){
-				 Np = 100;
-				 printf("erreur : --Np ou -n est entier >1");
-			    	 cout <<" ==>  option Np : "<< Np << endl;
-			    } else printf("%soption Np : %d%s\n", KNRM, Np, KRED);
-			    break;
+
 			case 'v':
-			    verbose = 1;
-				printf("%soption verbose%s\n", KNRM, KRED);
+                param.set("verbose", true);
 			    break;
 
             case '?':
                 break;
 
             case 'c':
-                mode_conv = optarg;
-                printf("%soption mode_conv = %s%s\n", KNRM, mode_conv.c_str(), KRED);
+                param.set("mode_conv", optarg);
                 break;
 
             case 'd':
-                mode_corr = optarg;
-                printf("%soption mode_corr = %s%s\n", KNRM, mode_corr.c_str(), KRED);
+                param.set("mode_corr", optarg);
                 break;
 
             case 'r':
-                mode_radio = "radio";
-                filename   = optarg;
+                param.set("mode_radio", "radio");
+                param.set("filename", optarg);
                 break;
 
             case 'F':
-                mode_radio = "file";
-                filename   = optarg;
+                param.set("mode_radio", "file");
+                param.set("filename", optarg);
                 break;
 
             case 'I':
-                mode_inter = true;
+                param.set("mode_inter", true);
                 break;
 
             case 'i':
-                mode_inter = false;
+                param.set("mode_inter", false);
+                break;
+
+            case 'D':
+                param.set("dump_first_frame", true);
                 break;
 
 		    default:
@@ -235,41 +232,30 @@ int main(int argc, char* argv[])
 	printf("%s",KNRM);
 	cout << endl;
 
-
-
-
-	//	Detecteur*      detecteur      = new Detecteur();
-//	Detecteur8par8* detecteur8par8 = new Detecteur8par8();
+    vector<complex<float> > buffer( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
+    vector<complex<float> > buffer_fichier;
 
 	//
 	// Selection du module SDR employé dans le programme
 	//
+
     Radio* radio;
-    if( mode_radio == "radio" && filename == "hackrf" )
-    {
-        radio = new ReceiverHackRF(fc, fe);
-    }
-    else if( mode_radio == "radio" && filename == "hackrf-old" )
-    {
-        radio = new RadioHackRF(fc, fe);
-    }
-    else if( mode_radio == "radio" && filename == "uhd" )
-    {
-        radio = new ReceiverUSRP(fc, fe);
-    }
-    else if( mode_radio == "file" && (filename.find(".raw") != -1) )
-    {
-        radio = new RadioFichierRAW(filename);
-    }
-    else if( mode_radio == "file" && (filename.find(".txt") != -1) )
-    {
-        radio = new RadioFichierUHD(filename);
+    if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" ) {
+        radio = new ReceiverHackRF(param.toDouble("fc"), param.toDouble("fe"));
+    } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf-old" ) {
+        radio = new RadioHackRF(param.toDouble("fc"), param.toDouble("fe"));
+    } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "uhd" ) {
+        radio = new ReceiverUSRP(param.toDouble("fc"), param.toDouble("fe"));
+    } else if( param.toString("mode_radio") == "file" && (param.toString("filename").find(".raw") != -1) ) {
+        radio = new RadioFichierRAW(param.toString("filename"));
+    } else if( param.toString("mode_radio") == "file" && (param.toString("filename").find(".txt") != -1) ) {
+        radio = new RadioFichierUHD(param.toString("filename"));
     }
     else
     {
         cout << "oups !" << endl;
-        cout << "mode_radio = " << mode_radio << endl;
-        cout << "filename   = " << filename   << endl;
+        cout << "mode_radio = " << param.toString("mode_radio") << endl;
+        cout << "filename   = " << param.toString("filename")      << endl;
         exit( -1 );
     }
 
@@ -278,16 +264,17 @@ int main(int argc, char* argv[])
     //
 
     Detecteur* detect;
-    if( mode_corr == "scalar" )
+    if( param.toString("mode_corr") == "scalar" ){
         detect = new DetecteurScalar();
-    else if( mode_corr == "AVX2" )
+    } else if( param.toString("mode_corr") == "AVX2" ){
         detect = new Detecteur_AVX2();
-    else if( mode_corr == "NEON" )
+    } else if( param.toString("mode_corr") == "NEON" ){
         detect = new Detecteur_NEON();
+    }
     else
     {
         std::cout << "(EE) Le type de module de Correlation demandé n'est actuellement pas dispnible :" << std::endl;
-        std::cout << "(EE) type = " << mode_corr                                                        << std::endl;
+        std::cout << "(EE) type = " << param.toString("mode_corr")                                   << std::endl;
         exit( -1 );
     }
 
@@ -297,26 +284,58 @@ int main(int argc, char* argv[])
     //
 
     Conversion* conv;
-    if( mode_conv == "scalar" ){
+    if( param.toString("mode_conv") == "scalar" ){
         conv = new ConversionScalar();
-    } else if( mode_conv == "AVX2" ) {
+    } else if( param.toString("mode_conv") == "AVX2" ) {
         conv = new ConversionAVX2();
-    } else if( mode_conv == "NEON" ) {
+    } else if( param.toString("mode_conv") == "NEON" ) {
         conv = new ConversionNEON();
     }
     else
     {
         std::cout << "(EE) Le type de module de Conversion demandé n'est actuellement pas dispnible :" << std::endl;
-        std::cout << "(EE) type = " << mode_corr                                                        << std::endl;
+        std::cout << "(EE) type = " << param.toString("mode_conv")                                     << std::endl;
         exit( -1 );
     }
+
+    Frame f( param.toInt("payload") );
+
+    printf("(II) Launching the emitter application :\n");
+    printf("(II) -> Modulation frequency    : %4d MHz\n",    (uint32_t)(param.toDouble("fc"     )/1000000.0));
+    printf("(II) -> Symbol sampling freq.   : %4d MHz\n",    (uint32_t)(param.toDouble("fe"     )/1000000.0));
+    printf("(II)\n");
+
+    const int32_t crystal_correct_ppm = param.toInt("crystal_correct");
+    if( crystal_correct_ppm != 0 )
+    {
+        double freq_hz        = param.toDouble("fc");
+        double sample_rate_hz = param.toDouble("fe");
+
+        sample_rate_hz = (uint32_t)((double)sample_rate_hz * (1000000.0 - crystal_correct_ppm)/1000000.0+0.5);
+        freq_hz        = freq_hz * (1000000.0 - crystal_correct_ppm)/1000000.0;
+
+        param.set("fc",           freq_hz);
+        param.set("fe",    sample_rate_hz);
+
+        printf("(II) -> Corrected modulation frequency    : %4d MHz\n",    (uint32_t)(param.toDouble("fc"     )/1000000.0));
+        printf("(II) -> Corrected symbol sampling freq.   : %4d MHz\n",    (uint32_t)(param.toDouble("fe"     )/1000000.0));
+        printf("(II)\n");
+    }
+
+    printf("(II) ADSB-like configuration parameters :\n");
+    printf("(II) -> ADSB-like payload length  : %d bytes\n", f.payload_size());
+    printf("(II) -> ADSB-like frame length    : %d bits\n",  f.frame_bits());
+    printf("(II)\n");
+    printf("(II) HackRF module configuration :\n");
+    printf("(II) -> VGA transmitter gain value : %d\n",      param.toInt("tx_gain"));
+    printf("(II) -> HackRF antenna parameter   : enable\n" );
+    printf("(II) -> HackRF amplifier parameter : disable\n");
 
 
     //
     // Selection du module de conversion employé dans le programme
     //
 
-    Frame f( payload );
 
     //
     // Selection du module de conversion employé dans le programme
@@ -345,6 +364,8 @@ int main(int argc, char* argv[])
     // Selection du module de conversion employé dans le programme
     //
 
+    const float ps_min = param.toFloat("ps_min");
+    uint32_t loop_counter = 0;
 	while( radio->alive() && (isFinished == false) )
 	{
 #ifdef _TIME_PROFILE_
@@ -358,7 +379,7 @@ int main(int argc, char* argv[])
         timer_reception += chrono::duration_cast<chrono::nanoseconds>(reception - depart).count();
 #endif
 
-		vector<float> buffer_abs;
+		std::vector<float> buffer_abs;
         conv->execute( &buffer, &buffer_abs );
 
 #ifdef _TIME_PROFILE_
@@ -366,12 +387,32 @@ int main(int argc, char* argv[])
         timer_conv_cplx += chrono::duration_cast<chrono::nanoseconds>(conv_cplx - reception).count();
 #endif
 
+        if( param.toBool("dump_first_frame") == true && loop_counter == 0 )
+        {
+            FILE* f = fopen("capture.IQ.raw", "wb");
+            float* ptr_d = (float*)buffer.data();
+            std::vector<uint8_t> uint8_IQ( 2 * buffer.size() );
+            for(uint32_t i = 0; i < uint8_IQ.size(); i += 1 )
+                uint8_IQ[i] = (*ptr_d++);
+            fwrite( uint8_IQ.data(), 1, uint8_IQ.size(), f );
+            fclose( f );
+
+            FILE* g = fopen("capture.MOD.raw", "wb");
+            std::vector<uint8_t> uint8_t_abs( buffer_abs.size() );
+            for(uint32_t i = 0; i < uint8_t_abs.size(); i += 1 )
+                uint8_t_abs[i] = buffer_abs[i];
+            fwrite( uint8_t_abs.data(), 1, uint8_t_abs.size(), g );
+            fclose( g );
+
+            exit( 0 );
+        }
+
 
 		// ============== detection & decodage ================
 
 
-        vector<float> buffer_detect;
-        if( mode_inter == true )
+        std::vector<float> buffer_detect;
+        if( param.toBool("mode_inter") == true )
         {
             detect->execute(&buffer_abs, &buffer_detect);
 #ifdef _TIME_PROFILE_
@@ -389,7 +430,7 @@ int main(int argc, char* argv[])
             auto detecteur  = chrono::high_resolution_clock::now();
 #endif
 		    float s;
-            if( mode_inter == false ) {
+            if( param.toBool("mode_inter") == false ) {
                 float *addr = buffer_abs.data() + k;
                 detect->execute(addr);
                  s = detect->getValue(0);
@@ -443,7 +484,7 @@ int main(int argc, char* argv[])
                         nbTotalTrames += 1;        // C'est bien une trame ADSB-like
                         nbBonsCRCs    += f.validate_crc();
 
-                        if( verbose )
+                        if( param.toBool("verbose") == true )
                         {
                             printf("%1.3f : ", s);
                             f.dump_frame();
@@ -459,6 +500,10 @@ int main(int argc, char* argv[])
 				}
 			k++;
 		}
+
+
+
+        loop_counter += 1;
 	}
 
 
@@ -479,10 +524,10 @@ printf("%s", KGRN);
     std::cout << "Temps total d'émission   (seconds) = " << elapsed.count()                             << std::endl;
 printf("%s", KNRM);
 
-    std::cout << "Trames par seconde       (frames)  = " << (nbBonsCRCs/elapsed.count())                << std::endl;
-    std::cout << "Débit emis par seconde   (bits)    = " << (nbBonsCRCs/elapsed.count()*f.frame_bits()) << std::endl;
-    std::cout << "Débit utile par seconde  (bytes)   = " << (nbBonsCRCs/elapsed.count()*payload)        << std::endl;
-    std::cout << "Débit utile par seconde  (bits)    = " << (nbBonsCRCs/elapsed.count()*payload*8)      << std::endl;
+    std::cout << "Trames par seconde       (frames)  = " << (nbBonsCRCs/elapsed.count())                    << std::endl;
+    std::cout << "Débit emis par seconde   (bits)    = " << (nbBonsCRCs/elapsed.count()*f.frame_bits())     << std::endl;
+    std::cout << "Débit utile par seconde  (bytes)   = " << (nbBonsCRCs/elapsed.count()*f.payload_size())   << std::endl;
+    std::cout << "Débit utile par seconde  (bits)    = " << (nbBonsCRCs/elapsed.count()*f.payload_size()*8) << std::endl;
     printf("\n");
     std::cout << "Temps total : " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms" << std::endl;
 #ifdef _TIME_PROFILE_
