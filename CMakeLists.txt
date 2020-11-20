@@ -1,26 +1,38 @@
 cmake_minimum_required(VERSION 3.5)
 
+set(CMAKE_CXX_FLAGS "                   -Wall -Ofast -march=native -mtune=native")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/opt/hackrf/include")            # HackRF
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/boost/1.74.0/include")   # Boost
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/uhd/3.15.0.0_2/include") # UHD
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Rpass=loop-vectorize -Rpass-missed=loop-vectorize") # UHD
+
+set(CMAKE_EXE_LINKER_FLAGS "                          /usr/local/lib/libboost_filesystem-mt.dylib") # UHD
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/lib/libboost_system-mt.dylib") # UHD
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/opt/hackrf/lib/libhackrf.a") # UHD
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/opt/libusb/lib/libusb-1.0.a") # UHD
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/Cellar/uhd/3.15.0.0_2/lib/libuhd.dylib") # UHD
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework CoreFoundation -framework IOKit") # UHD
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lncurses") # UHD
+
+set(CMAKE_CXX_STANDARD 17)
+
+########################################################################################################################
+
 project(adsb_receiver)
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
-message("${CMAKE_SOURCE_DIR}/cmake/Modules/")
-
-set(CMAKE_CXX_STANDARD 14)
-
-set(CMAKE_CXX_FLAGS "-Wall -Ofast -march=native -mtune=native -I/usr/local/opt/hackrf/include")
-SET(CMAKE_EXE_LINKER_FLAGS "/usr/local/opt/hackrf/lib/libhackrf.a /usr/local/opt/libusb/lib/libusb-1.0.a -framework CoreFoundation -framework IOKit")
-#SET(CMAKE_EXE_LINKER_FLAGS "-L/usr/local/opt/hackrf/lib -lhackrf")
 
 set(SOURCE_FILES
         src/CRC/CRC32b.cpp
         src/Frame/Frame.cpp
+        src/RingBuff/RingBuff.cpp
+        src/Tools/Parameters.cpp
         src/Conversion/Conversion.cpp
-        src/Conversion/ConversionScalar.cpp
-        src/Conversion/ConversionNEON.cpp
-        src/Conversion/ConversionAVX2.cpp
+        src/Conversion/INTER_x86/ConversionScalar.cpp
+        src/Conversion/INTER_NEON/ConversionNEON.cpp
+        src/Conversion/INTER_AVX2/ConversionAVX2.cpp
         src/Acquisition/Radio.cpp
-        src/Acquisition/Radio/RadioUSRP.cpp
-        src/Acquisition/Radio/RadioReceiverHackRF.cpp
+        src/Acquisition/Radio/ReceiverUSRP.cpp
+        src/Acquisition/Radio/RadioHackRF.cpp
+        src/Acquisition/Radio/ReceiverHackRF.cpp
         src/Acquisition/File/RadioFichierRAW.cpp
         src/Acquisition/File/RadioFichierUHD.cpp
         src/PPM/Demodulator/PPM_Demodulator.cpp
@@ -35,43 +47,30 @@ set(SOURCE_FILES
 
 add_executable(adsb_receiver ${SOURCE_FILES})
 
-find_package (UHD)
-if    (UHD_FOUND)
-    include_directories(${UHD_INCLUDE_DIRS})
-    target_link_libraries (adsb_receiver ${UHD_LIBRARIES})
-endif (UHD_FOUND)
+########################################################################################################################
 
-find_package(Boost COMPONENTS system filesystem REQUIRED)
+project(tty_histo)
 
-target_link_libraries(adsb_receiver
-        ${Boost_FILESYSTEM_LIBRARY}
-        ${Boost_SYSTEM_LIBRARY}
+SET(SOURCE_FILES
+        src/RingBuff/RingBuff.cpp
+        src/tty_histo.cpp
         )
 
+add_executable(tty_histo ${SOURCE_FILES})
+target_link_libraries(tty_histo)
 
-
-
-
-
-
-cmake_minimum_required(VERSION 3.5)
+########################################################################################################################
 
 project(adsb_emitter)
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
-message("${CMAKE_SOURCE_DIR}/cmake/Modules/")
-
-set(CMAKE_CXX_STANDARD 14)
-
-set(CMAKE_CXX_FLAGS "-Wall -Ofast -march=native -mtune=native -I/usr/local/opt/hackrf/include")
-#SET(CMAKE_EXE_LINKER_FLAGS "/usr/local/opt/hackrf/lib/libhackrf.a /usr/local/opt/libusb/lib/libusb-1.0.a -framework CoreFoundation -framework IOKit")
-SET(CMAKE_EXE_LINKER_FLAGS "-L/usr/local/opt/hackrf/lib -lhackrf")
 
 set(SOURCE_FILES
         src/CRC/CRC32b.cpp
         src/Frame/Frame.cpp
+        src/RingBuff/RingBuff.cpp
+        src/Tools/Parameters.cpp
         src/Acquisition/Radio.cpp
-        src/Emitter/Radio/RadioEmitterHackRF.cpp
+        src/Emitter/Emitter.cpp
+        src/Emitter/Radio/EmitterHackRF.cpp
         src/Emitter/File/RadioFichierRAW.cpp
 
         src/PPM/Modulator/PPM_Modulator.cpp
@@ -87,56 +86,28 @@ set(SOURCE_FILES
 
 add_executable(adsb_emitter ${SOURCE_FILES})
 
-find_package (UHD)
-if    (UHD_FOUND)
-    include_directories(${UHD_INCLUDE_DIRS})
-    target_link_libraries (adsb_emitter ${UHD_LIBRARIES})
-endif (UHD_FOUND)
-
-find_package(Boost COMPONENTS system filesystem REQUIRED)
-
-target_link_libraries(adsb_emitter
-        ${Boost_FILESYSTEM_LIBRARY}
-        ${Boost_SYSTEM_LIBRARY}
-        )
-
-
-
-
-
-cmake_minimum_required(VERSION 3.5)
-
-project(tty_histo)
-
-SET(CMAKE_CXX_STANDARD 14)
-
-SET(CMAKE_CXX_FLAGS        "-O2 -march=native -mtune=native")
-SET(CMAKE_EXE_LINKER_FLAGS "-lncurses")
-
-SET(SOURCE_FILES
-        ../src/tty_histo.cpp
-        )
-
-add_executable(tty_histo ${SOURCE_FILES})
-target_link_libraries(tty_histo)
-
-
-
-
-cmake_minimum_required(VERSION 3.5)
+########################################################################################################################
 
 project(tty_emitter)
-
-SET(CMAKE_CXX_STANDARD 14)
-
-SET(CMAKE_CXX_FLAGS        "-O2 -march=native -mtune=native")
-SET(CMAKE_EXE_LINKER_FLAGS "-lncurses")
 
 SET(SOURCE_FILES
         src/CRC/CRC32b.cpp
         src/Frame/Frame.cpp
+        src/RingBuff/RingBuff.cpp
         src/tty_emitter.cpp
         )
 
 add_executable(tty_emitter ${SOURCE_FILES})
-target_link_libraries(tty_emitter)
+
+########################################################################################################################
+
+project(test_vecto)
+
+SET(SOURCE_FILES
+        src/test_vecto.cpp
+        )
+
+add_executable(test_vecto ${SOURCE_FILES})
+
+########################################################################################################################
+
