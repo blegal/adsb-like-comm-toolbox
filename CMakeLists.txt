@@ -25,6 +25,7 @@ set(SOURCE_FILES
         src/Frame/Frame.cpp
         src/RingBuff/RingBuff.cpp
         src/Tools/Parameters.cpp
+        src/Tools/CTickCounter.cpp
         src/Conversion/Conversion.cpp
         src/Conversion/INTER_x86/ConversionScalar.cpp
         src/Conversion/INTER_NEON/ConversionNEON.cpp
@@ -68,6 +69,7 @@ set(SOURCE_FILES
         src/Frame/Frame.cpp
         src/RingBuff/RingBuff.cpp
         src/Tools/Parameters.cpp
+        src/Tools/CTickCounter.cpp
         src/Acquisition/Radio.cpp
         src/Emitter/Emitter.cpp
         src/Emitter/Radio/EmitterHackRF.cpp

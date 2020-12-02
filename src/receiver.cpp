@@ -13,6 +13,7 @@
 #include <signal.h>
 
 #include "./Tools/Parameters.hpp"
+#include "./Tools/CTickCounter.hpp"
 
 //
 //  Definition des modules permettant d'utiliser le module Radio (SdR)
@@ -45,8 +46,6 @@
 #include "./Detecteur/INTRA_NEON/Detecteur_NEON.hpp"
 #include "./Detecteur/INTRA_AVX2/Detecteur_AVX2.hpp"
 //#include "Detecteur/INTER_AVX2/Detecteur_NEON.hpp"
-
-
 
 #include "./Frame/Frame.hpp"
 #include "./Sampling/Down/DownSampling.hpp"
@@ -140,7 +139,7 @@ int main(int argc, char* argv[])
         {"inter",   no_argument,         NULL, 'I'}, // changer la frequence echantillonnage
         {"intra",   no_argument,         NULL, 'i'}, // changer la frequence echantillonnage
         {"dumpf",   no_argument,         NULL, 'D'}, // changer la frequence echantillonnage
-
+        {"ppm",  required_argument, NULL, 'P'}, // changer la frequence echantillonnage
 
 		{NULL,      0,                  NULL, 0}
 	};
@@ -219,6 +218,11 @@ int main(int argc, char* argv[])
                 param.set("dump_first_frame", true);
                 break;
 
+            case 'P' :
+                param.set("crystal_correct",   std::atoi(optarg));
+                printf("%soption crystal_correct = %d dB%s\n", KNRM, param.toInt("crystal_correct"), KRED);
+                break;
+
 		    default:
 			    printf ("?? getopt returned character code 0%o ??\n", c);
 		}
@@ -233,7 +237,8 @@ int main(int argc, char* argv[])
 	printf("%s",KNRM);
 	cout << endl;
 
-    vector<complex<float> > buffer( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
+    vector<complex<float> > buffer   ( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
+    vector<uint8_t        > detection( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
     vector<complex<float> > buffer_fichier;
 
 	//
@@ -365,31 +370,110 @@ int main(int argc, char* argv[])
     // Selection du module de conversion employé dans le programme
     //
 
+    CTickCounter timer;
+
     const float ps_min = param.toFloat("ps_min");
     uint32_t loop_counter = 0;
 	while( radio->alive() && (isFinished == false) )
 	{
-#ifdef _TIME_PROFILE_
-        auto depart    = chrono::high_resolution_clock::now();
-#endif
-
+	    //
+	    //
+	    //
+        timer.start_loading();
         radio->reception(buffer);
+        timer.stop_loading();
 
-#ifdef _TIME_PROFILE_
-        auto reception   = chrono::high_resolution_clock::now();
-        timer_reception += chrono::duration_cast<chrono::nanoseconds>(reception - depart).count();
-#endif
-
+        //
+        //
+        //
+        timer.start_conversion();
 		std::vector<float> buffer_abs;
         conv->execute( &buffer, &buffer_abs );
+        timer.stop_conversion();
 
-#ifdef _TIME_PROFILE_
-        auto conv_cplx   = chrono::high_resolution_clock::now();
-        timer_conv_cplx += chrono::duration_cast<chrono::nanoseconds>(conv_cplx - reception).count();
-#endif
-
-        if( param.toBool("dump_first_frame") == true && loop_counter == 0 )
+        //
+        //
+        //
+        std::vector<float> buffer_detect;
+        if( param.toBool("mode_inter") == true )
         {
+            timer.start_detection();
+            radio->reception(buffer);
+            detect->execute(&buffer_abs, &buffer_detect);
+            timer.stop_detection();
+        }
+
+
+        //
+        //
+        //
+        for(int k = 0; k <= (buffer_abs.size() - f.frame_bits()); k += 1)
+		{
+		    float s;
+            if( param.toBool("mode_inter") == false ) {
+                timer.start_detection();
+                float *addr = buffer_abs.data() + k;
+                detect->execute(addr);
+                 s = detect->getValue(0);
+                timer.stop_detection();
+            }else{
+                s = buffer_detect[k];
+            }
+
+            //
+            //
+            //
+            if (s > ps_min)
+            {
+                detection[k] = 255;    // On indique que l'on a detecte la trame
+
+                timer.start_decoding();
+                nbTramesDetectees +=1;    // On vient de detecter qqchose
+
+                std::vector<int8_t> buff_5( 4 * f.frame_bits() );
+                for (int j=0; j < buff_5.size(); j += 1){
+                    int32_t v = buffer_abs[k+j];
+                    v = (v > +127) ? +127 : v;
+                    v = (v < -127) ? -127 : v;
+                    buff_5[j]   = v;
+                }
+
+                DownSampling down(2);
+                std::vector<int8_t> buff_6;
+                down.execute( buff_5, buff_6 );
+
+                PPM_Demodulator ppd;
+                std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));
+                ppd.execute(buff_6, buff_7);
+
+                bool isOK = f.fill_frame_bits( buff_7 );
+                if( isOK )
+                {
+                    nbTotalTrames += 1;        // C'est bien une trame ADSB-like
+                    nbBonsCRCs    += f.validate_crc();
+
+                    if( param.toBool("verbose") == true )
+                    {
+                        printf("%1.3f : ", s);
+                        f.dump_frame();
+                    }
+
+                    for(int i = 0; i < f.frame_bits() - 1; i += 1)  // On positionne la sortie detection afin
+                        detection[k+i] = 255;                          // d'indiquer que l'on a detecte la trame...
+
+                    k += f.frame_bits() - 1; // On saute tous les bits qui composaient notre trame...
+                }
+                printf("(DD) nbTramesDetectees = %d | nbTotalTrames = %4d  |  nbBonsCRCs = %4d\n", nbTramesDetectees, nbTotalTrames, nbBonsCRCs);
+                timer.stop_decoding();
+            }else {
+                detection[k] = 0;    // On indique que l'on a detecte la trame
+            }
+        }
+
+        if( false )
+//        if( param.toBool("dump_first_frame") == true && loop_counter == 0 )
+        {
+            printf("(DD) Starting file saving...\n");
             FILE* f = fopen("capture.IQ.raw", "wb");
             float* ptr_d = (float*)buffer.data();
             std::vector<uint8_t> uint8_IQ( 2 * buffer.size() );
@@ -401,115 +485,23 @@ int main(int argc, char* argv[])
             FILE* g = fopen("capture.MOD.raw", "wb");
             std::vector<uint8_t> uint8_t_abs( buffer_abs.size() );
             for(uint32_t i = 0; i < uint8_t_abs.size(); i += 1 )
-                uint8_t_abs[i] = buffer_abs[i];
-            fwrite( uint8_t_abs.data(), 1, uint8_t_abs.size(), g );
+            {
+                fwrite( &uint8_t_abs[i], 1, sizeof(uint8_t), g );
+                fwrite( &detect     [i], 1, sizeof(uint8_t), g );
+            }
             fclose( g );
-
+            printf("(DD) End of file saving...\n");
             exit( 0 );
         }
-
-
-		// ============== detection & decodage ================
-
-
-        std::vector<float> buffer_detect;
-        if( param.toBool("mode_inter") == true )
-        {
-            detect->execute(&buffer_abs, &buffer_detect);
-#ifdef _TIME_PROFILE_
-            auto detecteur   = chrono::high_resolution_clock::now();
-            timer_detecteur += chrono::duration_cast<chrono::nanoseconds>(detecteur - conv_cplx).count();
-#endif
-        }
-
-
-		int k=0;
-		while ( k <= (buffer_abs.size() - f.frame_bits())){
-
-#ifdef _TIME_PROFILE_
-            auto start_loop = chrono::high_resolution_clock::now();
-            auto detecteur  = chrono::high_resolution_clock::now();
-#endif
-		    float s;
-            if( param.toBool("mode_inter") == false ) {
-                float *addr = buffer_abs.data() + k;
-                detect->execute(addr);
-                 s = detect->getValue(0);
-#ifdef _TIME_PROFILE_
-                detecteur        = chrono::high_resolution_clock::now();
-                timer_detecteur += chrono::duration_cast<chrono::nanoseconds>(detecteur - start_loop).count();
-#endif
-            }else{
-                s = buffer_detect[k];
-            }
-
-            if (s > ps_min)
-            {
-                nbTramesDetectees +=1;    // On vient de detecter qqchose
-
-					std::vector<int8_t> buff_5( 4 * f.frame_bits() );
-                    for (int j=0; j < buff_5.size(); j += 1){
-                        int32_t v = buffer_abs[k+j];
-                        v = (v > +127) ? +127 : v;
-                        v = (v < -127) ? -127 : v;
-                        buff_5[j]   = v;
-                    }
-
-#ifdef _TIME_PROFILE_
-                    auto extraction   = chrono::high_resolution_clock::now();
-                    timer_extraction += chrono::duration_cast<chrono::nanoseconds>(extraction - detecteur).count();
-#endif
-
-                    DownSampling down(2);
-                    std::vector<int8_t> buff_6;
-                    down.execute( buff_5, buff_6 );
-
-#ifdef _TIME_PROFILE_
-                    auto down_sampling   = chrono::high_resolution_clock::now();
-                    timer_down_sampling += chrono::duration_cast<chrono::nanoseconds>(down_sampling - extraction).count();
-#endif
-
-                    PPM_Demodulator ppd;
-                    std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));
-                    ppd.execute(buff_6, buff_7);
-
-#ifdef _TIME_PROFILE_
-                    auto demodulator   = chrono::high_resolution_clock::now();
-                    timer_demodulator += chrono::duration_cast<chrono::nanoseconds>(demodulator - down_sampling).count();
-#endif
-
-                    bool isOK = f.fill_frame_bits( buff_7 );
-
-                    if( isOK )
-                    {
-                        nbTotalTrames += 1;        // C'est bien une trame ADSB-like
-                        nbBonsCRCs    += f.validate_crc();
-
-                        if( param.toBool("verbose") == true )
-                        {
-                            printf("%1.3f : ", s);
-                            f.dump_frame();
-                        }
-
-                        k += f.frame_bits() - 1; // On saute tous les bits qui composaient notre trame...
-                    }
-
-#ifdef _TIME_PROFILE_
-                    auto parsing   = chrono::high_resolution_clock::now();
-                    timer_parsing += chrono::duration_cast<chrono::nanoseconds>(parsing - demodulator).count();
-#endif
-				}
-			k++;
-		}
-
-
-
         loop_counter += 1;
 	}
 
-
-	// =============== AFFICHAGE FINAL =====================
-	printf("\n================================================================\n");
+    printf("\n================================================================\n");
+    std::cout << "loading    : " << timer.loading()     << std::endl;
+    std::cout << "conversion : " << timer.conversion()  << std::endl;
+    std::cout << "decoding   : " << timer.detection()   << std::endl;
+    std::cout << "criterion  : " << timer.decoding()   << std::endl;
+	printf("================================================================\n");
 
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
