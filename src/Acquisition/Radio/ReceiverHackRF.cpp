@@ -31,10 +31,10 @@ ReceiverHackRF::ReceiverHackRF(float s_fc, float s_fe) : Radio(s_fc, s_fe), buff
 //    buff_length   = N;              // la taille du buffer circulaire
 }
 
+
 ReceiverHackRF::~ReceiverHackRF()
 {
     hackrf_close( device );
-//    delete[] buffer;
 }
 
 

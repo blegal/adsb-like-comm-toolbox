@@ -1,8 +1,10 @@
-#ifndef _RadioHackRF_
-#define _RadioHackRF_
+#ifndef _ReceiverSoapy_
+#define _ReceiverSoapy_
 
 #include "../Radio.hpp"
-#include <libhackrf/hackrf.h>
+#include <SoapySDR/Device.hpp>
+#include <SoapySDR/Types.hpp>
+#include <SoapySDR/Formats.hpp>
 
 /*
   freq=<float>    Desired tune frequency in Hz. Valid range from 1M to 6G. (default 100M: 100000000)
@@ -17,63 +19,53 @@
   pwidle=<float> (Tx only) Value in negative dB of I/Q constant carrier power when idle (default 0: silent)
 */
 
-class RadioHackRF : public Radio{
+class ReceiverSoapy : public Radio{
 
 private :
-    double freq_hz;
-    double fech_hz;
-    bool amplifier;
-    bool antenna;
-    uint32_t vga_gain;
-    uint32_t lna_gain;
+//    double freq_hz;
+//    double fech_hz;
+//    bool amplifier;
+//    bool antenna;
+//    uint32_t vga_gain;
+//    uint32_t lna_gain;
 
-    int N;  //nbre ech
-    int nEchantillons;  //nbre ech
-    hackrf_device* device = NULL;
+//    int N;  //nbre ech
+//    int nEchantillons;  //nbre ech
 
-    bool rxFinished;
+    SoapySDR::Device *sdr;
+    SoapySDR::Stream *rx_stream;
 
-    int8_t* buffer;
+//    bool rxFinished;
+
+//    int8_t* buffer;
 
 public :
-    RadioHackRF( float s_fc, float s_fe);
-    ~RadioHackRF();
+    ReceiverSoapy( float s_fc, float s_fe);
+    ~ReceiverSoapy();
 
     void initialize();
     void start_engine();
     void stop_engine ();
 
     void reception(vector<complex<float> >& cbuffer);
-    void reception(std::vector<int16_t>& I, std::vector<int16_t>& Q);
+//    void reception(std::vector<int16_t>& I, std::vector<int16_t>& Q);
 
     void reset();
 
-    void   set_freq(double value);
+    void   set_freq(const double value);
     double get_freq( );
 
-    void   set_sample_rate(double value);
+    void   set_sample_rate(const double value);
     double get_sample_rate( );
 
-    void set_amp_enable(bool value);
+    void set_amp_enable(const bool value);
     bool get_amp_enable( );
-
-    void set_antenna_enable(bool value);
-    bool get_antenna_enable( );
 
     void     set_vga_gain(uint32_t value);
     uint32_t get_vga_gain( );
 
     void     set_lna_gain(uint32_t value);
     uint32_t get_lna_gain( );
-
-    void     set_nb_samples(uint32_t value);
-    uint32_t get_nb_samples( );
-
-private:
-    static int rx_callback(hackrf_transfer* transfer);
-    int rx_callback(unsigned char *buf, uint32_t len);
-
-    uint32_t byte_received;
 
 };
 
