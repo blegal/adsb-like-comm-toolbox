@@ -7,18 +7,28 @@
 #include <cmath>
 #include <vector>
 
+#include "../../Tools/BMP.hpp"
+#include "../../Frame/Frame.hpp"
+
 using namespace std;
 
 class BMP_target{
-protected :
-	uint32_t scale;
+private :
+    BMP* bmp;
+
+    uint32_t i_height;
+    uint32_t i_width;
+    uint32_t nBytesPerPixel;
+    uint32_t BytesPerLine;
+    uint32_t curr_x;
+    uint32_t curr_y;
 
 public :
     BMP_target();
 
 	~BMP_target();
 
-    void execute(std::vector<int8_t>& ibuffer, std::vector<int8_t>& obuffer);
+    void execute(Frame* f);
 };
 
 #endif
