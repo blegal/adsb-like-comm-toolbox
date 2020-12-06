@@ -53,8 +53,13 @@ public :
     bool    validate_crc();  // check the latest 24 bit values
 
 
-    uint8_t  data (const uint32_t pos); // a value from the payload
-    void     data (const uint32_t pos, const int8_t value); // a value from the payload
+    uint8_t  data    (const uint32_t pos); // a value from the payload
+    uint16_t data_u16(const uint32_t pos); // a value from the payload
+    uint32_t data_u32(const uint32_t pos); // a value from the payload
+
+    void data    (const uint32_t pos, const int8_t   value); // a value from the payload
+    void data_u16(const uint32_t pos, const uint16_t value);
+    void data_u32(const uint32_t pos, const uint32_t value);
 
     uint8_t* header_to_emit();      //
     uint8_t* conf_to_emit();        //

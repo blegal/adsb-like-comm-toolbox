@@ -403,12 +403,34 @@ uint8_t  Frame::data(const uint32_t pos)
     return payload[pos];
 }
 
+uint16_t  Frame::data_u16(const uint32_t pos)
+{
+    const uint16_t* ptr = (const uint16_t*)payload.data();
+    return ptr[pos];
+}
+
+uint32_t  Frame::data_u32(const uint32_t pos)
+{
+    const uint32_t* ptr = (const uint32_t*)payload.data();
+    return ptr[pos];
+}
 
 void Frame::data(const uint32_t pos, const int8_t value)
 {
     payload[pos] = value;
 }
 
+void Frame::data_u16(const uint32_t pos, const uint16_t value)
+{
+    uint16_t* ptr = (uint16_t*)payload.data();
+    ptr[pos] = value;
+}
+
+void Frame::data_u32(const uint32_t pos, const uint32_t value)
+{
+    uint32_t* ptr = (uint32_t*)payload.data();
+    ptr[pos] = value;
+}
 
 
 #include <stdio.h>
