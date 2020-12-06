@@ -24,7 +24,7 @@
 #include "./Acquisition/File/RadioFichierRAW.hpp"
 #include "./Acquisition/File/RadioFichierUHD.hpp"
 #include "./Acquisition/Radio/ReceiverUSRP.hpp"
-#include "./Acquisition/Radio/RadioHackRF.hpp"
+#include "./Acquisition/Radio/ReceiverSoapy.hpp"
 #include "./Acquisition/Radio/ReceiverHackRF.hpp"
 
 //#define _TIME_PROFILE_
@@ -251,12 +251,16 @@ int main(int argc, char* argv[])
     Radio* radio;
     if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" ) {
         radio = new ReceiverHackRF(param.toDouble("fc"), param.toDouble("fe"));
+
     } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf-old" ) {
-        radio = new RadioHackRF(param.toDouble("fc"), param.toDouble("fe"));
+        radio = new ReceiverSoapy(param.toDouble("fc"), param.toDouble("fe"));
+
     } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "uhd" ) {
         radio = new ReceiverUSRP(param.toDouble("fc"), param.toDouble("fe"));
+
     } else if( param.toString("mode_radio") == "file" && (param.toString("filename").find(".raw") != -1) ) {
         radio = new RadioFichierRAW(param.toString("filename"));
+
     } else if( param.toString("mode_radio") == "file" && (param.toString("filename").find(".txt") != -1) ) {
         radio = new RadioFichierUHD(param.toString("filename"));
     }
