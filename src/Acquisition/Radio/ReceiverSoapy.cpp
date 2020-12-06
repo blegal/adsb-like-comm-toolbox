@@ -1,4 +1,4 @@
-#include "RadioHackRF.hpp"
+#include "ReceiverSoapy.hpp"
 #include <unistd.h>
 
 ReceiverSoapy::ReceiverSoapy(float s_fc, float s_fe) : Radio(s_fc, s_fe)
