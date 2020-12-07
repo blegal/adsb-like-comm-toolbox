@@ -326,9 +326,9 @@ int main(int argc, char* argv[])
 
     auto start = std::chrono::system_clock::now(); // This and "end"'s type is std::chrono::time_point
 
-    uint32_t curr_x = 0;
-    uint32_t curr_y = 0;
-    uint32_t curr_s = 0;
+    uint32_t curr_x  = 0;
+    uint32_t curr_y  = 0;
+    uint32_t curr_s  = 0;
     uint32_t nFrames = 0;
 
     const uint32_t nBytesPerPixel = (bmp.bmp_info_header.bit_count / 8);

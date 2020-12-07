@@ -14,12 +14,14 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include "../../Frame/Frame.hpp"
 
 using namespace std;
 
 class FPGA_target{
 protected :
-    int sockfd, portno;
+    int sockfd;
+    int portno;
     struct sockaddr_in serv_addr;
     struct hostent *server;
 
@@ -28,7 +30,7 @@ public :
 
 	~FPGA_target();
 
-    void execute(const uint8_t* ibuffer, const uint32_t length);
+    void execute(Frame* f);
 };
 
 #endif

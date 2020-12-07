@@ -38,9 +38,12 @@ FPGA_target::~FPGA_target()
 }
 
 
-void FPGA_target::execute(const uint8_t* ibuffer, const uint32_t length)
+void FPGA_target::execute(Frame* f)
 {
-    const uint32_t n = write(sockfd, ibuffer, length);
+    const uint32_t n = write(sockfd, f->payload_to_emit(), f->payload_size());
+    if (n != f->payload_size())
+        error("ERROR the overall data were not delivered...\n");
     if (n < 0)
-        error("ERROR writing to socket");
+        error("ERROR writing to socket...\n");
+
 }

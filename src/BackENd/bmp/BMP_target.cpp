@@ -7,8 +7,10 @@ BMP_target::BMP_target()
 
     i_height       = 0;
     i_width        = 0;
+
     nBytesPerPixel = 0;
     BytesPerLine   = 0;
+
     curr_x         = 0;
     curr_y         = 0;
 }

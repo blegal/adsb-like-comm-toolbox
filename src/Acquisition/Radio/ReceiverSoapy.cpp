@@ -8,7 +8,7 @@ ReceiverSoapy::ReceiverSoapy(float s_fc, float s_fe) : Radio(s_fc, s_fe)
 
     if( results.size() == 0 ) exit( 0 );
 
-    for( int i = 0; i < 1 /*results.size()*/; ++i)
+    for( int i = 0; i < 1 /*results.size()*/; ++i)  // On prend toujours le permier de la liste
     {
         printf("Found device #%d:\n", i);
         for( it = results[i].begin(); it != results[i].end(); ++it)
@@ -75,14 +75,14 @@ ReceiverSoapy::~ReceiverSoapy()
 
 void ReceiverSoapy::start_engine()
 {
-    printf("[ START ]\n");
+    printf("[ START SoapySDR ]\n");
     sdr->activateStream( rx_stream, 0, 0, 0);
 }
 
 
 void ReceiverSoapy::stop_engine()
 {
-    printf("[ STOP ]\n");
+    printf("[ STOP SoapySDR ]\n");
     sdr->deactivateStream( rx_stream, 0, 0);	//stop streaming
 }
 
