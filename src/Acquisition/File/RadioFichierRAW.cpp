@@ -54,8 +54,8 @@ RadioFichierRAW::RadioFichierRAW(std::string filen) : Radio(0, 0)
 {
     filename = filen;
 
-    for(uint32_t i = 0; i < 256; i += 1 )
-        array[ i ] = 0;
+//    for(uint32_t i = 0; i < 256; i += 1 )
+//        array[ i ] = 0;
 
 }
 
@@ -68,7 +68,7 @@ RadioFichierRAW::RadioFichierRAW(Parameters& param) : Radio(0, 0)
 
 RadioFichierRAW::~RadioFichierRAW()
 {
-    printHistogram(array, 256);
+//    printHistogram(array, 256);
 }
 
 
@@ -91,8 +91,8 @@ void RadioFichierRAW::initialize()
     fread(data.data(), 1, fileSize, stream);
 
     // Construction de l'histogramme
-    for(uint32_t i = 0; i < fileSize; i += 1 )
-        array[ 128 + data[i] ] += 1;
+//    for(uint32_t i = 0; i < fileSize; i += 1 )
+//        array[ 128 + data[i] ] += 1;
     // Fin de histogramme
 
 
