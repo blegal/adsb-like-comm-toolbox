@@ -8,3 +8,4 @@ tty-histo/cmake-build-debug/*
 tty-histo/build/*
 tty-histo/.idea/*
 .DS_Store
+images/*
