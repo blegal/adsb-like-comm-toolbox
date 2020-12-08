@@ -16,6 +16,9 @@
 #include "./Tools/Parameters.hpp"
 #include "./Tools/CTickCounter.hpp"
 
+#include "./Format/cvt_float_u8.hpp"
+
+
 //
 //  Definition des modules permettant d'utiliser le module Radio (SdR)
 //
@@ -111,7 +114,7 @@ int main(int argc, char* argv[])
 
     param.set("payload", 16);
 
-    param.set("verbose", false);
+    param.set("verbose", 0);
 
     param.set("ps_min", 0.75f);
 
@@ -183,7 +186,7 @@ int main(int argc, char* argv[])
 			    break;
 
 			case 'v':
-                param.set("verbose", true);
+                param.set("verbose", param.toInt("verbose") + 1);
 			    break;
 
             case '?':
@@ -241,7 +244,6 @@ int main(int argc, char* argv[])
 	cout << endl;
 
     vector<complex<float> > buffer   ( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
-    vector<uint8_t        > detection( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
     vector<complex<float> > buffer_fichier;
 
 	//
@@ -252,7 +254,7 @@ int main(int argc, char* argv[])
     if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" ) {
         radio = new ReceiverHackRF(param.toDouble("fc"), param.toDouble("fe"));
 
-    } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf-old" ) {
+    } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "Soapy" ) {
         radio = new ReceiverSoapy(param.toDouble("fc"), param.toDouble("fe"));
 
     } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "uhd" ) {
@@ -266,7 +268,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        cout << "oups !" << endl;
+        cout << "Error in file (" << __FILE__ << ")" << " at line (" << __LINE__ << ")" << endl;
         cout << "mode_radio = " << param.toString("mode_radio") << endl;
         cout << "filename   = " << param.toString("filename")      << endl;
         exit( -1 );
@@ -374,7 +376,9 @@ int main(int argc, char* argv[])
 
     DownSampling down(2);
     PPM_Demodulator ppd;
-    std::vector<int8_t> buff_6;
+
+    std::vector<uint8_t> buff_5( 4 * f.frame_bits() );
+    std::vector<uint8_t> buff_6;
     std::vector<uint8_t> buff_7;
 
     BMP* bmp = nullptr;
@@ -419,16 +423,18 @@ int main(int argc, char* argv[])
         //
         //
         //
-        for(int k = 0; k <= (buffer_abs.size() - f.frame_bits()); k += 1)
+        const uint32_t verbose =  param.toInt("verbose");
+        const uint32_t length  = (buffer_abs.size() - 4 * f.frame_bits());
+        for(int k = 0; k <= length; k += 1)
 		{
+
             //
             //
             //
 		    float s;
             if( mode_inter == false ) {
                 timer.start_detection();
-                float *addr = buffer_abs.data() + k;
-                detect->execute(addr);
+                detect->execute( buffer_abs.data() + k );
                  s = detect->getValue(0);
                 timer.stop_detection();
             }else{
@@ -441,39 +447,35 @@ int main(int argc, char* argv[])
             //
             if (s > ps_min)
             {
-                detection[k] = 255;    // On indique que l'on a detecte la trame
-
                 timer.start_decoding();
                 nbTramesDetectees +=1;    // On vient de detecter qqchose
 
-                std::vector<int8_t> buff_5( 4 * f.frame_bits() );
+#if 0
                 for (int j=0; j < buff_5.size(); j += 1)
                 {
-                    int32_t v = buffer_abs[k+j];
-                    v = (v > +127) ? +127 : v;
-                    v = (v < -127) ? -127 : v;
+                    uint32_t v = buffer_abs[k+j];
+                    v = (v > +255) ? +255 : v;
                     buff_5[j]   = v;
                 }
-
+#else
+                cvt_float_u8::execute( buffer_abs.data() + k, &buff_5 );
+#endif
                 down.execute(buff_5, buff_6);
                 ppd.execute (buff_6, buff_7);
 
-                bool isOK = f.fill_frame_bits( buff_7 );
+                const bool isOK = f.fill_frame_bits( buff_7 );
                 if( isOK )
                 {
                     nbTotalTrames += 1;        // C'est bien une trame ADSB-like
                     nbBonsCRCs    += f.validate_crc();
 
-                    if( param.toBool("verbose") == true )
+                    if( verbose == 2 )
                     {
                         printf("%1.3f : ", s);
                         f.dump_frame();
                     }
 
-                    for(int i = 0; i < f.frame_bits() - 1; i += 1)  // On positionne la sortie detection afin
-                        detection[k+i] = 255;                       // d'indiquer que l'on a detecte la trame...
-
-                    k += f.frame_bits() - 1; // On saute tous les bits qui composaient notre trame...
+                    k += (4 * f.frame_bits()) - 1; // On saute tous les bits qui composaient notre trame...
 
                     // Début de la gestion et generation des images
                     if(f.get_type() == FRAME_NEW_IMAGE)
@@ -486,41 +488,40 @@ int main(int argc, char* argv[])
                         nBytesPerPixel = (bmp->bmp_info_header.bit_count / 8);
                         nBytesPerLine  = (bmp->bmp_info_header.width * nBytesPerPixel);
 
-                        printf("(DD) Creation d'une image ( %d x %d )\n", i_width, i_height);
+                        if( verbose >= 1 )
+                            printf("(DD) Creation d'une image ( %d x %d )\n", i_width, i_height);
 
                     }
                     else if(f.get_type() == FRAME_END_IMAGE)
                     {
-#ifdef _DEBUG_INFO_
-                        printf("(DD) Fin de reception de l'image\n");
-#endif
+                        if( verbose >= 1 )
+                            printf("(DD) Fin de reception de l'image\n");
                         bmp->write("image.bmp");
                     }
                     else if(f.get_type() == FRAME_NEW_LINE)
                     {
                         curr_x = 0;
                         curr_y = f.data_u32(0);
-#ifdef _DEBUG_INFO_
-                        printf("(DD) - Begin of line (%d)\n", curr_y);
-#endif
+
+                        if( verbose >= 1 )
+                            printf("(DD) - Begin of line (%d)\n", curr_y);
                     }
                     else if(f.get_type() == FRAME_END_LINE)
                     {
                         const uint32_t y_value = f.data_u32(0);
                         if( curr_y != y_value )
                             printf("(EE) - End of line (%d) but the curr_y value is %d\n", y_value, curr_y);
-#ifdef _DEBUG_INFO_
-                        else
+
+                        if( verbose >= 1 )
                             printf("(DD) - End of line (%d)\n", y_value);
-#endif
                     }
                     else if(f.get_type() == FRAME_INFOS)
                     {
                         if( curr_x < i_width )
                         {
-#ifdef _DEBUG_INFO_
-                            printf("(DD) --- Receiving pixel set (%d)\n", curr_x);
-#endif
+                            if( verbose >= 1 )
+                                printf("(DD) --- Receiving pixel set (%d)\n", curr_x);
+
                             uint8_t* ptr = bmp->data.data() + curr_y * nBytesPerLine + curr_x * nBytesPerPixel;
                             for( uint32_t i = 0; i < payload; i +=1 )
                                 ptr[i] = f.data(i);
@@ -531,19 +532,25 @@ int main(int argc, char* argv[])
                     }
                     else
                     {
-                        printf("(EE) Something strange happen...\n");
-                        exit( -1 );
+//                        printf("(WW) Something strange happen, the frame type is %d\n", f.get_type());
+//                        printf("(WW) %s :: %d\n", __FILE__, __LINE__);
+                        printf("%1.3f : ", s);
+                        f.dump_frame();
+//                        exit( -1 );
                     }
                     // Fin de la gestion et generation des images
                 }
                 timer.stop_decoding();
-            }else {
-                detection[k] = 0;    // On indique que l'on a detecte la trame
             }
         }
-
         loop_counter += 1;
 	}
+
+//	if( bmp != nullptr )
+//    {
+//        bmp->write("image.bmp");
+//        delete bmp;
+//    }
 
     printf("\n================================================================\n");
     std::cout << "loading    : " << timer.loading()     << std::endl;
