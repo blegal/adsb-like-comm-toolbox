@@ -15,8 +15,8 @@ ReceiverHackRF::ReceiverHackRF(float s_fc, float s_fe) : Radio(s_fc, s_fe), buff
     fech_hz   = s_fe;
     amplifier = false;
     antenna   = false;
-    vga_gain  = 30;    // 40; : validated values for adsb-like comm.
-    lna_gain  = 16;    // 32; : validated values for adsb-like comm.
+    vga_gain  = 30;//30;    // 40; : validated values for adsb-like comm.
+    lna_gain  = 16;//16;    // 32; : validated values for adsb-like comm.
 
     //
     // On veut une seconde de signal pour ne rien rater...
@@ -75,6 +75,7 @@ void ReceiverHackRF::initialize(){
     modules.push_back("000000000000000026b468dc33776d8f");
     modules.push_back("000000000000000075b068dc317bae07");
     modules.push_back("0000000000000000088869dc242e9d1b");
+    modules.push_back("0000000000000000088869dc3362561b");
 
     int result;
     result = hackrf_init();
@@ -264,7 +265,6 @@ void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer)
         fprintf(stderr, "ReceiverHackRF::reception() failed because device is not steraming: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
         exit( -1 );
     }
-//    std::cout << "(II) ---- There exist " << buff.NumElements() << " bytes available" << std::endl;
 
     const uint32_t toRead = 2 * cbuffer.size(); // le buffer parle en bytes (et non en nombre de couples I/Q)
     //
