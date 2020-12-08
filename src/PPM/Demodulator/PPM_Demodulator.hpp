@@ -19,7 +19,7 @@ public :
 	~PPM_Demodulator();
 
     void execute(std::vector<float >& ibuffer, std::vector<uint8_t>& obuffer);
-    void execute(std::vector<int8_t>& ibuffer, std::vector<uint8_t>& obuffer);
+    void execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer);
 };
 
 #endif

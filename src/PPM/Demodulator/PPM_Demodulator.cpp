@@ -31,7 +31,7 @@ void PPM_Demodulator::execute(std::vector<float>& ibuffer, std::vector<uint8_t>&
 }
 
 
-void PPM_Demodulator::execute(std::vector<int8_t>& ibuffer, std::vector<uint8_t>& obuffer)
+void PPM_Demodulator::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer)
 {
     // Le buffer de sortie doit etre 2x plus petit...
     if( obuffer.size() != (ibuffer.size()/2) )
