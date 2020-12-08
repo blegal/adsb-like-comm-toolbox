@@ -43,9 +43,9 @@ void DownSampling::execute(std::vector<int8_t>& ibuffer, std::vector<int8_t>& ob
     const uint32_t ll = obuffer.size();
     for(uint32_t i = 0 ; i < ll; i += 1)
     {
-        int32_t sum = ibuffer[scale * i];
+        int32_t sum = (int32_t)ibuffer[scale * i];
         for(uint32_t j = 1 ; j < scale; j += 1)
-            sum += ibuffer[scale * i + j];
+            sum += (int32_t)ibuffer[scale * i + j];
 
         sum = (sum > +127) ? +127 : sum;
         sum = (sum < -127) ? -127 : sum;

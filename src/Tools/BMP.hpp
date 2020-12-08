@@ -5,12 +5,15 @@
  *
  */
 
+#ifndef _BMP_CLASS_
+#define _BMP_CLASS_
 
 #pragma once
 #include <fstream>
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include <cstdint>
 
 #pragma pack(push, 1)
 struct BMPFileHeader {
@@ -301,3 +304,5 @@ private:
         }
     }
 };
+
+#endif

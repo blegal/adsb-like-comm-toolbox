@@ -18,7 +18,7 @@ void DetecteurScalar::execute(float *buffer)
 		sum += (temp * temp);
 	}
 	sum = 8.0f * sum;
-	array[0] = (ps / sqrt(sum));
+	array[0] = (ps / sqrt( sum ));
 }
 
 

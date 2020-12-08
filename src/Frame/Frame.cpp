@@ -5,14 +5,14 @@ Frame::Frame(const uint32_t n, const uint8_t type)    // payload size in bytes
     //
     // On code le preambule ADSB
     //
-    header.push_back( 1 );  //
-    header.push_back( 1 );  //
-    header.push_back( 2 );
-    header.push_back( 0 );
-    header.push_back( 0 );  //
-    header.push_back( 2 );  // 0 0
-    header.push_back( 2 );
-    header.push_back( 2 );
+    header.push_back( 1 );  // 1
+    header.push_back( 1 );  // 2
+    header.push_back( 2 );  // 3
+    header.push_back( 0 );  // 4
+    header.push_back( 0 );  // 5
+    header.push_back( 2 );  // 6
+    header.push_back( 2 );  // 7
+    header.push_back( 2 );  // 8
 
     //
     // On alloue l'espace memoire associé aux données + 24b CRC
