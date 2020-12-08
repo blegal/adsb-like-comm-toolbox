@@ -1,74 +1,15 @@
 #include "RadioFichierRAW.hpp"
 
-void printHistogram(int array[], int N)
-{
-    int scale = 8;
-    int n = N / scale;
-    int arr[n];
-
-    int Sum = 0;
-    for(int i = 0; i < N; i += scale)
-    {
-        int sum  = array[i];
-        for(int j = 0; j < scale; j += 1)
-            sum += array[i+j];
-        Sum     += sum;
-        arr[i/scale] = sum;
-    }
-
-    for(int i = 0; i < n; i += 1)
-        arr[i] = (100 * arr[i]) / Sum;
-
-    int maxEle = *max_element(arr, arr + n);
-    for (int i = maxEle; i >= 0; i--) {
-        cout.width(2);
-        cout << right << i << " | ";
-        for (int j = 0; j < n; j++) {
-
-            // if array of element is greater
-            // then array it print x
-            if (arr[j] >= i)
-                cout << " x ";
-
-                // else print blank spaces
-            else
-                cout << "   ";
-        }
-        cout << "\n";
-    }
-
-    // print last line denoted by ----
-    for (int i = 0; i < n + 3; i++)
-        cout << "---";
-
-    cout << "\n";
-    cout << "     ";
-
-    for (int i = 0; i < n; i++) {
-        cout.width(2); // width for a number
-        cout << right << arr[i] << " ";
-    }
-}
 
 RadioFichierRAW::RadioFichierRAW(std::string filen) : Radio(0, 0)
 {
     filename = filen;
-
-//    for(uint32_t i = 0; i < 256; i += 1 )
-//        array[ i ] = 0;
-
 }
 
-#if 0
-RadioFichierRAW::RadioFichierRAW(Parameters& param) : Radio(0, 0)
-{
-    filename = param.toString("filename");
-}
-#endif
 
 RadioFichierRAW::~RadioFichierRAW()
 {
-//    printHistogram(array, 256);
+
 }
 
 

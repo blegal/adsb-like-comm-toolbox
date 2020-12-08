@@ -8,8 +8,6 @@ private :
     std::vector<int8_t> data;
     std::string filename;
 
-//    int32_t array[256];
-
 public :
     RadioFichierRAW(std::string filen);
 	~RadioFichierRAW();
@@ -20,7 +18,6 @@ public :
 
     void start_engine();
     void stop_engine ();
-
 };
 
 #endif
