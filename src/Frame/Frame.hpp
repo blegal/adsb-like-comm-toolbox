@@ -15,12 +15,12 @@
 
 using namespace std;
 
-#define FRAME_INFOS         0x01
-#define FRAME_NEW_IMAGE     0x02
-#define FRAME_END_IMAGE     0x04
-#define FRAME_NEW_LINE      0x08
-#define FRAME_END_LINE      0x10
-#define FRAME_EMPTY         0x20
+#define FRAME_INFOS         0x01    // 1111 0000
+#define FRAME_NEW_IMAGE     0x02    // 0000 1111
+#define FRAME_END_IMAGE     0x04    // 1100 1100
+#define FRAME_NEW_LINE      0x08    // 0011 0011
+#define FRAME_END_LINE      0x10    // 1010 1010
+#define FRAME_EMPTY         0x20    // 1001 1001
 
 #define str_FRAME_INFOS         "FRAME_INFOS   "
 #define str_FRAME_NEW_IMAGE     "FRAME_NEW_IMG "

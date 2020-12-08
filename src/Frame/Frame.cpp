@@ -309,8 +309,17 @@ void Frame::dump_frame()
       printf("%s0x%2.2X%s ", "\033[1;33m", p[i], "\033[0m");
 #else
     printf("%s0x", "\033[1;33m");
-    for(uint32_t i = 0; i < payload_size(); i += 1)
-        printf("%2.2X", p[i]);
+    if( payload_size() <= 48 )
+    {
+        for(uint32_t i = 0; i < payload_size(); i += 1)
+            printf("%2.2X", p[i]);
+    }else{
+        for(uint32_t i = 0; i < 16; i += 1)
+            printf("%2.2X", p[i]);
+        printf("........");
+        for(uint32_t i = payload_size() - 16; i < payload_size(); i += 1)
+            printf("%2.2X", p[i]);
+    }
     printf("%s", "\033[0m");
 #endif
     printf(" | ");
@@ -318,8 +327,10 @@ void Frame::dump_frame()
     uint32_t* r = (uint32_t*)crc_to_emit();
     printf("CRC32b = %s0x%8.8X%s | ", "\033[1;32m", r[0], "\033[0m");
 
-    if( validate_crc() == true ) printf("CRC is %sOK...%s\n", "\033[1;32m", "\033[0m");
-    else printf("CRC is %sKO !!!%s\n", "\033[1;31m", "\033[0m");
+    if( validate_crc() == true )
+        printf("CRC is %sOK...%s\n", "\033[1;32m", "\033[0m");
+    else
+        printf("CRC is %sKO !!!%s\n", "\033[1;31m", "\033[0m");
 
 }
 
