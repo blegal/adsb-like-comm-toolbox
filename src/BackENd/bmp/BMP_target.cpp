@@ -88,6 +88,7 @@ void BMP_target::execute(Frame* f)
     else
     {
         printf("(EE) Something strange happen...\n");
+        printf("(EE) %s :: %d\n", __FILE__, __LINE__);
         exit( -1 );
     }
     // Fin de la gestion et generation des images
