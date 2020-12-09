@@ -15,16 +15,20 @@
 #include "./Tools/Parameters.hpp"
 #include "./Tools/CTickCounter.hpp"
 
+#include "./Tools/ExportVector/ExportVector.hpp"
+
 //
 //  Definition des modules permettant d'utiliser le module Radio (SdR)
 //
 
-#include "./Acquisition/Radio.hpp"
-#include "./Acquisition/File/RadioFichierRAW.hpp"
-#include "./Acquisition/File/RadioFichierUHD.hpp"
-#include "./Acquisition/Radio/ReceiverUSRP.hpp"
-#include "./Acquisition/Radio/RadioHackRF.hpp"
-#include "./Acquisition/Radio/ReceiverHackRF.hpp"
+//#include "./Acquisition/Radio.hpp"
+//#include "./Acquisition/File/ReceiverFileRAW.hpp"
+//#include "./Acquisition/File/ReceiverFileUHD.hpp"
+//#include "./Acquisition/Radio/ReceiverUSRP.hpp"
+//#include "./Acquisition/Radio/ReceiverSoapy.hpp"
+//#include "./Acquisition/Radio/ReceiverHackRF.hpp"
+#include "./Acquisition/Library/ReceiverLibrary.hpp"
+
 
 //#define _TIME_PROFILE_
 
@@ -32,20 +36,22 @@
 //  Conversion des nombres complexes => module flottant
 //
 
-#include "./Conversion/INTER_x86/ConversionScalar.hpp"
-#include "./Conversion/INTER_NEON/ConversionNEON.hpp"
-#include "./Conversion/INTER_AVX2/ConversionAVX2.hpp"
+//#include "./Conversion/INTER_x86/CplxModule_x86.hpp"
+//#include "./Conversion/INTER_NEON/CplxModule_NEON.hpp"
+//#include "./Conversion/INTER_AVX2/CplxModule_AVX2.hpp"
+#include "./Conversion/Library/CplxModuleLibrary.hpp"
 
 
 //
 //  Correlateur permettant de détecter le prologue des trames ADSB
 //
 
-#include "./Detecteur/Detecteur.hpp"
-#include "./Detecteur/INTER_x86/DetecteurScalar.hpp"
-#include "./Detecteur/INTRA_NEON/Detecteur_NEON.hpp"
-#include "./Detecteur/INTRA_AVX2/Detecteur_AVX2.hpp"
-//#include "Detecteur/INTER_AVX2/Detecteur_NEON.hpp"
+//#include "./Detecteur/Detector.hpp"
+//#include "./Detecteur/INTER_x86/DetectorScalar.hpp"
+//#include "./Detecteur/INTRA_NEON/Detector_NEON.hpp"
+//#include "./Detecteur/INTRA_AVX2/Detector_AVX2.hpp"
+#include "./Detecteur/Library/DetectorLibrary.hpp"
+//#include "Detector/INTER_AVX2/Detector_NEON.hpp"
 
 #include "./Frame/Frame.hpp"
 #include "./Sampling/Down/DownSampling.hpp"
@@ -91,11 +97,11 @@ int main(int argc, char* argv[])
     sigIntHandler.sa_flags = 0;
     sigaction(SIGINT, &sigIntHandler, NULL);
 
-	uint32_t nbTramesDetectees = 0; // nbre trame ...
+    uint32_t nbTramesDetectees = 0; // nbre trame ...
     uint32_t nbTotalTrames     = 0;
     uint32_t nbBonsCRCs        = 0;
 
-	int c; //getopt
+    int c; //getopt
 
     Parameters param;
 
@@ -104,6 +110,10 @@ int main(int argc, char* argv[])
 
     param.set("fc",      433000000.0);
     param.set("fe",        1000000.0);
+
+    param.set("hackrf_amplifier", -1);
+    param.set("hackrf_vga_gain",  -1);
+    param.set("hackrf_lna_gain", -1);
 
     param.set("mode_conv",        "scalar");
     param.set("mode_corr",        "scalar");
@@ -119,47 +129,47 @@ int main(int argc, char* argv[])
 
     param.set("crystal_correct",   0);
 
-	static struct option long_options[] =
-	{
-		{"verbose", no_argument,         NULL, 'v'},  // affiche temps sur chaque boucle Np + cplx => abs
-		{"seuil",   required_argument,   NULL, 's'},  // pour changer la valeur min de la correlation (synchro)
-		{"np",      required_argument,   NULL, 'n'},  // pour changer le nombre de boucle Np (ie nbre echantillon*200000) // Np = 10 => 0.5 s
+    static struct option long_options[] =
+            {
+                    {"verbose", no_argument,         NULL, 'v'},  // affiche temps sur chaque boucle Np + cplx => abs
+                    {"seuil",   required_argument,   NULL, 's'},  // pour changer la valeur min de la correlation (synchro)
+                    {"np",      required_argument,   NULL, 'n'},  // pour changer le nombre de boucle Np (ie nbre echantillon*200000) // Np = 10 => 0.5 s
 
-		{"conv",    required_argument,   NULL, 'c'}, // a partir d'un fichier
-		{"corr",    required_argument,   NULL, 'd'}, // a partir d'un fichier
+                    {"conv",    required_argument,   NULL, 'c'}, // a partir d'un fichier
+                    {"corr",    required_argument,   NULL, 'd'}, // a partir d'un fichier
 
-		{"radio",   required_argument,   NULL, 'r'}, // a partir d'un fichier
-		{"file",    required_argument,   NULL, 'F'}, // a partir d'un fichier
+                    {"radio",   required_argument,   NULL, 'r'}, // a partir d'un fichier
+                    {"file",    required_argument,   NULL, 'F'}, // a partir d'un fichier
 
-		{"fc",      required_argument,   NULL, 'f'}, // changer la frequence de la porteuse
-        {"fe",      required_argument,   NULL, 'e'}, // changer la frequence echantillonnage
+                    {"fc",      required_argument,   NULL, 'f'}, // changer la frequence de la porteuse
+                    {"fe",      required_argument,   NULL, 'e'}, // changer la frequence echantillonnage
 
-        {"payload", required_argument,   NULL, 'p'}, // changer la frequence echantillonnage
+                    {"payload", required_argument,   NULL, 'p'}, // changer la frequence echantillonnage
 
-        {"inter",   no_argument,         NULL, 'I'}, // changer la frequence echantillonnage
-        {"intra",   no_argument,         NULL, 'i'}, // changer la frequence echantillonnage
-        {"dumpf",   no_argument,         NULL, 'D'}, // changer la frequence echantillonnage
-        {"ppm",  required_argument, NULL, 'P'}, // changer la frequence echantillonnage
+                    {"inter",   no_argument,         NULL, 'I'}, // changer la frequence echantillonnage
+                    {"intra",   no_argument,         NULL, 'i'}, // changer la frequence echantillonnage
+                    {"dumpf",   no_argument,         NULL, 'D'}, // changer la frequence echantillonnage
+                    {"ppm",  required_argument, NULL, 'P'}, // changer la frequence echantillonnage
 
-		{NULL,      0,                  NULL, 0}
-	};
+                    {NULL,      0,                  NULL, 0}
+            };
 
-	int option_index = 0;
+    int option_index = 0;
 
     cout << "par Florian LOUPIAS - Février 2020" << endl;
     cout << "par Bertrand LE GAL - Octobre 2020" << endl;
-	cout << "==================================== ADSB ====================================" << endl;
-	// ============== GETOPT ================
-	printf("%s",KRED);
+    cout << "==================================== ADSB ====================================" << endl;
+    // ============== GETOPT ================
+    printf("%s",KRED);
 
-	while ((c = getopt_long(argc, argv, "be:p:f:n:s:vt8",long_options, &option_index)) != -1) {
-		switch (c) {
-			case 0:
-			    printf ("%soption %s%s", long_options[option_index].name, KNRM, KRED);
-			    if (optarg)
-				printf ("%s with arg %s%s", optarg, KNRM, KRED);
-			    printf ("\n");
-			    break;
+    while ((c = getopt_long(argc, argv, "be:p:f:n:s:vt8",long_options, &option_index)) != -1) {
+        switch (c) {
+            case 0:
+                printf ("%soption %s%s", long_options[option_index].name, KNRM, KRED);
+                if (optarg)
+                    printf ("%s with arg %s%s", optarg, KNRM, KRED);
+                printf ("\n");
+                break;
 
             case 'f':
                 param.set("fc",   std::stod(optarg));
@@ -173,17 +183,17 @@ int main(int argc, char* argv[])
                 param.set("payload",   std::atoi(optarg));
                 break;
 
-			case 's':
+            case 's':
                 param.set("ps_min",   std::stof(optarg));
-			    if ( (param.toFloat("ps_min") > 1.0f) || (param.toFloat("ps_min") < 0.0f)) {
+                if ( (param.toFloat("ps_min") > 1.0f) || (param.toFloat("ps_min") < 0.0f)) {
                     printf("erreur : --produit_scalaire (ps_min) doit etre compris entre 0 et 1\n");
                     exit( -1 );
                 }
-			    break;
+                break;
 
-			case 'v':
+            case 'v':
                 param.set("verbose", true);
-			    break;
+                break;
 
             case '?':
                 break;
@@ -223,86 +233,31 @@ int main(int argc, char* argv[])
                 printf("%soption crystal_correct = %d dB%s\n", KNRM, param.toInt("crystal_correct"), KRED);
                 break;
 
-		    default:
-			    printf ("?? getopt returned character code 0%o ??\n", c);
-		}
-	}
-	if (optind < argc) {
-		printf ("non-option ARGV-elements: ");
+            default:
+                printf ("?? getopt returned character code 0%o ??\n", c);
+        }
+    }
+    if (optind < argc) {
+        printf ("non-option ARGV-elements: ");
         while (optind < argc)
             printf ("%s ", argv[optind++]);
-            printf ("\n");
-            exit( -1 );
-	}
-	printf("%s",KNRM);
-	cout << endl;
+        printf ("\n");
+        exit( -1 );
+    }
+    printf("%s",KNRM);
+    cout << endl;
 
-    vector<complex<float> > buffer   ( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
-    vector<uint8_t        > detection( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
+    vector<complex<float> > buffer( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
     vector<complex<float> > buffer_fichier;
-
-	//
-	// Selection du module SDR employé dans le programme
-	//
-
-    Radio* radio;
-    if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" ) {
-        radio = new ReceiverHackRF(param.toDouble("fc"), param.toDouble("fe"));
-    } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf-old" ) {
-        radio = new RadioHackRF(param.toDouble("fc"), param.toDouble("fe"));
-    } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "uhd" ) {
-        radio = new ReceiverUSRP(param.toDouble("fc"), param.toDouble("fe"));
-    } else if( param.toString("mode_radio") == "file" && (param.toString("filename").find(".raw") != -1) ) {
-        radio = new RadioFichierRAW(param.toString("filename"));
-    } else if( param.toString("mode_radio") == "file" && (param.toString("filename").find(".txt") != -1) ) {
-        radio = new RadioFichierUHD(param.toString("filename"));
-    }
-    else
-    {
-        cout << "oups !" << endl;
-        cout << "mode_radio = " << param.toString("mode_radio") << endl;
-        cout << "filename   = " << param.toString("filename")      << endl;
-        exit( -1 );
-    }
+    vector<uint8_t        > detection( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
 
     //
-    // Selection du module de correlation employé dans le programme
+    // Selection du module SDR employé dans le programme
     //
 
-    Detecteur* detect;
-    if( param.toString("mode_corr") == "scalar" ){
-        detect = new DetecteurScalar();
-    } else if( param.toString("mode_corr") == "AVX2" ){
-        detect = new Detecteur_AVX2();
-    } else if( param.toString("mode_corr") == "NEON" ){
-        detect = new Detecteur_NEON();
-    }
-    else
-    {
-        std::cout << "(EE) Le type de module de Correlation demandé n'est actuellement pas dispnible :" << std::endl;
-        std::cout << "(EE) type = " << param.toString("mode_corr")                                   << std::endl;
-        exit( -1 );
-    }
-
-
-    //
-    // Selection du module de conversion employé dans le programme
-    //
-
-    Conversion* conv;
-    if( param.toString("mode_conv") == "scalar" ){
-        conv = new ConversionScalar();
-    } else if( param.toString("mode_conv") == "AVX2" ) {
-        conv = new ConversionAVX2();
-    } else if( param.toString("mode_conv") == "NEON" ) {
-        conv = new ConversionNEON();
-    }
-    else
-    {
-        std::cout << "(EE) Le type de module de Conversion demandé n'est actuellement pas dispnible :" << std::endl;
-        std::cout << "(EE) type = " << param.toString("mode_conv")                                     << std::endl;
-        exit( -1 );
-    }
+    Radio*      radio  = ReceiverLibrary::allocate( param );
+    Detector*   detect = DetectorLibrary::allocate( param );
+    Conversion* conv   = CplxModuleLibrary::allocate  (param );
 
     Frame f( param.toInt("payload") );
 
@@ -374,26 +329,22 @@ int main(int argc, char* argv[])
 
     const float ps_min = param.toFloat("ps_min");
     uint32_t loop_counter = 0;
-	while( radio->alive() && (isFinished == false) )
-	{
-	    //
-	    //
-	    //
+    const bool verbose          = param.toBool("verbose");
+    const bool dump_first_frame = param.toBool("dump_first_frame");
+    while( radio->alive() && (isFinished == false) )
+    {
         timer.start_loading();
         radio->reception(buffer);
         timer.stop_loading();
 
-        //
-        //
-        //
         timer.start_conversion();
-		std::vector<float> buffer_abs;
+        std::vector<float> buffer_abs;
         conv->execute( &buffer, &buffer_abs );
         timer.stop_conversion();
 
-        //
-        //
-        //
+        // ============== detection & decodage ================
+
+
         std::vector<float> buffer_detect;
         if( param.toBool("mode_inter") == true )
         {
@@ -403,34 +354,29 @@ int main(int argc, char* argv[])
             timer.stop_detection();
         }
 
+        int k=0;
 
-        //
-        //
-        //
-        for(int k = 0; k <= (buffer_abs.size() - f.frame_bits()); k += 1)
-		{
-		    float s;
-            if( param.toBool("mode_inter") == false ) {
+        const bool mode_inter = param.toBool("mode_inter");
+        while ( k <= (buffer_abs.size() - f.frame_bits()) ) {
+
+            float s;
+            if( mode_inter == false ) {
                 timer.start_detection();
                 float *addr = buffer_abs.data() + k;
                 detect->execute(addr);
-                 s = detect->getValue(0);
+                s = detect->getValue(0);
                 timer.stop_detection();
             }else{
                 s = buffer_detect[k];
             }
 
-            //
-            //
-            //
             if (s > ps_min)
             {
-                detection[k] = 255;    // On indique que l'on a detecte la trame
-
+                detection[k] = 250;
                 timer.start_decoding();
                 nbTramesDetectees +=1;    // On vient de detecter qqchose
 
-                std::vector<int8_t> buff_5( 4 * f.frame_bits() );
+                std::vector<uint8_t> buff_5( 4 * f.frame_bits() );
                 for (int j=0; j < buff_5.size(); j += 1){
                     int32_t v = buffer_abs[k+j];
                     v = (v > +127) ? +127 : v;
@@ -438,70 +384,64 @@ int main(int argc, char* argv[])
                     buff_5[j]   = v;
                 }
 
+                std::vector<uint8_t> buff_6;
+                std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));
+
                 DownSampling down(2);
-                std::vector<int8_t> buff_6;
                 down.execute( buff_5, buff_6 );
 
                 PPM_Demodulator ppd;
-                std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));
                 ppd.execute(buff_6, buff_7);
 
                 bool isOK = f.fill_frame_bits( buff_7 );
                 if( isOK )
                 {
                     nbTotalTrames += 1;        // C'est bien une trame ADSB-like
-                    nbBonsCRCs    += f.validate_crc();
+                    bool valCRC    = f.validate_crc();
+                    nbBonsCRCs    += valCRC;
 
-                    if( param.toBool("verbose") == true )
+                    if( verbose == true )
                     {
+                        //printf("%6d : %1.3f : ", k, s);
                         printf("%1.3f : ", s);
                         f.dump_frame();
                     }
 
-                    for(int i = 0; i < f.frame_bits() - 1; i += 1)  // On positionne la sortie detection afin
-                        detection[k+i] = 255;                          // d'indiquer que l'on a detecte la trame...
+                    const int fsize = 2 * 2 * f.frame_bits();
+                    for(int q = 0; q < fsize - 1; q += 1)
+                        detection[k+q] = valCRC ? 250 : 160 ;
 
-                    k += f.frame_bits() - 1; // On saute tous les bits qui composaient notre trame...
+                    k += fsize - 1; // On saute tous les bits qui composaient notre trame...
+                }else{
+                    detection[k] = 0;
                 }
+#if 0
                 printf("(DD) nbTramesDetectees = %d | nbTotalTrames = %4d  |  nbBonsCRCs = %4d\n", nbTramesDetectees, nbTotalTrames, nbBonsCRCs);
+#endif
                 timer.stop_decoding();
-            }else {
-                detection[k] = 0;    // On indique que l'on a detecte la trame
+            }else{
+                detection[k] = 0;
             }
+            k++;
         }
 
-        if( false )
-//        if( param.toBool("dump_first_frame") == true && loop_counter == 0 )
+        if( dump_first_frame == true && loop_counter == 0 )
         {
-            printf("(DD) Starting file saving...\n");
-            FILE* f = fopen("capture.IQ.raw", "wb");
-            float* ptr_d = (float*)buffer.data();
-            std::vector<uint8_t> uint8_IQ( 2 * buffer.size() );
-            for(uint32_t i = 0; i < uint8_IQ.size(); i += 1 )
-                uint8_IQ[i] = (*ptr_d++);
-            fwrite( uint8_IQ.data(), 1, uint8_IQ.size(), f );
-            fclose( f );
-
-            FILE* g = fopen("capture.MOD.raw", "wb");
-            std::vector<uint8_t> uint8_t_abs( buffer_abs.size() );
-            for(uint32_t i = 0; i < uint8_t_abs.size(); i += 1 )
-            {
-                fwrite( &uint8_t_abs[i], 1, sizeof(uint8_t), g );
-                fwrite( &detect     [i], 1, sizeof(uint8_t), g );
-            }
-            fclose( g );
-            printf("(DD) End of file saving...\n");
+            ExportVector::SaveToCS8(buffer, "Capture.IQSamples.cs8" );
+            ExportVector::SaveToU8 (buffer_abs,"Capture.Module.u8");
+            ExportVector::SaveToU8 (detection, "Capture.Detect.u8");
             exit( 0 );
         }
+
         loop_counter += 1;
-	}
+    }
 
     printf("\n================================================================\n");
     std::cout << "loading    : " << timer.loading()     << std::endl;
     std::cout << "conversion : " << timer.conversion()  << std::endl;
     std::cout << "decoding   : " << timer.detection()   << std::endl;
     std::cout << "criterion  : " << timer.decoding()   << std::endl;
-	printf("================================================================\n");
+    printf("================================================================\n");
 
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
@@ -513,9 +453,9 @@ int main(int argc, char* argv[])
     printf("\n");
     std::cout << "Nombre de trames emises  (frames)  = " << nbBonsCRCs                                  << std::endl;
 
-printf("%s", KGRN);
+    printf("%s", KGRN);
     std::cout << "Temps total d'émission   (seconds) = " << elapsed.count()                             << std::endl;
-printf("%s", KNRM);
+    printf("%s", KNRM);
 
     std::cout << "Trames par seconde       (frames)  = " << (nbBonsCRCs/elapsed.count())                    << std::endl;
     std::cout << "Débit emis par seconde   (bits)    = " << (nbBonsCRCs/elapsed.count()*f.frame_bits())     << std::endl;
@@ -538,5 +478,5 @@ printf("%s", KNRM);
     delete detect;
     delete conv;
 
-	return 0;
+    return 0;
 }

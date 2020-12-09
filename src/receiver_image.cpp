@@ -24,8 +24,8 @@
 //
 
 #include "./Acquisition/Radio.hpp"
-#include "./Acquisition/File/RadioFichierRAW.hpp"
-#include "./Acquisition/File/RadioFichierUHD.hpp"
+#include "./Acquisition/File/ReceiverFileRAW.hpp"
+#include "./Acquisition/File/ReceiverFileUHD.hpp"
 #include "./Acquisition/Radio/ReceiverUSRP.hpp"
 #include "./Acquisition/Radio/ReceiverSoapy.hpp"
 #include "./Acquisition/Radio/ReceiverHackRF.hpp"
@@ -36,20 +36,20 @@
 //  Conversion des nombres complexes => module flottant
 //
 
-#include "./Conversion/INTER_x86/ConversionScalar.hpp"
-#include "./Conversion/INTER_NEON/ConversionNEON.hpp"
-#include "./Conversion/INTER_AVX2/ConversionAVX2.hpp"
+#include "./Conversion/INTER_x86/CplxModule_x86.hpp"
+#include "./Conversion/INTER_NEON/CplxModule_NEON.hpp"
+#include "./Conversion/INTER_AVX2/CplxModule_AVX2.hpp"
 
 
 //
 //  Correlateur permettant de détecter le prologue des trames ADSB
 //
 
-#include "./Detecteur/Detecteur.hpp"
-#include "./Detecteur/INTER_x86/DetecteurScalar.hpp"
-#include "./Detecteur/INTRA_NEON/Detecteur_NEON.hpp"
-#include "./Detecteur/INTRA_AVX2/Detecteur_AVX2.hpp"
-//#include "Detecteur/INTER_AVX2/Detecteur_NEON.hpp"
+#include "./Detecteur/Detector.hpp"
+#include "./Detecteur/INTER_x86/DetectorScalar.hpp"
+#include "./Detecteur/INTRA_NEON/Detector_NEON.hpp"
+#include "./Detecteur/INTRA_AVX2/Detector_AVX2.hpp"
+//#include "Detector/INTER_AVX2/Detector_NEON.hpp"
 
 #include "./Frame/Frame.hpp"
 #include "./Sampling/Down/DownSampling.hpp"
@@ -261,10 +261,10 @@ int main(int argc, char* argv[])
         radio = new ReceiverUSRP(param.toDouble("fc"), param.toDouble("fe"));
 
     } else if( param.toString("mode_radio") == "file" && (param.toString("filename").find(".raw") != -1) ) {
-        radio = new RadioFichierRAW(param.toString("filename"));
+        radio = new ReceiverFileRAW(param.toString("filename"));
 
     } else if( param.toString("mode_radio") == "file" && (param.toString("filename").find(".txt") != -1) ) {
-        radio = new RadioFichierUHD(param.toString("filename"));
+        radio = new ReceiverFileUHD(param.toString("filename"));
     }
     else
     {
@@ -278,13 +278,13 @@ int main(int argc, char* argv[])
     // Selection du module de correlation employé dans le programme
     //
 
-    Detecteur* detect;
+    Detector* detect;
     if( param.toString("mode_corr") == "scalar" ){
-        detect = new DetecteurScalar();
+        detect = new DetectorScalar();
     } else if( param.toString("mode_corr") == "AVX2" ){
-        detect = new Detecteur_AVX2();
+        detect = new Detector_AVX2();
     } else if( param.toString("mode_corr") == "NEON" ){
-        detect = new Detecteur_NEON();
+        detect = new Detector_NEON();
     }
     else
     {
@@ -300,11 +300,11 @@ int main(int argc, char* argv[])
 
     Conversion* conv;
     if( param.toString("mode_conv") == "scalar" ){
-        conv = new ConversionScalar();
+        conv = new CplxModule_x86();
     } else if( param.toString("mode_conv") == "AVX2" ) {
-        conv = new ConversionAVX2();
+        conv = new CplxModule_AVX2();
     } else if( param.toString("mode_conv") == "NEON" ) {
-        conv = new ConversionNEON();
+        conv = new CplxModule_NEON();
     }
     else
     {

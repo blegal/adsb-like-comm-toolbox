@@ -1,4 +1,8 @@
 #include <iostream>
+#include <complex>
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
 #include <vector>
 #include <math.h>
 #include <bitset>
@@ -9,15 +13,21 @@
 #include <chrono>
 #include <getopt.h>
 #include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 
 #include "./Frame/Frame.hpp"
 
-#include "./Tools/BMP.hpp"
 #include "./Tools/Parameters.hpp"
 
 #include "./PPM/Modulator/PPM_Modulator.hpp"
 #include "./Sampling/Up/UpSampling.hpp"
 #include "./IQ/Insertion/IQ_Insertion.hpp"
+
+#include "./IQ/Removing/IQ_Removing.hpp"
+#include "./Sampling/Down//DownSampling.hpp"
+#include "./PPM/Demodulator/PPM_Demodulator.hpp"
 
 #include "./Emitter/Library/EmitterLibrary.hpp"
 
@@ -62,7 +72,6 @@ int main(int argc, char* argv[])
 
     param.set("mode_radio",   "radio");
     param.set("filename",   "hackrf");
-    param.set("bmp_file",   "image.bmp");
 
     param.set("fc",      433000000.0);
     param.set("fe",        1000000.0);
@@ -90,9 +99,6 @@ int main(int argc, char* argv[])
 
                     {"fc",       required_argument, NULL, 'c'}, // changer la frequence de la porteuse
                     {"fe",       required_argument, NULL, 'e'}, // changer la frequence echantillonnage
-
-                    {"payload",     required_argument, NULL, 'p'}, // changer la frequence de la porteuse
-                    {"bmp_file",    required_argument, NULL, 'b'}, // changer la frequence de la porteuse
 
                     {"verbose",           no_argument, NULL, 'v'}, // changer la frequence de la porteuse
                     {"sleep",       required_argument, NULL, 's'}, // changer la frequence echantillonnage
@@ -149,10 +155,6 @@ int main(int argc, char* argv[])
                 param.set("filename",   optarg);
                 break;
 
-            case 'b':
-                param.set("bmp_file",   optarg);
-                break;
-
             case 'f':
                 param.set("mode_radio",   "file");
                 param.set("filename",   optarg);
@@ -202,40 +204,108 @@ int main(int argc, char* argv[])
 
 
     //
-    // On selectionne le module d'emission en fonction des choix de l'utilisateur
+    // We create the frame
     //
+#if 0
+    if( 0 )
+    {
+        const uint32_t payload    = param.toInt("payload");
+
+        Frame f(payload);
+
+        //
+        // We fill the frame content
+        //
+        for (uint32_t i = 0; i < payload; i += 1)
+            f.data(i, i);
+        f.compute_crc();
+
+        //
+        // We show the frame content
+        //
+        f.dump_frame();
+
+        /////////////////
+
+
+        std::vector<uint8_t> buff_1(8 + 8 * (2 + 16 + 4));
+        f.get_frame_bits(buff_1);
+
+    //    std::cout << "Transmitted bits" << std::endl;
+    //    dump( buff_1 );
+
+        PPM_Modulator ppm(120);
+        std::vector<int8_t> buff_2(8 + 8 * (2 + 16 + 4));
+        ppm.execute(buff_1, buff_2);
+
+    //    std::cout << "Modulated bits" << std::endl;
+    //    dump( buff_2 );
+
+        UpSampling up(2);
+        std::vector<int8_t> buff_3;
+        up.execute(buff_2, buff_3);
+
+    //    std::cout << "UpSampled bits" << std::endl;
+    //    dump( buff_3 );
+
+        IQ_Insertion iqi;
+        std::vector<int8_t> buff_4;
+        iqi.execute(buff_3, buff_4);
+
+        // Inverse process
+
+        IQ_Removing iqr;
+        std::vector<int8_t> buff_5;
+        iqr.execute(buff_4, buff_5);
+
+        DownSampling down(2);
+        std::vector<int8_t> buff_6;
+        down.execute(buff_5, buff_6);
+
+        PPM_Demodulator ppd;
+        std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));
+        ppd.execute(buff_6, buff_7);
+
+        Frame g(payload);
+        g.fill_frame_bits(buff_7);
+        g.dump_frame();
+    }
+#endif
+
     Emitter*   radio = EmitterLibrary::allocate( param );
+//    if( (param.toString("mode_radio") == "radio") && (param.toString("filename") == "hackrf") )
+//    {
+//        radio = new EmitterHackRF(param.toDouble("fc"), param.toDouble("fe_real"));
+//    }
+//    else if( param.toString("mode_radio") == "file" )
+//    {
+//        radio = new EmitterFileRAW( param.toString("filename") );
+//    }
+//    else
+//    {
+//        cout << "oups !" << endl;
+//        cout << "mode_radio = " << param.toString("mode_radio") << endl;
+//        cout << "filename   = " << param.toString("filename")   << endl;
+//        exit( -1 );
+//    }
 
     radio->initialize();
     radio->start_engine();
     radio->set_txvga_gain( param.toInt("tx_gain") );
     usleep( param.toInt("sleep_time") );
 
-
-    //
-    // On cree les modules qui vont nous être utile pour réaliser la communication
-    //
-
     Frame f( param.toInt("payload") );
-    PPM_Modulator ppm( 120 ); // niveau de valeur min-max supporté par la hackrf
+
+    PPM_Modulator ppm( 120 );
+
     UpSampling up( 2 * param.toInt("surEch") ); // 2 necessaire pour le recepteur x fois pour le DAC
+
     IQ_Insertion iqi;
-
-
-    //
-    // On cree les buffers que lesquels les differents processing vont etre appliqués
-    //
 
     std::vector<uint8_t> buff_1( f.frame_bits() );
     std::vector<int8_t>  buff_2( f.frame_bits() );
-    std::vector<int8_t>  buff_3( 2 * f.frame_bits() );
-    std::vector<int8_t>  buff_4( 4 * f.frame_bits() );
-
-    radio->emission ( buff_4 ); // pour demarrer le bouzin !
-
-    //
-    // On affiche les informations dans le terminal afin de simplifier le replay
-    //
+    std::vector<int8_t>  buff_3;
+    std::vector<int8_t>  buff_4;
 
     const uint32_t sleep_time = param.toInt("sleep_time");
     const uint32_t payload    = param.toInt("payload");
@@ -279,102 +349,16 @@ int main(int argc, char* argv[])
     printf("(II) -> VGA transmitter gain value : %d\n",      param.toInt("tx_gain"));
     printf("(II) -> HackRF antenna parameter   : disable\n" );
     printf("(II) -> HackRF amplifier parameter : disable\n");
-    printf("(II)\n");
-
-
-    //
-    // On ouvre l'image que l'utilisateur souhaite transmettre et on affiche ses propriétés
-    //
-    BMP bmp( param.toString("bmp_file") );
-    printf("(II) Properties of the picture :\n");
-    printf("(II) -> Picture filename           : %s\n",      param.toString("bmp_file").c_str());
-    printf("(II) -> Picture size               : %dx%d\n",   bmp.bmp_info_header.width, bmp.bmp_info_header.height);
-    printf("(II) -> #bits per pixel            : %d\n",      bmp.bmp_info_header.bit_count );
-    printf("(II) -> Picture size in bytes      : %d\n",      (bmp.bmp_info_header.width * bmp.bmp_info_header.height) * (bmp.bmp_info_header.bit_count/8));
-    printf("(II) -> #frames per picture line   : %d\n",      (bmp.bmp_info_header.width * (bmp.bmp_info_header.bit_count/8)/payload) );
-
-
-
-    //
-    // On lance le processus de communication
-    //
 
     auto start = std::chrono::system_clock::now(); // This and "end"'s type is std::chrono::time_point
 
-    uint32_t curr_x  = 0;
-    uint32_t curr_y  = 0;
-    uint32_t curr_s  = 0;
     uint32_t nFrames = 0;
-
-    const uint32_t nBytesPerPixel = (bmp.bmp_info_header.bit_count / 8);
-    const uint32_t nBytesPerLine  = (bmp.bmp_info_header.width * nBytesPerPixel);
-
     while( isFinished == false )
     {
         usleep( sleep_time );
 
-        //
-        //  Il s'agit du debut d'une image. Dans ce cas, on transmet le paquet correspondant
-        //  avec comme payload les dimensions de l'image.
-        //
-        if( curr_s == 0 )
-        {
-            f.set_type(FRAME_NEW_IMAGE);
-            f.data_u32(0, bmp.bmp_info_header.width);
-            f.data_u32(1, bmp.bmp_info_header.height);
-            curr_s = 1;
-
-        }
-        else if( curr_s == 1 )  // On envoie un tag debut de ligne avec la valeur de Y
-        {
-            f.set_type(FRAME_NEW_LINE);
-            f.data_u32(0, curr_y);
-            curr_s = 2;
-        }
-        else if( curr_s == 2 )  // On envoie l'ensemble des pixels de la ligne (ou mettre la valeur de X ?)
-        {
-            f.set_type(FRAME_INFOS);
-
-            const uint8_t* ptr = bmp.data.data() + curr_y * nBytesPerLine + curr_x * nBytesPerPixel;
-
-            for( uint32_t i = 0; i < payload; i +=1 )
-                f.data(i, ptr[i]);
-
-            curr_x += (payload / 3);    // on avance dans la ligne
-
-            if( curr_x >=  bmp.bmp_info_header.width )
-            {
-                curr_x  = 0;
-                curr_s  = 3;
-            }
-            else
-            {
-                curr_s = 2;     // On continue a transmettre la ligne en cours
-            }
-        }
-        else if( curr_s == 3 )  // On envoie un tag de fin de ligne avec la valeur de Y
-        {
-            f.set_type(FRAME_END_LINE);
-            f.data_u32(0, curr_y);
-            curr_y += 1;
-            if( curr_y == bmp.bmp_info_header.height )
-                curr_s  = 4;    // il est temps de cloturer la transmission !
-            else
-                curr_s  = 1;    // on repart sur une sequence new line...
-        }
-        else if( curr_s == 4 )  // On informe le recepteur que la reception de l'image est terminée
-        {
-            f.set_type(FRAME_END_IMAGE);
-            f.data_u32(0, bmp.bmp_info_header.width);
-            f.data_u32(1, bmp.bmp_info_header.height);
-            curr_s     = 5;
-            isFinished = true;
-        }
-        else
-        {
-            printf("(EE) Jamais nous n'aurions du arriver ici... ( curr_s == %d )\n", curr_s);
-            exit( -1 );
-        }
+        for( uint32_t i = 0; i < payload; i +=1 )
+            f.data(i, i + nFrames);
 
         f.compute_crc();
 
@@ -384,10 +368,12 @@ int main(int argc, char* argv[])
         }
 
         f.get_frame_bits( buff_1 );
-        ppm.execute     ( buff_1, buff_2 );
-        up.execute      ( buff_2, buff_3 );
-        iqi.execute     ( buff_3, buff_4 );
-        radio->emission ( buff_4 );
+
+        ppm.execute( buff_1, buff_2 );
+        up.execute( buff_2, buff_3 );
+        iqi.execute( buff_3, buff_4 );
+
+        radio->emission( buff_4 );
 
         nFrames += 1;
 
