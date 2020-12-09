@@ -24,8 +24,6 @@
 
 class EmitterHackRF : public Emitter{
 private :
-//    double freq_hz;
-//    double fech_hz;
     bool amplifier;
     bool antenna;
     uint32_t txvga_gain;
