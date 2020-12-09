@@ -20,10 +20,10 @@
 
 
 //
-//  Definition des modules permettant d'utiliser le module Radio (SdR)
+//  Definition des modules permettant d'utiliser le module Receiver (SdR)
 //
 
-#include "./Acquisition/Radio.hpp"
+#include "./Acquisition/Receiver.hpp"
 #include "./Acquisition/File/ReceiverFileRAW.hpp"
 #include "./Acquisition/File/ReceiverFileUHD.hpp"
 #include "./Acquisition/Radio/ReceiverUSRP.hpp"
@@ -250,7 +250,7 @@ int main(int argc, char* argv[])
 	// Selection du module SDR employé dans le programme
 	//
 
-    Radio* radio;
+    Receiver* radio;
     if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" ) {
         radio = new ReceiverHackRF(param.toDouble("fc"), param.toDouble("fe"));
 

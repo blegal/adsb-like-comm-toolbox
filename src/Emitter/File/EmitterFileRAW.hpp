@@ -1,7 +1,7 @@
 #ifndef _EmitterFileRAW_
 #define _EmitterFileRAW_
 
-#include "../../Acquisition/Radio.hpp"
+#include "../../Acquisition/Receiver.hpp"
 #include "../../Tools/Parameters.hpp"
 #include "../Emitter.hpp"
 

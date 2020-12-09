@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class Radio{
+class Receiver{
 
 protected:
 	float   fc;
@@ -20,8 +20,8 @@ protected:
     bool    _alive;
 
 public :
-    Radio( float s_fc, float s_fe);
-	virtual ~Radio();
+    Receiver(float s_fc, float s_fe);
+	virtual ~Receiver();
     virtual void initialize() = 0;
     virtual void reception(std::vector< std::complex<float> >& cbuffer) = 0;
     virtual void reset() = 0;

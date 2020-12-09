@@ -1,7 +1,7 @@
 #include "ReceiverSoapy.hpp"
 #include <unistd.h>
 
-ReceiverSoapy::ReceiverSoapy(float s_fc, float s_fe) : Radio(s_fc, s_fe)
+ReceiverSoapy::ReceiverSoapy(float s_fc, float s_fe) : Receiver(s_fc, s_fe)
 {
     SoapySDR::KwargsList results = SoapySDR::Device::enumerate();
     SoapySDR::Kwargs::iterator it;

@@ -17,9 +17,9 @@ ReceiverLibrary::~ReceiverLibrary()
 
 }
 
-Radio* ReceiverLibrary::allocate(Parameters& param)
+Receiver* ReceiverLibrary::allocate(Parameters& param)
 {
-    Radio* radio;
+    Receiver* radio;
     if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" ) {
         ReceiverHackRF* r = new ReceiverHackRF(param.toDouble("fc"), param.toDouble("fe"));
         if( param.toInt("hackrf_amplifier") != -1 ) r->set_amp_enable( param.toInt("hackrf_amplifier") );

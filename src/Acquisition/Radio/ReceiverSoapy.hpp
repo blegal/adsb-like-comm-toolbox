@@ -1,7 +1,7 @@
 #ifndef _ReceiverSoapy_
 #define _ReceiverSoapy_
 
-#include "../Radio.hpp"
+#include "../Receiver.hpp"
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Types.hpp>
 #include <SoapySDR/Formats.hpp>
@@ -19,7 +19,7 @@
   pwidle=<float> (Tx only) Value in negative dB of I/Q constant carrier power when idle (default 0: silent)
 */
 
-class ReceiverSoapy : public Radio{
+class ReceiverSoapy : public Receiver{
 
 private :
 //    double freq_hz;

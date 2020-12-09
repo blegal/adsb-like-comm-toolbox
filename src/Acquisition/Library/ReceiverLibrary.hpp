@@ -1,7 +1,7 @@
 #ifndef _ReceiverLibrary_
 #define _ReceiverLibrary_
 
-#include "../Radio.hpp"
+#include "../Receiver.hpp"
 #include "../../Tools/Parameters.hpp"
 
 using namespace std;
@@ -13,7 +13,7 @@ public :
     ReceiverLibrary( );
 	~ReceiverLibrary();
 
-    static Radio* allocate(Parameters& param);
+    static Receiver* allocate(Parameters& param);
 };
 
 #endif

@@ -1,7 +1,7 @@
 #include "ReceiverFileUHD.hpp"
 
 
-ReceiverFileUHD::ReceiverFileUHD(std::string filen) : Radio(0, 0)
+ReceiverFileUHD::ReceiverFileUHD(std::string filen) : Receiver(0, 0)
 {
     filename = filen;
 }

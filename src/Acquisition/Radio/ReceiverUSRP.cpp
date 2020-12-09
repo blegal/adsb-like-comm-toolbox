@@ -1,6 +1,6 @@
 #include "ReceiverUSRP.hpp"
 
-ReceiverUSRP::ReceiverUSRP(float s_fc, float s_fe) : Radio(s_fc, s_fe)
+ReceiverUSRP::ReceiverUSRP(float s_fc, float s_fe) : Receiver(s_fc, s_fe)
 {
     fc = s_fc;
     fe = s_fe;

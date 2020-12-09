@@ -1,6 +1,6 @@
-#include "Radio.hpp"
+#include "Receiver.hpp"
 
-Radio::Radio(float s_fc, float s_fe){
+Receiver::Receiver(float s_fc, float s_fe){
     fc         = s_fc;
     fe         = s_fe;
     _alive     = true;
@@ -14,12 +14,12 @@ Radio::Radio(float s_fc, float s_fe){
 }
 
 
-Radio::~Radio()
+Receiver::~Receiver()
 {
 
 }
 
-bool Radio::alive()
+bool Receiver::alive()
 {
     return _alive;
 }

@@ -1,7 +1,7 @@
 #ifndef _ReceiverHackRF_
 #define _ReceiverHackRF_
 
-#include "../Radio.hpp"
+#include "../Receiver.hpp"
 #include "../../RingBuff/RingBuff.hpp"
 #include <libhackrf/hackrf.h>
 
@@ -18,7 +18,7 @@
   pwidle=<float> (Tx only) Value in negative dB of I/Q constant carrier power when idle (default 0: silent)
 */
 
-class ReceiverHackRF : public Radio{
+class ReceiverHackRF : public Receiver{
 
 private :
     double freq_hz;

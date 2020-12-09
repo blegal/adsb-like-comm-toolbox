@@ -18,15 +18,15 @@
 #include "./Tools/ExportVector/ExportVector.hpp"
 
 //
-//  Definition des modules permettant d'utiliser le module Radio (SdR)
+//  Definition des modules permettant d'utiliser le module Receiver (SdR)
 //
 
-//#include "./Acquisition/Radio.hpp"
+//#include "./Acquisition/Receiver.hpp"
 //#include "./Acquisition/File/ReceiverFileRAW.hpp"
 //#include "./Acquisition/File/ReceiverFileUHD.hpp"
-//#include "./Acquisition/Radio/ReceiverUSRP.hpp"
-//#include "./Acquisition/Radio/ReceiverSoapy.hpp"
-//#include "./Acquisition/Radio/ReceiverHackRF.hpp"
+//#include "./Acquisition/Receiver/ReceiverUSRP.hpp"
+//#include "./Acquisition/Receiver/ReceiverSoapy.hpp"
+//#include "./Acquisition/Receiver/ReceiverHackRF.hpp"
 #include "./Acquisition/Library/ReceiverLibrary.hpp"
 
 
@@ -255,7 +255,7 @@ int main(int argc, char* argv[])
     // Selection du module SDR employé dans le programme
     //
 
-    Radio*      radio  = ReceiverLibrary::allocate( param );
+    Receiver*      radio  = ReceiverLibrary::allocate(param );
     Detector*   detect = DetectorLibrary::allocate( param );
     Conversion* conv   = CplxModuleLibrary::allocate  (param );
 

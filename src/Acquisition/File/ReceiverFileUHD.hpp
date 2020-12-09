@@ -1,10 +1,10 @@
 #ifndef _RadioFichierUHD_
 #define _RadioFichierUHD_
 
-#include "../Radio.hpp"
+#include "../Receiver.hpp"
 
 
-class ReceiverFileUHD : public Radio{
+class ReceiverFileUHD : public Receiver{
 private :
     std::vector< std::complex<float> > data;
     std::string filename;

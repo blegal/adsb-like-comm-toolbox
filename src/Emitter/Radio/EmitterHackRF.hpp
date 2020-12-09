@@ -1,7 +1,7 @@
 #ifndef _RadioEmitterHackRF_
 #define _RadioEmitterHackRF_
 
-#include "../../Acquisition/Radio.hpp"
+#include "../../Acquisition/Receiver.hpp"
 #include "../../RingBuff/RingBuff.hpp"
 #include "../../Tools/Parameters.hpp"
 #include "../Emitter.hpp"

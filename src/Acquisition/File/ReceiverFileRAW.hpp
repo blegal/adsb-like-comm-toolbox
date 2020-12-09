@@ -1,9 +1,9 @@
 #ifndef _ReceiverFileRAW_
 #define _ReceiverFileRAW_
 
-#include "../Radio.hpp"
+#include "../Receiver.hpp"
 
-class ReceiverFileRAW : public Radio{
+class ReceiverFileRAW : public Receiver{
 private :
     std::vector<int8_t> data;
     std::string filename;

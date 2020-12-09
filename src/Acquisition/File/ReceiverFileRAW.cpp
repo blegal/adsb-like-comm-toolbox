@@ -1,7 +1,7 @@
 #include "ReceiverFileRAW.hpp"
 
 
-ReceiverFileRAW::ReceiverFileRAW(std::string filen) : Radio(0, 0)
+ReceiverFileRAW::ReceiverFileRAW(std::string filen) : Receiver(0, 0)
 {
     filename = filen;
 }
