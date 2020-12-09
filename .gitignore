@@ -9,3 +9,5 @@ tty-histo/build/*
 tty-histo/.idea/*
 .DS_Store
 images/*
+src/systemc/bin/main
+src/systemc/received_image.bmp
