@@ -12,8 +12,8 @@
 #include <getopt.h>
 #include <signal.h>
 
-#include "./Tools/Parameters.hpp"
-#include "./Tools/CTickCounter.hpp"
+#include "Tools/Parameters/Parameters.hpp"
+#include "Tools/CTickCounter/CTickCounter.hpp"
 
 #include "./Tools/ExportVector/ExportVector.hpp"
 
@@ -21,41 +21,36 @@
 //  Definition des modules permettant d'utiliser le module Receiver (SdR)
 //
 
-//#include "./Acquisition/Receiver.hpp"
-//#include "./Acquisition/File/ReceiverFileRAW.hpp"
-//#include "./Acquisition/File/ReceiverFileUHD.hpp"
-//#include "./Acquisition/Receiver/ReceiverUSRP.hpp"
-//#include "./Acquisition/Receiver/ReceiverSoapy.hpp"
-//#include "./Acquisition/Receiver/ReceiverHackRF.hpp"
-#include "./Acquisition/Library/ReceiverLibrary.hpp"
+//#include "./Receiver/Receiver.hpp"
+//#include "./Receiver/File/ReceiverFileRAW.hpp"
+//#include "./Receiver/File/ReceiverFileUHD.hpp"
+//#include "./Receiver/Receiver/ReceiverUSRP.hpp"
+//#include "./Receiver/Receiver/ReceiverSoapy.hpp"
+//#include "./Receiver/Receiver/ReceiverHackRF.hpp"
+#include "./Radio/Receiver/Library/ReceiverLibrary.hpp"
 
 
 //#define _TIME_PROFILE_
 
 //
-//  Conversion des nombres complexes => module flottant
+//  CplxModule des nombres complexes => module flottant
 //
 
-//#include "./Conversion/INTER_x86/CplxModule_x86.hpp"
-//#include "./Conversion/INTER_NEON/CplxModule_NEON.hpp"
-//#include "./Conversion/INTER_AVX2/CplxModule_AVX2.hpp"
-#include "./Conversion/Library/CplxModuleLibrary.hpp"
+//#include "./CplxModule/INTER_x86/CplxModule_x86.hpp"
+//#include "./CplxModule/INTER_NEON/CplxModule_NEON.hpp"
+//#include "./CplxModule/INTER_AVX2/CplxModule_AVX2.hpp"
+#include "./Processing/CplxModule/Library/CplxModuleLibrary.hpp"
 
 
 //
 //  Correlateur permettant de détecter le prologue des trames ADSB
 //
 
-//#include "./Detecteur/Detector.hpp"
-//#include "./Detecteur/INTER_x86/DetectorScalar.hpp"
-//#include "./Detecteur/INTRA_NEON/Detector_NEON.hpp"
-//#include "./Detecteur/INTRA_AVX2/Detector_AVX2.hpp"
-#include "./Detecteur/Library/DetectorLibrary.hpp"
-//#include "Detector/INTER_AVX2/Detector_NEON.hpp"
+#include "./Processing/Detector/Library/DetectorLibrary.hpp"
 
 #include "./Frame/Frame.hpp"
-#include "./Sampling/Down/DownSampling.hpp"
-#include "./PPM/Demodulator/PPM_Demodulator.hpp"
+#include "./Processing/Sampling/Down/DownSampling.hpp"
+#include "./Processing/PPM/Demodulator/PPM_Demodulator.hpp"
 
 #include "couleur.h"
 
@@ -257,7 +252,7 @@ int main(int argc, char* argv[])
 
     Receiver*      radio  = ReceiverLibrary::allocate(param );
     Detector*   detect = DetectorLibrary::allocate( param );
-    Conversion* conv   = CplxModuleLibrary::allocate  (param );
+    CplxModule* conv   = CplxModuleLibrary::allocate  (param );
 
     Frame f( param.toInt("payload") );
 
