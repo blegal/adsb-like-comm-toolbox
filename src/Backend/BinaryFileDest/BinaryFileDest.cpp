@@ -26,7 +26,7 @@ void BinaryFileDest::execute(Frame* f)
 
         file = fopen( filename.c_str(), "wb" );
 
-        printf("(DD) Ouverture du fichier (%d)\n", filename.c_str());
+        printf("(DD) Ouverture du fichier (%s)\n", filename.c_str());
 
     }
     else if(f->get_type() == FRAME_END_IMAGE)
@@ -39,6 +39,7 @@ void BinaryFileDest::execute(Frame* f)
 
         fclose( file );
         file = nullptr;
+        printf("(DD) Fermeture du fichier (%s)\n", filename.c_str());
     }
     else if(f->get_type() == FRAME_INFOS)
     {
