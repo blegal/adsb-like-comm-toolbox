@@ -7,14 +7,16 @@
 #include <cmath>
 #include <vector>
 
-#include "../../Frame/Frame.hpp"
+#include "../Backend.hpp"
 #include "../../Tools/BMP.hpp"
 
 using namespace std;
 
-class BMPFileDest{
+class BMPFileDest : public Backend{
 private :
     BMP* bmp;
+
+    std::string filename;
 
     uint32_t i_height;
     uint32_t i_width;
@@ -24,7 +26,7 @@ private :
     uint32_t curr_y;
 
 public :
-    BMPFileDest();
+    BMPFileDest(std::string file);
 
 	~BMPFileDest();
 

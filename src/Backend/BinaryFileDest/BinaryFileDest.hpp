@@ -7,12 +7,11 @@
 #include <cmath>
 #include <vector>
 
-#include "../../Tools/BMP.hpp"
-#include "../../Frame/Frame.hpp"
+#include "../Backend.hpp"
 
 using namespace std;
 
-class BinaryFileDest{
+class BinaryFileDest : public Backend{
 private :
     std::string filename;
 

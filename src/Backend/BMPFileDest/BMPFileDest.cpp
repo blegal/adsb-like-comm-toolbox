@@ -1,8 +1,9 @@
 #include "BMPFileDest.hpp"
 
 
-BMPFileDest::BMPFileDest()
+BMPFileDest::BMPFileDest(std::string file)
 {
+    filename = file;
     bmp = nullptr;
 
     i_height       = 0;
@@ -48,7 +49,7 @@ void BMPFileDest::execute(Frame* f)
 #ifdef _DEBUG_INFO_
         printf("(DD) Fin de reception de l'image\n");
 #endif
-        bmp->write("image.bmp");
+        bmp->write( filename.c_str() );
     }
     else if(f->get_type() == FRAME_NEW_LINE)
     {

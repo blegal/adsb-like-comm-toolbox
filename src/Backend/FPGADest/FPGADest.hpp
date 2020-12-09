@@ -14,11 +14,12 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include "../../Frame/Frame.hpp"
+
+#include "../Backend.hpp"
 
 using namespace std;
 
-class FPGADest{
+class FPGADest : public Backend{
 protected :
     int sockfd;
     int portno;
