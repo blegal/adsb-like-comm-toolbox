@@ -26,6 +26,5 @@ void IQ_Insertion::execute(std::vector<int8_t>& ibuffer, std::vector<int8_t>& ob
     {
         obuffer[2*i  ] = ibuffer[i];
         obuffer[2*i+1] = 0;
-        
     }
 }

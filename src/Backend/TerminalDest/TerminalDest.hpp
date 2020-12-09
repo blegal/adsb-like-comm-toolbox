@@ -1,18 +1,11 @@
 #ifndef _TerminalDest_
 #define _TerminalDest_
 
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <cmath>
-#include <vector>
-
-#include "../../Tools/BMP.hpp"
-#include "../../Frame/Frame.hpp"
+#include "../Backend.hpp"
 
 using namespace std;
 
-class TerminalDest{
+class TerminalDest : public Backend{
 private :
 
 public :

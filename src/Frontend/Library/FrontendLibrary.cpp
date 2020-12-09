@@ -14,9 +14,7 @@ FrontendLibrary::~FrontendLibrary()
 {
 
 }
-#include "../BMPSource/BMPSource.hpp"
-#include "../BinaryFileSource/BinaryFileSource.hpp"
-#include "../HexSource/HexSource.hpp"
+
 
 Frontend* FrontendLibrary::allocate(Parameters& param)
 {
