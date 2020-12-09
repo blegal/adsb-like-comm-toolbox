@@ -11,6 +11,13 @@ BMPSource::BMPSource(std::string fileN)
 
     bmp = new BMP( fileN );
 
+    printf("(II) Properties of the picture :\n");
+    printf("(II) -> Picture filename           : %s\n",      fileN.c_str());
+    printf("(II) -> Picture size               : %dx%d\n",   bmp->bmp_info_header.width, bmp->bmp_info_header.height);
+    printf("(II) -> #bits per pixel            : %d\n",      bmp->bmp_info_header.bit_count );
+    printf("(II) -> Picture size in bytes      : %d\n",      (bmp->bmp_info_header.width * bmp->bmp_info_header.height) * (bmp->bmp_info_header.bit_count/8));
+//  printf("(II) -> #frames per picture line   : %d\n",      (bmp->bmp_info_header.width * (bmp->bmp_info_header.bit_count/8)/payload) );
+
     isFinished = false;
 }
 
@@ -91,5 +98,5 @@ void BMPSource::execute(Frame* f)
 
 bool BMPSource::is_alive()
 {
-    return isFinished;
+    return !isFinished;
 }
