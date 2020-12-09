@@ -13,13 +13,13 @@
 #include "./Frame/Frame.hpp"
 
 #include "./Tools/BMP.hpp"
-#include "./Tools/Parameters.hpp"
+#include "Tools/Parameters/Parameters.hpp"
 
-#include "./PPM/Modulator/PPM_Modulator.hpp"
-#include "./Sampling/Up/UpSampling.hpp"
-#include "./IQ/Insertion/IQ_Insertion.hpp"
+#include "./Processing/PPM/Modulator/PPM_Modulator.hpp"
+#include "./Processing/Sampling/Up/UpSampling.hpp"
+#include "./Processing/IQ/Insertion/IQ_Insertion.hpp"
 
-#include "./Emitter/Library/EmitterLibrary.hpp"
+#include "./Radio/Emitter/Library/EmitterLibrary.hpp"
 
 #include "couleur.h"
 
