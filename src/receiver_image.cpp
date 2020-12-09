@@ -13,47 +13,33 @@
 #include <signal.h>
 
 #include "./Tools/BMP.hpp"
-#include "./Tools/Parameters.hpp"
-#include "./Tools/CTickCounter.hpp"
+#include "Tools/Parameters/Parameters.hpp"
+#include "Tools/CTickCounter/CTickCounter.hpp"
 
-#include "./Format/cvt_float_u8.hpp"
+#include "./Tools/Conversion/cvt_float_u8.hpp"
 
 
 //
 //  Definition des modules permettant d'utiliser le module Receiver (SdR)
 //
 
-#include "./Acquisition/Receiver.hpp"
-#include "./Acquisition/File/ReceiverFileRAW.hpp"
-#include "./Acquisition/File/ReceiverFileUHD.hpp"
-#include "./Acquisition/Radio/ReceiverUSRP.hpp"
-#include "./Acquisition/Radio/ReceiverSoapy.hpp"
-#include "./Acquisition/Radio/ReceiverHackRF.hpp"
-
-//#define _TIME_PROFILE_
+#include "./Radio/Receiver/Library/ReceiverLibrary.hpp"
 
 //
-//  Conversion des nombres complexes => module flottant
+//  CplxModule des nombres complexes => module flottant
 //
 
-#include "./Conversion/INTER_x86/CplxModule_x86.hpp"
-#include "./Conversion/INTER_NEON/CplxModule_NEON.hpp"
-#include "./Conversion/INTER_AVX2/CplxModule_AVX2.hpp"
+#include "./Processing/CplxModule/Library/CplxModuleLibrary.hpp"
+#include "./Processing/Detector/Library/DetectorLibrary.hpp"
 
 
 //
 //  Correlateur permettant de détecter le prologue des trames ADSB
 //
 
-#include "./Detecteur/Detector.hpp"
-#include "./Detecteur/INTER_x86/DetectorScalar.hpp"
-#include "./Detecteur/INTRA_NEON/Detector_NEON.hpp"
-#include "./Detecteur/INTRA_AVX2/Detector_AVX2.hpp"
-//#include "Detector/INTER_AVX2/Detector_NEON.hpp"
-
 #include "./Frame/Frame.hpp"
-#include "./Sampling/Down/DownSampling.hpp"
-#include "./PPM/Demodulator/PPM_Demodulator.hpp"
+#include "./Processing/Sampling/Down/DownSampling.hpp"
+#include "./Processing/PPM/Demodulator/PPM_Demodulator.hpp"
 
 #include "couleur.h"
 
@@ -250,68 +236,20 @@ int main(int argc, char* argv[])
 	// Selection du module SDR employé dans le programme
 	//
 
-    Receiver* radio;
-    if( param.toString("mode_radio") == "radio" && param.toString("filename") == "hackrf" ) {
-        radio = new ReceiverHackRF(param.toDouble("fc"), param.toDouble("fe"));
-
-    } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "Soapy" ) {
-        radio = new ReceiverSoapy(param.toDouble("fc"), param.toDouble("fe"));
-
-    } else if( param.toString("mode_radio") == "radio" && param.toString("filename") == "uhd" ) {
-        radio = new ReceiverUSRP(param.toDouble("fc"), param.toDouble("fe"));
-
-    } else if( param.toString("mode_radio") == "file" && (param.toString("filename").find(".raw") != -1) ) {
-        radio = new ReceiverFileRAW(param.toString("filename"));
-
-    } else if( param.toString("mode_radio") == "file" && (param.toString("filename").find(".txt") != -1) ) {
-        radio = new ReceiverFileUHD(param.toString("filename"));
-    }
-    else
-    {
-        cout << "Error in file (" << __FILE__ << ")" << " at line (" << __LINE__ << ")" << endl;
-        cout << "mode_radio = " << param.toString("mode_radio") << endl;
-        cout << "filename   = " << param.toString("filename")      << endl;
-        exit( -1 );
-    }
+    Receiver* radio = ReceiverLibrary::allocate( param );
 
     //
     // Selection du module de correlation employé dans le programme
     //
 
-    Detector* detect;
-    if( param.toString("mode_corr") == "scalar" ){
-        detect = new DetectorScalar();
-    } else if( param.toString("mode_corr") == "AVX2" ){
-        detect = new Detector_AVX2();
-    } else if( param.toString("mode_corr") == "NEON" ){
-        detect = new Detector_NEON();
-    }
-    else
-    {
-        std::cout << "(EE) Le type de module de Correlation demandé n'est actuellement pas dispnible :" << std::endl;
-        std::cout << "(EE) type = " << param.toString("mode_corr")                                   << std::endl;
-        exit( -1 );
-    }
+    Detector* detect = DetectorLibrary::allocate( param );
 
 
     //
     // Selection du module de conversion employé dans le programme
     //
 
-    Conversion* conv;
-    if( param.toString("mode_conv") == "scalar" ){
-        conv = new CplxModule_x86();
-    } else if( param.toString("mode_conv") == "AVX2" ) {
-        conv = new CplxModule_AVX2();
-    } else if( param.toString("mode_conv") == "NEON" ) {
-        conv = new CplxModule_NEON();
-    }
-    else
-    {
-        std::cout << "(EE) Le type de module de Conversion demandé n'est actuellement pas dispnible :" << std::endl;
-        std::cout << "(EE) type = " << param.toString("mode_conv")                                     << std::endl;
-        exit( -1 );
-    }
+    CplxModule* conv = CplxModuleLibrary::allocate( param );
 
     Frame f( param.toInt("payload") );
 
