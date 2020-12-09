@@ -20,8 +20,8 @@
 
 #include "ExportVector.hpp"
 
-#include "../../Format/cvt_float_i8.hpp"
-#include "../../Format/cvt_float_u8.hpp"
+#include "../Conversion/cvt_float_i8.hpp"
+#include "../Conversion/cvt_float_u8.hpp"
 
 void ExportVector::SaveToCS8(std::vector<complex<float>>& dSet, std::string filename)
 {
