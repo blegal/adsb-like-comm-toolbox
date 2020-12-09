@@ -20,13 +20,16 @@ FrontendLibrary::~FrontendLibrary()
 
 Frontend* FrontendLibrary::allocate(Parameters& param)
 {
+    const std::string name   = param.toString("frontend");
+    const std::string option = param.toString("frontend_opt");
+
     Frontend* fend;
     if( param.toString("frontend") == "HexSource" ){
         fend = new HexSource();
     } else if( param.toString("frontend") == "BMPFile" ){
-        fend = new BMPSource();
+        fend = new BMPSource( option );
     } else if( param.toString("frontend") == "BinaryFile" ){
-        fend = new BinaryFileSource();
+        fend = new BinaryFileSource( option );
     }
     else
     {
