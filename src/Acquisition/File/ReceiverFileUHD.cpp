@@ -1,13 +1,13 @@
-#include "RadioFichierUHD.hpp"
+#include "ReceiverFileUHD.hpp"
 
 
-RadioFichierUHD::RadioFichierUHD(std::string filen) : Radio(0, 0)
+ReceiverFileUHD::ReceiverFileUHD(std::string filen) : Radio(0, 0)
 {
     filename = filen;
 }
 
 
-RadioFichierUHD::~RadioFichierUHD()
+ReceiverFileUHD::~ReceiverFileUHD()
 {
 
 }
@@ -21,7 +21,7 @@ inline int getnum(char* line, char** real, char** img)
     return 0;
 }
 
-void RadioFichierUHD::initialize()
+void ReceiverFileUHD::initialize()
 {
     FILE* stream = fopen(filename.c_str(), "rb");
     float vmin = +10000000;
@@ -65,7 +65,7 @@ void RadioFichierUHD::initialize()
 }
 
 
-void RadioFichierUHD::reception( std::vector< std::complex<float> >& cbuffer)
+void ReceiverFileUHD::reception(std::vector< std::complex<float> >& cbuffer)
 {
 
     if( cbuffer.size() != data.size() ) // Nombre de symbols et non d'echantillons
@@ -82,19 +82,19 @@ void RadioFichierUHD::reception( std::vector< std::complex<float> >& cbuffer)
 }
 
 
-void RadioFichierUHD::reset()
+void ReceiverFileUHD::reset()
 {
     fprintf(stderr, "RadioFichier::reset() not implemented yet !\n");
     exit( -1 );
 }
 
 
-void RadioFichierUHD::start_engine()
+void ReceiverFileUHD::start_engine()
 {
 
 }
 
-void RadioFichierUHD::stop_engine()
+void ReceiverFileUHD::stop_engine()
 {
 
 }

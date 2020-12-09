@@ -1,18 +1,18 @@
-#include "ConversionScalar.hpp"
+#include "CplxModule_x86.hpp"
 
 
-ConversionScalar::ConversionScalar()
+CplxModule_x86::CplxModule_x86()
 {
 
 }
 
-ConversionScalar::~ConversionScalar()
+CplxModule_x86::~CplxModule_x86()
 {
 
 }
 
 
-void ConversionScalar::execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out)
+void CplxModule_x86::execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out)
 {
     for(int kk = 0; kk < buffer_in->size(); kk += 1)
     {

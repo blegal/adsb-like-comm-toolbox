@@ -1,12 +1,12 @@
 #include "../Conversion.hpp"
 
-class ConversionAVX2 : public Conversion
+class CplxModule_x86 : public Conversion
 {
 public:
 
-    ConversionAVX2();
+    CplxModule_x86();
 
-    ~ConversionAVX2();
+    ~CplxModule_x86();
 
     void execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out);
 };

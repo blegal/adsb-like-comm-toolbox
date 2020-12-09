@@ -1,13 +1,13 @@
-#include "DetecteurScalar.hpp"
+#include "DetectorScalar.hpp"
 
 
-DetecteurScalar::DetecteurScalar() : Detecteur(1)
+DetectorScalar::DetectorScalar() : Detector(1)
 {
 
 }
 
 
-void DetecteurScalar::execute(float *buffer)
+void DetectorScalar::execute(float *buffer)
 {
 	const float ps = buffer[ 0] + buffer[ 1] + buffer[ 4] + buffer[ 5] + // 2 bits à 1 en PPM
 	                 buffer[14] + buffer[15] + buffer[18] + buffer[19];  // 2 bits à 0 en PPM
@@ -22,7 +22,7 @@ void DetecteurScalar::execute(float *buffer)
 }
 
 
-void DetecteurScalar::execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer)
+void DetectorScalar::execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer)
 {
     const uint32_t ll = iBuffer->size();
 

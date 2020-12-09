@@ -1,5 +1,5 @@
-#ifndef _Detecteur_
-#define _Detecteur_
+#ifndef _Detector_
+#define _Detector_
 
 #include <iostream>
 #include <cstdio>
@@ -9,14 +9,14 @@
 
 using namespace std;
 
-class Detecteur{
+class Detector{
 protected :
 	std::vector<float> array;
 
 public :
-	Detecteur(const uint32_t size);
+	Detector(const uint32_t size);
 
-	virtual ~Detecteur();
+	virtual ~Detector();
 
     virtual void execute(float* buffer) = 0;
     virtual void execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer) = 0;

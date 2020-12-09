@@ -1,13 +1,13 @@
-#include "ConversionAVX2.hpp"
+#include "CplxModule_AVX2.hpp"
 #include <immintrin.h>
 
 
-ConversionAVX2::ConversionAVX2()
+CplxModule_AVX2::CplxModule_AVX2()
 {
 
 }
 
-ConversionAVX2::~ConversionAVX2()
+CplxModule_AVX2::~CplxModule_AVX2()
 {
 
 }
@@ -63,7 +63,7 @@ void MyAbsolute (const std::complex<float>* __restrict cplxIn,
 }
 
 
-void ConversionAVX2::execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out)
+void CplxModule_AVX2::execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out)
 {
     if( buffer_in->size() != buffer_out->size() )
         buffer_out->resize( buffer_in->size() );

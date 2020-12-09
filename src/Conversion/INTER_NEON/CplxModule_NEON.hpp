@@ -1,12 +1,12 @@
 #include "../Conversion.hpp"
 
-class ConversionScalar : public Conversion
+class CplxModule_NEON : public Conversion
 {
 public:
 
-    ConversionScalar();
+    CplxModule_NEON();
 
-    ~ConversionScalar();
+    ~CplxModule_NEON();
 
     void execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out);
 };

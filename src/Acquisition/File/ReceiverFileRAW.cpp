@@ -1,26 +1,26 @@
-#include "RadioFichierRAW.hpp"
+#include "ReceiverFileRAW.hpp"
 
 
-RadioFichierRAW::RadioFichierRAW(std::string filen) : Radio(0, 0)
+ReceiverFileRAW::ReceiverFileRAW(std::string filen) : Radio(0, 0)
 {
     filename = filen;
 }
 
 
-RadioFichierRAW::~RadioFichierRAW()
+ReceiverFileRAW::~ReceiverFileRAW()
 {
 
 }
 
 
-void RadioFichierRAW::initialize()
+void ReceiverFileRAW::initialize()
 {
     auto start   = chrono::high_resolution_clock::now();
 
     FILE* stream = fopen(filename.c_str(), "rb");
 
     if (stream == NULL){
-        fprintf(stderr, "RadioFichierRAW::initialize() error during file openning (%s) !\n", filename.c_str());
+        fprintf(stderr, "ReceiverFileRAW::initialize() error during file openning (%s) !\n", filename.c_str());
         exit( -1 );
     }
 
@@ -45,7 +45,7 @@ void RadioFichierRAW::initialize()
 }
 
 
-void RadioFichierRAW::reception( std::vector< std::complex<float> >& cbuffer)
+void ReceiverFileRAW::reception(std::vector< std::complex<float> >& cbuffer)
 {
 
     if( cbuffer.size() != (data.size()/2) ) // Nombre de symbols et non d'echantillons
@@ -63,20 +63,20 @@ void RadioFichierRAW::reception( std::vector< std::complex<float> >& cbuffer)
 }
 
 
-void RadioFichierRAW::reset()
+void ReceiverFileRAW::reset()
 {
     fprintf(stderr, "RadioFichier::reset() not implemented yet !\n");
     exit( -1 );
 }
 
 
-void RadioFichierRAW::start_engine()
+void ReceiverFileRAW::start_engine()
 {
 
 }
 
 
-void RadioFichierRAW::stop_engine()
+void ReceiverFileRAW::stop_engine()
 {
 
 }

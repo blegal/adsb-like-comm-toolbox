@@ -1,15 +1,15 @@
-#include "Detecteur_AVX2.hpp"
+#include "Detector_AVX2.hpp"
 
 #ifdef __AVX2__
     #include <immintrin.h>
 #endif
 
-Detecteur_AVX2::Detecteur_AVX2() : Detecteur(1)
+Detector_AVX2::Detector_AVX2() : Detector(1)
 {
 
 }
 
-void Detecteur_AVX2::execute(float *buffer){
+void Detector_AVX2::execute(float *buffer){
 #ifdef __AVX2__
 	/* AVX
 	gather 1 1 1 1 1 1 1 1
@@ -62,7 +62,7 @@ void Detecteur_AVX2::execute(float *buffer){
 }
 
 
-void Detecteur_AVX2::execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer)
+void Detector_AVX2::execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer)
 {
 #ifdef __AVX2__
     const uint32_t ll = iBuffer->size();

@@ -1,16 +1,16 @@
-#ifndef _RadioFichierRAW_
-#define _RadioFichierRAW_
+#ifndef _ReceiverFileRAW_
+#define _ReceiverFileRAW_
 
 #include "../Radio.hpp"
 
-class RadioFichierRAW : public Radio{
+class ReceiverFileRAW : public Radio{
 private :
     std::vector<int8_t> data;
     std::string filename;
 
 public :
-    RadioFichierRAW(std::string filen);
-	~RadioFichierRAW();
+    ReceiverFileRAW(std::string filen);
+	~ReceiverFileRAW();
 
     void initialize();
     void reception(vector<complex<float> >& cbuffer);

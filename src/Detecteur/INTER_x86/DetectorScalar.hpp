@@ -1,14 +1,14 @@
-#ifndef _Detecteur_NEON_
-#define _Detecteur_NEON_
+#ifndef _DetectorScalar_
+#define _DetectorScalar_
 
-#include "../Detecteur.hpp"
+#include "../Detector.hpp"
 
 
-class Detecteur_NEON : public Detecteur{
+class DetectorScalar : public Detector{
 private :
 
 public :
-	Detecteur_NEON();
+	DetectorScalar();
 
     virtual void execute(float* buffer);
 

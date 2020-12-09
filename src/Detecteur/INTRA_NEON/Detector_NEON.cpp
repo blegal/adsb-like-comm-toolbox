@@ -1,16 +1,16 @@
-#include "Detecteur_NEON.hpp"
+#include "Detector_NEON.hpp"
 
 #if defined(__ARM_NEON)
     #include <arm_neon.h>
 #endif
 
-Detecteur_NEON::Detecteur_NEON() : Detecteur(1)
+Detector_NEON::Detector_NEON() : Detector(1)
 {
 
 }
 
 
-void Detecteur_NEON::execute(float *buffer){
+void Detector_NEON::execute(float *buffer){
 #if 0
 	float ref_ps = (*buffer) + *(buffer + 1) + *(buffer + 3) + *(buffer + 4) + *(buffer + 14) + *(buffer + 15) + *(buffer + 18) + *(buffer + 19);
 
@@ -58,14 +58,14 @@ void Detecteur_NEON::execute(float *buffer){
 	array[0] = (ps/sqrt(sum));
 //	return (ps/sqrt(sum));
 #else
-    printf("Le decodeur instancie pour realiser le traitement est le Detecteur_NEON, mais ce dernier");
+    printf("Le decodeur instancie pour realiser le traitement est le Detector_NEON, mais ce dernier");
     printf("ne peut pas fonctionner sur le systeme hote...");
     exit( -1 );
 #endif
 }
 
 
-void Detecteur_NEON::execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer)
+void Detector_NEON::execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer)
 {
     const uint32_t ll = iBuffer->size();
 

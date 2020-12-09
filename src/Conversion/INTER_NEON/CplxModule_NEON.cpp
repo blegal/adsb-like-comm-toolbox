@@ -1,22 +1,22 @@
-#include "ConversionNEON.hpp"
+#include "CplxModule_NEON.hpp"
 
 #if defined(__ARM_NEON)
     #include <arm_neon.h>
 #endif
 
 
-ConversionNEON::ConversionNEON()
+CplxModule_NEON::CplxModule_NEON()
 {
 
 }
 
-ConversionNEON::~ConversionNEON()
+CplxModule_NEON::~CplxModule_NEON()
 {
 
 }
 
 
-void ConversionNEON::execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out)
+void CplxModule_NEON::execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out)
 {
 #if defined(__ARM_NEON)
     if( buffer_in->size() != buffer_out->size() )

@@ -1,20 +1,20 @@
-#ifndef _EmitterFichierRAW_
-#define _EmitterFichierRAW_
+#ifndef _EmitterFileRAW_
+#define _EmitterFileRAW_
 
 #include "../../Acquisition/Radio.hpp"
 #include "../../Tools/Parameters.hpp"
 #include "../Emitter.hpp"
 
-class EmitterFichierRAW : public Emitter{
+class EmitterFileRAW : public Emitter{
 private :
     std::string filename;
     FILE* stream;
 
 public :
-    EmitterFichierRAW(std::string filen);
-    EmitterFichierRAW(Parameters& param);
+    EmitterFileRAW(std::string filen);
+    EmitterFileRAW(Parameters& param);
 
-	~EmitterFichierRAW();
+	~EmitterFileRAW();
 
     void initialize();
     void start_engine();

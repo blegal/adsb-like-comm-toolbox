@@ -4,14 +4,14 @@
 #include "../Radio.hpp"
 
 
-class RadioFichierUHD : public Radio{
+class ReceiverFileUHD : public Radio{
 private :
     std::vector< std::complex<float> > data;
     std::string filename;
 
 public :
-    RadioFichierUHD(std::string filen);
-	~RadioFichierUHD();
+    ReceiverFileUHD(std::string filen);
+	~ReceiverFileUHD();
 
     void initialize();
     void reception(vector<complex<float> >& cbuffer);

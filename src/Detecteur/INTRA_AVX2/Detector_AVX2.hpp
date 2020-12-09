@@ -1,14 +1,14 @@
-#ifndef _DetecteurScalar_
-#define _DetecteurScalar_
+#ifndef _Detector_AVX2_
+#define _Detector_AVX2_
 
-#include "../Detecteur.hpp"
+#include "../Detector.hpp"
 
 
-class DetecteurScalar : public Detecteur{
+class Detector_AVX2 : public Detector{
 private :
 
 public :
-	DetecteurScalar();
+	Detector_AVX2();
 
     virtual void execute(float* buffer);
 

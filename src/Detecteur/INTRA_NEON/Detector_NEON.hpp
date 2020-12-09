@@ -1,14 +1,14 @@
-#ifndef _Detecteur_AVX2_
-#define _Detecteur_AVX2_
+#ifndef _Detector_NEON_
+#define _Detector_NEON_
 
-#include "../Detecteur.hpp"
+#include "../Detector.hpp"
 
 
-class Detecteur_AVX2 : public Detecteur{
+class Detector_NEON : public Detector{
 private :
 
 public :
-	Detecteur_AVX2();
+	Detector_NEON();
 
     virtual void execute(float* buffer);
 
