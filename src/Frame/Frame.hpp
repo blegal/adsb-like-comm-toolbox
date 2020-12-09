@@ -11,7 +11,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "../CRC/CRC32b.hpp"
+#include "../Processing/CRC/CRC32b.hpp"
 
 using namespace std;
 
