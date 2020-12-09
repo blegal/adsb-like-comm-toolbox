@@ -1,5 +1,5 @@
-#ifndef _TerminalDest_
-#define _TerminalDest_
+#ifndef _Backend_
+#define _Backend_
 
 #include <iostream>
 #include <cstdio>
