@@ -1,5 +1,5 @@
-#ifndef _FPGA_target_
-#define _FPGA_target_
+#ifndef _FPGADest_
+#define _FPGADest_
 
 #include <iostream>
 #include <cstdio>
@@ -18,7 +18,7 @@
 
 using namespace std;
 
-class FPGA_target{
+class FPGADest{
 protected :
     int sockfd;
     int portno;
@@ -26,9 +26,9 @@ protected :
     struct hostent *server;
 
 public :
-    FPGA_target();
+    FPGADest();
 
-	~FPGA_target();
+	~FPGADest();
 
     void execute(Frame* f);
 };

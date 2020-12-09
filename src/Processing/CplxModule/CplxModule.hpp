@@ -8,13 +8,13 @@
 #ifndef _Conversion_
 #define _Conversion_
 
-class Conversion
+class CplxModule
 {
 public:
 
-    Conversion();
+    CplxModule();
 
-    virtual ~Conversion();
+    virtual ~CplxModule();
 
     virtual void execute(std::vector< std::complex<float> >* buffer_in, std::vector<float>* buffer_out) = 0;
 };

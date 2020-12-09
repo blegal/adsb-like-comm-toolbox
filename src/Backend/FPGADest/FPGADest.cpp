@@ -1,4 +1,4 @@
-#include "FPGA_target.hpp"
+#include "FPGADest.hpp"
 
 void error(const char *msg)
 {
@@ -6,7 +6,7 @@ void error(const char *msg)
     exit(0);
 }
 
-FPGA_target::FPGA_target()
+FPGADest::FPGADest()
 {
     portno = 57345;
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -32,13 +32,13 @@ FPGA_target::FPGA_target()
 }
 
 
-FPGA_target::~FPGA_target()
+FPGADest::~FPGADest()
 {
     close(sockfd);
 }
 
 
-void FPGA_target::execute(Frame* f)
+void FPGADest::execute(Frame* f)
 {
     const uint32_t n = write(sockfd, f->payload_to_emit(), f->payload_size());
     if (n != f->payload_size())
