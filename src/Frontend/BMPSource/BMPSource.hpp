@@ -7,12 +7,13 @@
 #include <cmath>
 #include <vector>
 
+#include "../Frontend.hpp"
+//#include "../../Frame/Frame.hpp"
 #include "../../Tools/BMP.hpp"
-#include "../../Frame/Frame.hpp"
 
 using namespace std;
 
-class BMPSource{
+class BMPSource : public Frontend{
 private :
     BMP* bmp;
 
@@ -23,7 +24,7 @@ private :
 
 
 public :
-    BMPSource();
+    BMPSource(std::string fileN);
 
 	~BMPSource();
 

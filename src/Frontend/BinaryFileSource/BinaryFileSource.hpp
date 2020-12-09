@@ -1,17 +1,12 @@
 #ifndef _BinaryFileSource_
 #define _BinaryFileSource_
 
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <cmath>
-#include <vector>
-
-#include "../../Frame/Frame.hpp"
+#include "../Frontend.hpp"
+//#include "../../Frame/Frame.hpp"
 
 using namespace std;
 
-class BinaryFileSource{
+class BinaryFileSource : public Frontend{
 private :
     std::string filename;
 

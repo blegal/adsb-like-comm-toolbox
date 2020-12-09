@@ -7,8 +7,8 @@
 #include <cmath>
 #include <vector>
 
-#include "../../Tools/BMP.hpp"
 #include "../../Frame/Frame.hpp"
+#include "../../Tools/BMP.hpp"
 
 using namespace std;
 

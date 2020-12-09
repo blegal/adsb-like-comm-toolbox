@@ -1,7 +1,7 @@
 #include "BMPSource.hpp"
 
 
-BMPSource::BMPSource()
+BMPSource::BMPSource(std::string fileN)
 {
     bmp = nullptr;
 
@@ -9,8 +9,9 @@ BMPSource::BMPSource()
     curr_y  = 0;
     curr_s  = 0;
 
-    isFinished = false;
+    bmp = new BMP( fileN );
 
+    isFinished = false;
 }
 
 
@@ -75,8 +76,8 @@ void BMPSource::execute(Frame* f)
     else if( curr_s == 4 )  // On informe le recepteur que la reception de l'image est terminée
     {
         f->set_type(FRAME_END_IMAGE);
-        f->data_u32(0, bmp.bmp_info_header.width);
-        f->data_u32(1, bmp.bmp_info_header.height);
+        f->data_u32(0, bmp->bmp_info_header.width);
+        f->data_u32(1, bmp->bmp_info_header.height);
         curr_s     = 5;
         isFinished = true;
     }
