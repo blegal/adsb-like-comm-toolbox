@@ -1,25 +1,18 @@
-#include <iostream>
-#include <vector>
-#include <math.h>
-#include <bitset>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 #include <chrono>
 #include <getopt.h>
-#include <signal.h>
+#include <csignal>
 
 #include "./Frame/Frame.hpp"
 
-#include "./Tools/BMP.hpp"
-#include "Tools/Parameters/Parameters.hpp"
+#include "./Tools/Parameters/Parameters.hpp"
 
 #include "./Processing/PPM/Modulator/PPM_Modulator.hpp"
 #include "./Processing/Sampling/Up/UpSampling.hpp"
 #include "./Processing/IQ/Insertion/IQ_Insertion.hpp"
 
 #include "./Radio/Emitter/Library/EmitterLibrary.hpp"
+
+#include "./Frontend/Library/FrontendLibrary.hpp"
 
 #include "couleur.h"
 
@@ -60,9 +53,11 @@ int main(int argc, char* argv[])
 
     Parameters param;
 
-    param.set("mode_radio",   "radio");
+    param.set("frontend",       "BMPFile");
+    param.set("frontend_opt",   "MonFichier.bmp");
+
+    param.set("mode_radio", "radio");
     param.set("filename",   "hackrf");
-    param.set("bmp_file",   "image.bmp");
 
     param.set("fc",      433000000.0);
     param.set("fe",        1000000.0);
@@ -92,6 +87,7 @@ int main(int argc, char* argv[])
                     {"fe",       required_argument, NULL, 'e'}, // changer la frequence echantillonnage
 
                     {"payload",     required_argument, NULL, 'p'}, // changer la frequence de la porteuse
+
                     {"bmp_file",    required_argument, NULL, 'b'}, // changer la frequence de la porteuse
 
                     {"verbose",           no_argument, NULL, 'v'}, // changer la frequence de la porteuse
@@ -150,7 +146,8 @@ int main(int argc, char* argv[])
                 break;
 
             case 'b':
-                param.set("bmp_file",   optarg);
+                param.set("frontend",    "BMPFile");
+                param.set("frontend_opt", optarg);
                 break;
 
             case 'f':
@@ -211,6 +208,7 @@ int main(int argc, char* argv[])
     radio->set_txvga_gain( param.toInt("tx_gain") );
     usleep( param.toInt("sleep_time") );
 
+    Frontend* source = FrontendLibrary::allocate( param );
 
     //
     // On cree les modules qui vont nous être utile pour réaliser la communication
@@ -285,13 +283,6 @@ int main(int argc, char* argv[])
     //
     // On ouvre l'image que l'utilisateur souhaite transmettre et on affiche ses propriétés
     //
-    BMP bmp( param.toString("bmp_file") );
-    printf("(II) Properties of the picture :\n");
-    printf("(II) -> Picture filename           : %s\n",      param.toString("bmp_file").c_str());
-    printf("(II) -> Picture size               : %dx%d\n",   bmp.bmp_info_header.width, bmp.bmp_info_header.height);
-    printf("(II) -> #bits per pixel            : %d\n",      bmp.bmp_info_header.bit_count );
-    printf("(II) -> Picture size in bytes      : %d\n",      (bmp.bmp_info_header.width * bmp.bmp_info_header.height) * (bmp.bmp_info_header.bit_count/8));
-    printf("(II) -> #frames per picture line   : %d\n",      (bmp.bmp_info_header.width * (bmp.bmp_info_header.bit_count/8)/payload) );
 
 
 
@@ -301,87 +292,16 @@ int main(int argc, char* argv[])
 
     auto start = std::chrono::system_clock::now(); // This and "end"'s type is std::chrono::time_point
 
-    uint32_t curr_x  = 0;
-    uint32_t curr_y  = 0;
-    uint32_t curr_s  = 0;
     uint32_t nFrames = 0;
-
-    const uint32_t nBytesPerPixel = (bmp.bmp_info_header.bit_count / 8);
-    const uint32_t nBytesPerLine  = (bmp.bmp_info_header.width * nBytesPerPixel);
 
     while( isFinished == false )
     {
         usleep( sleep_time );
 
-        //
-        //  Il s'agit du debut d'une image. Dans ce cas, on transmet le paquet correspondant
-        //  avec comme payload les dimensions de l'image.
-        //
-        if( curr_s == 0 )
-        {
-            f.set_type(FRAME_NEW_IMAGE);
-            f.data_u32(0, bmp.bmp_info_header.width);
-            f.data_u32(1, bmp.bmp_info_header.height);
-            curr_s = 1;
-
-        }
-        else if( curr_s == 1 )  // On envoie un tag debut de ligne avec la valeur de Y
-        {
-            f.set_type(FRAME_NEW_LINE);
-            f.data_u32(0, curr_y);
-            curr_s = 2;
-        }
-        else if( curr_s == 2 )  // On envoie l'ensemble des pixels de la ligne (ou mettre la valeur de X ?)
-        {
-            f.set_type(FRAME_INFOS);
-
-            const uint8_t* ptr = bmp.data.data() + curr_y * nBytesPerLine + curr_x * nBytesPerPixel;
-
-            for( uint32_t i = 0; i < payload; i +=1 )
-                f.data(i, ptr[i]);
-
-            curr_x += (payload / 3);    // on avance dans la ligne
-
-            if( curr_x >=  bmp.bmp_info_header.width )
-            {
-                curr_x  = 0;
-                curr_s  = 3;
-            }
-            else
-            {
-                curr_s = 2;     // On continue a transmettre la ligne en cours
-            }
-        }
-        else if( curr_s == 3 )  // On envoie un tag de fin de ligne avec la valeur de Y
-        {
-            f.set_type(FRAME_END_LINE);
-            f.data_u32(0, curr_y);
-            curr_y += 1;
-            if( curr_y == bmp.bmp_info_header.height )
-                curr_s  = 4;    // il est temps de cloturer la transmission !
-            else
-                curr_s  = 1;    // on repart sur une sequence new line...
-        }
-        else if( curr_s == 4 )  // On informe le recepteur que la reception de l'image est terminée
-        {
-            f.set_type(FRAME_END_IMAGE);
-            f.data_u32(0, bmp.bmp_info_header.width);
-            f.data_u32(1, bmp.bmp_info_header.height);
-            curr_s     = 5;
-            isFinished = true;
-        }
-        else
-        {
-            printf("(EE) Jamais nous n'aurions du arriver ici... ( curr_s == %d )\n", curr_s);
-            exit( -1 );
-        }
+        source->execute( &f ); // On fill les donnees de la trames avec des données de l'image
+        isFinished = !source->is_alive();
 
         f.compute_crc();
-
-        if( verbose == true )
-        {
-            f.dump_frame();
-        }
 
         f.get_frame_bits( buff_1 );
         ppm.execute     ( buff_1, buff_2 );
@@ -391,11 +311,6 @@ int main(int argc, char* argv[])
 
         nFrames += 1;
 
-        //
-        // On gere le critere d'arret associé aux nombre MAXIMUM de trames à emettre
-        //
-        if( nFrames == param.toInt("max_frames") )
-            isFinished = true;
     }
 
     auto end = std::chrono::system_clock::now();
