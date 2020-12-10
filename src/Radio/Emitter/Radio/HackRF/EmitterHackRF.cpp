@@ -62,6 +62,7 @@ void EmitterHackRF::initialize()
     modules.push_back("000000000000000075b068dc317bae07");
     modules.push_back("000000000000000026b468dc33776d8f");
     modules.push_back("0000000000000000088869dc242e9d1b");
+    modules.push_back("0000000000000000088869dc3362561b");
 
     int result;
     result = hackrf_init();
