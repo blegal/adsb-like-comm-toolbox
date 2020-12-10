@@ -1,10 +1,9 @@
-#ifndef _ReceiverSoapy_
-#define _ReceiverSoapy_
+#ifndef _ReceiverHackRF_
+#define _ReceiverHackRF_
 
-#include "../Receiver.hpp"
-#include <SoapySDR/Device.hpp>
-#include <SoapySDR/Types.hpp>
-#include <SoapySDR/Formats.hpp>
+#include "../../Receiver.hpp"
+#include "../../../../RingBuff/RingBuff.hpp"
+#include <libhackrf/hackrf.h>
 
 /*
   freq=<float>    Desired tune frequency in Hz. Valid range from 1M to 6G. (default 100M: 100000000)
@@ -15,51 +14,50 @@
   vgain=<x>       VGA gain in dB. Valid values are: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, list. list lists valid values and exits. (default 22)
   bwfilter=<x>    RF (IF) filter bandwidth in MHz. Actual value is taken as the closest to the following values: 1.75, 2.5, 3.5, 5, 5.5, 6, 7, 8, 9, 10, 12, 14, 15, 20, 24, 28, list. list lists valid values and exits. (default 2.5)
   extamp=<int>    Turn on (1) or off (0) the extra amplifier (default 0: off)
-  antbias=<int>   Turn on (1) or off (0) the antenna bias for remote LNA (default 0: off)
+  antbias=<int>   Turn on (1) or off (0) the antenna bias for remote LNA (default 0: off)@
   pwidle=<float> (Tx only) Value in negative dB of I/Q constant carrier power when idle (default 0: silent)
 */
 
-class ReceiverSoapy : public Receiver{
+class ReceiverHackRF : public Receiver{
 
 private :
-//    double freq_hz;
-//    double fech_hz;
-//    bool amplifier;
-//    bool antenna;
-//    uint32_t vga_gain;
-//    uint32_t lna_gain;
+    double freq_hz;
+    double fech_hz;
+    bool amplifier;
+    bool antenna;
+    uint32_t vga_gain;
+    uint32_t lna_gain;
 
-//    int N;  //nbre ech
-//    int nEchantillons;  //nbre ech
-
-    SoapySDR::Device *sdr;
-    SoapySDR::Stream *rx_stream;
-
-//    bool rxFinished;
+    int nEchantillons;  //nbre ech
+    hackrf_device* device = NULL;
 
 //    int8_t* buffer;
+    RingBuff buff;
 
 public :
-    ReceiverSoapy( float s_fc, float s_fe);
-    ~ReceiverSoapy();
+    ReceiverHackRF(float s_fc, float s_fe);
+	~ReceiverHackRF();
 
     void initialize();
+
     void start_engine();
     void stop_engine ();
 
     void reception(vector<complex<float> >& cbuffer);
-//    void reception(std::vector<int16_t>& I, std::vector<int16_t>& Q);
 
     void reset();
 
-    void   set_freq(const double value);
+    void   set_freq(double value);
     double get_freq( );
 
-    void   set_sample_rate(const double value);
+    void   set_sample_rate(double value);
     double get_sample_rate( );
 
-    void set_amp_enable(const bool value);
+    void set_amp_enable(bool value);
     bool get_amp_enable( );
+
+    void set_antenna_enable(bool value);
+    bool get_antenna_enable( );
 
     void     set_vga_gain(uint32_t value);
     uint32_t get_vga_gain( );
@@ -67,6 +65,18 @@ public :
     void     set_lna_gain(uint32_t value);
     uint32_t get_lna_gain( );
 
+    void     set_nb_samples(uint32_t value);
+    uint32_t get_nb_samples( );
+
+private:
+    static int rx_callback(hackrf_transfer* transfer);
+    int rx_callback(unsigned char *buf, uint32_t len);
+
+    uint32_t count_samples();
+
+//    uint32_t ptr_read;
+//    uint32_t ptr_write;
+//    uint32_t buff_length;
 };
 
 #endif

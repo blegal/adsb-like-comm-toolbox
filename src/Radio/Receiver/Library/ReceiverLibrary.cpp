@@ -2,9 +2,9 @@
 
 #include "../File/ReceiverFileRAW.hpp"
 #include "../File/ReceiverFileUHD.hpp"
-#include "../Radio/ReceiverHackRF.hpp"
-#include "../Radio/ReceiverSoapy.hpp"
-#include "../Radio/ReceiverUSRP.hpp"
+#include "../Radio/HackRF/ReceiverHackRF.hpp"
+#include "../Radio/SoapyHackRF/ReceiverSoapy.hpp"
+#include "../Radio/UHD/ReceiverUSRP.hpp"
 
 ReceiverLibrary::ReceiverLibrary()
 {
