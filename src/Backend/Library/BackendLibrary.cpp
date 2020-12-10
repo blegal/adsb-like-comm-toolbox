@@ -26,8 +26,8 @@ BackendLibrary::~BackendLibrary()
 
 Backend* BackendLibrary::allocate(Parameters& param)
 {
-    const std::string name   = param.toString("frontend");
-    const std::string option = param.toString("frontend_opt");
+    const std::string name   = param.toString("backend");
+    const std::string option = param.toString("backend_opt");
 
     Backend* fend;
     if( name == "BinaryFile" ){
