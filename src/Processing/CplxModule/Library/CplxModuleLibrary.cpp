@@ -1,8 +1,8 @@
 #include "CplxModuleLibrary.hpp"
 
-#include "../INTER_x86/CplxModule_x86.hpp"
-#include "../INTER_AVX2/CplxModule_AVX2.hpp"
-#include "../INTER_NEON/CplxModule_NEON.hpp"
+#include "../CplxModule_x86/CplxModule_x86.hpp"
+#include "../CplxModule_AVX2/CplxModule_AVX2.hpp"
+#include "../CplxModule_NEON/CplxModule_NEON.hpp"
 
 CplxModuleLibrary::CplxModuleLibrary()
 {

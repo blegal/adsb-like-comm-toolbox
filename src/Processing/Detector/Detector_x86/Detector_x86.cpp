@@ -1,13 +1,13 @@
-#include "DetectorScalar.hpp"
+#include "Detector_x86.hpp"
 
 
-DetectorScalar::DetectorScalar() : Detector(1)
+Detector_x86::Detector_x86() : Detector(1)
 {
 
 }
 
 
-void DetectorScalar::execute(float *buffer)
+void Detector_x86::execute(float *buffer)
 {
 	const float ps = buffer[ 0] + buffer[ 1] + buffer[ 4] + buffer[ 5] + // 2 bits à 1 en PPM
 	                 buffer[14] + buffer[15] + buffer[18] + buffer[19];  // 2 bits à 0 en PPM
@@ -22,7 +22,7 @@ void DetectorScalar::execute(float *buffer)
 }
 
 
-void DetectorScalar::execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer)
+void Detector_x86::execute(std::vector<float>* iBuffer, std::vector<float>* oBuffer)
 {
     const uint32_t ll = iBuffer->size();
 

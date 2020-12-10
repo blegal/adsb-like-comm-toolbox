@@ -1,8 +1,8 @@
 #include "DetectorLibrary.hpp"
 
-#include "../INTER_x86/DetectorScalar.hpp"
-#include "../INTRA_AVX2/Detector_AVX2.hpp"
-#include "../INTRA_NEON/Detector_NEON.hpp"
+#include "../Detector_x86/Detector_x86.hpp"
+#include "../Detector_AVX2/Detector_AVX2.hpp"
+#include "../Detector_NEON/Detector_NEON.hpp"
 
 DetectorLibrary::DetectorLibrary()
 {
@@ -19,7 +19,7 @@ Detector* DetectorLibrary::allocate(Parameters& param)
 {
     Detector* detect;
     if( param.toString("mode_corr") == "scalar" ){
-        detect = new DetectorScalar();
+        detect = new Detector_x86();
     } else if( param.toString("mode_corr") == "AVX2" ){
         detect = new Detector_AVX2();
     } else if( param.toString("mode_corr") == "NEON" ){

@@ -1,14 +1,14 @@
-#ifndef _DetectorScalar_
-#define _DetectorScalar_
+#ifndef _Detector_x86_
+#define _Detector_x86_
 
 #include "../Detector.hpp"
 
 
-class DetectorScalar : public Detector{
+class Detector_x86 : public Detector{
 private :
 
 public :
-	DetectorScalar();
+    Detector_x86();
 
     virtual void execute(float* buffer);
 
