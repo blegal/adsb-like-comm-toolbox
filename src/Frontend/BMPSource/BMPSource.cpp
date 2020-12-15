@@ -36,7 +36,8 @@ void BMPSource::execute(Frame* f)
 
     if( curr_s == 0 )
     {
-        f->set_type(FRAME_NEW_IMAGE);
+        f->set_type   (FRAME_NEW_IMAGE);
+        f->set_special(       0xFF ); // C'est l'ID x de la trame !
         f->data_u32(0, bmp->bmp_info_header.width);
         f->data_u32(1, bmp->bmp_info_header.height);
         curr_s = 1;
@@ -44,19 +45,22 @@ void BMPSource::execute(Frame* f)
     }
     else if( curr_s == 1 )  // On envoie un tag debut de ligne avec la valeur de Y
     {
-        f->set_type(FRAME_NEW_LINE);
+        f->set_type   (FRAME_NEW_LINE);
+        f->set_special(      0xFF ); // C'est l'ID x de la trame !
         f->data_u32(0, curr_y);
         curr_s = 2;
     }
     else if( curr_s == 2 )  // On envoie l'ensemble des pixels de la ligne (ou mettre la valeur de X ?)
     {
-        f->set_type(FRAME_INFOS);
 
         const uint8_t* ptr = bmp->data.data() + curr_y * nBytesPerLine + curr_x * nBytesPerPixel;
 
         const uint32_t payload = f->payload_size();
         for( uint32_t i = 0; i < payload; i +=1 )
             f->data(i, ptr[i]);
+
+        f->set_type   (                FRAME_INFOS);
+        f->set_special( curr_x / (payload / 3) );
 
         curr_x += (payload / 3);    // on avance dans la ligne
 
@@ -72,7 +76,8 @@ void BMPSource::execute(Frame* f)
     }
     else if( curr_s == 3 )  // On envoie un tag de fin de ligne avec la valeur de Y
     {
-        f->set_type(FRAME_END_LINE);
+        f->set_type   (FRAME_END_LINE);
+        f->set_special(      0xFF ); // C'est l'ID x de la trame !
         f->data_u32(0, curr_y);
         curr_y += 1;
         if( curr_y == bmp->bmp_info_header.height )
@@ -82,7 +87,8 @@ void BMPSource::execute(Frame* f)
     }
     else if( curr_s == 4 )  // On informe le recepteur que la reception de l'image est terminée
     {
-        f->set_type(FRAME_END_IMAGE);
+        f->set_type   (FRAME_END_IMAGE);
+        f->set_special(       0xFF ); // C'est l'ID x de la trame !
         f->data_u32(0, bmp->bmp_info_header.width);
         f->data_u32(1, bmp->bmp_info_header.height);
         curr_s     = 5;

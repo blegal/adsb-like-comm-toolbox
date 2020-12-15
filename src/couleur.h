@@ -10,7 +10,10 @@
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 
-inline void black(){ printf("%s", KNRM); }
+inline void red()   { printf("%s", KRED); }
+inline void yellow(){ printf("%s", KYEL); }
+inline void green() { printf("%s", KGRN); }
+inline void black() { printf("%s", KNRM); }
 inline void red  (const char* txt){ printf("%s%s%s", KRED, txt, KNRM); }
 inline void green(const char* txt){ printf("%s%s%s", KGRN, txt, KNRM); }
 

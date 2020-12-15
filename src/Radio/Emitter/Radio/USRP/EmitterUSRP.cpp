@@ -33,7 +33,7 @@ EmitterUSRP::~EmitterUSRP()
 void EmitterUSRP::initialize()
 {
     cout << "INITIALISATION EMISSION" << endl;
-    string usrp_addr("serial=ECR10Z9B1");           // L'adresse de l'USRP est écrite en dur pour l'instant
+    string usrp_addr("serial=EDR10Z3B1");           // L'adresse de l'USRP est écrite en dur pour l'instant
     usrp = uhd::usrp::multi_usrp::make(usrp_addr); // Initialisation de l'USRP
 
     usrp->set_tx_rate( this->fech_hz );  // Set de la fréquence d'échantillonnage

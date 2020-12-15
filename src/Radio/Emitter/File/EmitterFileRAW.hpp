@@ -8,6 +8,7 @@ class EmitterFileRAW : public Emitter{
 private :
     std::string filename;
     FILE* stream;
+    bool firstFrame;
 
 public :
     EmitterFileRAW(std::string filen);

@@ -24,6 +24,7 @@ private :
     uint32_t BytesPerLine;
     uint32_t curr_x;
     uint32_t curr_y;
+    int32_t lastXid;
 
 public :
     BMPFileDest(std::string file);

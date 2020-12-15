@@ -15,7 +15,7 @@ ReceiverHackRF::ReceiverHackRF(float s_fc, float s_fe) : Receiver(s_fc, s_fe), b
     fech_hz   = s_fe;
     amplifier = false;
     antenna   = false;
-    vga_gain  = 30; // 30;    // 40; : validated values for adsb-like comm.
+    vga_gain  = 16; // 30;    // 40; : validated values for adsb-like comm.
     lna_gain  = 16; // 16;    // 32; : validated values for adsb-like comm.
 
     //
@@ -23,10 +23,10 @@ ReceiverHackRF::ReceiverHackRF(float s_fc, float s_fe) : Receiver(s_fc, s_fe), b
     //
 
     std::vector<std::string> modules;
+    modules.push_back("0000000000000000088869dc3362561b");
     modules.push_back("000000000000000026b468dc33776d8f");
     modules.push_back("000000000000000075b068dc317bae07");
     modules.push_back("0000000000000000088869dc242e9d1b");
-    modules.push_back("0000000000000000088869dc3362561b");
 
     int result;
     result = hackrf_init();
