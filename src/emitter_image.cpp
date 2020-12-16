@@ -16,7 +16,6 @@
 
 #include "couleur.h"
 
-
 bool isFinished = false;
 
 void my_ctrl_c_handler(int s){
@@ -296,8 +295,6 @@ int main(int argc, char* argv[])
 
     while( isFinished == false )
     {
-        usleep( sleep_time );
-
         source->execute( &f ); // On fill les donnees de la trames avec des données de l'image
         isFinished = !source->is_alive();
 
@@ -309,12 +306,17 @@ int main(int argc, char* argv[])
         iqi.execute     ( buff_3, buff_4 );
         radio->emission ( buff_4 );
 
+        usleep( sleep_time );
+
         nFrames += 1;
 
     }
 
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
+
+    usleep( 200000 ); // On attend un peu pour etre certain que la derniere trame
+                      // a bien été transmise avant que l'on coupe l'emetteur
 
     std::cout << std::endl;
     std::cout << "Nombre de trames emises  (frames)  = " << nFrames << std::endl;

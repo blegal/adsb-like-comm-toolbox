@@ -11,31 +11,17 @@
 #include <iostream>
 #include <iomanip>
 
-#include "../Processing/CRC/CRC32b.hpp"
+#include "./MLType/MLType.hpp"
+#include "./CRC/CRC32b.hpp"
 
 using namespace std;
 
-#define FRAME_INFOS         0x01    // 1111 0000
-#define FRAME_NEW_IMAGE     0x02    // 0000 1111
-#define FRAME_END_IMAGE     0x04    // 1100 1100
-#define FRAME_NEW_LINE      0x08    // 0011 0011
-#define FRAME_END_LINE      0x10    // 1010 1010
-#define FRAME_EMPTY         0x20    // 1001 1001
-
-#define str_FRAME_INFOS         "FRAME_INFOS   "
-#define str_FRAME_NEW_IMAGE     "FRAME_NEW_IMG "
-#define str_FRAME_END_IMAGE     "FRAME_END_IMG "
-#define str_FRAME_NEW_LINE      "FRAME_NEW_LINE"
-#define str_FRAME_END_LINE      "FRAME_END_LINE"
-#define str_FRAME_EMPTY         "FRAME_EMPTY   "
-
-
 class Frame{
 protected:
-    vector<uint8_t> header;
-    vector<uint8_t> config;
-    vector<uint8_t> payload;
-    vector<uint8_t> crc_field;
+    vector<uint8_t> header_v;
+    vector<uint8_t> config_v;
+    vector<uint8_t> payload_v;
+    vector<uint8_t> crc_field_v;
 
     CRC32b crc;
 
@@ -52,6 +38,8 @@ public :
     void    compute_crc ();  // compute the last 24 bits with crc value
     bool    validate_crc();  // check the latest 24 bit values
 
+    void set_special(const uint8_t v);
+    uint8_t get_special();
 
     uint8_t  data    (const uint32_t pos); // a value from the payload
     uint16_t data_u16(const uint32_t pos); // a value from the payload
@@ -79,7 +67,7 @@ public :
     uint32_t frame_bits();         // payload size
 
 protected:
-    void set_payload_size(const uint32_t v);  // get payload size in bytes
+//    void set_payload_size(const uint32_t v);  // get payload size in bytes
 
 };
 

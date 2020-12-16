@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_FLAGS "                   -Wall -Ofast -march=native -mtune=native")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/opt/hackrf/include")            # HackRF
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/boost/1.74.0/include")   # Boost
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/uhd/4.0.0.0/include") # UHD
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/uhd/4.0.0.0/include -Wno-#pragma-messages")    # UHD
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Rpass=loop-vectorize") # UHD
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Rpass=loop-vectorize -Rpass-missed=loop-vectorize") # UHD
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/include") # SoapySDR
@@ -22,75 +22,104 @@ set(CMAKE_CXX_STANDARD 17)
 
 ########################################################################################################################
 
-project(adsb_receiver)
+project(receiver_adsb)
 
 set(SOURCE_FILES
-        src/CRC/CRC32b.cpp
+        src/Frame/CRC/CRC32b.cpp
+        src/Frame/MLType/MLType.cpp
         src/Frame/Frame.cpp
         src/RingBuff/RingBuff.cpp
-        src/Tools/Parameters.cpp
-        src/Tools/CTickCounter.cpp
-        src/Conversion/Conversion.cpp
-        src/Conversion/INTER_x86/ConversionScalar.cpp
-        src/Conversion/INTER_NEON/ConversionNEON.cpp
-        src/Conversion/INTER_AVX2/ConversionAVX2.cpp
-        src/Acquisition/Radio.cpp
-        src/Acquisition/Radio/ReceiverUSRP.cpp
-        src/Acquisition/Radio/ReceiverSoapy.cpp
-        src/Acquisition/Radio/ReceiverHackRF.cpp
-        src/Acquisition/File/RadioFichierRAW.cpp
-        src/Acquisition/File/RadioFichierUHD.cpp
-        src/PPM/Demodulator/PPM_Demodulator.cpp
-        src/IQ/Removing/IQ_Removing.cpp
-        src/Sampling/Down/DownSampling.cpp
-        src/Detecteur/Detecteur.cpp
-        src/Detecteur/INTER_x86/DetecteurScalar.cpp
-        src/Detecteur/INTRA_NEON/Detecteur_NEON.cpp
-        src/Detecteur/INTRA_AVX2/Detecteur_AVX2.cpp
-        src/receiver.cpp
+        src/Tools/Parameters/Parameters.cpp
+        src/Tools/CTickCounter/CTickCounter.cpp
+        src/Tools/ExportVector/ExportVector.cpp
+        src/Tools/Conversion/cvt_float_i8.cpp
+        src/Tools/Conversion/cvt_float_u8.cpp
+        src/Tools/Conversion/cvt_u8_float.cpp
+        src/Tools/Conversion/cvt_i8_float.cpp
+
+        src/Processing/CplxModule/CplxModule.cpp
+        src/Processing/CplxModule/CplxModule_x86/CplxModule_x86.cpp
+        src/Processing/CplxModule/CplxModule_NEON/CplxModule_NEON.cpp
+        src/Processing/CplxModule/CplxModule_AVX2/CplxModule_AVX2.cpp
+        src/Processing/CplxModule/Library/CplxModuleLibrary.cpp
+
+        src/Radio/Receiver/Receiver.cpp
+        src/Radio/Receiver/Radio/SoapyHackRF/ReceiverSoapy.cpp
+        src/Radio/Receiver/Radio/HackRF/ReceiverHackRF.cpp
+        src/Radio/Receiver/Radio/USRP/ReceiverUSRP.cpp
+
+        src/Radio/Receiver/File/ReceiverFileRAW.cpp
+        src/Radio/Receiver/File/ReceiverFileUHD.cpp
+        src/Radio/Receiver/Library/ReceiverLibrary.cpp
+
+        src/Processing/PPM/Demodulator/PPM_Demodulator.cpp
+        src/Processing/IQ/Removing/IQ_Removing.cpp
+        src/Processing/Sampling/Down/DownSampling.cpp
+        src/Processing/Detector/Detector.cpp
+        src/Processing/Detector/Detector_x86/Detector_x86.cpp
+        src/Processing/Detector/Detector_NEON/Detector_NEON.cpp
+        src/Processing/Detector/Detector_AVX2/Detector_AVX2.cpp
+        src/Processing/Detector/Library/DetectorLibrary.cpp
+
+        src/receiver_adsb.cpp
         )
 
-add_executable(adsb_receiver ${SOURCE_FILES})
+add_executable(receiver_adsb ${SOURCE_FILES})
 
 ########################################################################################################################
 
 project(receiver_image)
 
 set(SOURCE_FILES
-        src/Acquisition/Radio.cpp
-        src/Acquisition/File/RadioFichierRAW.cpp
-        src/Acquisition/File/RadioFichierUHD.cpp
-        src/Acquisition/Radio/ReceiverUSRP.cpp
-        src/Acquisition/Radio/ReceiverSoapy.cpp
-        src/Acquisition/Radio/ReceiverHackRF.cpp
+        src/Radio/Receiver/Receiver.cpp
+        src/Radio/Receiver/File/ReceiverFileRAW.cpp
+        src/Radio/Receiver/File/ReceiverFileUHD.cpp
+        src/Radio/Receiver/Radio/SoapyHackRF/ReceiverSoapy.cpp
+        src/Radio/Receiver/Radio/HackRF/ReceiverHackRF.cpp
+        src/Radio/Receiver/Radio/USRP/ReceiverUSRP.cpp
+        src/Radio/Receiver/Library/ReceiverLibrary.cpp
 
-        src/Backend/bmp/BMP_target.cpp
-        src/Backend/fpga/FPGA_target.cpp
+        src/Backend/Backend.cpp
+        src/Backend/BMPFileDest/BMPFileDest.cpp
+        src/Backend/BinaryFileDest/BinaryFileDest.cpp
+        src/Backend/FPGADest/FPGADest.cpp
+        src/Backend/NullDest/NullDest.cpp
+        src/Backend/TerminalDest/TerminalDest.cpp
+        src/Backend/Library/BackendLibrary.cpp
 
-        src/Conversion/Conversion.cpp
-        src/Conversion/INTER_x86/ConversionScalar.cpp
-        src/Conversion/INTER_NEON/ConversionNEON.cpp
-        src/Conversion/INTER_AVX2/ConversionAVX2.cpp
+        src/Processing/CplxModule/CplxModule.cpp
+        src/Processing/CplxModule/CplxModule_x86/CplxModule_x86.cpp
+        src/Processing/CplxModule/CplxModule_NEON/CplxModule_NEON.cpp
+        src/Processing/CplxModule/CplxModule_AVX2/CplxModule_AVX2.cpp
+        src/Processing/CplxModule/Library/CplxModuleLibrary.cpp
 
-        src/CRC/CRC32b.cpp
+        src/Frame/CRC/CRC32b.cpp
+        src/Frame/MLType/MLType.cpp
 
-        src/Detecteur/Detecteur.cpp
-        src/Detecteur/INTER_x86/DetecteurScalar.cpp
-        src/Detecteur/INTRA_NEON/Detecteur_NEON.cpp
-        src/Detecteur/INTRA_AVX2/Detecteur_AVX2.cpp
+        src/Processing/Detector/Detector.cpp
+        src/Processing/Detector/Detector_x86/Detector_x86.cpp
+        src/Processing/Detector/Detector_NEON/Detector_NEON.cpp
+        src/Processing/Detector/Detector_AVX2/Detector_AVX2.cpp
+        src/Processing/Detector/Library/DetectorLibrary.cpp
+
+        src/Tools/Conversion/cvt_float_i8.cpp
+        src/Tools/Conversion/cvt_float_u8.cpp
+        src/Tools/Conversion/cvt_u8_float.cpp
+        src/Tools/Conversion/cvt_i8_float.cpp
 
         src/Frame/Frame.cpp
 
-        src/IQ/Removing/IQ_Removing.cpp
+        src/Processing/IQ/Removing/IQ_Removing.cpp
 
-        src/PPM/Demodulator/PPM_Demodulator.cpp
+        src/Processing/PPM/Demodulator/PPM_Demodulator.cpp
 
         src/RingBuff/RingBuff.cpp
 
-        src/Sampling/Down/DownSampling.cpp
+        src/Processing/Sampling/Down/DownSampling.cpp
 
-        src/Tools/Parameters.cpp
-        src/Tools/CTickCounter.cpp
+        src/Tools/Parameters/Parameters.cpp
+        src/Tools/CTickCounter/CTickCounter.cpp
+        src/Tools/ExportVector/ExportVector.cpp
 
         src/receiver_image.cpp
         )
@@ -99,61 +128,73 @@ add_executable(receiver_image ${SOURCE_FILES})
 
 ########################################################################################################################
 
-project(tty_histo)
-
-SET(SOURCE_FILES
-        src/RingBuff/RingBuff.cpp
-        src/tty_histo.cpp
-        )
-
-add_executable(tty_histo ${SOURCE_FILES})
-target_link_libraries(tty_histo)
+#project(tty_histo)
+#
+#SET(SOURCE_FILES
+#        src/RingBuff/RingBuff.cpp
+#        src/tty_histo.cpp
+#        )
+#
+#add_executable(tty_histo ${SOURCE_FILES})
+#target_link_libraries(tty_histo)
 
 ########################################################################################################################
 
-project(adsb_emitter)
+project(emitter_adsb)
 
 set(SOURCE_FILES
-        src/CRC/CRC32b.cpp
+        src/Frame/CRC/CRC32b.cpp
         src/Frame/Frame.cpp
         src/RingBuff/RingBuff.cpp
-        src/Tools/Parameters.cpp
-        src/Tools/CTickCounter.cpp
-        src/Acquisition/Radio.cpp
-        src/Emitter/Emitter.cpp
-        src/Emitter/Radio/EmitterHackRF.cpp
-        src/Emitter/File/RadioFichierRAW.cpp
-        src/PPM/Modulator/PPM_Modulator.cpp
-        src/IQ/Insertion/IQ_Insertion.cpp
-        src/Sampling/Up/UpSampling.cpp
-        src/PPM/Demodulator/PPM_Demodulator.cpp
-        src/IQ/Removing/IQ_Removing.cpp
-        src/Sampling/Down/DownSampling.cpp
-        src/emitter.cpp
+        src/Tools/Parameters/Parameters.cpp
+        src/Tools/CTickCounter/CTickCounter.cpp
+        src/Radio/Receiver/Receiver.cpp
+
+        src/Radio/Emitter/Emitter.cpp
+        src/Radio/Emitter/Radio/HackRF/EmitterHackRF.cpp
+        src/Radio/Emitter/Radio/USRP/EmitterUSRP.cpp
+        src/Radio/Emitter/File/EmitterFileRAW.cpp
+        src/Radio/Emitter/Library/EmitterLibrary.cpp
+
+        src/Processing/PPM/Modulator/PPM_Modulator.cpp
+        src/Processing/IQ/Insertion/IQ_Insertion.cpp
+        src/Processing/Sampling/Up/UpSampling.cpp
+        src/emitter_adsb.cpp
         )
 
-add_executable(adsb_emitter ${SOURCE_FILES})
+add_executable(emitter_adsb ${SOURCE_FILES})
 
 ########################################################################################################################
 
 project(emitter_image)
 
 set(SOURCE_FILES
-        src/CRC/CRC32b.cpp
+        src/Frame/CRC/CRC32b.cpp
+        src/Frame/MLType/MLType.cpp
         src/Frame/Frame.cpp
         src/RingBuff/RingBuff.cpp
-        src/Tools/Parameters.cpp
-        src/Tools/CTickCounter.cpp
-        src/Acquisition/Radio.cpp
-        src/Emitter/Emitter.cpp
-        src/Emitter/Radio/EmitterHackRF.cpp
-        src/Emitter/File/RadioFichierRAW.cpp
-        src/PPM/Modulator/PPM_Modulator.cpp
-        src/IQ/Insertion/IQ_Insertion.cpp
-        src/Sampling/Up/UpSampling.cpp
-        src/PPM/Demodulator/PPM_Demodulator.cpp
-        src/IQ/Removing/IQ_Removing.cpp
-        src/Sampling/Down/DownSampling.cpp
+        src/Tools/Parameters/Parameters.cpp
+        src/Tools/CTickCounter/CTickCounter.cpp
+        src/Radio/Receiver/Receiver.cpp
+
+        src/Frontend/Frontend.cpp
+        src/Frontend/BinaryFileSource/BinaryFileSource.cpp
+        src/Frontend/BMPSource/BMPSource.cpp
+        src/Frontend/HexSource/HexSource.cpp
+        src/Frontend/Library/FrontendLibrary.cpp
+
+        src/Radio/Emitter/Emitter.cpp
+        src/Radio/Emitter/Radio/HackRF/EmitterHackRF.cpp
+        src/Radio/Emitter/Radio/USRP/EmitterUSRP.cpp
+        src/Radio/Emitter/File/EmitterFileRAW.cpp
+        src/Radio/Emitter/Library/EmitterLibrary.cpp
+
+        src/Processing/PPM/Modulator/PPM_Modulator.cpp
+        src/Processing/IQ/Insertion/IQ_Insertion.cpp
+        src/Processing/Sampling/Up/UpSampling.cpp
+        src/Processing/PPM/Demodulator/PPM_Demodulator.cpp
+        src/Processing/IQ/Removing/IQ_Removing.cpp
+        src/Processing/Sampling/Down/DownSampling.cpp
         src/emitter_image.cpp
         )
 
@@ -161,22 +202,42 @@ add_executable(emitter_image ${SOURCE_FILES})
 
 ########################################################################################################################
 
-project(tty_emitter)
-
-SET(SOURCE_FILES
-        src/CRC/CRC32b.cpp
-        src/Frame/Frame.cpp
-        src/RingBuff/RingBuff.cpp
-        src/tty_emitter.cpp
-        )
-
-add_executable(tty_emitter ${SOURCE_FILES})
+#project(tty_emitter)
+#
+#SET(SOURCE_FILES
+#        src/CRC/CRC32b.cpp
+#        src/Frame/Frame.cpp
+#        src/RingBuff/RingBuff.cpp
+#        src/tty_emitter.cpp
+#        )
+#
+#add_executable(tty_emitter ${SOURCE_FILES})
 
 ########################################################################################################################
 
 project(test_vecto)
 
 SET(SOURCE_FILES
+        src/Tools/Conversion/cvt_float_i8.cpp
+        src/Tools/Conversion/cvt_float_u8.cpp
+        src/Tools/Conversion/cvt_u8_float.cpp
+        src/Tools/Conversion/cvt_i8_float.cpp
+
+        src/Frame/Frame.cpp
+        src/Frame/CRC/CRC32b.cpp
+        src/Frame/MLType/MLType.cpp
+        src/Backend/Backend.cpp
+        src/Backend/BMPFileDest/BMPFileDest.cpp
+        src/Backend/BinaryFileDest/BinaryFileDest.cpp
+        src/Backend/FPGADest/FPGADest.cpp
+        src/Backend/NullDest/NullDest.cpp
+        src/Backend/TerminalDest/TerminalDest.cpp
+
+        src/Frontend/Frontend.cpp
+        src/Frontend/BinaryFileSource/BinaryFileSource.cpp
+        src/Frontend/BMPSource/BMPSource.cpp
+        src/Frontend/HexSource/HexSource.cpp
+
         src/test_vecto.cpp
         )
 

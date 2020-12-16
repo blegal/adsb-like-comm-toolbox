@@ -27,6 +27,8 @@
 
 #include "./Radio/Emitter/Library/EmitterLibrary.hpp"
 
+#include "./Frontend/Library/FrontendLibrary.hpp"
+
 #include "couleur.h"
 
 
@@ -66,7 +68,10 @@ int main(int argc, char* argv[])
 
     Parameters param;
 
-    param.set("mode_radio",   "radio");
+    param.set("frontend",   "HexSource");
+    param.set("fe_param",   "none");
+
+    param.set("mode_radio", "radio");
     param.set("filename",   "hackrf");
 
     param.set("fc",      433000000.0);
@@ -269,25 +274,16 @@ int main(int argc, char* argv[])
 #endif
 
     Emitter*   radio = EmitterLibrary::allocate( param );
-//    if( (param.toString("mode_radio") == "radio") && (param.toString("filename") == "hackrf") )
-//    {
-//        radio = new EmitterHackRF(param.toDouble("fc"), param.toDouble("fe_real"));
-//    }
-//    else if( param.toString("mode_radio") == "file" )
-//    {
-//        radio = new EmitterFileRAW( param.toString("filename") );
-//    }
-//    else
-//    {
-//        cout << "oups !" << endl;
-//        cout << "mode_radio = " << param.toString("mode_radio") << endl;
-//        cout << "filename   = " << param.toString("filename")   << endl;
-//        exit( -1 );
-//    }
-
     radio->initialize();
     radio->start_engine();
     radio->set_txvga_gain( param.toInt("tx_gain") );
+
+
+//  Frontend* source = FrontendLibrary::allocate( param );
+
+    //
+    // Une petite pause
+    //
     usleep( param.toInt("sleep_time") );
 
     Frame f( param.toInt("payload") );

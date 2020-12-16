@@ -36,9 +36,9 @@
 //  CplxModule des nombres complexes => module flottant
 //
 
-//#include "./CplxModule/INTER_x86/CplxModule_x86.hpp"
-//#include "./CplxModule/INTER_NEON/CplxModule_NEON.hpp"
-//#include "./CplxModule/INTER_AVX2/CplxModule_AVX2.hpp"
+//#include "./CplxModule/CplxModule_x86/CplxModule_x86.hpp"
+//#include "./CplxModule/CplxModule_NEON/CplxModule_NEON.hpp"
+//#include "./CplxModule/CplxModule_AVX2/CplxModule_AVX2.hpp"
 #include "./Processing/CplxModule/Library/CplxModuleLibrary.hpp"
 
 
@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
 
     param.set("hackrf_amplifier", -1);
     param.set("hackrf_vga_gain",  -1);
-    param.set("hackrf_lna_gain", -1);
+    param.set("hackrf_lna_gain",  -1);
 
     param.set("mode_conv",        "scalar");
     param.set("mode_corr",        "scalar");
@@ -138,6 +138,10 @@ int main(int argc, char* argv[])
 
                     {"fc",      required_argument,   NULL, 'f'}, // changer la frequence de la porteuse
                     {"fe",      required_argument,   NULL, 'e'}, // changer la frequence echantillonnage
+
+                    {"amplifier", required_argument,  NULL, 'A'}, // changer la frequence echantillonnage
+                    {"vga_gain", required_argument,   NULL, 'V'}, // changer la frequence echantillonnage
+                    {"lna_gain", required_argument,   NULL, 'L'}, // changer la frequence echantillonnage
 
                     {"payload", required_argument,   NULL, 'p'}, // changer la frequence echantillonnage
 
@@ -172,6 +176,18 @@ int main(int argc, char* argv[])
 
             case 'e' :
                 param.set("fe",   std::stod(optarg));
+                break;
+
+            case 'A' :
+                param.set("hackrf_amplifier",   std::stoi(optarg));
+                break;
+
+            case 'V' :
+                param.set("hackrf_vga_gain",   std::stoi(optarg));
+                break;
+
+            case 'L' :
+                param.set("hackrf_lna_gain",   std::stoi(optarg));
                 break;
 
             case 'p':

@@ -16,7 +16,7 @@ EmitterHackRF::EmitterHackRF(float s_fc, float s_fe)
     fech_hz    =  s_fe;
     amplifier  = false;
     antenna    =  true;
-    txvga_gain =    24;
+    txvga_gain =    32;
 }
 
 
@@ -254,6 +254,19 @@ void EmitterHackRF::emission(std::vector<int8_t>& cbuffer )
 
     const uint32_t nWrite = buff.Write(cbuffer.data(), byte_to_send);
     if( nWrite != byte_to_send )
+    {
+        printf("(EE) We got an issue when the data set was loaded in the buffer...\n");
+        exit( -1 );
+    }
+
+    while( buff.NumFreeElements() < byte_to_send )
+    {
+        usleep(1000); // queue empty
+    }
+
+    memset( cbuffer.data(), 0, byte_to_send );
+    const uint32_t nWritE = buff.Write(cbuffer.data(), byte_to_send);
+    if( nWritE != byte_to_send )
     {
         printf("(EE) We got an issue when the data set was loaded in the buffer...\n");
         exit( -1 );

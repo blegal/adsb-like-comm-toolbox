@@ -26,9 +26,9 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
     Receiver* radio;
     if( type == "radio" && module == "hackrf" ) {
         ReceiverHackRF* r = new ReceiverHackRF(param.toDouble("fc"), param.toDouble("fe"));
-        //if( param.toInt("hackrf_amplifier") != -1 ) r->set_amp_enable( param.toInt("hackrf_amplifier") );
-        //if( param.toInt("hackrf_vga_gain")  != -1 ) r->set_vga_gain  ( param.toInt("hackrf_vga_gain") );
-        //if( param.toInt("hackrf_lna_gain")  != -1 ) r->set_lna_gain  ( param.toInt("hackrf_lna_gain") );
+        if( param.toInt("hackrf_amplifier") != -1 ) r->set_amp_enable( param.toInt("hackrf_amplifier") );
+        if( param.toInt("hackrf_vga_gain")  != -1 ) r->set_vga_gain  ( param.toInt("hackrf_vga_gain") );
+        if( param.toInt("hackrf_lna_gain")  != -1 ) r->set_lna_gain  ( param.toInt("hackrf_lna_gain") );
         radio = r;
 
     } else if( type == "radio" && module == "Soapy" ) {
@@ -43,6 +43,10 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
         radio = r;
 
     } else if( type == "file" && (module.find(".raw") != -1) ) {
+        ReceiverFileRAW* r = new ReceiverFileRAW(param.toString("filename"));
+        radio = r;
+
+    } else if( type == "file" && (module.find(".cs8") != -1) ) {
         ReceiverFileRAW* r = new ReceiverFileRAW(param.toString("filename"));
         radio = r;
 

@@ -12,11 +12,11 @@
 #include <getopt.h>
 #include <signal.h>
 
-#include "./Tools/BMP.hpp"
-#include "Tools/Parameters/Parameters.hpp"
-#include "Tools/CTickCounter/CTickCounter.hpp"
-
+#include "./Tools/Parameters/Parameters.hpp"
+#include "./Tools/CTickCounter/CTickCounter.hpp"
 #include "./Tools/Conversion/cvt_float_u8.hpp"
+
+#include "./Backend/Library/BackendLibrary.hpp"
 
 
 //
@@ -92,11 +92,18 @@ int main(int argc, char* argv[])
     param.set("mode_radio",   "radio");
     param.set("filename",   "hackrf");
 
+    param.set("backend",       "BMPFile");
+    param.set("backend_opt",   "image.bmp");
+
     param.set("fc",      433000000.0);
     param.set("fe",        1000000.0);
 
-    param.set("mode_conv",        "AVX2"); // scalar
-    param.set("mode_corr",        "AVX2"); // scalar
+    param.set("hackrf_amplifier", -1);
+    param.set("hackrf_vga_gain",  -1);
+    param.set("hackrf_lna_gain",  -1);
+
+    param.set("mode_conv",  "AVX2"); // scalar
+    param.set("mode_corr",  "AVX2"); // scalar
 
     param.set("payload", 16);
 
@@ -104,7 +111,7 @@ int main(int argc, char* argv[])
 
     param.set("ps_min", 0.75f);
 
-    param.set("mode_inter", false);
+    param.set("mode_inter",       false);
     param.set("dump_first_frame", false);
 
     param.set("crystal_correct",   0);
@@ -125,6 +132,10 @@ int main(int argc, char* argv[])
         {"fe",      required_argument,   NULL, 'e'}, // changer la frequence echantillonnage
 
         {"payload", required_argument,   NULL, 'p'}, // changer la frequence echantillonnage
+
+        {"amplifier", required_argument,  NULL, 'A'}, // changer la frequence echantillonnage
+        {"vga_gain", required_argument,   NULL, 'V'}, // changer la frequence echantillonnage
+        {"lna_gain", required_argument,   NULL, 'L'}, // changer la frequence echantillonnage
 
         {"inter",   no_argument,         NULL, 'I'}, // changer la frequence echantillonnage
         {"intra",   no_argument,         NULL, 'i'}, // changer la frequence echantillonnage
@@ -156,7 +167,19 @@ int main(int argc, char* argv[])
                 break;
 
             case 'e' :
-                param.set("fe",   std::stod(optarg));
+                param.set("fe",   std::stoi(optarg));
+                break;
+
+            case 'A' :
+                param.set("hackrf_amplifier",   std::stoi(optarg));
+                break;
+
+            case 'V' :
+                param.set("hackrf_vga_gain",   std::stoi(optarg));
+                break;
+
+            case 'L' :
+                param.set("hackrf_lna_gain",   std::stoi(optarg));
                 break;
 
             case 'p':
@@ -235,21 +258,21 @@ int main(int argc, char* argv[])
 	//
 	// Selection du module SDR employé dans le programme
 	//
-
     Receiver* radio = ReceiverLibrary::allocate( param );
 
     //
     // Selection du module de correlation employé dans le programme
     //
-
     Detector* detect = DetectorLibrary::allocate( param );
 
 
     //
     // Selection du module de conversion employé dans le programme
     //
-
     CplxModule* conv = CplxModuleLibrary::allocate( param );
+
+
+    Backend* dest = BackendLibrary::allocate( param );
 
     Frame f( param.toInt("payload") );
 
@@ -319,6 +342,7 @@ int main(int argc, char* argv[])
     std::vector<uint8_t> buff_6;
     std::vector<uint8_t> buff_7;
 
+#if 0
     BMP* bmp = nullptr;
     int32_t i_width  = -1;
     int32_t i_height = -1;
@@ -327,6 +351,7 @@ int main(int argc, char* argv[])
 
     uint32_t nBytesPerPixel = 0;
     uint32_t nBytesPerLine = 0;
+#endif
 
     const uint32_t payload = f.payload_size();
 
@@ -406,77 +431,16 @@ int main(int argc, char* argv[])
                 {
                     nbTotalTrames += 1;        // C'est bien une trame ADSB-like
                     nbBonsCRCs    += f.validate_crc();
-
                     if( verbose == 2 )
                     {
                         printf("%1.3f : ", s);
                         f.dump_frame();
                     }
-
                     k += (4 * f.frame_bits()) - 1; // On saute tous les bits qui composaient notre trame...
-
-                    // Début de la gestion et generation des images
-                    if(f.get_type() == FRAME_NEW_IMAGE)
-                    {
-                        i_width  = f.data_u32(0);
-                        i_height = f.data_u32(1);
-
-                        bmp = new BMP(i_width, i_height);
-
-                        nBytesPerPixel = (bmp->bmp_info_header.bit_count / 8);
-                        nBytesPerLine  = (bmp->bmp_info_header.width * nBytesPerPixel);
-
-                        if( verbose >= 1 )
-                            printf("(DD) Creation d'une image ( %d x %d )\n", i_width, i_height);
-
-                    }
-                    else if(f.get_type() == FRAME_END_IMAGE)
-                    {
-                        if( verbose >= 1 )
-                            printf("(DD) Fin de reception de l'image\n");
-                        bmp->write("image.bmp");
-                    }
-                    else if(f.get_type() == FRAME_NEW_LINE)
-                    {
-                        curr_x = 0;
-                        curr_y = f.data_u32(0);
-
-                        if( verbose >= 1 )
-                            printf("(DD) - Begin of line (%d)\n", curr_y);
-                    }
-                    else if(f.get_type() == FRAME_END_LINE)
-                    {
-                        const uint32_t y_value = f.data_u32(0);
-                        if( curr_y != y_value )
-                            printf("(EE) - End of line (%d) but the curr_y value is %d\n", y_value, curr_y);
-
-                        if( verbose >= 1 )
-                            printf("(DD) - End of line (%d)\n", y_value);
-                    }
-                    else if(f.get_type() == FRAME_INFOS)
-                    {
-                        if( curr_x < i_width )
-                        {
-                            if( verbose >= 1 )
-                                printf("(DD) --- Receiving pixel set (%d)\n", curr_x);
-
-                            uint8_t* ptr = bmp->data.data() + curr_y * nBytesPerLine + curr_x * nBytesPerPixel;
-                            for( uint32_t i = 0; i < payload; i +=1 )
-                                ptr[i] = f.data(i);
-                            curr_x += (payload / 3);    // on avance dans la ligne
-                        }else{
-                            printf("(EE) --- Receiving pixel set (%d) whereas i_width = %d\n", curr_x, i_width);
-                        }
-                    }
-                    else
-                    {
-//                        printf("(WW) Something strange happen, the frame type is %d\n", f.get_type());
-//                        printf("(WW) %s :: %d\n", __FILE__, __LINE__);
-                        printf("%1.3f : ", s);
+                    dest->execute( &f );
+                }else{
+                    if( verbose == 1 )
                         f.dump_frame();
-//                        exit( -1 );
-                    }
-                    // Fin de la gestion et generation des images
                 }
                 timer.stop_decoding();
             }
@@ -484,11 +448,7 @@ int main(int argc, char* argv[])
         loop_counter += 1;
 	}
 
-//	if( bmp != nullptr )
-//    {
-//        bmp->write("image.bmp");
-//        delete bmp;
-//    }
+	delete dest;
 
     printf("\n================================================================\n");
     std::cout << "loading    : " << timer.loading()     << std::endl;

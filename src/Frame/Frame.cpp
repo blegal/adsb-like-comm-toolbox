@@ -5,22 +5,24 @@ Frame::Frame(const uint32_t n, const uint8_t type)    // payload size in bytes
     //
     // On code le preambule ADSB
     //
-    header.push_back( 1 );  // 1
-    header.push_back( 1 );  // 2
-    header.push_back( 2 );  // 3
-    header.push_back( 0 );  // 4
-    header.push_back( 0 );  // 5
-    header.push_back( 2 );  // 6
-    header.push_back( 2 );  // 7
-    header.push_back( 2 );  // 8
+    header_v.push_back( 1 );  // 1
+    header_v.push_back( 1 );  // 2
+    header_v.push_back( 2 );  // 3
+    header_v.push_back( 0 );  // 4
+    header_v.push_back( 0 );  // 5
+    header_v.push_back( 2 );  // 6
+    header_v.push_back( 2 );  // 7
+    header_v.push_back( 2 );  // 8
 
     //
     // On alloue l'espace memoire associé aux données + 24b CRC
     //    
-    config.resize   (2); // in bytes
-    set_type( type );
-    set_payload_size(n);
-    crc_field.resize(4); // in bytes
+    config_v.resize   (2); // in bytes
+    set_type   ( type );
+    set_special( 0x00 );
+//    set_payload_size(   n );
+    payload_v.resize  (   n );
+    crc_field_v.resize(4); // in bytes
 }
 
 
@@ -32,52 +34,61 @@ Frame::~Frame()
 
 void Frame::set_type(const uint8_t v)
 {
-    config[0] = v;
+    config_v[0] = v;
 }
 
 
 uint8_t Frame::get_type()
 {
-    return config[0];
+    return config_v[0];
+}
+
+
+void Frame::set_special(const uint8_t v)
+{
+    config_v[1] = v;
+}
+
+
+uint8_t Frame::get_special()
+{
+    return config_v[1];
 }
 
 
 uint32_t Frame::header_size()
 {
-    return header.size();
+    return header_v.size();
 }
 
 uint32_t Frame::conf_size()
 {
-    return config.size();
+    return config_v.size();
 }
 
 uint32_t Frame::crc_size()
 {
-    return crc_field.size();
+    return crc_field_v.size();
 }
 
 uint32_t Frame::payload_size()                  // payload
 {
-    return payload.size();
+    return payload_v.size();
 //    return ((uint32_t)config[1]) + 1;
 }
 
 
-void Frame::set_payload_size(const uint32_t v)      // payload
-{
-    assert(v >=   1);
-    assert(v <= 256);
-    config[1] =   ( v - 1);
-    payload.resize( v    );
-
-}
+//void Frame::set_payload_size(const uint32_t v)      // payload
+//{
+//    config[1] =   ( v - 1);
+//    payload.resize( v    );
+//}
 
 
 void Frame::set_payload(const std::vector<uint8_t>& v)
 {
     // On check la taille des données
-    if( v.size() != payload.size() )
+    if( v.size() != payload_v.size() )
     {
         std::cout << "Error in Frame::set_payload(v.size() = " << v.size() << ")" << std::endl;
         exit( -1 );
@@ -86,7 +97,7 @@ void Frame::set_payload(const std::vector<uint8_t>& v)
     const uint32_t ll = v.size();
     for(uint32_t i = 0; i < ll; i += 1)
     {
-        payload[i] = v[i];
+        payload_v[i] = v[i];
     }
 }
 
@@ -94,23 +105,23 @@ void Frame::set_payload(const std::vector<uint8_t>& v)
 void Frame::get_payload(std::vector<uint8_t>& v)
 {
     // On check la taille des données
-    if( v.size() != payload.size() )
+    if( v.size() != payload_v.size() )
     {
         std::cout << "Error in Frame::get_payload(v.size() = " << v.size() << ")" << std::endl;
         exit( -1 );
     }
 
-    const uint32_t ll = payload.size();
+    const uint32_t ll = payload_v.size();
     for(uint32_t i = 0; i < ll; i += 1)
     {
-        v[i] = payload[i];
+        v[i] = payload_v[i];
     }
 }
 
 
 void Frame::get_frame_bits(std::vector<uint8_t>& buff)
 {
-    const uint32_t ll = header.size() + 8 * (config.size() + payload.size() + crc_field.size());
+    const uint32_t ll = header_v.size() + 8 * (config_v.size() + payload_v.size() + crc_field_v.size());
     if( buff.size() != ll )
     {
         std::cout << "Error in Frame::get_frame_bits, the number of received bits ( buff.size() = " << buff.size() << ")" << endl;
@@ -168,7 +179,7 @@ void Frame::get_frame_bits(std::vector<uint8_t>& buff)
 
 uint32_t Frame::frame_bits()         // payload size
 {
-    const uint32_t ll = header.size() + 8 * (config.size() + payload.size() + crc_field.size());
+    const uint32_t ll = header_v.size() + 8 * (config_v.size() + payload_v.size() + crc_field_v.size());
     return ll;
 }
 
@@ -176,7 +187,7 @@ uint32_t Frame::frame_bits()         // payload size
 
 bool Frame::fill_frame_bits(const std::vector<uint8_t>& in_buff)
 {
-    const uint32_t ll = header.size() + 8 * (config.size() + payload.size() + crc_field.size());
+    const uint32_t ll = header_v.size() + 8 * (config_v.size() + payload_v.size() + crc_field_v.size());
     if( in_buff.size() != ll )
     {
         std::cout << "Error in Frame::fill_frame_bits, the number of received bits ( buff.size() = " << in_buff.size() << ")" << endl;
@@ -212,22 +223,8 @@ bool Frame::fill_frame_bits(const std::vector<uint8_t>& in_buff)
         c[i] = v;
     }
 
-    uint32_t p_length = ((uint32_t )config[1]) + 1; // on recupere la taille du payload
+    uint32_t p_length = payload_size(); // on recupere la taille du payload
 
-    if( p_length != payload_size() )
-    {
-#ifndef DISALE_WRONG_SIZE_FRAME
-        std::cout << "Warning in Frame::fill_frame_bits, the number of received bits is not compliant wit Frame object..." << endl;
-#endif
-        return false;
-    }
-#if 0
-    if( p_length != payload_size() )
-    {
-        c[1]     = payload_size() - 1;
-        p_length = payload_size() - 1;
-    }
-#endif
     uint8_t* p = payload_to_emit();
     for(uint32_t i = 0; i < p_length; i += 1)
     {
@@ -240,7 +237,7 @@ bool Frame::fill_frame_bits(const std::vector<uint8_t>& in_buff)
         p[i] = v;
     }
 
-    uint8_t* r = crc_to_emit();         //
+    uint8_t* r        = crc_to_emit();
     const uint32_t cr = crc_size();
     for(uint32_t i = 0; i < cr; i += 1)
     {
@@ -260,8 +257,8 @@ bool Frame::fill_frame_bits(const std::vector<uint8_t>& in_buff)
 void Frame::compute_crc ()
 {
     uint32_t v;
-    v = crc.execute( config     );
-    v = crc.execute( payload, v );
+    v = crc.execute( config_v     );
+    v = crc.execute( payload_v, v );
     uint32_t* r = (uint32_t*)crc_to_emit();
     r[0] = v;
 }
@@ -270,8 +267,8 @@ void Frame::compute_crc ()
 bool Frame::validate_crc()
 {
     uint32_t v;
-    v = crc.execute( config     );
-    v = crc.execute( payload, v );
+    v = crc.execute( config_v     );
+    v = crc.execute( payload_v, v );
     uint32_t* r = (uint32_t*)crc_to_emit();
     return (r[0] == v);
 }
@@ -279,7 +276,7 @@ bool Frame::validate_crc()
 
 uint8_t* Frame::header_to_emit()
 {
-    return header.data();
+    return header_v.data();
 }
 
 
@@ -301,13 +298,14 @@ void Frame::dump_frame()
         case FRAME_EMPTY     : printf(str_FRAME_EMPTY     ); break;
         default              : printf("FRAME_UNKNOWN "    ); break;
     }
-    printf(" | %3d bytes | ", ((uint32_t)c[1])+1);
+    printf(" | %3d bytes | ", (uint32_t)c[1]);
 
     uint8_t* p = payload_to_emit();     // the pointer to the payload field
 #if 0
     for(uint32_t i = 0; i < payload_size(); i += 1)
       printf("%s0x%2.2X%s ", "\033[1;33m", p[i], "\033[0m");
 #else
+    printf("(%d) ", payload_size());
     printf("%s0x", "\033[1;33m");
     if( payload_size() <= 48 )
     {
@@ -393,53 +391,53 @@ std::string Frame::to_string()
 
 uint8_t* Frame::conf_to_emit()
 {
-    return config.data();
+    return config_v.data();
 }
 
 
 uint8_t* Frame::payload_to_emit()
 {
-    return payload.data();
+    return payload_v.data();
 }
 
 
 uint8_t* Frame::crc_to_emit()
 {
-    return crc_field.data();
+    return crc_field_v.data();
 }
 
 
 uint8_t  Frame::data(const uint32_t pos)
 {
-    return payload[pos];
+    return payload_v[pos];
 }
 
 uint16_t  Frame::data_u16(const uint32_t pos)
 {
-    const uint16_t* ptr = (const uint16_t*)payload.data();
+    const uint16_t* ptr = (const uint16_t*)payload_v.data();
     return ptr[pos];
 }
 
 uint32_t  Frame::data_u32(const uint32_t pos)
 {
-    const uint32_t* ptr = (const uint32_t*)payload.data();
+    const uint32_t* ptr = (const uint32_t*)payload_v.data();
     return ptr[pos];
 }
 
 void Frame::data(const uint32_t pos, const int8_t value)
 {
-    payload[pos] = value;
+    payload_v[pos] = value;
 }
 
 void Frame::data_u16(const uint32_t pos, const uint16_t value)
 {
-    uint16_t* ptr = (uint16_t*)payload.data();
+    uint16_t* ptr = (uint16_t*)payload_v.data();
     ptr[pos] = value;
 }
 
 void Frame::data_u32(const uint32_t pos, const uint32_t value)
 {
-    uint32_t* ptr = (uint32_t*)payload.data();
+    uint32_t* ptr = (uint32_t*)payload_v.data();
     ptr[pos] = value;
 }
 
