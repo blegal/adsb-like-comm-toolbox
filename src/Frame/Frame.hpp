@@ -24,6 +24,7 @@ protected:
     vector<uint8_t> crc_field_v;
 
     CRC32b crc;
+    MLType mlType;
 
 public :
     Frame(const uint32_t n, const uint8_t type = FRAME_INFOS);    // payload size
@@ -34,6 +35,7 @@ public :
 
     void    set_payload(const std::vector<uint8_t>& v);
     void    get_payload(      std::vector<uint8_t>& v);
+    void    clr_payload(                             );
 
     void    compute_crc ();  // compute the last 24 bits with crc value
     bool    validate_crc();  // check the latest 24 bit values

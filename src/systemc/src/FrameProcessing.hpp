@@ -37,15 +37,15 @@ private:
 
         while(true)
         {
-            uint8_t type = e.read();
-            uint8_t leng = e.read();
+            uint8_t  type    = e.read();
+            uint16_t special = e.read();
 
             if( type == FRAME_NEW_IMAGE )
             {
                 cout << "(II) FrameProcessing :: FRAME_NEW_IMAGE" << endl;
                 curr_adr = 0;
                 curr_y   = 0;
-//                curr_x   = 0;
+
                 for(uint16_t i = 0; i < _BYTE_PAYLOAD_; i += 1)
                     e.read();
             }
@@ -58,7 +58,7 @@ private:
 #endif
                 curr_adr = 0;
                 curr_y   = 0;
-//                curr_x   = 0;
+
                 for(uint16_t i = 0; i < _BYTE_PAYLOAD_; i += 1)
                     e.read();
             }
@@ -69,7 +69,6 @@ private:
                 sc_uint<16> r2 = (r1, r0);
                 curr_y   = r2;
                 curr_adr = _IMAGE_WIDTH_ * curr_y;
-//                curr_x   = 0;
 
                 for(uint16_t i = 2; i < _BYTE_PAYLOAD_; i += 1)
                     e.read();
@@ -82,13 +81,20 @@ private:
                 sc_uint<16> r2 = (r1, r0);
                 curr_y   = r2;
                 curr_adr = _IMAGE_WIDTH_ * curr_y;
-//                curr_x   = 0;
 
                 for(uint16_t i = 2; i < _BYTE_PAYLOAD_; i += 1)
                     e.read();
             }
             else if( type == FRAME_INFOS )
             {
+                //
+                // On utilise les données provenant de la trame pour calculer
+                // la position du bloc de pixel dans l'image
+                //
+                uint32_t curr_off = curr_adr + special * (_BYTE_PAYLOAD_ / 3);
+
+//                cout << "(II) FrameProcessing :: FRAME_INFOS :: curr_y = " <<  curr_y << " :: special = " << special << " :: curr_off = " << curr_off << endl;
+
                 for(uint16_t i = 0; i < _BYTE_PAYLOAD_; i += 3)
                 {
                     sc_uint< 8> R = e.read();
@@ -96,8 +102,8 @@ private:
                     sc_uint< 8> B = e.read();
                     sc_uint<24> RGB = (R, G, B);
                     rgbv.write( RGB );
-                    addr.write( curr_adr );
-                    curr_adr += 1;
+                    addr.write( curr_off );
+                    curr_off += 1;
                 }
             }
             else

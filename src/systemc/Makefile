@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-O2 -Wall -Wno-unknown-pragmas -I/opt/systemc/include -std=c++11
+CFLAGS=-O3 -Wall -Wno-unknown-pragmas -I/opt/systemc/include -std=c++14
 LDFLAGS=-L/opt/systemc/lib -lsystemc
 EXEC=main
 SRC=./src/main.cpp

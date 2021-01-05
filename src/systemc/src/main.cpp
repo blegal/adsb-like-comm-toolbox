@@ -16,6 +16,7 @@ int main (int argc, char * argv []){
 
     sc_clock clk("clk",10,SC_NS);
     sc_signal<bool> reset;
+		reset = false;
 
     sc_fifo< sc_int <8>  > raw2mod  (16);
     sc_fifo< sc_uint<32> > mod2bmp_1 (16);

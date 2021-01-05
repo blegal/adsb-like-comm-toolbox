@@ -34,6 +34,11 @@ Frame::~Frame()
 
 void Frame::set_type(const uint8_t v)
 {
+//    const uint8_t w = mlType.execute( v );
+//    if( v != w )
+//    {
+//        printf("%s(WW) Auto-correction of frame type from 0x%2.2X to 0x%2.2X.%s\n", "\033[1;31m", v, w, "\033[0m");
+//    }
     config_v[0] = v;
 }
 
@@ -118,6 +123,14 @@ void Frame::get_payload(std::vector<uint8_t>& v)
     }
 }
 
+void Frame::clr_payload( )
+{
+    const uint32_t ll = payload_v.size();
+    for(uint32_t i = 0; i < ll; i += 1)
+    {
+        payload_v[i] = 0;
+    }
+}
 
 void Frame::get_frame_bits(std::vector<uint8_t>& buff)
 {
@@ -200,12 +213,15 @@ bool Frame::fill_frame_bits(const std::vector<uint8_t>& in_buff)
     //
     //  We fill the preambule field with the right amount of bits
     //
-    uint8_t* h = header_to_emit();
+    uint8_t* h        = header_to_emit();
     const uint32_t hh = header_size();
     for(uint32_t i = 0; i < hh; i += 1)
     {
         h[i] = (*ptr_in++);
     }
+//    set_type( ptr_in[0] );
+//    set_special( ptr_in[1] );
+//    ptr_in += 2;
 
     //
     //  We fill the configuration header field with the right amount of bits

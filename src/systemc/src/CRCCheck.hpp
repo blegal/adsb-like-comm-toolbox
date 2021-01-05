@@ -28,7 +28,7 @@ private:
 
 	void do_gen( )
 	{
-		cout << "(II) RAWReader :: START" << endl;
+		cout << "(II) CRCCheck :: START" << endl;
         sc_uint<8> ibuffer[_BYTE_TYPE_ + _BYTE_LENGTH_ + _BYTE_PAYLOAD_];
         const uint32_t P = 0x82f63b78;
         while( true )
@@ -66,7 +66,7 @@ private:
                     s.write( ibuffer[i] );
                 }
             }else{
-                printf("(DD) CRC NON validé !!!\n");
+//                printf("(DD) CRC NON validé !!!\n");
 #if 0
                 printf("0x%2.2X | ",   ibuffer[0].to_uint());
                 printf("0x%2.2X | 0x", ibuffer[1].to_uint());

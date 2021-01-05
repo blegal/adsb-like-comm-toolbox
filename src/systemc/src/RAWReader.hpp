@@ -25,17 +25,18 @@ private:
 	{
 		cout << "(II) RAWReader :: START" << endl;
 
-		FILE* f = fopen("/tmp/pluie.payload.60.raw", "rb");
+		FILE* f = fopen("/tmp/reception.raw", "rb");
 		if( f == NULL )
         {
-            cout << "(EE) Error opening the input file " << endl;
-		    exit( -1 );
+          cout << "(EE) Error opening the input file (/tmp/reception.raw)" << endl;
+		    	exit( -1 );
         }
 
 		while( feof(f) == 0 )
         {
 		    int8_t buffer[1024];
 		    uint32_t n = fread(buffer, sizeof(int8_t), 1024, f);
+//				cout << "(DD) RAWReader (" << n << ") values were read in the file." << endl;
 		    for(uint32_t i = 0; i < n; i += 1)
             {
                 s.write( buffer[i] );
@@ -43,9 +44,9 @@ private:
             }
         }
 
+				wait(100, SC_US);
         cout << "(II) RAWReader :: STOP" << endl;
         sc_stop();
-
     }
 
 };

@@ -19,12 +19,12 @@
 #define _BITS_PAYLOAD_  (8 * _BYTE_PAYLOAD_)
 #define _BITS_CRC_      (8 * _BYTE_CRC_)
 
-#define FRAME_INFOS         0x01
-#define FRAME_NEW_IMAGE     0x02
-#define FRAME_END_IMAGE     0x04
-#define FRAME_NEW_LINE      0x08
-#define FRAME_END_LINE      0x10
-#define FRAME_EMPTY         0x20
+#define FRAME_INFOS         0xF0 // 1111 0000
+#define FRAME_NEW_IMAGE     0x0F // 0000 1111
+#define FRAME_END_IMAGE     0xCC // 1100 1100
+#define FRAME_NEW_LINE      0x33 // 0011 0011
+#define FRAME_END_LINE      0xAA // 1010 1010
+#define FRAME_EMPTY         0x99 // 1001 1001
 
 #define _IMAGE_WIDTH_   640
 #define _IMAGE_HEIGHT_  480

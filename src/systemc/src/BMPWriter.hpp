@@ -35,13 +35,34 @@ private:
 	{
 		bmp = new BMP(640, 480);
 		uint8_t* ptr = bmp->data.data();
+
+    //
+    // On initilise l'image de sortie dans la couleur rouge pour mieux voir
+    // les defauts
+    //
+
+    for (uint32_t i = 0; i < (3 * 640 * 480); i += 3)
+    {
+      ptr[i + 0] = 0xFF;
+      ptr[i + 0] = 0x00;
+      ptr[i + 0] = 0x00;
+    }
+
 		while( true )
         {
-            uint32_t adr = addr.read();
+            uint32_t adr    = addr.read();
             sc_uint<24> rgb = rgbv.read();
+
             uint32_t r = rgb.range(23, 16);
             uint32_t g = rgb.range(15,  8);
             uint32_t b = rgb.range( 7,  0);
+
+            if( (3 * adr) >= (3 * 640 *480) )
+            {
+              std::cout << "(WW) Address value is out of image bounds !" << std::endl;
+              continue;
+            }
+
             ptr[3 * adr + 0 ] = r;
             ptr[3 * adr + 1 ] = g;
             ptr[3 * adr + 2 ] = b;
