@@ -254,15 +254,27 @@ void ReceiverHackRF::stop_engine()
 }
 
 
-void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer)
+void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer, const uint32_t coverage)
 {
+    //
+    // On gere le vieillissement du buffer d'echantillons !
+    //
+    const uint32_t nOffset  = cbuffer.size() - coverage;
+    for(uint32_t loop = 0; loop < coverage; loop += 1)
+    {
+        cbuffer[loop] = cbuffer[nOffset + loop];
+    }
+    //
+    // Fin de la gestion du vieillissement du buffer
+    //
+
     int result = hackrf_is_streaming(device);
     if( result != HACKRF_TRUE ) {
         fprintf(stderr, "ReceiverHackRF::reception() failed because device is not steraming: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
         exit( -1 );
     }
 
-    const uint32_t toRead = 2 * cbuffer.size(); // le buffer parle en bytes (et non en nombre de couples I/Q)
+    const uint32_t toRead = 2 * (cbuffer.size() - coverage); // le buffer parle en bytes (et non en nombre de couples I/Q)
     //
     // On verifie que l'on peut bien delivrer les données
     //
@@ -275,13 +287,10 @@ void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer)
     //
     // On se met en attente du bon nombre de données
     //
-//    std::cout << "(II) Before while(buff.NumElements() < toRead)" << std::endl;
     while(buff.NumElements() < toRead)     // les 2 sont exprimés en nombre de samples
     {
-//        std::cout << "(II) --> waiting.. buff.NumElements() = " << buff.NumElements() << std::endl;
         usleep(1000); // queue empty
     }
-//    std::cout << "(II) Before uint32_t nRead = buff.Read((uint8_t*)buf, toRead);" << std::endl;
 
     int8_t* buf = new int8_t[toRead];
     uint32_t nRead = buff.Read(buf, toRead);
@@ -295,7 +304,7 @@ void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer)
     for(uint32_t i = 0; i < toRead; i += 2)
     {
         std::complex<float> value( (float)buf[i], (float)buf[i+1] );
-        cbuffer[i/2] = value;
+        cbuffer[i/2 + coverage] = value;
     }
     delete[] buf;
 }

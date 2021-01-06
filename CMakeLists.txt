@@ -144,6 +144,7 @@ project(emitter_adsb)
 
 set(SOURCE_FILES
         src/Frame/CRC/CRC32b.cpp
+        src/Frame/MLType/MLType.cpp
         src/Frame/Frame.cpp
         src/RingBuff/RingBuff.cpp
         src/Tools/Parameters/Parameters.cpp
@@ -226,6 +227,7 @@ SET(SOURCE_FILES
         src/Frame/Frame.cpp
         src/Frame/CRC/CRC32b.cpp
         src/Frame/MLType/MLType.cpp
+
         src/Backend/Backend.cpp
         src/Backend/BMPFileDest/BMPFileDest.cpp
         src/Backend/BinaryFileDest/BinaryFileDest.cpp

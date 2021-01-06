@@ -12,7 +12,7 @@ BMPFileDest::BMPFileDest(std::string file)
     nBytesPerPixel =  0;
     BytesPerLine   =  0;
 
-    curr_x         =  0;
+//    curr_x         =  0;
     curr_y         =  0;
     lastXid        = -1;
 }
@@ -22,6 +22,7 @@ BMPFileDest::~BMPFileDest()
 {
     if( bmp != nullptr )
     {
+        printf("(DD) Sauvegarde automatique des données sur le disque dur !\n");
         bmp->write( filename.c_str() );
         delete bmp;
     }
@@ -37,7 +38,8 @@ void BMPFileDest::execute(Frame* f)
         if( bmp != nullptr )
         {
             printf("(EE) A new BMP image should be allocated whereas a picture already exist.\n");
-            exit( -1 );
+            return;
+//            exit( -1 );
         }
 
         i_width        = f->data_u32(0);
@@ -50,6 +52,9 @@ void BMPFileDest::execute(Frame* f)
         bmp            = new BMP(i_width, i_height);
         nBytesPerPixel = (bmp->bmp_info_header.bit_count / 8);
         BytesPerLine   = (bmp->bmp_info_header.width * nBytesPerPixel);
+        BytesPerFrame  = f->payload_size();
+
+        memset(bmp->data.data(), 0xFF, i_width * i_height * nBytesPerPixel);
     }
     else if(bmp == nullptr)
     {
@@ -68,7 +73,7 @@ void BMPFileDest::execute(Frame* f)
     }
     else if(f->get_type() == FRAME_NEW_LINE)
     {
-        curr_x = 0;
+//        curr_x = 0;
         curr_y = f->data_u32(0);
         lastXid = -1; // On n'a pas encore recu de trame de pixels
 #ifdef _DEBUG_INFO_
@@ -84,7 +89,9 @@ void BMPFileDest::execute(Frame* f)
         else
                             printf("(DD) - End of line (%d)\n", y_value);
 #endif
-        lastXid = -1; // On n'a pas encore recu de trame de pixels
+//        curr_x  =  0; // Par defaut on passe à la ligne suivante cela augmente la robustesse
+        curr_y +=  1; // si jamais on ne recoit pas le paquet "FRAME_NEW_LINE"
+        lastXid = -1; // On n'est jamais trop prudent !!!
     }
     else if(f->get_type() == FRAME_INFOS)
     {
@@ -93,27 +100,18 @@ void BMPFileDest::execute(Frame* f)
         if( lastXid >= f->get_special()  )
         {
             curr_y += 1; // On a au moins perdu une ligne !
-            curr_x  = f->get_special() * (payload / 3);
+//            curr_x  = f->get_special() * (payload / 3);
             yellow();
-            printf("(WW) On a du perdre des données en cours de route (curr_y = %4d, curr_x = %4d)\n", curr_y, curr_x);
+            printf("(WW) On a du perdre des données en cours de route (curr_y = %4d)\n", curr_y);
             black();
         }
-        lastXid = f->get_special();
 #endif
 
-        if( curr_x < i_width )
-        {
-#ifdef _DEBUG_INFO_
-            printf("(DD) --- Receiving pixel set (%d)\n", curr_x);
-#endif
-            uint8_t* ptr = bmp->data.data() + curr_y * BytesPerLine + curr_x * nBytesPerPixel;
+        uint8_t* ptr = bmp->data.data() + curr_y * BytesPerLine + (f->get_special() * BytesPerFrame);
+        for( uint32_t i = 0; i < payload; i +=1 )
+            ptr[i] = f->data(i);
 
-            for( uint32_t i = 0; i < payload; i +=1 )
-                ptr[i] = f->data(i);
-            curr_x += (payload / 3);    // on avance dans la ligne
-        }else{
-            printf("(EE) --- Receiving pixel set (%d) whereas i_width = %d\n", curr_x, i_width);
-        }
+        lastXid = f->get_special(); // On memorise le numero du bloc de pixel.
     }
     else
     {

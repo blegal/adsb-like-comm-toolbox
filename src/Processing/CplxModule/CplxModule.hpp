@@ -1,12 +1,9 @@
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <complex>
-#include <chrono>
-#include <vector>
+#ifndef _CplxModule_
+#define _CplxModule_
 
-#ifndef _Conversion_
-#define _Conversion_
+#include <vector>
+#include <complex>
+#include <cmath>
 
 class CplxModule
 {

@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     uint32_t porteuse_rate_hz = 433000000;
     uint32_t sample_rate_hz   =   1000000;
     uint32_t FREQ_ONE_MHZ     =   1000000;
-    uint32_t tx_vga           =        32;
+    uint32_t tx_vga           =        24;
     uint32_t antenna          =         1;
 
     std::string filename = "frame_set.txt";

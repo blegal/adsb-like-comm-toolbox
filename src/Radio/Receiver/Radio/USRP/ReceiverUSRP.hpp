@@ -16,7 +16,7 @@ public :
     ReceiverUSRP(float s_fc, float s_fe);
 	~ReceiverUSRP();
     void initialize();
-    void reception(vector<complex<float> >& buffer);
+    void reception(vector<complex<float> >& buffer, const uint32_t coverage = 0);
 
     virtual void reset();
     virtual void start_engine();

@@ -38,14 +38,25 @@ void ReceiverUSRP::initialize(){
 	printf("%s", KNRM);
 }
 
-void ReceiverUSRP::reception(vector<complex<float> >& buffer)
+void ReceiverUSRP::reception(vector<complex<float> >& buffer, const uint32_t coverage)
 {
-//    std::cout << "[ READING USRP SAMPLES ]" << std::endl;
+
+    //
+    // On gere le vieillissement du buffer d'echantillons !
+    //
+    const uint32_t nOffset  = buffer.size() - coverage;
+    for(uint32_t loop = 0; loop < coverage; loop += 1)
+    {
+        buffer[loop] = buffer[nOffset + loop];
+    }
+    //
+    // Fin de la gestion du vieillissement du buffer
+    //
 
     uhd::rx_metadata_t md;                     // Des metadata
 
-    uint32_t num_rx_samps = 0;                     // Nombre d'echantillons reçus
-    uint32_t nSamples     = buffer.size();
+    const uint32_t nSamples = buffer.size();
+    uint32_t num_rx_samps = coverage; // Nombre d'echantillons liés au viellissement
     while (num_rx_samps < nSamples )
     {
         num_rx_samps += rx_stream->recv(&buffer.at(num_rx_samps), nSamples - num_rx_samps, md);

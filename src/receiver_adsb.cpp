@@ -258,7 +258,7 @@ int main(int argc, char* argv[])
     printf("%s",KNRM);
     cout << endl;
 
-    vector<complex<float> > buffer( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
+    vector<complex<float> > buffer   ( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
     vector<complex<float> > buffer_fichier;
     vector<uint8_t        > detection( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
 
@@ -266,9 +266,9 @@ int main(int argc, char* argv[])
     // Selection du module SDR employé dans le programme
     //
 
-    Receiver*      radio  = ReceiverLibrary::allocate(param );
-    Detector*   detect = DetectorLibrary::allocate( param );
-    CplxModule* conv   = CplxModuleLibrary::allocate  (param );
+    Receiver*   radio  = ReceiverLibrary::allocate  (param );
+    Detector*   detect = DetectorLibrary::allocate  (param );
+    CplxModule* conv   = CplxModuleLibrary::allocate(param );
 
     Frame f( param.toInt("payload") );
 
@@ -345,13 +345,19 @@ int main(int argc, char* argv[])
     while( radio->alive() && (isFinished == false) )
     {
         timer.start_loading();
-        radio->reception(buffer);
+        radio->reception(buffer, 0);
         timer.stop_loading();
 
         timer.start_conversion();
         std::vector<float> buffer_abs;
         conv->execute( &buffer, &buffer_abs );
         timer.stop_conversion();
+
+        //
+        // Patch pour le debug du recepteur...
+        //
+        if( detection.size() != buffer_abs.size() )
+            detection.resize( buffer_abs.size() );
 
         // ============== detection & decodage ================
 
@@ -360,7 +366,7 @@ int main(int argc, char* argv[])
         if( param.toBool("mode_inter") == true )
         {
             timer.start_detection();
-            radio->reception(buffer);
+//            radio->reception(buffer, 0);
             detect->execute(&buffer_abs, &buffer_detect);
             timer.stop_detection();
         }
@@ -431,6 +437,11 @@ int main(int argc, char* argv[])
 #endif
                 timer.stop_decoding();
             }else{
+                if( k >= detection.size() )
+                {
+                    printf("Oups a bug : (buffer_abs.size() = %d) (f.frame_bits() = %d) (detection.size() = %d) (k = %d)\n", buffer_abs.size(), f.frame_bits(), detection.size(), k);
+                    exit( 0 );
+                }
                 detection[k] = 0;
             }
             k++;
@@ -438,6 +449,9 @@ int main(int argc, char* argv[])
 
         if( dump_first_frame == true && loop_counter == 0 )
         {
+            green();
+            printf("(II) Dumping the data set currently processed by the receiver (%d samples)\n", buffer_abs.size());
+            black();
             ExportVector::SaveToCS8(buffer, "Capture.IQSamples.cs8" );
             ExportVector::SaveToU8 (buffer_abs,"Capture.Module.u8");
             ExportVector::SaveToU8 (detection, "Capture.Detect.u8");

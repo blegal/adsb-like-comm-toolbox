@@ -162,11 +162,22 @@ uint32_t ReceiverSoapy::get_lna_gain( )
     return sdr->getGain(SOAPY_SDR_RX, 0, "LNA");
 }
 
-
-void ReceiverSoapy::reception( std::vector< std::complex<float> >& cbuffer)
+void ReceiverSoapy::reception( std::vector< std::complex<float> >& cbuffer, const uint32_t coverage)
 {
+    //
+    // On gere le vieillissement du buffer d'echantillons !
+    //
+    const uint32_t nOffset  = cbuffer.size() - coverage;
+    for(uint32_t loop = 0; loop < coverage; loop += 1)
+    {
+        cbuffer[loop] = cbuffer[nOffset + loop];
+    }
+    //
+    // Fin de la gestion du vieillissement du buffer
+    //
+
     uint32_t to_read = cbuffer.size();
-    uint32_t nb_read = 0;
+    uint32_t nb_read = coverage;
     std::complex<float>* buff = cbuffer.data();
 
     int flags;

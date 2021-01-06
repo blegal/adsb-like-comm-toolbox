@@ -38,6 +38,7 @@ void BMPSource::execute(Frame* f)
     {
         f->set_type   (FRAME_NEW_IMAGE);
         f->set_special(       0xFF ); // C'est l'ID x de la trame !
+        f->clr_payload();
         f->data_u32(0, bmp->bmp_info_header.width);
         f->data_u32(1, bmp->bmp_info_header.height);
         curr_s = 1;
@@ -47,6 +48,7 @@ void BMPSource::execute(Frame* f)
     {
         f->set_type   (FRAME_NEW_LINE);
         f->set_special(      0xFF ); // C'est l'ID x de la trame !
+        f->clr_payload();
         f->data_u32(0, curr_y);
         curr_s = 2;
     }
@@ -78,6 +80,7 @@ void BMPSource::execute(Frame* f)
     {
         f->set_type   (FRAME_END_LINE);
         f->set_special(      0xFF ); // C'est l'ID x de la trame !
+        f->clr_payload();
         f->data_u32(0, curr_y);
         curr_y += 1;
         if( curr_y == bmp->bmp_info_header.height )
@@ -89,6 +92,7 @@ void BMPSource::execute(Frame* f)
     {
         f->set_type   (FRAME_END_IMAGE);
         f->set_special(       0xFF ); // C'est l'ID x de la trame !
+        f->clr_payload();
         f->data_u32(0, bmp->bmp_info_header.width);
         f->data_u32(1, bmp->bmp_info_header.height);
         curr_s     = 5;

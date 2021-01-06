@@ -362,7 +362,7 @@ int main(int argc, char* argv[])
 	    //
 	    //
         timer.start_loading();
-        radio->reception(buffer);
+        radio->reception(buffer, 4 * f.frame_bits());
         timer.stop_loading();
 
         //
@@ -378,7 +378,7 @@ int main(int argc, char* argv[])
         if( mode_inter == true )
         {
             timer.start_detection();
-            radio->reception(buffer);
+//            radio->reception(buffer, 0);
             detect->execute(&buffer_abs, &buffer_detect);
             timer.stop_detection();
         }
@@ -430,17 +430,25 @@ int main(int argc, char* argv[])
                 if( isOK )
                 {
                     nbTotalTrames += 1;        // C'est bien une trame ADSB-like
-                    nbBonsCRCs    += f.validate_crc();
+                    const bool crc = f.validate_crc();
+                    nbBonsCRCs    += crc;
                     if( verbose == 2 )
                     {
                         printf("%1.3f : ", s);
                         f.dump_frame();
                     }
-                    k += (4 * f.frame_bits()) - 1; // On saute tous les bits qui composaient notre trame...
-                    dest->execute( &f );
+                    if( crc == true )
+                    {
+                        k += (4 * f.frame_bits()) - 1; // On saute tous les bits qui composaient notre trame...
+                        dest->execute( &f );
+                    }else{
+                        if( verbose == 1 )
+                        {
+                            printf("%1.3f : ", s);
+                            f.dump_frame();
+                        }
+                    }
                 }else{
-                    if( verbose == 1 )
-                        f.dump_frame();
                 }
                 timer.stop_decoding();
             }
@@ -461,20 +469,18 @@ int main(int argc, char* argv[])
     std::chrono::duration<double> elapsed = end - start;
 
     printf("\n");
-    std::cout << "nombre de trames detectees : " << nbTramesDetectees << std::endl;
-    std::cout << "nombre de trames like      : " << nbTotalTrames     << std::endl;
-    std::cout << "nombre de trames bon crc   : " << nbBonsCRCs        << std::endl;
+    std::cout << "Nombre de trames detectees : " << nbTramesDetectees << std::endl;
+    std::cout << "Nombre de trames like      : " << nbTotalTrames     << std::endl;
+    std::cout << "Nombre de trames bon crc   : " << nbBonsCRCs        << std::endl;
     printf("\n");
     std::cout << "Nombre de trames emises  (frames)  = " << nbBonsCRCs                                  << std::endl;
 
 printf("%s", KGRN);
-    std::cout << "Temps total d'émission   (seconds) = " << elapsed.count()                             << std::endl;
+    std::cout << "Temps total de reception (seconds) = " << elapsed.count()                             << std::endl;
+    std::cout << "Trames par seconde       (frames)  = " << (nbBonsCRCs/elapsed.count())                    << std::endl;
+    std::cout << "Débit recu par seconde   (bits)    = " << (nbBonsCRCs/elapsed.count()*f.frame_bits())     << std::endl;
 printf("%s", KNRM);
 
-    std::cout << "Trames par seconde       (frames)  = " << (nbBonsCRCs/elapsed.count())                    << std::endl;
-    std::cout << "Débit emis par seconde   (bits)    = " << (nbBonsCRCs/elapsed.count()*f.frame_bits())     << std::endl;
-    std::cout << "Débit utile par seconde  (bytes)   = " << (nbBonsCRCs/elapsed.count()*f.payload_size())   << std::endl;
-    std::cout << "Débit utile par seconde  (bits)    = " << (nbBonsCRCs/elapsed.count()*f.payload_size()*8) << std::endl;
     printf("\n");
     std::cout << "Temps total : " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms" << std::endl;
 #ifdef _TIME_PROFILE_

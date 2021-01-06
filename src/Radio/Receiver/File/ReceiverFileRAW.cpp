@@ -45,7 +45,7 @@ void ReceiverFileRAW::initialize()
 }
 
 
-void ReceiverFileRAW::reception(std::vector< std::complex<float> >& cbuffer)
+void ReceiverFileRAW::reception(std::vector< std::complex<float> >& cbuffer, const uint32_t coverage)
 {
 
     if( cbuffer.size() != (data.size()/2) ) // Nombre de symbols et non d'echantillons
