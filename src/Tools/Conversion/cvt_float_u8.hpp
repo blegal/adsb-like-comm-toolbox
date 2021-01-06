@@ -2,6 +2,7 @@
 #define _cvt_float_u8_
 
 #include <vector>
+#include <cstdint>
 
 class cvt_float_u8
 {

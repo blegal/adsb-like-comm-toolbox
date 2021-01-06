@@ -1,22 +1,26 @@
 cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_CXX_FLAGS "                   -Wall -Ofast -march=native -mtune=native")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/opt/hackrf/include")            # HackRF
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/boost/1.74.0/include")   # Boost
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/uhd/4.0.0.0/include -Wno-#pragma-messages")    # UHD
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Rpass=loop-vectorize") # UHD
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Rpass=loop-vectorize -Rpass-missed=loop-vectorize") # UHD
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/include") # SoapySDR
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/opt/hackrf/include")            # HackRF
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/boost/1.74.0/include")   # Boost
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/uhd/4.0.0.0/include -Wno-#pragma-messages")    # UHD
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Rpass=loop-vectorize")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/include")
 
 
-set(CMAKE_EXE_LINKER_FLAGS "                          /usr/local/lib/libboost_filesystem-mt.dylib") # UHD
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/lib/libboost_system-mt.dylib") # UHD
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/opt/hackrf/lib/libhackrf.a") # UHD
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/opt/libusb/lib/libusb-1.0.a") # UHD
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/Cellar/uhd/4.0.0.0/lib/libuhd.dylib") # UHD
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework CoreFoundation -framework IOKit") # UHD
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lncurses") # UHD
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib -lSoapySDR") # SoapySDR
+# x86 part
+#set(CMAKE_EXE_LINKER_FLAGS "                          /usr/local/lib/libboost_filesystem-mt.dylib") # UHD
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/lib/libboost_system-mt.dylib") # UHD
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/opt/hackrf/lib/libhackrf.a") # UHD
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/opt/libusb/lib/libusb-1.0.a") # UHD
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/Cellar/uhd/4.0.0.0/lib/libuhd.dylib") # UHD
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework CoreFoundation -framework IOKit") # UHD
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lncurses") # UHD
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib -lSoapySDR") # SoapySDR
+
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -luhd") # UHD
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lhackrf") # UHD
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lSoapySDR") # SoapySDR
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -216,32 +220,32 @@ add_executable(emitter_image ${SOURCE_FILES})
 
 ########################################################################################################################
 
-project(test_vecto)
-
-SET(SOURCE_FILES
-        src/Tools/Conversion/cvt_float_i8.cpp
-        src/Tools/Conversion/cvt_float_u8.cpp
-        src/Tools/Conversion/cvt_u8_float.cpp
-        src/Tools/Conversion/cvt_i8_float.cpp
-
-        src/Frame/Frame.cpp
-        src/Frame/CRC/CRC32b.cpp
-        src/Frame/MLType/MLType.cpp
-
-        src/Backend/Backend.cpp
-        src/Backend/BMPFileDest/BMPFileDest.cpp
-        src/Backend/BinaryFileDest/BinaryFileDest.cpp
-        src/Backend/FPGADest/FPGADest.cpp
-        src/Backend/NullDest/NullDest.cpp
-        src/Backend/TerminalDest/TerminalDest.cpp
-
-        src/Frontend/Frontend.cpp
-        src/Frontend/BinaryFileSource/BinaryFileSource.cpp
-        src/Frontend/BMPSource/BMPSource.cpp
-        src/Frontend/HexSource/HexSource.cpp
-
-        src/test_vecto.cpp
-        )
+#project(test_vecto)
+#
+#SET(SOURCE_FILES
+#        src/Tools/Conversion/cvt_float_i8.cpp
+#        src/Tools/Conversion/cvt_float_u8.cpp
+#        src/Tools/Conversion/cvt_u8_float.cpp
+#        src/Tools/Conversion/cvt_i8_float.cpp
+#
+#        src/Frame/Frame.cpp
+#        src/Frame/CRC/CRC32b.cpp
+#        src/Frame/MLType/MLType.cpp
+#
+#        src/Backend/Backend.cpp
+#        src/Backend/BMPFileDest/BMPFileDest.cpp
+#        src/Backend/BinaryFileDest/BinaryFileDest.cpp
+#        src/Backend/FPGADest/FPGADest.cpp
+#        src/Backend/NullDest/NullDest.cpp
+#        src/Backend/TerminalDest/TerminalDest.cpp
+#
+#        src/Frontend/Frontend.cpp
+#        src/Frontend/BinaryFileSource/BinaryFileSource.cpp
+#        src/Frontend/BMPSource/BMPSource.cpp
+#        src/Frontend/HexSource/HexSource.cpp
+#
+#        src/test_vecto.cpp
+#        )
 
 add_executable(test_vecto ${SOURCE_FILES})
 
