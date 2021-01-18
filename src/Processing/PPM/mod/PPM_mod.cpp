@@ -1,19 +1,19 @@
-#include "PPM_Modulator.hpp"
+#include "PPM_mod.hpp"
 
 
-PPM_Modulator::PPM_Modulator(const int8_t mScale)
+PPM_mod::PPM_mod()
 {
-    scale = mScale;
+
 }
 
 
-PPM_Modulator::~PPM_Modulator()
+PPM_mod::~PPM_mod()
 {
 	
 }
 
 
-void PPM_Modulator::execute(std::vector<uint8_t>& ibuffer, std::vector<int8_t>& obuffer)
+void PPM_mod::execute(std::vector<uint8_t>& ibuffer, std::vector<int8_t>& obuffer)
 {
 	// Le buffer de sortie doit etre 2x plus grand...
     if( obuffer.size() != (2 * ibuffer.size()) )

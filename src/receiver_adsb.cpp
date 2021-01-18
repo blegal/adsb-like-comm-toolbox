@@ -21,36 +21,13 @@
 //  Definition des modules permettant d'utiliser le module Receiver (SdR)
 //
 
-//#include "./Receiver/Receiver.hpp"
-//#include "./Receiver/File/ReceiverFileRAW.hpp"
-//#include "./Receiver/File/ReceiverFileUHD.hpp"
-//#include "./Receiver/Receiver/ReceiverUSRP.hpp"
-//#include "./Receiver/Receiver/ReceiverSoapy.hpp"
-//#include "./Receiver/Receiver/ReceiverHackRF.hpp"
 #include "./Radio/Receiver/Library/ReceiverLibrary.hpp"
-
-
-//#define _TIME_PROFILE_
-
-//
-//  CplxModule des nombres complexes => module flottant
-//
-
-//#include "./CplxModule/CplxModule_x86/CplxModule_x86.hpp"
-//#include "./CplxModule/CplxModule_NEON/CplxModule_NEON.hpp"
-//#include "./CplxModule/CplxModule_AVX2/CplxModule_AVX2.hpp"
 #include "./Processing/CplxModule/Library/CplxModuleLibrary.hpp"
-
-
-//
-//  Correlateur permettant de détecter le prologue des trames ADSB
-//
-
 #include "./Processing/Detector/Library/DetectorLibrary.hpp"
 
 #include "./Frame/Frame.hpp"
 #include "./Processing/Sampling/Down/DownSampling.hpp"
-#include "./Processing/PPM/Demodulator/PPM_Demodulator.hpp"
+#include "./Processing/PPM/demod/PPM_demod.hpp"
 
 #include "couleur.h"
 
@@ -78,6 +55,7 @@ void show(std::vector<float>& v)
     printf("\n");
 }
 
+
 /*   ============================== MAIN =========================== */
 /*
 	4 ech = 1 symb
@@ -85,6 +63,53 @@ void show(std::vector<float>& v)
 */
 int main(int argc, char* argv[])
 {
+
+#if 0
+    vector<uint8_t> vin(576);
+
+    std::cout << "Generating samples" << std::endl;
+
+    for(uint32_t i = 0; i < vin.size(); i += 1)
+        vin[i] = i%2;
+
+    vector<uint8_t> venc(1152);
+
+    std::cout << "Encoding samples" << std::endl;
+
+    LDPCEncoder enc( "/Users/legal/GitHub/LDPC_decoder_kratos/inter_frame/data/codes/802.16e/r_1_2/k_576/LDPC_k_576_n_1152.generic.enc" );
+
+    enc.execute( vin, venc );
+
+    vector<int8_t> vmod(1152);
+
+    std::cout << "Modulating samples" << std::endl;
+
+    for(uint32_t i = 0; i < venc.size(); i += 1)
+        vmod[i] = ((venc[i] << 1) - 1) * 32;
+
+    std::cout << "Adding noise to samples" << std::endl;
+    for(uint32_t i = 0; i < vin.size(); i += 8)
+        vmod[i] = -vmod[i];
+
+    LDPC_decoder_802_16e_1152x576 dec;
+    dec.setOffset( 1 );
+    dec.nIters      = 20;
+    dec.s_criterion = false;
+
+    vector<uint8_t> vmou(1152);
+
+    std::cout << "Decoding samples" << std::endl;
+
+    dec.decode(vmod.data(), vmou.data());
+
+    std::cout << "Checking samples" << std::endl;
+
+    for(uint32_t i = 0; i < vin.size(); i += 1)
+        if( vin[i] != vmou[i] )
+            printf("%3d : Error, the bit value is wrong !", i);
+
+    exit( 0 );
+#endif
 
     struct sigaction sigIntHandler;
     sigIntHandler.sa_handler = my_ctrl_c_handler;
@@ -103,12 +128,18 @@ int main(int argc, char* argv[])
     param.set("mode_radio",   "radio");
     param.set("filename",   "hackrf");
 
-    param.set("fc",      433000000.0);
-    param.set("fe",        1000000.0);
+    param.set("fc",      863000000.0);
+    param.set("fe",        2000000.0);
+
+    //
 
     param.set("hackrf_amplifier", -1);
     param.set("hackrf_vga_gain",  -1);
     param.set("hackrf_lna_gain",  -1);
+
+    //
+
+    param.set("rtlsdr_tuner_gain",  0); // mode gain automatique
 
     param.set("mode_conv",        "scalar");
     param.set("mode_corr",        "scalar");
@@ -407,10 +438,10 @@ int main(int argc, char* argv[])
                 DownSampling down(2);
                 down.execute( buff_5, buff_6 );
 
-                PPM_Demodulator ppd;
+                PPM_demod ppd;
                 ppd.execute(buff_6, buff_7);
 
-                bool isOK = f.fill_frame_bits( buff_7 );
+                const bool isOK = f.fill_frame_bits( buff_7 );
                 if( isOK )
                 {
                     nbTotalTrames += 1;        // C'est bien une trame ADSB-like
@@ -439,7 +470,7 @@ int main(int argc, char* argv[])
             }else{
                 if( k >= detection.size() )
                 {
-                    printf("Oups a bug : (buffer_abs.size() = %d) (f.frame_bits() = %d) (detection.size() = %d) (k = %d)\n", buffer_abs.size(), f.frame_bits(), detection.size(), k);
+                    printf("Oups a bug : (buffer_abs.size() = %lu) (f.frame_bits() = %d) (detection.size() = %lu) (k = %d)\n", buffer_abs.size(), f.frame_bits(), detection.size(), k);
                     exit( 0 );
                 }
                 detection[k] = 0;
@@ -450,7 +481,7 @@ int main(int argc, char* argv[])
         if( dump_first_frame == true && loop_counter == 0 )
         {
             green();
-            printf("(II) Dumping the data set currently processed by the receiver (%d samples)\n", buffer_abs.size());
+            printf("(II) Dumping the data set currently processed by the receiver (%lu samples)\n", buffer_abs.size());
             black();
             ExportVector::SaveToCS8(buffer, "Capture.IQSamples.cs8" );
             ExportVector::SaveToU8 (buffer_abs,"Capture.Module.u8");

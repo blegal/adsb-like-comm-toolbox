@@ -46,7 +46,7 @@ private:
                              buffer[14] + buffer[15] + buffer[18] + buffer[19];  // 2 bits à 0 en PPM
 
             float sum = 0.0;
-            for (int j=0; j<32; j++)
+            for (int j = 0; j < 32; j += 1)
             {
 #pragma HLS PIPELINE
                 const float temp = buffer[j];

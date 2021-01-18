@@ -39,7 +39,7 @@
 
 #include "./Frame/Frame.hpp"
 #include "./Processing/Sampling/Down/DownSampling.hpp"
-#include "./Processing/PPM/Demodulator/PPM_Demodulator.hpp"
+#include "./Processing/PPM/demod/PPM_demod.hpp"
 
 #include "couleur.h"
 
@@ -95,12 +95,13 @@ int main(int argc, char* argv[])
     param.set("backend",       "BMPFile");
     param.set("backend_opt",   "image.bmp");
 
-    param.set("fc",      433000000.0);
-    param.set("fe",        1000000.0);
+    param.set("fc",      863000000.0);
+    param.set("fe",        2000000.0);
 
     param.set("hackrf_amplifier", -1);
     param.set("hackrf_vga_gain",  -1);
     param.set("hackrf_lna_gain",  -1);
+    param.set("rtlsdr_tuner_gain",  0); // mode gain automatique
 
     param.set("mode_conv",  "AVX2"); // scalar
     param.set("mode_corr",  "AVX2"); // scalar
@@ -336,7 +337,7 @@ int main(int argc, char* argv[])
     std::vector<float> buffer_detect;
 
     DownSampling down(2);
-    PPM_Demodulator ppd;
+    PPM_demod ppd;
 
     std::vector<uint8_t> buff_5( 4 * f.frame_bits() );
     std::vector<uint8_t> buff_6;
@@ -361,16 +362,12 @@ int main(int argc, char* argv[])
 	    //
 	    //
 	    //
-        timer.start_loading();
         radio->reception(buffer, 4 * f.frame_bits());
-        timer.stop_loading();
 
         //
         //
         //
-        timer.start_conversion();
         conv->execute( &buffer, &buffer_abs );
-        timer.stop_conversion();
 
         //
         //

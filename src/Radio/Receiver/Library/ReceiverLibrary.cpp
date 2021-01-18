@@ -5,6 +5,7 @@
 
 #include "../Radio/HackRF/ReceiverHackRF.hpp"
 #include "../Radio/SoapyHackRF/ReceiverSoapy.hpp"
+#include "../Radio/SoapyRTLSdr/ReceiverSoapyRTLSdr.hpp"
 #include "../Radio/USRP/ReceiverUSRP.hpp"
 
 ReceiverLibrary::ReceiverLibrary()
@@ -20,25 +21,44 @@ ReceiverLibrary::~ReceiverLibrary()
 
 Receiver* ReceiverLibrary::allocate(Parameters& param)
 {
-    const std::string type   = param.toString("mode_radio");
-    const std::string module = param.toString("filename");
+    std::string type   = param.toString("mode_radio");
+    std::string module = param.toString("filename");
+
+    transform(type.begin(), type.end(), type.begin(), ::tolower);
 
     Receiver* radio;
-    if( type == "radio" && module == "hackrf" ) {
+    if(
+            (type == "radio" && module == "hackrf") ||
+            (type == "radio" && module == "HackRF")
+    ) {
         ReceiverHackRF* r = new ReceiverHackRF(param.toDouble("fc"), param.toDouble("fe"));
         if( param.toInt("hackrf_amplifier") != -1 ) r->set_amp_enable( param.toInt("hackrf_amplifier") );
         if( param.toInt("hackrf_vga_gain")  != -1 ) r->set_vga_gain  ( param.toInt("hackrf_vga_gain") );
         if( param.toInt("hackrf_lna_gain")  != -1 ) r->set_lna_gain  ( param.toInt("hackrf_lna_gain") );
         radio = r;
 
-    } else if( type == "radio" && module == "Soapy" ) {
+    } else if(
+            (type == "radio" && module == "SoapyHackRF") ||
+            (type == "radio" && module == "soapyhackrf")
+    ) {
         ReceiverSoapy* r = new ReceiverSoapy(param.toDouble("fc"), param.toDouble("fe"));
         if( param.toInt("hackrf_amplifier") != -1 ) r->set_amp_enable( param.toInt("hackrf_amplifier") );
         if( param.toInt("hackrf_vga_gain")  != -1 ) r->set_vga_gain  ( param.toInt("hackrf_vga_gain") );
         if( param.toInt("hackrf_lna_gain")  != -1 ) r->set_lna_gain  ( param.toInt("hackrf_lna_gain") );
         radio = r;
 
-    } else if( type == "radio" && module == "usrp" ) {
+    } else if(
+            (type == "radio" && module == "SoapyRTLSdr") ||
+            (type == "radio" && module == "soapyrtlsdr")
+    ) {
+        SoapyRTLSdr* r = new SoapyRTLSdr(param.toDouble("fc"), param.toDouble("fe"));
+        if( param.toInt("rtlsdr_tuner_gain")  != -1 )
+            r->set_tuner_gain( param.toDouble("rtlsdr_tuner_gain") );
+        radio = r;
+
+    } else if(
+            (type == "radio" && module == "usrp")
+    ) {
         ReceiverUSRP* r = new ReceiverUSRP(param.toDouble("fc"), param.toDouble("fe"));
         radio = r;
 

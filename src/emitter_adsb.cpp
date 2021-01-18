@@ -21,7 +21,7 @@
 
 #include "Tools/Parameters/Parameters.hpp"
 
-#include "./Processing/PPM/Modulator/PPM_Modulator.hpp"
+#include "./Processing/PPM/mod/PPM_mod.hpp"
 #include "./Processing/Sampling/Up/UpSampling.hpp"
 #include "./Processing/IQ/Insertion/IQ_Insertion.hpp"
 
@@ -288,7 +288,7 @@ int main(int argc, char* argv[])
 
     Frame f( param.toInt("payload") );
 
-    PPM_Modulator ppm( 120 );
+    PPM_mod ppm;
 
     UpSampling up( 2 * param.toInt("surEch") ); // 2 necessaire pour le recepteur x fois pour le DAC
 
@@ -361,8 +361,10 @@ int main(int argc, char* argv[])
 
         f.get_frame_bits( buff_1 );
 
+
+
         ppm.execute( buff_1, buff_2 );
-        up.execute( buff_2, buff_3 );
+        up.execute ( buff_2, buff_3 );
         iqi.execute( buff_3, buff_4 );
 
         radio->emission( buff_4 );

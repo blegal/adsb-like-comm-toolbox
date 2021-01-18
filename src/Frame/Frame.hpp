@@ -12,7 +12,7 @@
 #include <iomanip>
 
 #include "./MLType/MLType.hpp"
-#include "./CRC/CRC32b.hpp"
+#include "../Processing/CRC32b/CRC/CRC32b.hpp"
 
 using namespace std;
 

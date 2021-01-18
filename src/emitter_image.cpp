@@ -6,7 +6,7 @@
 
 #include "./Tools/Parameters/Parameters.hpp"
 
-#include "./Processing/PPM/Modulator/PPM_Modulator.hpp"
+#include "./Processing/PPM/mod/PPM_mod.hpp"
 #include "./Processing/Sampling/Up/UpSampling.hpp"
 #include "./Processing/IQ/Insertion/IQ_Insertion.hpp"
 
@@ -214,7 +214,7 @@ int main(int argc, char* argv[])
     //
 
     Frame f( param.toInt("payload") );
-    PPM_Modulator ppm( 120 ); // niveau de valeur min-max supporté par la hackrf
+    PPM_mod ppm;
     UpSampling up( 2 * param.toInt("surEch") ); // 2 necessaire pour le recepteur x fois pour le DAC
     IQ_Insertion iqi;
 

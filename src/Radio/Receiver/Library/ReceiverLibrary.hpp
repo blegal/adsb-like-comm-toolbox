@@ -3,6 +3,7 @@
 
 #include "../Receiver.hpp"
 #include "../../../Tools/Parameters/Parameters.hpp"
+#include <algorithm>
 
 using namespace std;
 

@@ -1,19 +1,19 @@
-#include "PPM_Demodulator.hpp"
+#include "BPSK_demod.hpp"
 
 
-PPM_Demodulator::PPM_Demodulator()
+BPSK_demod::BPSK_demod()
 {
 
 }
 
 
-PPM_Demodulator::~PPM_Demodulator()
+BPSK_demod::~BPSK_demod()
 {
 	
 }
 
 
-void PPM_Demodulator::execute(std::vector<float>& ibuffer, std::vector<uint8_t>& obuffer)
+void BPSK_demod::execute(std::vector<float>& ibuffer, std::vector<uint8_t>& obuffer)
 {
 	// Le buffer de sortie doit etre 2x plus petit...
     if( obuffer.size() != (ibuffer.size()/2) )
@@ -24,19 +24,19 @@ void PPM_Demodulator::execute(std::vector<float>& ibuffer, std::vector<uint8_t>&
     const uint32_t ll = obuffer.size();
     for(uint32_t i = 0 ; i < ll; i += 1)
     {
-        const float left  = ibuffer[2*i  ];
-        const float right = ibuffer[2*i+1];
-        obuffer[i] = (left > right);
+        const float I = ibuffer[2*i  ];
+        const float Q = ibuffer[2*i+1];
+        obuffer[i]    = I >= 0;
     }
 }
 
 
-void PPM_Demodulator::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer)
+void BPSK_demod::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer)
 {
     // Le buffer de sortie doit etre 2x plus petit...
-    if( obuffer.size() != (ibuffer.size()/2) )
+    if( obuffer.size() != (ibuffer.size() ) )
     {
-        obuffer.resize(ibuffer.size()/2);
+        obuffer.resize( ibuffer.size() );
     }
 
     const uint32_t ll = obuffer.size();

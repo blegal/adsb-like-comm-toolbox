@@ -1,5 +1,5 @@
-#ifndef _PPM_Demodulator_
-#define _PPM_Demodulator_
+#ifndef _QPSK_demod_
+#define _QPSK_demod_
 
 #include <iostream>
 #include <cstdio>
@@ -9,14 +9,14 @@
 
 using namespace std;
 
-class PPM_Demodulator{
+class QPSK_demod{
 protected :
 	std::vector<float> array;
 
 public :
-	PPM_Demodulator( );
+    QPSK_demod( );
 
-	~PPM_Demodulator();
+	~QPSK_demod();
 
     void execute(std::vector<float >& ibuffer, std::vector<uint8_t>& obuffer);
     void execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer);
