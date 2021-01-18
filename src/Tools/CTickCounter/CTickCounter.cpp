@@ -35,9 +35,13 @@ CTickCounter::CTickCounter(){
 }
 
 uint64_t CTickCounter::rdtsc() {
+#ifdef __AVX2__
     unsigned int lo, hi;
     __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
     return ((uint64_t) hi << 32) | lo;
+#else
+    return 1;
+#endif
 }
 
 void CTickCounter::start_loading(){

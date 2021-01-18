@@ -1,6 +1,7 @@
 #include <chrono>
 #include <getopt.h>
 #include <csignal>
+#include <unistd.h>
 
 #include "./Frame/Frame.hpp"
 

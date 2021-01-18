@@ -1,5 +1,9 @@
 #include "MLType.hpp"
-#include <x86intrin.h>
+
+
+#ifdef __AVX2__
+    #include <x86intrin.h>
+#endif
 
 uint8_t execute( uint8_t v );
 
@@ -46,12 +50,15 @@ uint8_t MLType::execute_fast( uint8_t value )
 uint8_t MLType::execute_slow( uint8_t value )
 {
     uint8_t score[6];
+#ifdef __AVX2__
     score[0] = _popcnt32( value & FRAME_INFOS     );
     score[1] = _popcnt32( value & FRAME_NEW_IMAGE );
     score[2] = _popcnt32( value & FRAME_END_IMAGE );
     score[3] = _popcnt32( value & FRAME_NEW_LINE  );
     score[4] = _popcnt32( value & FRAME_END_LINE  );
     score[5] = _popcnt32( value & FRAME_EMPTY     );
+#endif
+
 #if 0
     for(uint32_t i = 0; i < 6; i += 1)
         {

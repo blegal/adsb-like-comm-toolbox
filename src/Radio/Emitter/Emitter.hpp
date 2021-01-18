@@ -5,6 +5,7 @@
 
 #include <libhackrf/hackrf.h>
 #include <mutex>
+#include <cstring>
 
 class Emitter {
 protected:
