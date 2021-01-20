@@ -5,17 +5,16 @@
 #ifndef MATRIX_GENDECODERINTRAAPI_H
 #define MATRIX_GENDECODERINTRAAPI_H
 
-#include "GenDecoder.hpp"
 #include "vect_m256i.hpp"
 
-#define  xMS   0
-#define xOMS   1
-#define xNMS   2
-#define xNMS2  3
-
 template<class SIMD = __m256i>
-class GenDecoderIntraAPI : public GenDecoder
+class GenDecoderIntraAPI
 {
+public:
+    bool s_criterion;
+    int  nIters;
+    int  execIters;
+
 public:
 	GenDecoderIntraAPI(unsigned int _N_, unsigned int _M_);
 	virtual ~GenDecoderIntraAPI();

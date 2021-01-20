@@ -1,7 +1,7 @@
-#include "ReceiverSoapy.hpp"
+#include "ReceiverSoapyHackRF.hpp"
 #include <unistd.h>
 
-ReceiverSoapy::ReceiverSoapy(float s_fc, float s_fe) : Receiver(s_fc, s_fe)
+ReceiverSoapyHackRF::ReceiverSoapyHackRF(const float s_fc, const float s_fe) : Receiver(s_fc, s_fe)
 {
     SoapySDR::KwargsList results = SoapySDR::Device::enumerate();
     SoapySDR::Kwargs::iterator it;
@@ -66,60 +66,60 @@ ReceiverSoapy::ReceiverSoapy(float s_fc, float s_fe) : Receiver(s_fc, s_fe)
     }
 }
 
-ReceiverSoapy::~ReceiverSoapy()
+ReceiverSoapyHackRF::~ReceiverSoapyHackRF()
 {
     sdr->closeStream( rx_stream );
     SoapySDR::Device::unmake( sdr );
 }
 
 
-void ReceiverSoapy::start_engine()
+void ReceiverSoapyHackRF::start_engine()
 {
     printf("[ START SoapySDR ]\n");
     sdr->activateStream( rx_stream, 0, 0, 0);
 }
 
 
-void ReceiverSoapy::stop_engine()
+void ReceiverSoapyHackRF::stop_engine()
 {
     printf("[ STOP SoapySDR ]\n");
     sdr->deactivateStream( rx_stream, 0, 0);	//stop streaming
 }
 
 
-void ReceiverSoapy::initialize()
+void ReceiverSoapyHackRF::initialize()
 {
 
 }
 
 
-void ReceiverSoapy::set_freq(const double value)
+void ReceiverSoapyHackRF::set_freq(const double value)
 {
     sdr->setFrequency( SOAPY_SDR_RX, 0, value );
     printf("[ FREQUENCY : %f ]\n", get_freq());
 }
 
 
-double ReceiverSoapy::get_freq( )
+double ReceiverSoapyHackRF::get_freq( )
 {
     return sdr->getFrequency( SOAPY_SDR_RX, 0 );
 }
 
 
-void ReceiverSoapy::set_sample_rate(const double value)
+void ReceiverSoapyHackRF::set_sample_rate(const double value)
 {
     sdr->setSampleRate( SOAPY_SDR_RX, 0, value );
     printf("[ SAMPLE RT : %f ]\n", get_sample_rate());
 }
 
 
-double ReceiverSoapy::get_sample_rate( )
+double ReceiverSoapyHackRF::get_sample_rate( )
 {
     return sdr->getSampleRate( SOAPY_SDR_RX, 0 );
 }
 
 
-void ReceiverSoapy::set_amp_enable(const bool value)
+void ReceiverSoapyHackRF::set_amp_enable(const bool value)
 {
     if( value == false )
         sdr->setGain(SOAPY_SDR_RX, 0, "AMP",  0);
@@ -129,13 +129,13 @@ void ReceiverSoapy::set_amp_enable(const bool value)
 }
 
 
-bool ReceiverSoapy::get_amp_enable( )
+bool ReceiverSoapyHackRF::get_amp_enable( )
 {
     return sdr->getGain(SOAPY_SDR_RX, 0, "AMP");
 }
 
 
-void ReceiverSoapy::set_vga_gain(uint32_t value)
+void ReceiverSoapyHackRF::set_vga_gain(uint32_t value)
 {
     sdr->setGain(SOAPY_SDR_RX, 0, "VGA",  value);
 //    sdr->setGain(SOAPY_SDR_RX, 0, value);
@@ -143,13 +143,13 @@ void ReceiverSoapy::set_vga_gain(uint32_t value)
 }
 
 
-uint32_t ReceiverSoapy::get_vga_gain( )
+uint32_t ReceiverSoapyHackRF::get_vga_gain( )
 {
     return sdr->getGain(SOAPY_SDR_RX, 0, "VGA");
 }
 
 
-void ReceiverSoapy::set_lna_gain(uint32_t value)
+void ReceiverSoapyHackRF::set_lna_gain(uint32_t value)
 {
     sdr->setGain(SOAPY_SDR_RX, 0, "LNA",  value);
 //    sdr->setGain(SOAPY_SDR_RX, 0, value);
@@ -157,12 +157,12 @@ void ReceiverSoapy::set_lna_gain(uint32_t value)
 }
 
 
-uint32_t ReceiverSoapy::get_lna_gain( )
+uint32_t ReceiverSoapyHackRF::get_lna_gain( )
 {
     return sdr->getGain(SOAPY_SDR_RX, 0, "LNA");
 }
 
-void ReceiverSoapy::reception( std::vector< std::complex<float> >& cbuffer, const uint32_t coverage)
+void ReceiverSoapyHackRF::reception(std::vector< std::complex<float> >& cbuffer, const uint32_t coverage)
 {
     //
     // On gere le vieillissement du buffer d'echantillons !
@@ -205,8 +205,8 @@ void ReceiverSoapy::reception( std::vector< std::complex<float> >& cbuffer, cons
 }
 
 
-void ReceiverSoapy::reset()
+void ReceiverSoapyHackRF::reset()
 {
-    fprintf(stderr, "ReceiverSoapy::reset() not implemented yet !\n");
+    fprintf(stderr, "ReceiverSoapyHackRF::reset() not implemented yet !\n");
     exit( -1 );
 }

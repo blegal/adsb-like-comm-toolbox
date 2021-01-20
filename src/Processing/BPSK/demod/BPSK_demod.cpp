@@ -18,6 +18,7 @@ void BPSK_demod::execute(std::vector<float>& ibuffer, std::vector<uint8_t>& obuf
 	// Le buffer de sortie doit etre 2x plus petit...
     if( obuffer.size() != (ibuffer.size()/2) )
     {
+        printf("\x1B[33m(WW) vector size was updated in BPSK_demod(%s::%d)\x1B[0m\n", __FILE__, __LINE__);
         obuffer.resize(ibuffer.size()/2);
     }
 

@@ -43,25 +43,8 @@
 
 class GenDecoder
 {
-protected:
-	int BITS_VAR;
-	int BITS_MSG;
-	int vSAT_NEG_MSG;
-	int vSAT_POS_MSG;
-	int vSAT_NEG_VAR;
-	int vSAT_POS_VAR;
-	
-	int BITS_LLR;
-	int vSAT_NEG_LLR;
-	int vSAT_POS_LLR;
-	int vFRAQ_LLR;
-	int FACTEUR_BETA;
-	
 public:
-	bool s_criterion;
-	int  nIters;
-	int  execIters;
-	
+
 public:
 	GenDecoder();
 	virtual ~GenDecoder();
@@ -76,7 +59,7 @@ public:
 	virtual unsigned int simd()   = 0;
 };
 
-
+/*
 GenDecoder::GenDecoder()
 {
 	s_criterion = false;
@@ -89,5 +72,6 @@ GenDecoder::~GenDecoder()
 {
 
 }
+ */
 
 #endif //SHARED_LIB_GENDECODER_H

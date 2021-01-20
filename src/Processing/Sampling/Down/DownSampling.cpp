@@ -13,7 +13,7 @@ DownSampling::~DownSampling()
 }
 
 
-void DownSampling::execute(std::vector<float>& ibuffer, std::vector<float>& obuffer)
+void DownSampling::execute(const std::vector<float>& ibuffer, std::vector<float>& obuffer)
 {
 	// Le buffer de sortie doit etre 2x plus grand...
     if( obuffer.size() != (ibuffer.size()/scale) )
@@ -32,11 +32,14 @@ void DownSampling::execute(std::vector<float>& ibuffer, std::vector<float>& obuf
 }
 
 
-void DownSampling::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer)
+void DownSampling::execute(const std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer)
 {
     // Le buffer de sortie doit etre 2x plus grand...
     if( obuffer.size() != (ibuffer.size()/scale) )
     {
+        printf("\x1B[33m(WW) vector size was updated in DownSampling(%s::%d)\x1B[0m\n", __FILE__, __LINE__);
+        printf("\x1B[33m(WW) -> ibuffer.size() = %lu\x1B[0m\n", ibuffer.size());
+        printf("\x1B[33m(WW) -> obuffer.size() = %lu\x1B[0m\n", obuffer.size());
         obuffer.resize(ibuffer.size()/scale);
     }
 

@@ -18,6 +18,9 @@ void QPSK_demod::execute(std::vector<float>& ibuffer, std::vector<uint8_t>& obuf
 	// Le buffer de sortie doit etre 2x plus petit...
     if( obuffer.size() != (ibuffer.size()/2) )
     {
+        printf("\x1B[33m(WW) vector size was updated in QPSK_demod(%s::%d)\x1B[0m\n", __FILE__, __LINE__);
+        printf("\x1B[33m(WW) -> ibuffer.size() = %lu\x1B[0m\n", ibuffer.size());
+        printf("\x1B[33m(WW) -> obuffer.size() = %lu\x1B[0m\n", obuffer.size());
         obuffer.resize(ibuffer.size()/2);
     }
 

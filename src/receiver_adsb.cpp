@@ -430,7 +430,7 @@ int main(int argc, char* argv[])
                     v = (v > +127) ? +127 : v;
                     v = (v < -127) ? -127 : v;
                     buff_5[j]   = v;
-                }
+                } // BUG BUG BUG ce devrait etre 255 et non 127 !
 
                 std::vector<uint8_t> buff_6;
                 std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));

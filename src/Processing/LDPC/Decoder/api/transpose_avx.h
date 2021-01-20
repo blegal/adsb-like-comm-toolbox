@@ -22,7 +22,7 @@ void uchar_itranspose_avx(__m256i *src, __m256i *dst, int n);
 
 void uchar_itranspose_2_avx(__m256i *src, __m256i *dst, int n);
 
-#include "transpose_avx.cpp"
+//#include "transpose_avx.cpp"
 
 #endif	/* DATA_INTERLEAVERS_HPP */
 

@@ -1,7 +1,7 @@
 #include "ReceiverSoapyRTLSdr.hpp"
 #include <unistd.h>
 
-SoapyRTLSdr::SoapyRTLSdr(float s_fc, float s_fe) : Receiver(s_fc, s_fe)
+ReceiverSoapyRTLSdr::ReceiverSoapyRTLSdr(const float s_fc, const float s_fe) : Receiver(s_fc, s_fe)
 {
     if( s_fc < 24000000 )
     {
@@ -89,73 +89,73 @@ SoapyRTLSdr::SoapyRTLSdr(float s_fc, float s_fe) : Receiver(s_fc, s_fe)
     }
 }
 
-SoapyRTLSdr::~SoapyRTLSdr()
+ReceiverSoapyRTLSdr::~ReceiverSoapyRTLSdr()
 {
     sdr->closeStream( rx_stream );
     SoapySDR::Device::unmake( sdr );
 }
 
 
-void SoapyRTLSdr::start_engine()
+void ReceiverSoapyRTLSdr::start_engine()
 {
-    printf("[ START SoapyRTLSdr ]\n");
+    printf("[ START ReceiverSoapyRTLSdr ]\n");
     sdr->activateStream( rx_stream, 0, 0, 0);
 }
 
 
-void SoapyRTLSdr::stop_engine()
+void ReceiverSoapyRTLSdr::stop_engine()
 {
-    printf("[ STOP SoapyRTLSdr ]\n");
+    printf("[ STOP ReceiverSoapyRTLSdr ]\n");
     sdr->deactivateStream( rx_stream, 0, 0);	//stop streaming
 }
 
 
-void SoapyRTLSdr::initialize()
+void ReceiverSoapyRTLSdr::initialize()
 {
 
 }
 
 
-void SoapyRTLSdr::set_freq(const double value)
+void ReceiverSoapyRTLSdr::set_freq(const double value)
 {
     sdr->setFrequency( SOAPY_SDR_RX, 0, value );
     printf("[ FREQUENCY : %f ]\n", get_freq());
 }
 
 
-double SoapyRTLSdr::get_freq( )
+double ReceiverSoapyRTLSdr::get_freq( )
 {
     return sdr->getFrequency( SOAPY_SDR_RX, 0 );
 }
 
 
-void SoapyRTLSdr::set_sample_rate(const double value)
+void ReceiverSoapyRTLSdr::set_sample_rate(const double value)
 {
     sdr->setSampleRate( SOAPY_SDR_RX, 0, value );
     printf("[ SAMPLE RT : %f ]\n", get_sample_rate());
 }
 
 
-double SoapyRTLSdr::get_sample_rate( )
+double ReceiverSoapyRTLSdr::get_sample_rate( )
 {
     return sdr->getSampleRate( SOAPY_SDR_RX, 0 );
 }
 
 
-void SoapyRTLSdr::set_tuner_gain(const double value)
+void ReceiverSoapyRTLSdr::set_tuner_gain(const double value)
 {
     sdr->setGain(SOAPY_SDR_RX, 0, "TUNER",  value);
-    printf("[SoapyRTLSdr] set TUNER gain value : %lf\n", get_tuner_gain());
+    printf("[ReceiverSoapyRTLSdr] set TUNER gain value : %lf\n", get_tuner_gain());
 }
 
 
-double SoapyRTLSdr::get_tuner_gain( )
+double ReceiverSoapyRTLSdr::get_tuner_gain( )
 {
     return sdr->getGain(SOAPY_SDR_RX, 0, "TUNER");
 }
 
 
-void SoapyRTLSdr::reception( std::vector< std::complex<float> >& cbuffer, const uint32_t coverage)
+void ReceiverSoapyRTLSdr::reception( std::vector< std::complex<float> >& cbuffer, const uint32_t coverage)
 {
     //
     // On gere le vieillissement du buffer d'echantillons !
@@ -198,8 +198,8 @@ void SoapyRTLSdr::reception( std::vector< std::complex<float> >& cbuffer, const 
 }
 
 
-void SoapyRTLSdr::reset()
+void ReceiverSoapyRTLSdr::reset()
 {
-    fprintf(stderr, "SoapyRTLSdr::reset() not implemented yet !\n");
+    fprintf(stderr, "ReceiverSoapyRTLSdr::reset() not implemented yet !\n");
     exit( -1 );
 }

@@ -13,11 +13,14 @@ BitUnpacking::~BitUnpacking()
 }
 
 
-void BitUnpacking::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer)
+void BitUnpacking::execute(const std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer)
 {
 	// Le buffer de sortie doit etre 2x plus grand...
     if( obuffer.size() != (8 * ibuffer.size()) )
+    {
+        printf("\x1B[33m(WW) vector size was updated in BitUnpacking(%s::%d)\x1B[0m\n", __FILE__, __LINE__);
         obuffer.resize(8 *  ibuffer.size());
+    }
 
     uint8_t* ptr = obuffer.data();
     const uint32_t iLength = ibuffer.size();

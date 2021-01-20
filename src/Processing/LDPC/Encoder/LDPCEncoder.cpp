@@ -57,7 +57,10 @@ void LDPCEncoder::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& o
         throw std::runtime_error("The frame to encode has an invalid K value");
 
     if( obuffer.size() != N )
+    {
+        printf("\x1B[33m(WW) vector size was updated in LDPCEncoder(%s::%d)\x1B[0m\n", __FILE__, __LINE__);
         obuffer.resize( N );
+    }
 
     uint8_t  *ptr_in   = ibuffer.data();
     uint8_t  *ptr_out  = obuffer.data();

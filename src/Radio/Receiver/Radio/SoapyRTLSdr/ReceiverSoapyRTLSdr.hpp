@@ -1,19 +1,19 @@
-#ifndef _SoapyRTLSdr_
-#define _SoapyRTLSdr_
+#ifndef _ReceiverSoapyRTLSdr_
+#define _ReceiverSoapyRTLSdr_
 
 #include "../../Receiver.hpp"
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Types.hpp>
 #include <SoapySDR/Formats.hpp>
 
-class SoapyRTLSdr : public Receiver{
+class ReceiverSoapyRTLSdr : public Receiver{
 private :
     SoapySDR::Device *sdr;
     SoapySDR::Stream *rx_stream;
 
 public :
-    SoapyRTLSdr( float s_fc, float s_fe);
-    ~SoapyRTLSdr();
+    ReceiverSoapyRTLSdr( const float s_fc, const float s_fe);
+    ~ReceiverSoapyRTLSdr();
 
     void initialize();
     void start_engine();

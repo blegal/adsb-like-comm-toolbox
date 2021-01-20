@@ -1,5 +1,5 @@
-#ifndef _ReceiverSoapy_
-#define _ReceiverSoapy_
+#ifndef _ReceiverSoapyHackRF_
+#define _ReceiverSoapyHackRF_
 
 #include "../../Receiver.hpp"
 #include <SoapySDR/Device.hpp>
@@ -19,7 +19,7 @@
   pwidle=<float> (Tx only) Value in negative dB of I/Q constant carrier power when idle (default 0: silent)
 */
 
-class ReceiverSoapy : public Receiver{
+class ReceiverSoapyHackRF : public Receiver{
 
 private :
 //    double freq_hz;
@@ -40,8 +40,8 @@ private :
 //    int8_t* buffer;
 
 public :
-    ReceiverSoapy( float s_fc, float s_fe);
-    ~ReceiverSoapy();
+    ReceiverSoapyHackRF(const float s_fc, const float s_fe);
+    ~ReceiverSoapyHackRF();
 
     void initialize();
     void start_engine();

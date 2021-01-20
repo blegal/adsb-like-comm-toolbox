@@ -17,6 +17,9 @@ void UpSampling::execute(std::vector<int8_t>& ibuffer, std::vector<int8_t>& obuf
 	// Le buffer de sortie doit etre 2x plus grand...
     if( obuffer.size() != (scale * ibuffer.size()) )
     {
+        printf("\x1B[33m(WW) vector size was updated in UpSampling(%s::%d)\x1B[0m\n", __FILE__, __LINE__);
+        printf("\x1B[33m(WW) -> ibuffer.size() = %lu\x1B[0m\n", ibuffer.size());
+        printf("\x1B[33m(WW) -> obuffer.size() = %lu\x1B[0m\n", obuffer.size());
         obuffer.resize(scale * ibuffer.size());
     }
 

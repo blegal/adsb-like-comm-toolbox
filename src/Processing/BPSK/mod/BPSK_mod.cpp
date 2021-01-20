@@ -18,6 +18,7 @@ void BPSK_mod::execute(std::vector<uint8_t>& ibuffer, std::vector<int8_t>& obuff
 	// Le buffer de sortie doit etre 2x plus grand...
     if( obuffer.size() != (2 * ibuffer.size()) )
     {
+        printf("\x1B[33m(WW) vector size was updated in BPSK_mod(%s::%d)\x1B[0m\n", __FILE__, __LINE__);
         obuffer.resize(2 * ibuffer.size());
     }
 

@@ -13,15 +13,18 @@ BitPacking::~BitPacking()
 }
 
 
-void BitPacking::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer)
+void BitPacking::execute(const std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer)
 {
 	// Le buffer de sortie doit etre 2x plus grand...
     if( (ibuffer.size() / 8) != obuffer.size() )
+    {
+        printf("\x1B[33m(WW) vector size was updated in BitPacking(%s::%d)\x1B[0m\n", __FILE__, __LINE__);
         obuffer.resize(ibuffer.size() / 8);
+    }
 
-    uint8_t* ptr = obuffer.data();
-    const uint32_t iLength = ibuffer.size();
-    for(uint32_t i = 0; i < iLength; i += 1)
+    const uint8_t* ptr = ibuffer.data();
+    const uint32_t oLength = obuffer.size();
+    for(uint32_t i = 0; i < oLength; i += 1)
     {
         uint8_t v = 0;
 #pragma clang loop unroll(full)

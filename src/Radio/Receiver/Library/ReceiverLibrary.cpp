@@ -4,7 +4,7 @@
 #include "../File/ReceiverFileUHD.hpp"
 
 #include "../Radio/HackRF/ReceiverHackRF.hpp"
-#include "../Radio/SoapyHackRF/ReceiverSoapy.hpp"
+#include "../Radio/SoapyHackRF/ReceiverSoapyHackRF.hpp"
 #include "../Radio/SoapyRTLSdr/ReceiverSoapyRTLSdr.hpp"
 #include "../Radio/USRP/ReceiverUSRP.hpp"
 
@@ -41,7 +41,7 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
             (type == "radio" && module == "SoapyHackRF") ||
             (type == "radio" && module == "soapyhackrf")
     ) {
-        ReceiverSoapy* r = new ReceiverSoapy(param.toDouble("fc"), param.toDouble("fe"));
+        ReceiverSoapyHackRF* r = new ReceiverSoapyHackRF(param.toDouble("fc"), param.toDouble("fe"));
         if( param.toInt("hackrf_amplifier") != -1 ) r->set_amp_enable( param.toInt("hackrf_amplifier") );
         if( param.toInt("hackrf_vga_gain")  != -1 ) r->set_vga_gain  ( param.toInt("hackrf_vga_gain") );
         if( param.toInt("hackrf_lna_gain")  != -1 ) r->set_lna_gain  ( param.toInt("hackrf_lna_gain") );
@@ -51,7 +51,7 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
             (type == "radio" && module == "SoapyRTLSdr") ||
             (type == "radio" && module == "soapyrtlsdr")
     ) {
-        SoapyRTLSdr* r = new SoapyRTLSdr(param.toDouble("fc"), param.toDouble("fe"));
+        ReceiverSoapyRTLSdr* r = new ReceiverSoapyRTLSdr(param.toDouble("fc"), param.toDouble("fe"));
         if( param.toInt("rtlsdr_tuner_gain")  != -1 )
             r->set_tuner_gain( param.toDouble("rtlsdr_tuner_gain") );
         radio = r;

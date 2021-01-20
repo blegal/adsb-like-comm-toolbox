@@ -20,7 +20,7 @@ public :
 
 	~InsertCRC32b();
 
-    void execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer);
+    void execute(const std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer);
 };
 
 #endif
