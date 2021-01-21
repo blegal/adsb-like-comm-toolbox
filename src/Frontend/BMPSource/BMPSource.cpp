@@ -8,6 +8,7 @@ BMPSource::BMPSource(std::string fileN)
     curr_x  = 0;
     curr_y  = 0;
     curr_s  = 0;
+    frame   = 0;
 
     bmp = new BMP( fileN );
 
@@ -103,6 +104,95 @@ void BMPSource::execute(Frame* f)
         printf("(EE) Jamais nous n'aurions du arriver ici... ( curr_s == %d )\n", curr_s);
         exit( -1 );
     }
+
+    frame += 1;
+}
+
+
+void BMPSource::execute(FECFrame* f)
+{
+    const uint32_t nBytesPerPixel = (bmp->bmp_info_header.bit_count / 8);
+    const uint32_t nBytesPerLine  = (bmp->bmp_info_header.width * nBytesPerPixel);
+
+    if( curr_s == 0 )
+    {
+        f->set_config_u16(FRAME_NEW_IMAGE, 0);
+        f->set_config_u16(      0x0000, 1);
+        f->set_config_u16(      0x0000, 2);
+        f->set_config_u16(          frame, 3);
+        f->clr_payload();
+        f->data_u32(bmp->bmp_info_header.width,  0);
+        f->data_u32(bmp->bmp_info_header.height, 1);
+        curr_s = 1;
+    }
+    else if( curr_s == 1 )  // On envoie un tag debut de ligne avec la valeur de Y
+    {
+        f->set_config_u16(FRAME_NEW_LINE, 0);
+        f->set_config_u16(     0x0000, 1);
+        f->set_config_u16(     0x0000, 2);
+        f->set_config_u16(         frame, 3);
+        f->clr_payload();
+        f->data_u32(0, curr_y);
+        curr_s = 2;
+    }
+    else if( curr_s == 2 )  // On envoie l'ensemble des pixels de la ligne (ou mettre la valeur de X ?)
+    {
+        f->set_config_u16(FRAME_INFOS, 0);
+        f->set_config_u16(     curr_x, 1);
+        f->set_config_u16(     curr_y, 2);
+        f->set_config_u16(      frame, 3);
+        f->clr_payload();
+        const uint8_t* ptr = bmp->data.data() + curr_y * nBytesPerLine + curr_x * nBytesPerPixel;
+
+        const uint32_t payload = f->size_payload();
+        for( uint32_t i = 0; i < payload; i +=1 )
+            f->data_u8(ptr[i], i);
+
+        curr_x += (payload / 3);    // on avance dans la ligne
+
+        if( curr_x >=  bmp->bmp_info_header.width )
+        {
+            curr_x  = 0;
+            curr_s  = 3;
+        }
+        else
+        {
+            curr_s = 2;     // On continue a transmettre la ligne en cours
+        }
+    }
+    else if( curr_s == 3 )  // On envoie un tag de fin de ligne avec la valeur de Y
+    {
+        f->set_config_u16(FRAME_END_LINE, 0);
+        f->set_config_u16(     0x0000, 1);
+        f->set_config_u16(     0x0000, 2);
+        f->set_config_u16(         frame, 3);
+        f->clr_payload();
+        f->data_u32(curr_y, 0);
+        curr_y += 1;
+        if( curr_y == bmp->bmp_info_header.height )
+            curr_s  = 4;    // il est temps de cloturer la transmission !
+        else
+            curr_s  = 1;    // on repart sur une sequence new line...
+    }
+    else if( curr_s == 4 )  // On informe le recepteur que la reception de l'image est terminée
+    {
+        f->set_config_u16(FRAME_END_IMAGE, 0);
+        f->set_config_u16(      0x0000, 1);
+        f->set_config_u16(      0x0000, 2);
+        f->set_config_u16(          frame, 3);
+        f->clr_payload();
+        f->data_u32(bmp->bmp_info_header.width,  0);
+        f->data_u32(bmp->bmp_info_header.height, 1);
+        curr_s     = 5;
+        isFinished = true;
+    }
+    else
+    {
+        printf("(EE) Jamais nous n'aurions du arriver ici... ( curr_s == %d )\n", curr_s);
+        exit( -1 );
+    }
+
+    frame += 1;
 }
 
 

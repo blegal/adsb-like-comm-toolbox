@@ -6,6 +6,7 @@
 #include <chrono>
 
 #include <vector>
+#include <fstream>
 
 #include <cstdio>
 #include <cstdlib>
@@ -18,6 +19,8 @@
 
 #include "./Backend/Library/BackendLibrary.hpp"
 
+#include "./Chains/ADBS-like/Decoder/Decoder_ADBS_like_chain.hpp"
+#include "./Chains/ADBS-like-fec/Decoder/Decoder_ADBS_FEC_chain.hpp"
 
 //
 //  Definition des modules permettant d'utiliser le module Receiver (SdR)
@@ -356,13 +359,37 @@ int main(int argc, char* argv[])
 
     const uint32_t payload = f.payload_size();
 
+#define _NEW_PROC_
+
+#if 0
+    FECFrame F( param.toInt("payload") );
+    Decoder_ADBS_like_chain dec_chain( F.size_frame() );
+    std::vector<uint8_t> frame_buf( dec_chain.ibuffer_size() );
+    std::cout << "(II) # of input  samples Decoder_ADBS_like_chain (mod) = " << dec_chain.ibuffer_size() << endl;
+    std::cout << "(II) # of output samples Decoder_ADBS_like_chain (pld) = " << dec_chain.obuffer_size() << endl;
+#else
+    FECFrame F( param.toInt("payload") );
+    Decoder_ADBS_FEC_chain dec_chain( F.size_frame() );
+    std::vector<uint8_t> frame_buf( dec_chain.ibuffer_size() );
+    std::cout << "(II) # of input  samples Decoder_ADBS_FEC_chain (mod) = " << dec_chain.ibuffer_size() << endl;
+    std::cout << "(II) # of output samples Decoder_ADBS_FEC_chain (pld) = " << dec_chain.obuffer_size() << endl;
+#endif
+
+#define _TRACE_MODE_
+#ifdef _TRACE_MODE_
+    std::ofstream of( "dec_frames.txt" );
+#endif
+
+    bool     firstAcq = true;
+    uint64_t nSamples = 0;
+
     const bool mode_inter = param.toBool("mode_inter");
 	while( radio->alive() && (isFinished == false) )
 	{
 	    //
 	    //
 	    //
-        radio->reception(buffer, 4 * f.frame_bits());
+        radio->reception(buffer, (firstAcq == true) ? 0 : 0/*4 * f.frame_bits()*/);
 
         //
         //
@@ -410,16 +437,46 @@ int main(int argc, char* argv[])
                 timer.start_decoding();
                 nbTramesDetectees +=1;    // On vient de detecter qqchose
 
-#if 0
-                for (int j=0; j < buff_5.size(); j += 1)
+
+#ifdef _NEW_PROC_
+                //frame_buf.resize( 4672/2 );
+                cvt_float_u8::execute( buffer_abs.data() + k, &frame_buf );
+
+                std::vector<uint8_t> frame_tmp( F.size_frame() );
+                bool ok = dec_chain.execute(frame_buf, &frame_tmp);
+                if( ok == true )
                 {
-                    uint32_t v = buffer_abs[k+j];
-                    v = (v > +255) ? +255 : v;
-                    buff_5[j]   = v;
+                    F.update( frame_tmp );
+                    dest->execute( &F );
+
+                    if( verbose == 2 )
+                    {
+                        printf("%6d : ", k);
+                        printf("%1.3f : ", s);
+                        green(); printf("[CRC OK] "); black();
+                        F.dump();
+                    }
+#ifdef _TRACE_MODE_
+                    of << std::setw(6) << k << " : " << F.to_string() << "   [CRC OK]" << std::endl;
+#endif
+
+                    k += (frame_buf.size() - 1); // On saute tous les bits qui composaient notre trame...
+
+                }else{
+                    F.update( frame_tmp );
+                    if(verbose >= 1) {
+                        printf("%6d : ", k);
+                        printf("%1.3f : ", s);
+                        red(); printf("[CRC KO] "); black();
+                        F.dump();
+                    }
+#ifdef _TRACE_MODE_
+                    of << std::setw(6) << k << " : " << F.to_string() << "   [CRC OK]" << std::endl;
+#endif
                 }
 #else
                 cvt_float_u8::execute( buffer_abs.data() + k, &buff_5 );
-#endif
+
                 down.execute(buff_5, buff_6);
                 ppd.execute (buff_6, buff_7);
 
@@ -445,13 +502,19 @@ int main(int argc, char* argv[])
                             f.dump_frame();
                         }
                     }
-                }else{
                 }
+#endif
+
                 timer.stop_decoding();
             }
         }
         loop_counter += 1;
 	}
+
+#ifdef _TRACE_MODE_
+    of.close();
+#endif
+
 
 	delete dest;
 

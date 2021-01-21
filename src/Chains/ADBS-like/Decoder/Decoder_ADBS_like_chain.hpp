@@ -43,6 +43,9 @@ public :
 	~Decoder_ADBS_like_chain();
 
     bool execute(const std::vector<uint8_t>& src, std::vector<uint8_t>* dst);
+
+    uint32_t ibuffer_size();
+    uint32_t obuffer_size();
 };
 
 #endif

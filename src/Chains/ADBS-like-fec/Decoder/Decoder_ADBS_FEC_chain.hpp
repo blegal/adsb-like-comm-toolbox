@@ -37,12 +37,21 @@ private:
     LDPCDecoder       dec;
     RemoveCRC32b      c_rcrc;
 
+private:
+    uint32_t counter_frames;
+    uint32_t counter_crc_ok_1;
+    uint32_t counter_crc_ok_2;
+
 public :
     Decoder_ADBS_FEC_chain(const uint32_t stream_length);
 
 	~Decoder_ADBS_FEC_chain();
 
     bool execute(const std::vector<uint8_t>& src, std::vector<uint8_t>* dst);
+
+    uint32_t ibuffer_size();
+    uint32_t obuffer_size();
+
 };
 
 #endif

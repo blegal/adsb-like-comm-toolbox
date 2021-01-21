@@ -26,7 +26,10 @@ public :
 
     virtual ~Decoder_chain();
 
-    virtual bool execute(const std::vector<uint8_t>& src, std::vector<uint8_t>* dst);
+    virtual bool execute(const std::vector<uint8_t>& src, std::vector<uint8_t>* dst) = 0;
+
+    virtual uint32_t ibuffer_size() = 0;
+    virtual uint32_t obuffer_size() = 0;
 };
 
 #endif

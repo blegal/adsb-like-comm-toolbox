@@ -31,7 +31,8 @@ public :
 
 	~FPGADest();
 
-    void execute(Frame* f);
+    void execute(Frame*    f);
+    void execute(FECFrame* f);
 };
 
 #endif

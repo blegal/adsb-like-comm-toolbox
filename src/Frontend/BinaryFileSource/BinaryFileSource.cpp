@@ -34,6 +34,26 @@ void BinaryFileSource::execute(Frame* f)
 }
 
 
+void BinaryFileSource::execute(FECFrame* f)
+{
+    if( feof(file) == 0 )
+    {
+        const uint32_t length = f->size_payload();
+        const uint8_t* ptr_da = f->get_ptr_payload();
+
+        uint32_t nRead = fread( (void*)ptr_da, sizeof(uint8_t), length, file );
+        if( nRead != length )
+            printf("(WW) We reach end of file in the last frame...\n");
+    }
+    else
+    {
+        printf("(EE) The file stream has ended before...\n");
+        exit( -1 );
+    }
+
+}
+
+
 bool BinaryFileSource::is_alive()
 {
     return ( feof(file) == 0 );

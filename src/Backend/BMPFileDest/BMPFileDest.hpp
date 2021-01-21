@@ -25,13 +25,16 @@ private :
     uint32_t BytesPerFrame;
     uint32_t curr_y;
     int32_t lastXid;
+    int32_t lastYid;
+    int32_t lastFid;
 
 public :
     BMPFileDest(std::string file);
 
 	~BMPFileDest();
 
-    void execute(Frame* f);
+    void execute(Frame*    f);
+    void execute(FECFrame* f);
 };
 
 #endif

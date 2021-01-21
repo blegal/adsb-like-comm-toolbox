@@ -35,8 +35,8 @@ private:
     uint8_t* ptr_payload;        // set payload size in bytes
 
 public:
-    uint8_t* conf_to_emit();      //
-    uint8_t* payload_to_emit();   // the pointer to the payload field
+    uint8_t* get_ptr_conf();      //
+    uint8_t* get_ptr_payload();   // the pointer to the payload field
 
 protected:
     vector<uint8_t> frame_v;
@@ -71,6 +71,9 @@ public:
 
     void get_frame_bits (      std::vector<uint8_t>& v   );
     bool fill_frame_bits(const std::vector<uint8_t>& buff);
+
+    void dump();
+    std::string to_string();
 
 };
 

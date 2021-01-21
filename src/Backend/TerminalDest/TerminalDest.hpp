@@ -13,7 +13,8 @@ public :
 
 	~TerminalDest();
 
-    void execute(Frame* f);
+    void execute(Frame*    f);
+    void execute(FECFrame* f);
 };
 
 #endif

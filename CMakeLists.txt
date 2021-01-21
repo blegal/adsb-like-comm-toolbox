@@ -117,6 +117,31 @@ set(SOURCE_FILES
         src/Tools/Conversion/cvt_i8_float.cpp
 
         src/Frame/Frame.cpp
+        src/Frame/FECFrame.cpp
+
+        src/Chains/template/Decoder/Decoder_chain.cpp
+        src/Chains/ADBS-like/Decoder/Decoder_ADBS_like_chain.cpp
+        src/Chains/ADBS-like-fec/Decoder/Decoder_ADBS_FEC_chain.cpp
+
+        src/Processing/CRC32b/RemoveCRC32b/RemoveCRC32b.cpp
+        src/Processing/CRC32b/CheckCRC32b/CheckCRC32b.cpp
+
+        src/Processing/DataPacking/BitPacking/BitPacking.cpp
+
+        src/Processing/ADSBSynchro/RemoveADSBSynchro/RemoveADSBSynchro.cpp
+
+        src/Processing/PPM/demod/PPM_demod.cpp
+
+        src/Processing/IQ/Removing/IQ_Removing.cpp
+
+        src/Processing/Sampling/Down/DownSampling.cpp
+
+        src/Processing/LDPC/Decoder/LDPCDecoder.cpp
+        src/Processing/LDPC/Decoder/802_16e_1152x576/802_16e_1152x576_1f_m256i.cpp
+
+        src/Tools/Resizing/resize_vect_u8.cpp
+
+
 
         src/Processing/IQ/Removing/IQ_Removing.cpp
 
@@ -182,6 +207,7 @@ set(SOURCE_FILES
         src/Processing/CRC32b/CRC/CRC32b.cpp
         src/Frame/MLType/MLType.cpp
         src/Frame/Frame.cpp
+        src/Frame/FECFrame.cpp
         src/RingBuff/RingBuff.cpp
         src/Tools/Parameters/Parameters.cpp
         src/Tools/CTickCounter/CTickCounter.cpp
@@ -198,6 +224,21 @@ set(SOURCE_FILES
         src/Radio/Emitter/Radio/USRP/EmitterUSRP.cpp
         src/Radio/Emitter/File/EmitterFileRAW.cpp
         src/Radio/Emitter/Library/EmitterLibrary.cpp
+
+        src/Chains/template/Encoder/Encoder_chain.cpp
+        src/Chains/ADBS-like/Encoder/Encoder_ADBS_like_chain.cpp
+        src/Chains/ADBS-like-fec/Encoder/Encoder_ADBS_FEC_chain.cpp
+
+        src/Processing/CRC32b/InsertCRC32b/InsertCRC32b.cpp
+        src/Processing/CRC32b/CheckCRC32b/CheckCRC32b.cpp
+        src/Processing/DataPacking/BitUnpacking/BitUnpacking.cpp
+        src/Processing/ADSBSynchro/InsertADSBSynchro/InsertADSBSynchro.cpp
+        src/Processing/PPM/mod/PPM_mod.cpp
+        src/Processing/IQ/Insertion/IQ_Insertion.cpp
+        src/Processing/Sampling/Up/UpSampling.cpp
+        src/Processing/LDPC/Encoder/LDPCEncoder.cpp
+        src/Tools/Resizing/resize_vect_u8.cpp
+
 
         src/Processing/PPM/mod/PPM_mod.cpp
         src/Processing/IQ/Insertion/IQ_Insertion.cpp

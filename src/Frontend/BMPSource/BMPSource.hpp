@@ -22,6 +22,8 @@ private :
     uint32_t curr_s;
     bool isFinished;
 
+    uint32_t frame;
+
 
 public :
     BMPSource(std::string fileN);
@@ -29,6 +31,7 @@ public :
 	~BMPSource();
 
     void execute(Frame* f);
+    void execute(FECFrame* f);
 
     bool is_alive();
 };

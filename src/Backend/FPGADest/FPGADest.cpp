@@ -47,3 +47,14 @@ void FPGADest::execute(Frame* f)
         error("ERROR writing to socket...\n");
 
 }
+
+
+void FPGADest::execute(FECFrame* f)
+{
+    const uint32_t n = write(sockfd, f->get_ptr_payload(), f->size_payload());
+    if (n != f->size_payload())
+        error("ERROR the overall data were not delivered...\n");
+    if (n < 0)
+        error("ERROR writing to socket...\n");
+
+}

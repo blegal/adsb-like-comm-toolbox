@@ -38,7 +38,7 @@ void DownSampling::execute(const std::vector<uint8_t>& ibuffer, std::vector<uint
     if( obuffer.size() != (ibuffer.size()/scale) )
     {
         printf("\x1B[33m(WW) vector size was updated in DownSampling(%s::%d)\x1B[0m\n", __FILE__, __LINE__);
-        printf("\x1B[33m(WW) -> ibuffer.size() = %lu\x1B[0m\n", ibuffer.size());
+        printf("\x1B[33m(WW) -> ibuffer.size() = %lu (waiting : %lu)\x1B[0m\n", ibuffer.size(), 2 * obuffer.size());
         printf("\x1B[33m(WW) -> obuffer.size() = %lu\x1B[0m\n", obuffer.size());
         obuffer.resize(ibuffer.size()/scale);
     }

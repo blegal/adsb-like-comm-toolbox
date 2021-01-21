@@ -16,6 +16,7 @@ public :
 	~HexSource();
 
     void execute(Frame* f);
+    void execute(FECFrame* f);
 
     bool is_alive();
 };

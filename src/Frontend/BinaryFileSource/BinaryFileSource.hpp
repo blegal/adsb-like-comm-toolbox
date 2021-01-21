@@ -17,7 +17,8 @@ public :
 
 	~BinaryFileSource();
 
-    void execute(Frame* f);
+    void execute(Frame*    f);
+    void execute(FECFrame* f);
 
     bool is_alive();
 };

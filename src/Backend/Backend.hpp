@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../Frame/Frame.hpp"
+#include "../Frame/FECFrame.hpp"
 
 using namespace std;
 
@@ -19,7 +20,8 @@ public :
 
 	virtual ~Backend();
 
-    virtual void execute(Frame* f) = 0;
+    virtual void execute(Frame*    f) = 0;
+    virtual void execute(FECFrame* f) = 0;
 };
 
 #endif

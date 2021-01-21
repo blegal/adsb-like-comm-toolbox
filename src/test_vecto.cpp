@@ -283,7 +283,7 @@ int main(int argc, char *argv[])
     // On teste la chaine ADSB-like sans FEC
     //
 
-    const uint32_t length = 68; // 8 bytes pour la config et 60 pour le payload
+        const uint32_t length = 68; // 8 bytes pour la config et 60 pour le payload
 
     std::vector< int8_t> short_canal(4672);
 

@@ -14,6 +14,18 @@ Encoder_ADBS_like_chain::Encoder_ADBS_like_chain(const uint32_t stream_length) :
 }
 
 
+uint32_t Encoder_ADBS_like_chain::ibuffer_size()
+{
+    return (vec_crc.size() - 4);
+}
+
+
+uint32_t Encoder_ADBS_like_chain::obuffer_size()
+{
+    return vec_iq.size();
+}
+
+
 Encoder_ADBS_like_chain::~Encoder_ADBS_like_chain()
 {
 	

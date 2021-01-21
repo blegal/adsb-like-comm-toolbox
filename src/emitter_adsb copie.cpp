@@ -1,13 +1,25 @@
+#include <iostream>
+#include <complex>
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
+#include <vector>
+#include <math.h>
+#include <bitset>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include <chrono>
 #include <getopt.h>
-#include <csignal>
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
-#include <fstream>
 
 #include "./Frame/Frame.hpp"
-#include "./Frame/FECFrame.hpp"
 
-#include "./Tools/Parameters/Parameters.hpp"
+#include "Tools/Parameters/Parameters.hpp"
 
 #include "./Processing/PPM/mod/PPM_mod.hpp"
 #include "./Processing/Sampling/Up/UpSampling.hpp"
@@ -17,10 +29,8 @@
 
 #include "./Frontend/Library/FrontendLibrary.hpp"
 
-#include "./Chains/ADBS-like/Encoder/Encoder_ADBS_like_chain.hpp"
-#include "./Chains/ADBS-like-fec/Encoder/Encoder_ADBS_FEC_chain.hpp"
-
 #include "couleur.h"
+
 
 bool isFinished = false;
 
@@ -58,8 +68,8 @@ int main(int argc, char* argv[])
 
     Parameters param;
 
-    param.set("frontend",       "BMPFile");
-    param.set("frontend_opt",   "MonFichier.bmp");
+    param.set("frontend",   "HexSource");
+    param.set("fe_param",   "none");
 
     param.set("mode_radio", "radio");
     param.set("filename",   "hackrf");
@@ -91,10 +101,6 @@ int main(int argc, char* argv[])
                     {"fc",       required_argument, NULL, 'c'}, // changer la frequence de la porteuse
                     {"fe",       required_argument, NULL, 'e'}, // changer la frequence echantillonnage
 
-                    {"payload",     required_argument, NULL, 'p'}, // changer la frequence de la porteuse
-
-                    {"bmp_file",    required_argument, NULL, 'b'}, // changer la frequence de la porteuse
-
                     {"verbose",           no_argument, NULL, 'v'}, // changer la frequence de la porteuse
                     {"sleep",       required_argument, NULL, 's'}, // changer la frequence echantillonnage
                     {"payload",     required_argument, NULL, 'p'}, // changer la frequence de la porteuse
@@ -113,6 +119,7 @@ int main(int argc, char* argv[])
 
     cout << "par Bertrand LE GAL - Octobre 2020" << endl;
     cout << "==================================== ADSB ====================================" << endl;
+    // ============== GETOPT ================
     printf("%s", KRED);
 
     while ((c = getopt_long(argc, argv, "be:p:f:n:s:vt8", long_options, &option_index)) != -1) {
@@ -133,6 +140,7 @@ int main(int argc, char* argv[])
             case 'e' :
                 param.set("fe",   std::stod(optarg));
                 param.set("fe_real",  param.toDouble("surEch") * param.toDouble("fe"));
+//                printf("%soption fe = %f Hz%s\n", KNRM, param.toFloat("fe"), KRED);
                 break;
 
             case 'U' :
@@ -146,11 +154,6 @@ int main(int argc, char* argv[])
             case 'r':
                 param.set("mode_radio",   "radio");
                 param.set("filename",   optarg);
-                break;
-
-            case 'b':
-                param.set("frontend",    "BMPFile");
-                param.set("frontend_opt", optarg);
                 break;
 
             case 'f':
@@ -202,42 +205,99 @@ int main(int argc, char* argv[])
 
 
     //
-    // On selectionne le module d'emission en fonction des choix de l'utilisateur
+    // We create the frame
     //
-    Emitter*   radio = EmitterLibrary::allocate( param );
+#if 0
+    if( 0 )
+    {
+        const uint32_t payload    = param.toInt("payload");
 
+        Frame f(payload);
+
+        //
+        // We fill the frame content
+        //
+        for (uint32_t i = 0; i < payload; i += 1)
+            f.data(i, i);
+        f.compute_crc();
+
+        //
+        // We show the frame content
+        //
+        f.dump_frame();
+
+        /////////////////
+
+
+        std::vector<uint8_t> buff_1(8 + 8 * (2 + 16 + 4));
+        f.get_frame_bits(buff_1);
+
+    //    std::cout << "Transmitted bits" << std::endl;
+    //    dump( buff_1 );
+
+        PPM_Modulator ppm(120);
+        std::vector<int8_t> buff_2(8 + 8 * (2 + 16 + 4));
+        ppm.execute(buff_1, buff_2);
+
+    //    std::cout << "Modulated bits" << std::endl;
+    //    dump( buff_2 );
+
+        UpSampling up(2);
+        std::vector<int8_t> buff_3;
+        up.execute(buff_2, buff_3);
+
+    //    std::cout << "UpSampled bits" << std::endl;
+    //    dump( buff_3 );
+
+        IQ_Insertion iqi;
+        std::vector<int8_t> buff_4;
+        iqi.execute(buff_3, buff_4);
+
+        // Inverse process
+
+        IQ_Removing iqr;
+        std::vector<int8_t> buff_5;
+        iqr.execute(buff_4, buff_5);
+
+        DownSampling down(2);
+        std::vector<int8_t> buff_6;
+        down.execute(buff_5, buff_6);
+
+        PPM_Demodulator ppd;
+        std::vector<uint8_t> buff_7(8 + 8 * (2 + 16 + 4));
+        ppd.execute(buff_6, buff_7);
+
+        Frame g(payload);
+        g.fill_frame_bits(buff_7);
+        g.dump_frame();
+    }
+#endif
+
+    Emitter*   radio = EmitterLibrary::allocate( param );
     radio->initialize();
     radio->start_engine();
     radio->set_txvga_gain( param.toInt("tx_gain") );
+
+
+//  Frontend* source = FrontendLibrary::allocate( param );
+
+    //
+    // Une petite pause
+    //
     usleep( param.toInt("sleep_time") );
 
-    Frontend* source = FrontendLibrary::allocate( param );
-
-    //
-    // On cree les modules qui vont nous être utile pour réaliser la communication
-    //
-
-    Frame    f( param.toInt("payload") );
+    Frame f( param.toInt("payload") );
 
     PPM_mod ppm;
+
     UpSampling up( 2 * param.toInt("surEch") ); // 2 necessaire pour le recepteur x fois pour le DAC
+
     IQ_Insertion iqi;
-
-
-    //
-    // On cree les buffers que lesquels les differents processing vont etre appliqués
-    //
 
     std::vector<uint8_t> buff_1( f.frame_bits() );
     std::vector<int8_t>  buff_2( f.frame_bits() );
-    std::vector<int8_t>  buff_3( 2 * f.frame_bits() );
-    std::vector<int8_t>  buff_4( 4 * f.frame_bits() );
-
-    radio->emission ( buff_4 ); // pour demarrer le bouzin !
-
-    //
-    // On affiche les informations dans le terminal afin de simplifier le replay
-    //
+    std::vector<int8_t>  buff_3;
+    std::vector<int8_t>  buff_4;
 
     const uint32_t sleep_time = param.toInt("sleep_time");
     const uint32_t payload    = param.toInt("payload");
@@ -281,99 +341,45 @@ int main(int argc, char* argv[])
     printf("(II) -> VGA transmitter gain value : %d\n",      param.toInt("tx_gain"));
     printf("(II) -> HackRF antenna parameter   : disable\n" );
     printf("(II) -> HackRF amplifier parameter : disable\n");
-    printf("(II)\n");
-
-
-    //
-    // On ouvre l'image que l'utilisateur souhaite transmettre et on affiche ses propriétés
-    //
-
-
-
-    //
-    // On lance le processus de communication
-    //
 
     auto start = std::chrono::system_clock::now(); // This and "end"'s type is std::chrono::time_point
 
     uint32_t nFrames = 0;
-
-#if 1
-
-#if 1
-    FECFrame F( param.toInt("payload") );
-    Encoder_ADBS_like_chain enc_chain( F.size_frame() );
-    buff_4.resize( enc_chain.obuffer_size() );
-    std::cout << "(II) # of input  samples Encoder_ADBS_like_chain (pld) = " << enc_chain.ibuffer_size() << endl;
-    std::cout << "(II) # of output samples Encoder_ADBS_like_chain (I/Q) = " << enc_chain.obuffer_size() << endl;
-#else
-    FECFrame F( param.toInt("payload") );
-    Encoder_ADBS_FEC_chain enc_chain( F.size_frame() );
-    buff_4.resize( enc_chain.obuffer_size() );
-    std::cout << "(II) # of input  samples Encoder_ADBS_FEC_chain (pld) = " << enc_chain.ibuffer_size() << endl;
-    std::cout << "(II) # of output samples Encoder_ADBS_FEC_chain (I/Q) = " << enc_chain.obuffer_size() << endl;
-#endif
-
-#define _TRACE_MODE_
-#ifdef _TRACE_MODE_
-    std::ofstream of( "ref_frames.txt" );
-#endif
-
-    uint64_t data_pos = 0;
     while( isFinished == false )
     {
-        source->execute( &F ); // On fill les donnees de la trames avec des données de l'image
-
-#ifdef _TRACE_MODE_
-        uint32_t offset = enc_chain.obuffer_size();
-        of << std::setw(6) << (data_pos + offset/2) << " : " << F.to_string() << std::endl;
-        data_pos += 2 * offset;
-#endif
-
-        isFinished = !source->is_alive();
-
-        enc_chain.execute(F.data(), &buff_4);
-//        f.get_frame_bits( buff_1 );
-//        ppm.execute     ( buff_1, buff_2 );
-//        up.execute      ( buff_2, buff_3 );
-//        iqi.execute     ( buff_3, buff_4 );
-        radio->emission ( buff_4 );
-
         usleep( sleep_time );
 
-        nFrames += 1;
-    }
-
-#ifdef _TRACE_MODE_
-    of.close();
-#endif
-
-
-#else
-    while( isFinished == false )
-    {
-        source->execute( &f ); // On fill les donnees de la trames avec des données de l'image
-        isFinished = !source->is_alive();
+        for( uint32_t i = 0; i < payload; i +=1 )
+            f.data(i, i + nFrames);
 
         f.compute_crc();
 
-        f.get_frame_bits( buff_1 );
-        ppm.execute     ( buff_1, buff_2 );
-        up.execute      ( buff_2, buff_3 );
-        iqi.execute     ( buff_3, buff_4 );
-        radio->emission ( buff_4 );
+        if( verbose == true )
+        {
+            f.dump_frame();
+        }
 
-        usleep( sleep_time );
+        f.get_frame_bits( buff_1 );
+
+
+
+        ppm.execute( buff_1, buff_2 );
+        up.execute ( buff_2, buff_3 );
+        iqi.execute( buff_3, buff_4 );
+
+        radio->emission( buff_4 );
 
         nFrames += 1;
 
+        //
+        // On gere le critere d'arret associé aux nombre MAXIMUM de trames à emettre
+        //
+        if( nFrames == param.toInt("max_frames") )
+            isFinished = true;
     }
-#endif
+
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-
-    usleep( 200000 ); // On attend un peu pour etre certain que la derniere trame
-                      // a bien été transmise avant que l'on coupe l'emetteur
 
     std::cout << std::endl;
     std::cout << "Nombre de trames emises  (frames)  = " << nFrames << std::endl;
