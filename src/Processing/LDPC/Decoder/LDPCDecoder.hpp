@@ -7,6 +7,8 @@
 #include <cmath>
 #include <cstdint>
 #include <vector>
+#include <cstring>
+#include <cassert>
 
 #include "./802_16e_1152x576/802_16e_1152x576_1f_m256i.hpp"
 

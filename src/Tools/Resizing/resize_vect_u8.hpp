@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <cstdint>
+#include <cstring>
+#include <cassert>
 
 class resize_vect_u8
 {

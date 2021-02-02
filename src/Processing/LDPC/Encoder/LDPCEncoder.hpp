@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <cmath>
 #include <vector>
+#include <cstring>
+#include <cassert>
 
 using namespace std;
 
