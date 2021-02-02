@@ -26,10 +26,13 @@ Af
 
 ## Linux (ubuntu)
 
-apt install libuhd-dev uhd-host uhd-soapysdr
-apt install hackrf soapysdr-module-hackrf libhackrf-dev
-apt install librtlsdr-dev
-apt install libsoapysdr-dev soapysdr-module-all
+* apt install libuhd-dev uhd-host uhd-soapysdr
+
+* apt install hackrf soapysdr-module-hackrf libhackrf-dev
+
+* apt install librtlsdr-dev
+
+* apt install libsoapysdr-dev soapysdr-module-all
 
 
 ## Windows (...)
