@@ -18,6 +18,7 @@
 #include "../../../Processing/Sampling/Down/DownSampling.hpp"
 
 #include "../../../Tools/Resizing/resize_vect_u8.hpp"
+#include "../../../Frame/FrameTools.hpp"
 
 
 using namespace std;

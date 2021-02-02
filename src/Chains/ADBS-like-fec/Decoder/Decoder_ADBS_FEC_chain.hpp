@@ -7,6 +7,8 @@
 #include <cmath>
 #include <vector>
 
+#include "../../template/Decoder/Decoder_chain.hpp"
+
 #include "../../../Processing/CRC32b/RemoveCRC32b/RemoveCRC32b.hpp"
 #include "../../../Processing/CRC32b/CheckCRC32b/CheckCRC32b.hpp"
 #include "../../../Processing/DataPacking/BitPacking/BitPacking.hpp"
@@ -17,10 +19,9 @@
 
 #include "../../../Tools/Resizing/resize_vect_u8.hpp"
 
-
 using namespace std;
 
-class Decoder_ADBS_FEC_chain{
+class Decoder_ADBS_FEC_chain : public Decoder_chain{
 private:
     vector<uint8_t> vec_down;
     vector<uint8_t> vec_oppm;
@@ -39,8 +40,11 @@ private:
 
 private:
     uint32_t counter_frames;
+    uint32_t counter_frm_ok;
     uint32_t counter_crc_ok_1;
     uint32_t counter_crc_ok_2;
+    uint32_t counter_rcv_bits;
+    uint32_t counter_snd_bits;
 
 public :
     Decoder_ADBS_FEC_chain(const uint32_t stream_length);

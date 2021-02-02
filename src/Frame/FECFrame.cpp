@@ -111,6 +111,16 @@ void FECFrame::clr_config ()
 }
 
 
+uint32_t FECFrame::sum_frame()
+{
+    uint32_t sum = 0;
+    const uint32_t size = frame_v.size();
+    for(uint32_t i = 0; i < size; i+= 1)
+        sum += frame_v[i];
+    return sum;
+}
+
+
 void FECFrame::clr_payload()
 {
     const uint32_t size = size_payload();
@@ -234,7 +244,7 @@ void _dump_config( const uint16_t* ptr_16 )
         case FRAME_EMPTY     : printf(str_FRAME_EMPTY     ); break;
         default              : printf("UNK. (0x%4.4X) ", type ); break;
     }
-    printf(" | 0x%4.4X 0x%4.4X 0x%4.4X | ", ptr_16[1], ptr_16[2], ptr_16[3]);
+    printf("[0x%4.4X]  | 0x%4.4X 0x%4.4X 0x%4.4X | ", type, ptr_16[1], ptr_16[2], ptr_16[3]);
 }
 
 void _dump_payload( const uint8_t* ptr_8, const uint32_t payload_size, const uint32_t limit )
@@ -269,7 +279,8 @@ std::string FECFrame::to_string()
 {
     std::string outp = "";
 
-    switch ( get_config_u16(0) )
+    const uint32_t type = get_config_u16(0);
+    switch ( type )
     {
         case FRAME_INFOS     : outp += str_FRAME_INFOS;     break;
         case FRAME_NEW_IMAGE : outp += str_FRAME_NEW_IMAGE; break;
@@ -277,9 +288,10 @@ std::string FECFrame::to_string()
         case FRAME_NEW_LINE  : outp += str_FRAME_NEW_LINE;  break;
         case FRAME_END_LINE  : outp += str_FRAME_END_LINE;  break;
         case FRAME_EMPTY     : outp += str_FRAME_EMPTY;     break;
-//      default              : outp += "FRAME_UNKNOWN ";    break;
-        default              : outp += "UNKNOWN " + int_to_hex<uint16_t>( get_config_u16(0) );    break;
+        default              : outp += "FRAME_UNKNOWN ";    break;
+//        default              : outp += "UNKNOWN TYPE" + int_to_hex<uint16_t>( get_config_u16(0) );    break;
     }
+    outp += int_to_hex<uint16_t>( type );
 
     outp += " | " + int_to_hex<uint16_t>( get_config_u16(1) );
     outp += " | " + int_to_hex<uint16_t>( get_config_u16(2) );

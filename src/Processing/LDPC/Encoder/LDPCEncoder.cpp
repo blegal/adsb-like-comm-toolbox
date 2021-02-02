@@ -41,7 +41,6 @@ LDPCEncoder::LDPCEncoder(std::string filename)
     {
         EncValues[i] = data[i];
     }
-
 }
 
 
@@ -62,9 +61,12 @@ void LDPCEncoder::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& o
         obuffer.resize( N );
     }
 
-    uint8_t  *ptr_in   = ibuffer.data();
-    uint8_t  *ptr_out  = obuffer.data();
-    uint16_t *ptr = EncValues;
+    memset(obuffer.data(), 0, obuffer.size());
+
+    const uint8_t  *ptr_in   = ibuffer.data();
+          uint8_t  *ptr_out  = obuffer.data();
+
+    const uint16_t *ptr = EncValues;
 
     for(uint32_t y = 0; y < K; y++)
     {
@@ -81,4 +83,15 @@ void LDPCEncoder::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& o
             ptr += nbElement;
         }
     }
+
+#if 0
+    for (uint32_t i = 0; i < ibuffer.size(); i += 1)
+    {
+        if( ibuffer[i] != obuffer[i] )
+        {
+            printf("(EE) Erreur sur le bit %d, l'encodeur n'est pas systematique !\n", i);
+            break;
+        }
+    }
+#endif
 }

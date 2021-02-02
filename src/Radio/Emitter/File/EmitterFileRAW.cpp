@@ -3,18 +3,17 @@
 
 EmitterFileRAW::EmitterFileRAW(std::string filen) : Emitter(0, 0)
 {
-    filename = filen;
-    stream   = nullptr;
+    filename   = filen;
+    stream     = nullptr;
     firstFrame = true;
 }
 
 
 EmitterFileRAW::EmitterFileRAW(Parameters& param) : Emitter(0, 0)
 {
-    filename = param.toString("filename");
-    stream   = nullptr;
+    filename   = param.toString("filename");
+    stream     = nullptr;
     firstFrame = true;
-
 }
 
 
@@ -61,36 +60,22 @@ void EmitterFileRAW::close()
     }
 }
 
+#define _STORE_ZERO_
 
 void EmitterFileRAW::emission( std::vector<int8_t>& cbuffer )
 {
-#define _STORE_ZERO_
 #ifdef  _STORE_ZERO_
     const uint32_t length = cbuffer.size() / 2;
     int8_t* buff = new int8_t[length];
 
     for(uint32_t i = 0; i < length; i += 1)
         buff[i] = (rand()%8) - 4;
-
-    if( firstFrame == true )
-    {
-        for(int q = 0; q < 3; q += 1)
-            fwrite(buff, length, sizeof(int8_t), stream);
-        firstFrame = false;
-    }
-    else
-    {
-        fwrite(buff, length, sizeof(int8_t), stream);
-    }
-
+    fwrite(buff, length, sizeof(int8_t), stream);
 #endif
 
-    // On genere copie les N données "length" dans le fichier
     fwrite(cbuffer.data(), cbuffer.size(), sizeof(int8_t), stream);
 
 #ifdef _STORE_ZERO_
-    for(uint32_t i = 0; i < length; i += 1)
-        buff[i] = (rand()%8) - 4;
     fwrite(buff, length, sizeof(int8_t), stream);
     delete[] buff;
 #endif

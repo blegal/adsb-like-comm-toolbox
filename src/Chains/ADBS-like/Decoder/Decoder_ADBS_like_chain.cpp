@@ -62,7 +62,11 @@ bool Decoder_ADBS_like_chain::execute(const std::vector<uint8_t>& src, std::vect
 
     const bool crc_v = o_ccrc.execute( vec_pack ); // src => dst
 
+//    dump_frame_crc( vec_pack );
+
     c_rcrc.execute( vec_pack, vec_final );     // src => dst
+
+//    dump_frame( vec_pack );
 
     memcpy(dst->data(), vec_final.data(), vec_final.size());
 

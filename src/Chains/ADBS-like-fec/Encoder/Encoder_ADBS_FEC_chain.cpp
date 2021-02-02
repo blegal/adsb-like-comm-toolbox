@@ -45,12 +45,26 @@ void Encoder_ADBS_FEC_chain::execute(const std::vector<uint8_t>& src, std::vecto
     }
 
     i_crc.execute (src,      vec_crc );
+//    dump_frame    ( src );
+
     i_bp.execute  (vec_crc,  vec_bits);
+//    dump_frame_crc( vec_crc );
+
+#if 1
     enc.execute   (vec_bits, vec_fec);
+#else
+//    BitPacking
+    for(uint32_t i = 0; i < vec_fec.size(); i += 1)
+        vec_fec[i] = 0;
+    for(uint32_t i = 0; i < vec_bits.size(); i += 1)
+        vec_fec[i] = vec_bits[i];
+#endif
+
     i_sync.execute(vec_fec, vec_sync);
     i_ppm.execute (vec_sync,vec_ppm);
     i_up.execute  (vec_ppm, vec_up);
     i_iq.execute  (vec_up, vec_iq);
+
 
     memcpy(dst->data(), vec_iq.data(), vec_iq.size());
 }

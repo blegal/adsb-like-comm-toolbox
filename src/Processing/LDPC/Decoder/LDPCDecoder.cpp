@@ -35,10 +35,7 @@ void LDPCDecoder::execute(std::vector<int8_t>& ibuffer, std::vector<uint8_t>& ob
         exit( EXIT_FAILURE );
     }
 
-    // On positionne les données
-    const uint32_t iLength = ibuffer.size();
-    for(uint32_t i = 0; i < iLength; i += 1)
-        i_buffer[i] = 32 * (2 * ((int8_t)ibuffer[i]) - 1); // On module les données car on est en [0, 1]
+    memcpy(i_buffer.data(), ibuffer.data(), i_buffer.size());
 
     dec.decode( i_buffer.data(), o_buffer.data() );
 
@@ -62,7 +59,6 @@ void LDPCDecoder::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& o
         exit( EXIT_FAILURE );
     }
 
-
     // On positionne les données
     const uint32_t iLength = ibuffer.size();
     for(uint32_t i = 0; i < iLength; i += 1)
@@ -74,3 +70,4 @@ void LDPCDecoder::execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& o
     for(uint32_t i = 0; i < oLength; i += 1)
         obuffer[i] = o_buffer[i]; // On module les données car on est en [0, 1]
 }
+

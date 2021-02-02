@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
     param.set("antenna",    1);
     param.set("amplifier",  0);
 
-    param.set("payload", 16);
+    param.set("payload",   60);
 
     param.set("sleep_time",   100000);
 
@@ -82,6 +82,10 @@ int main(int argc, char* argv[])
     param.set("max_frames",   1000000);
 
     param.set("crystal_correct",   0);
+
+    param.set("crystal_correct",   0);
+
+    param.set("enable_fec",       false);
 
     static struct option long_options[] =
             {
@@ -102,7 +106,10 @@ int main(int argc, char* argv[])
                     {"up_sampling", required_argument, NULL, 'U'}, // changer la frequence echantillonnage
 
                     {"max_frames",  required_argument, NULL, 'm'}, // changer la frequence echantillonnage
-                    {"ppm",  required_argument, NULL, 'P'}, // changer la frequence echantillonnage
+                    {"ppm",         required_argument, NULL, 'P'}, // changer la frequence echantillonnage
+
+                    {"fec",         no_argument, NULL, 'Z'},
+                    {"no-fec",      no_argument, NULL, 'z'},
 
                     {NULL, 0,                    NULL, 0}
             };
@@ -188,6 +195,14 @@ int main(int argc, char* argv[])
                 printf("%soption crystal_correct = %d dB%s\n", KNRM, param.toInt("crystal_correct"), KRED);
                 break;
 
+            case 'Z' :
+                param.set("enable_fec", true);
+                break;
+
+            case 'z' :
+                param.set("enable_fec", false);
+                break;
+
             default:
                 printf("?? getopt returned character code 0%o ??\n", c);
         }
@@ -217,23 +232,21 @@ int main(int argc, char* argv[])
     // On cree les modules qui vont nous être utile pour réaliser la communication
     //
 
-    Frame    f( param.toInt("payload") );
-
-    PPM_mod ppm;
-    UpSampling up( 2 * param.toInt("surEch") ); // 2 necessaire pour le recepteur x fois pour le DAC
-    IQ_Insertion iqi;
+//    Frame    f( param.toInt("payload") );
+//    PPM_mod ppm;
+//    UpSampling up( 2 * param.toInt("surEch") ); // 2 necessaire pour le recepteur x fois pour le DAC
+//    IQ_Insertion iqi;
 
 
     //
     // On cree les buffers que lesquels les differents processing vont etre appliqués
     //
 
-    std::vector<uint8_t> buff_1( f.frame_bits() );
-    std::vector<int8_t>  buff_2( f.frame_bits() );
-    std::vector<int8_t>  buff_3( 2 * f.frame_bits() );
-    std::vector<int8_t>  buff_4( 4 * f.frame_bits() );
+//    std::vector<uint8_t> buff_1( f.frame_bits() );
+//    std::vector<int8_t>  buff_2( f.frame_bits() );
+//    std::vector<int8_t>  buff_3( 2 * f.frame_bits() );
+//    std::vector<int8_t>  buff_4( 4 * f.frame_bits() );
 
-    radio->emission ( buff_4 ); // pour demarrer le bouzin !
 
     //
     // On affiche les informations dans le terminal afin de simplifier le replay
@@ -271,9 +284,20 @@ int main(int argc, char* argv[])
         printf("(II)\n");
     }
 
+    //
+    // On ajoute ces données ici
+    //
+    std::vector<int8_t>  buff_4( 8192 );
+
+    for(uint32_t i = 0; i < buff_4.size(); i += 1)
+        buff_4[i] = rand()%5 - 3;
+
+    for(uint32_t i = 0; i < 4; i += 1)
+        radio->emission ( buff_4 );
+
     printf("(II) ADSB-like configuration parameters :\n");
-    printf("(II) -> ADSB-like payload length  : %d bytes\n", f.payload_size());
-    printf("(II) -> ADSB-like frame length    : %d bits\n",  f.frame_bits());
+//    printf("(II) -> ADSB-like payload length  : %d bytes\n", f.payload_size());
+//    printf("(II) -> ADSB-like frame length    : %d bits\n",  f.frame_bits());
     printf("(II) -> Time delay between frames : %d us\n",    param.toInt("sleep_time"));
     printf("(II)\n");
     printf("(II) HackRF module configuration :\n");
@@ -298,45 +322,27 @@ int main(int argc, char* argv[])
 
     uint32_t nFrames = 0;
 
-#if 1
-
-#if 1
     FECFrame F( param.toInt("payload") );
-    Encoder_ADBS_like_chain enc_chain( F.size_frame() );
-    buff_4.resize( enc_chain.obuffer_size() );
-    std::cout << "(II) # of input  samples Encoder_ADBS_like_chain (pld) = " << enc_chain.ibuffer_size() << endl;
-    std::cout << "(II) # of output samples Encoder_ADBS_like_chain (I/Q) = " << enc_chain.obuffer_size() << endl;
-#else
-    FECFrame F( param.toInt("payload") );
-    Encoder_ADBS_FEC_chain enc_chain( F.size_frame() );
-    buff_4.resize( enc_chain.obuffer_size() );
-    std::cout << "(II) # of input  samples Encoder_ADBS_FEC_chain (pld) = " << enc_chain.ibuffer_size() << endl;
-    std::cout << "(II) # of output samples Encoder_ADBS_FEC_chain (I/Q) = " << enc_chain.obuffer_size() << endl;
-#endif
-
-#define _TRACE_MODE_
-#ifdef _TRACE_MODE_
-    std::ofstream of( "ref_frames.txt" );
-#endif
+    Encoder_chain* enc_chain;
+    if( param.toBool("enable_fec") == false ) {
+        enc_chain = new Encoder_ADBS_like_chain( F.size_frame() );
+        std::cout << "(II) # of input  samples Encoder_ADBS_like_chain (pld) = " << enc_chain->ibuffer_size() << endl;
+        std::cout << "(II) # of output samples Encoder_ADBS_like_chain (I/Q) = " << enc_chain->obuffer_size() << endl;
+    }else {
+        enc_chain = new Encoder_ADBS_FEC_chain( F.size_frame() );
+        std::cout << "(II) # of input  samples Encoder_ADBS_FEC_chain (pld) = " << enc_chain->ibuffer_size() << endl;
+        std::cout << "(II) # of output samples Encoder_ADBS_FEC_chain (I/Q) = " << enc_chain->obuffer_size() << endl;
+    }
+    buff_4.resize( enc_chain->obuffer_size() );
 
     uint64_t data_pos = 0;
     while( isFinished == false )
     {
         source->execute( &F ); // On fill les donnees de la trames avec des données de l'image
 
-#ifdef _TRACE_MODE_
-        uint32_t offset = enc_chain.obuffer_size();
-        of << std::setw(6) << (data_pos + offset/2) << " : " << F.to_string() << std::endl;
-        data_pos += 2 * offset;
-#endif
-
         isFinished = !source->is_alive();
 
-        enc_chain.execute(F.data(), &buff_4);
-//        f.get_frame_bits( buff_1 );
-//        ppm.execute     ( buff_1, buff_2 );
-//        up.execute      ( buff_2, buff_3 );
-//        iqi.execute     ( buff_3, buff_4 );
+        enc_chain->execute(F.data(), &buff_4);
         radio->emission ( buff_4 );
 
         usleep( sleep_time );
@@ -344,31 +350,7 @@ int main(int argc, char* argv[])
         nFrames += 1;
     }
 
-#ifdef _TRACE_MODE_
-    of.close();
-#endif
 
-
-#else
-    while( isFinished == false )
-    {
-        source->execute( &f ); // On fill les donnees de la trames avec des données de l'image
-        isFinished = !source->is_alive();
-
-        f.compute_crc();
-
-        f.get_frame_bits( buff_1 );
-        ppm.execute     ( buff_1, buff_2 );
-        up.execute      ( buff_2, buff_3 );
-        iqi.execute     ( buff_3, buff_4 );
-        radio->emission ( buff_4 );
-
-        usleep( sleep_time );
-
-        nFrames += 1;
-
-    }
-#endif
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
 
@@ -379,7 +361,7 @@ int main(int argc, char* argv[])
     std::cout << "Nombre de trames emises  (frames)  = " << nFrames << std::endl;
     std::cout << "Temps total d'émission   (seconds) = " << elapsed.count() << std::endl;
     std::cout << "Trames par seconde       (frames)  = " << (nFrames/elapsed.count()) << std::endl;
-    std::cout << "Débit emis par seconde   (bits)    = " << (nFrames/elapsed.count()*f.frame_bits()) << std::endl;
+//    std::cout << "Débit emis par seconde   (bits)    = " << (nFrames/elapsed.count()*f.frame_bits()) << std::endl;
     std::cout << "Débit utile par seconde  (bytes)   = " << (nFrames/elapsed.count()*payload) << std::endl;
     std::cout << "Débit utile par seconde  (bits)    = " << (nFrames/elapsed.count()*payload*8) << std::endl;
 

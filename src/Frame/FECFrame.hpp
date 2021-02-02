@@ -12,6 +12,7 @@
 #include <iomanip>
 
 #include "./MLType/MLType.hpp"
+#include "FrameTools.hpp"
 
 using namespace std;
 
@@ -55,8 +56,9 @@ public:
     uint16_t get_config_u16(const uint32_t i);
     uint32_t get_config_u32(const uint32_t i);
 
-    void    clr_config ();
-    void    clr_payload();
+    void     clr_config ();
+    void     clr_payload();
+    uint32_t sum_frame();
 
     uint8_t  data_u8 (const uint32_t pos); // a value from the payload
     uint16_t data_u16(const uint32_t pos); // a value from the payload

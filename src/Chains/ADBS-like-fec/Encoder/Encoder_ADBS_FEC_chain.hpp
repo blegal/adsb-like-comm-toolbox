@@ -9,8 +9,11 @@
 
 #include "../../../Frame/FECFrame.hpp"
 
+#include "../../template/Encoder/Encoder_chain.hpp"
+
 #include "../../../Processing/CRC32b/InsertCRC32b/InsertCRC32b.hpp"
 #include "../../../Processing/DataPacking//BitUnpacking/BitUnpacking.hpp"
+#include "../../../Processing/DataPacking//BitPacking/BitPacking.hpp"
 #include "../../../Processing/LDPC/Encoder/LDPCEncoder.hpp"
 #include "../../../Processing/ADSBSynchro/InsertADSBSynchro/InsertADSBSynchro.hpp"
 #include "../../../Processing/PPM/mod/PPM_mod.hpp"
@@ -19,7 +22,7 @@
 
 using namespace std;
 
-class Encoder_ADBS_FEC_chain{
+class Encoder_ADBS_FEC_chain : public Encoder_chain{
 private:
     vector<uint8_t> vec_crc;
     vector<uint8_t> vec_bits;
