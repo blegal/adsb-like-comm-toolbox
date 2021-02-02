@@ -63,54 +63,9 @@ void show(std::vector<float>& v)
 */
 int main(int argc, char* argv[])
 {
-
-#if 0
-    vector<uint8_t> vin(576);
-
-    std::cout << "Generating samples" << std::endl;
-
-    for(uint32_t i = 0; i < vin.size(); i += 1)
-        vin[i] = i%2;
-
-    vector<uint8_t> venc(1152);
-
-    std::cout << "Encoding samples" << std::endl;
-
-    LDPCEncoder enc( "/Users/legal/GitHub/LDPC_decoder_kratos/inter_frame/data/codes/802.16e/r_1_2/k_576/LDPC_k_576_n_1152.generic.enc" );
-
-    enc.execute( vin, venc );
-
-    vector<int8_t> vmod(1152);
-
-    std::cout << "Modulating samples" << std::endl;
-
-    for(uint32_t i = 0; i < venc.size(); i += 1)
-        vmod[i] = ((venc[i] << 1) - 1) * 32;
-
-    std::cout << "Adding noise to samples" << std::endl;
-    for(uint32_t i = 0; i < vin.size(); i += 8)
-        vmod[i] = -vmod[i];
-
-    LDPC_decoder_802_16e_1152x576 dec;
-    dec.setOffset( 1 );
-    dec.nIters      = 20;
-    dec.s_criterion = false;
-
-    vector<uint8_t> vmou(1152);
-
-    std::cout << "Decoding samples" << std::endl;
-
-    dec.decode(vmod.data(), vmou.data());
-
-    std::cout << "Checking samples" << std::endl;
-
-    for(uint32_t i = 0; i < vin.size(); i += 1)
-        if( vin[i] != vmou[i] )
-            printf("%3d : Error, the bit value is wrong !", i);
-
-    exit( 0 );
-#endif
-
+    //
+    // Gestion de l'appui sur CTRL+C
+    //
     struct sigaction sigIntHandler;
     sigIntHandler.sa_handler = my_ctrl_c_handler;
     sigemptyset(&sigIntHandler.sa_mask);
