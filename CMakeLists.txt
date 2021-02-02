@@ -74,6 +74,11 @@ set(SOURCE_FILES
 
 add_executable(receiver_adsb ${SOURCE_FILES})
 
+target_link_libraries(receiver_adsb uhd)
+target_link_libraries(receiver_adsb hackrf)
+target_link_libraries(receiver_adsb SoapySDR)
+
+
 ########################################################################################################################
 
 project(receiver_image)
@@ -159,6 +164,11 @@ set(SOURCE_FILES
 
 add_executable(receiver_image ${SOURCE_FILES})
 
+target_link_libraries(receiver_image uhd)
+target_link_libraries(receiver_image hackrf)
+target_link_libraries(receiver_image SoapySDR)
+
+
 ########################################################################################################################
 
 #project(tty_histo)
@@ -198,6 +208,11 @@ set(SOURCE_FILES
         )
 
 add_executable(emitter_adsb ${SOURCE_FILES})
+
+target_link_libraries(emitter_adsb uhd)
+target_link_libraries(emitter_adsb hackrf)
+target_link_libraries(emitter_adsb SoapySDR)
+
 
 ########################################################################################################################
 
@@ -250,6 +265,11 @@ set(SOURCE_FILES
         )
 
 add_executable(emitter_image ${SOURCE_FILES})
+
+target_link_libraries(emitter_image uhd)
+target_link_libraries(emitter_image hackrf)
+target_link_libraries(emitter_image SoapySDR)
+
 
 ########################################################################################################################
 
