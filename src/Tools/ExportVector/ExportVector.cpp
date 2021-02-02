@@ -76,9 +76,9 @@ void ExportVector::SaveVector(std::vector<float>& abs, std::vector<uint8_t>& det
 {
     FILE* f = fopen(filename.c_str(), "wb");
     std::vector<uint8_t> u8_abs( abs.size() );
-    for(int q = 0; q < abs.size(); q += 1)
+    for(uint32_t q = 0; q < abs.size(); q += 1)
         u8_abs[q] = abs[q];
-    for(int q = 0; q < abs.size(); q += 1)
+    for(uint32_t q = 0; q < abs.size(); q += 1)
     {
         fwrite( &u8_abs[q], 1, sizeof(uint8_t), f );
         fwrite( &detec [q], 1, sizeof(uint8_t), f );

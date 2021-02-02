@@ -32,21 +32,21 @@ ReceiverSoapyHackRF::ReceiverSoapyHackRF(const float s_fc, const float s_fe) : R
     std::vector< std::string > str_list;	//string list
     str_list = sdr->listAntennas( SOAPY_SDR_RX, 0);
     printf("Rx antennas: ");
-    for(int i = 0; i < str_list.size(); ++i)
+    for(uint32_t i = 0; i < str_list.size(); ++i)
         printf("%s,", str_list[i].c_str());
     printf("\n");
 
     //	2.2 gains
     str_list = sdr->listGains( SOAPY_SDR_RX, 0);
     printf("Rx Gains: ");
-    for(int i = 0; i < str_list.size(); ++i)
+    for(uint32_t i = 0; i < str_list.size(); ++i)
         printf("%s, ", str_list[i].c_str());
     printf("\n");
 
     //	2.3. ranges(frequency ranges)
     SoapySDR::RangeList ranges = sdr->getFrequencyRange( SOAPY_SDR_RX, 0);
     printf("Rx freq ranges: ");
-    for(int i = 0; i < ranges.size(); ++i)
+    for(uint32_t i = 0; i < ranges.size(); ++i)
         printf("[%g Hz -> %g Hz], ", ranges[i].minimum(), ranges[i].maximum());
     printf("\n");
 
@@ -193,7 +193,7 @@ void ReceiverSoapyHackRF::reception(std::vector< std::complex<float> >& cbuffer,
     }while( (to_read - nb_read) != 0 );
 
 #if 1
-    for(int i = 0; i < to_read; i += 1)
+    for(uint32_t i = 0; i < to_read; i += 1)
         buff[i] *= 127.0f;
 #else
     float* pbuff = (float *)cbuffer.data();

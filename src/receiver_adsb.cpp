@@ -402,7 +402,7 @@ int main(int argc, char* argv[])
             timer.stop_detection();
         }
 
-        int k=0;
+        uint32_t k = 0;
 
         const bool mode_inter = param.toBool("mode_inter");
         while ( k <= (buffer_abs.size() - f.frame_bits()) ) {
@@ -425,7 +425,7 @@ int main(int argc, char* argv[])
                 nbTramesDetectees +=1;    // On vient de detecter qqchose
 
                 std::vector<uint8_t> buff_5( 4 * f.frame_bits() );
-                for (int j=0; j < buff_5.size(); j += 1){
+                for (uint32_t j=0; j < buff_5.size(); j += 1){
                     int32_t v = buffer_abs[k+j];
                     v = (v > +127) ? +127 : v;
                     v = (v < -127) ? -127 : v;

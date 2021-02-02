@@ -61,7 +61,7 @@ void ReceiverUSRP::reception(vector<complex<float> >& buffer, const uint32_t cov
     {
         num_rx_samps += rx_stream->recv(&buffer.at(num_rx_samps), nSamples - num_rx_samps, md);
     }
-    for(int i = 0; i < nSamples; i += 1)
+    for(uint32_t i = 0; i < nSamples; i += 1)
     {
         buffer[i] = buffer[i] * 127.0f;
     }

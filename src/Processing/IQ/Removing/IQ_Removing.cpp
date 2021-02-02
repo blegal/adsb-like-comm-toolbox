@@ -46,7 +46,7 @@ void IQ_Removing::execute(std::vector<int8_t>& ibuffer, std::vector<int8_t>& obu
 
 //    const int8_t* ptr  = ibuffer.data();
     const uint32_t ll    = obuffer.size();
-    for(int i = 0; i < ll; i += 1)
+    for(uint32_t i = 0; i < ll; i += 1)
     {
         float breal = ibuffer[2*i+0];
         float bimag = ibuffer[2*i+1];

@@ -249,9 +249,11 @@ int main(int argc, char* argv[])
 	if (optind < argc) {
 		printf ("non-option ARGV-elements: ");
         while (optind < argc)
+        {
             printf ("%s ", argv[optind++]);
-            printf ("\n");
-            exit( -1 );
+        }
+        printf ("\n");
+        exit( -1 );
 	}
 	printf("%s",KNRM);
 	cout << endl;
@@ -357,7 +359,7 @@ int main(int argc, char* argv[])
     uint32_t nBytesPerLine = 0;
 #endif
 
-    const uint32_t payload = f.payload_size();
+//    const uint32_t payload = f.payload_size();
 
 #define _NEW_PROC_
 
@@ -381,7 +383,7 @@ int main(int argc, char* argv[])
 #endif
 
     bool     firstAcq = true;
-    uint64_t nSamples = 0;
+//    uint64_t nSamples = 0;
 
     const bool mode_inter = param.toBool("mode_inter");
 	while( radio->alive() && (isFinished == false) )
@@ -412,7 +414,7 @@ int main(int argc, char* argv[])
         //
         const uint32_t verbose =  param.toInt("verbose");
         const uint32_t length  = (buffer_abs.size() - 4 * f.frame_bits());
-        for(int k = 0; k <= length; k += 1)
+        for(uint32_t k = 0; k <= length; k += 1)
 		{
 
             //

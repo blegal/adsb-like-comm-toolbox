@@ -62,15 +62,15 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
         ReceiverUSRP* r = new ReceiverUSRP(param.toDouble("fc"), param.toDouble("fe"));
         radio = r;
 
-    } else if( type == "file" && (module.find(".raw") != -1) ) {
+    } else if( type == "file" && (module.find(".raw") != std::string::npos) ) {
         ReceiverFileRAW* r = new ReceiverFileRAW(param.toString("filename"));
         radio = r;
 
-    } else if( type == "file" && (module.find(".cs8") != -1) ) {
+    } else if( type == "file" && (module.find(".cs8") != std::string::npos) ) {
         ReceiverFileRAW* r = new ReceiverFileRAW(param.toString("filename"));
         radio = r;
 
-    } else if( type == "file" && (module.find(".txt") != -1) ) {
+    } else if( type == "file" && (module.find(".txt") != std::string::npos) ) {
         ReceiverFileUHD* r = new ReceiverFileUHD(param.toString("filename"));
         radio = r;
     }

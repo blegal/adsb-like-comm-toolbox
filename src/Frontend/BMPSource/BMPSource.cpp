@@ -67,7 +67,7 @@ void BMPSource::execute(Frame* f)
 
         curr_x += (payload / 3);    // on avance dans la ligne
 
-        if( curr_x >=  bmp->bmp_info_header.width )
+        if( curr_x >=  (uint32_t)bmp->bmp_info_header.width )
         {
             curr_x  = 0;
             curr_s  = 3;
@@ -84,7 +84,7 @@ void BMPSource::execute(Frame* f)
         f->clr_payload();
         f->data_u32(0, curr_y);
         curr_y += 1;
-        if( curr_y == bmp->bmp_info_header.height )
+        if( curr_y == (uint32_t)bmp->bmp_info_header.height )
             curr_s  = 4;    // il est temps de cloturer la transmission !
         else
             curr_s  = 1;    // on repart sur une sequence new line...
@@ -150,7 +150,7 @@ void BMPSource::execute(FECFrame* f)
 
         curr_x += (payload / 3);    // on avance dans la ligne
 
-        if( curr_x >=  bmp->bmp_info_header.width )
+        if( curr_x >=  (uint32_t)bmp->bmp_info_header.width )
         {
             curr_x  = 0;
             curr_s  = 3;
@@ -169,7 +169,7 @@ void BMPSource::execute(FECFrame* f)
         f->clr_payload();
         f->data_u32(curr_y, 0);
         curr_y += 1;
-        if( curr_y == bmp->bmp_info_header.height )
+        if( curr_y == (uint32_t)bmp->bmp_info_header.height )
             curr_s  = 4;    // il est temps de cloturer la transmission !
         else
             curr_s  = 1;    // on repart sur une sequence new line...

@@ -374,7 +374,7 @@ int main(int argc, char* argv[])
         //
         // On gere le critere d'arret associé aux nombre MAXIMUM de trames à emettre
         //
-        if( nFrames == param.toInt("max_frames") )
+        if( nFrames == (uint32_t)param.toInt("max_frames") )
             isFinished = true;
     }
 
