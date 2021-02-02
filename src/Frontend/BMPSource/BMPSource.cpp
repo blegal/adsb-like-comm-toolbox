@@ -132,7 +132,7 @@ void BMPSource::execute(FECFrame* f)
         f->set_config_u16(     0x0000, 2);
         f->set_config_u16(         frame, 3);
         f->clr_payload();
-        f->data_u32(0, curr_y);
+        f->data_u32(curr_y, 0);
         curr_s = 2;
     }
     else if( curr_s == 2 )  // On envoie l'ensemble des pixels de la ligne (ou mettre la valeur de X ?)

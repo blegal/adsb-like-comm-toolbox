@@ -35,6 +35,8 @@ set(SOURCE_FILES
         src/Frame/MLType/MLType.cpp
         src/Frame/Frame.cpp
         src/Frame/FECFrame.cpp
+        src/Frame/FrameTools.cpp
+
         src/RingBuff/RingBuff.cpp
         src/Tools/Parameters/Parameters.cpp
         src/Tools/CTickCounter/CTickCounter.cpp
@@ -123,6 +125,7 @@ set(SOURCE_FILES
 
         src/Frame/Frame.cpp
         src/Frame/FECFrame.cpp
+        src/Frame/FrameTools.cpp
 
         src/Chains/template/Decoder/Decoder_chain.cpp
         src/Chains/ADBS-like/Decoder/Decoder_ADBS_like_chain.cpp
@@ -188,7 +191,11 @@ project(emitter_adsb)
 set(SOURCE_FILES
         src/Processing/CRC32b/CRC/CRC32b.cpp
         src/Frame/MLType/MLType.cpp
+
         src/Frame/Frame.cpp
+        src/Frame/FECFrame.cpp
+        src/Frame/FrameTools.cpp
+
         src/RingBuff/RingBuff.cpp
         src/Tools/Parameters/Parameters.cpp
         src/Tools/CTickCounter/CTickCounter.cpp
@@ -221,8 +228,11 @@ project(emitter_image)
 set(SOURCE_FILES
         src/Processing/CRC32b/CRC/CRC32b.cpp
         src/Frame/MLType/MLType.cpp
+
         src/Frame/Frame.cpp
         src/Frame/FECFrame.cpp
+        src/Frame/FrameTools.cpp
+
         src/RingBuff/RingBuff.cpp
         src/Tools/Parameters/Parameters.cpp
         src/Tools/CTickCounter/CTickCounter.cpp
@@ -294,6 +304,8 @@ SET(SOURCE_FILES
 
         src/Frame/Frame.cpp
         src/Frame/FECFrame.cpp
+        src/Frame/FrameTools.cpp
+
         src/RingBuff/RingBuff.cpp
         src/Tools/Parameters/Parameters.cpp
         src/Tools/CTickCounter/CTickCounter.cpp
