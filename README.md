@@ -18,7 +18,28 @@ Le décodage des informations savegardées dans le fichier **/tmp/fichier.raw** 
 
 # Installation
 
-Afin de compiler les codes sources permettant de générer et de décoder les signaux, il est nécessaire de posséder une tool-chain (GCC ou CLANG) ainsi que les bibliotheques logicielles permettant d'accéder aux modules SdR.
+Afin de compiler les codes sources permettant de générer et de décoder les signaux, il est nécessaire de posséder une tool-chain (GCC ou CLANG) ainsi que les bibliotheques logicielles permettant d'accéder aux modules SdR (cf les procédures d'installation ci-dessous).
+
+Pour commencer, ouvrez un terminal et rendez vous dans le repertoire ou vous souhaitez installer le projet.
+
+Ensuite clonez le répertoire du projet
+
+git clone https://github.com/blegal/adsb-like-comm-toolbox.git
+
+Ensuite on va créer le répertoire ou les fichiers temporaires de compilation et l'executable vont se trouver:
+
+cd adsb-like-comm-toolbox
+mkdir build
+cd build
+
+On configure le projet (génération des scripts de compilation)
+
+cmake ..
+
+On compile l'ensemble des codes source
+
+make -j 4
+
 
 ## Mac-OS
 
@@ -36,3 +57,6 @@ Af
 
 
 ## Windows (...)
+
+
+
