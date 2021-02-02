@@ -6,7 +6,7 @@ Afin de tester le systeme de communication il est possible d'utiliser un fichier
 
 # Simulation de la transmission / reception d'une image
 
-# Sans code correcteur d'erreurs
+## Sans code correcteur d'erreurs
 
 Dans un premier temps, on ne va pas uiliser de modules USRP. Cela va simplifier la mise en oeuvre du processus et le nombre de flags à fournir à l'outil. On va utiliser un fichier temporaire qui va stocker les données que l'on aurait transmis au module d'émission.
 
@@ -27,7 +27,7 @@ Afin de simuler la reception des données via un module USRP et réalsier le dé
 Apres l'exeution du processus de décodage, une image *.bmp* doit se trouver dans le repertoire courant. Cette deniere est en théorie identique a celle qui a été transmise car dans le cas présent nous n'avons pas subit de perturbation lors du transfert des données.
 
 
-# Avec code correcteur d'erreurs
+## Avec code correcteur d'erreurs
 
 Afin de protéger les données lors d'une transmission réelle, il est possible d'activer un code correcteur d'erreurs. Ce dernier est un code LDPC dont le redement de codage est de 1/2. Il protege les 576 bits a transmettre (valeur par défaut) à l'aide de 576 bits de redondance. Lorsque le recepteur recoit un paquet pour lequel le code CRC n'est pas validé, il déclenche alors l'execution du décodeur afin de corriger les erreurs de transmission. L'utilisation du code LDPC reduit le débit de tranmsission d'un facteur 2 !
 
@@ -46,7 +46,7 @@ Afin de simuler la reception des données via un module USRP et réalsier le dé
 Il est a noter qu'en simulation, l'utilisation d'un code correcteur d'erreurs ne sert à rien car le canal de transmission est parfait ;-)
 
 
-# A récrire lorsque j'aurais le temps...
+## A récrire lorsque j'aurais le temps...
 
 La génération de 16 trames sockées dans un fichier nommé **/tmp/fichier.raw** peut être réalisé à l'aide de la commande ci-dessous:
 
