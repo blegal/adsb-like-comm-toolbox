@@ -9,7 +9,7 @@ Encoder_ADBS_FEC_chain::Encoder_ADBS_FEC_chain(const uint32_t stream_length) :
     vec_ppm ( 2 * ((8 * (stream_length + 4) + 576) + 8) ),
     vec_up  ( 4 * ((8 * (stream_length + 4) + 576) + 8) ),
     vec_iq  ( 8 * ((8 * (stream_length + 4) + 576) + 8) ),
-    enc( "/Users/legal/GitHub/LDPC_decoder_kratos/inter_frame/data/codes/802.16e/r_1_2/k_576/LDPC_k_576_n_1152.generic.enc" ),
+    enc( "../src/Processing/LDPC/Encoder/LDPC_k_576_n_1152.generic.enc" ),
     i_up(2)
 {
 
