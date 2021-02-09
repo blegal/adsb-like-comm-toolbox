@@ -74,6 +74,10 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
         ReceiverFileRAW* r = new ReceiverFileRAW(param.toString("filename"));
         radio = r;
 
+    } else if( type == "file" && (module.find(".cu8") != std::string::npos) ) {
+        ReceiverFileRAW* r = new ReceiverFileRAW(param.toString("filename"), true);
+        radio = r;
+
     } else if( type == "file" && (module.find(".txt") != std::string::npos) ) {
         ReceiverFileUHD* r = new ReceiverFileUHD(param.toString("filename"));
         radio = r;

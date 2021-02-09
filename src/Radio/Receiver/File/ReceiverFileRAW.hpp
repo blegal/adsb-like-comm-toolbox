@@ -7,9 +7,10 @@ class ReceiverFileRAW : public Receiver{
 private :
     std::vector<int8_t> data;
     std::string filename;
+    bool unsigned_mode;
 
 public :
-    ReceiverFileRAW(std::string filen);
+    ReceiverFileRAW(std::string filen, const bool _unsigned_ = false);
 	~ReceiverFileRAW();
 
     void initialize();

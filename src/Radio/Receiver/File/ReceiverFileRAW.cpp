@@ -1,9 +1,9 @@
 #include "ReceiverFileRAW.hpp"
 
-
-ReceiverFileRAW::ReceiverFileRAW(std::string filen) : Receiver(0, 0)
+ReceiverFileRAW::ReceiverFileRAW(std::string filen, const bool _unsigned_) : Receiver(0, 0)
 {
-    filename = filen;
+    filename      = filen;
+    unsigned_mode = _unsigned_;
 }
 
 
@@ -54,10 +54,22 @@ void ReceiverFileRAW::reception(std::vector< std::complex<float> >& cbuffer, con
     }
 
     uint32_t length = data.size();
-    for(uint32_t i = 0; i < length; i += 2)
+    if( unsigned_mode == false )
     {
-        std::complex<float> value( (float)data[i], (float)data[i+1] );
-        cbuffer[i/2] = value;
+        for(uint32_t i = 0; i < length; i += 2)
+        {
+            std::complex<float> value( (float)data[i], (float)data[i+1] );
+            cbuffer[i/2] = value;
+        }
+    }else{
+        const uint8_t* udata = (uint8_t*)data.data();
+        for(uint32_t i = 0; i < length; i += 2)
+        {
+            const int32_t real = ((int32_t)udata[i  ]) - 128;
+            const int32_t imag = ((int32_t)udata[i+1]) - 128;
+            std::complex<float> value( real, imag );
+            cbuffer[i/2] = value;
+        }
     }
     _alive = false; // On stop le prog
 }
