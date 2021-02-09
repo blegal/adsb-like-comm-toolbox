@@ -67,20 +67,16 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
     //
     //
     } else if( type == "file" && (module.find(".raw") != std::string::npos) ) {
-        ReceiverFileRAW* r = new ReceiverFileRAW(param.toString("filename"));
-        radio = r;
+        radio = new ReceiverFileRAW(param.toString("filename"));                    // SIGNED 8b
 
     } else if( type == "file" && (module.find(".cs8") != std::string::npos) ) {
-        ReceiverFileRAW* r = new ReceiverFileRAW(param.toString("filename"));
-        radio = r;
+        radio = new ReceiverFileRAW(param.toString("filename"));                    // SIGNED 8b
 
     } else if( type == "file" && (module.find(".cu8") != std::string::npos) ) {
-        ReceiverFileRAW* r = new ReceiverFileRAW(param.toString("filename"), true);
-        radio = r;
+        radio = new ReceiverFileRAW(param.toString("filename"), true);    // UNSIGNED 8b
 
     } else if( type == "file" && (module.find(".txt") != std::string::npos) ) {
-        ReceiverFileUHD* r = new ReceiverFileUHD(param.toString("filename"));
-        radio = r;
+        radio = new ReceiverFileUHD(param.toString("filename"));
 
     //
     //
