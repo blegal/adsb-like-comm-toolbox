@@ -89,8 +89,9 @@ int main(int argc, char* argv[])
 
     static struct option long_options[] =
             {
-                    {"radio",    required_argument, NULL, 'r'}, // a partir d'un fichier
-                    {"file",     required_argument, NULL, 'f'}, // a partir d'un fichier
+                    {"radio",       required_argument, NULL, 'r'}, // a partir d'un fichier
+                    {"file",        required_argument, NULL, 'f'}, // a partir d'un fichier
+                    {"file-stream", required_argument, NULL, 'F'}, // a partir d'un fichier
 
                     {"fc",       required_argument, NULL, 'c'}, // changer la frequence de la porteuse
                     {"fe",       required_argument, NULL, 'e'}, // changer la frequence echantillonnage
@@ -162,6 +163,11 @@ int main(int argc, char* argv[])
 
             case 'f':
                 param.set("mode_radio",   "file");
+                param.set("filename",   optarg);
+                break;
+
+            case 'F':
+                param.set("mode_radio",   "file-stream");
                 param.set("filename",   optarg);
                 break;
 

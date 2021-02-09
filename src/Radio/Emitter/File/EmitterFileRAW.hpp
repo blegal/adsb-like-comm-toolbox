@@ -9,10 +9,11 @@ private :
     std::string filename;
     FILE* stream;
     bool firstFrame;
+    bool emptySlots;
 
 public :
-    EmitterFileRAW(std::string filen);
-    EmitterFileRAW(Parameters& param);
+    EmitterFileRAW(std::string filen, const bool emptySlots = true);
+    EmitterFileRAW(Parameters& param, const bool emptySlots = true);
 
 	~EmitterFileRAW();
 

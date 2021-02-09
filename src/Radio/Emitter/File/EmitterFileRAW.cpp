@@ -1,19 +1,22 @@
 #include "EmitterFileRAW.hpp"
 
 
-EmitterFileRAW::EmitterFileRAW(std::string filen) : Emitter(0, 0)
+EmitterFileRAW::EmitterFileRAW(std::string filen, const bool emptySlots) : Emitter(0, 0)
 {
     filename   = filen;
     stream     = nullptr;
     firstFrame = true;
+    this->emptySlots = emptySlots;
+
 }
 
 
-EmitterFileRAW::EmitterFileRAW(Parameters& param) : Emitter(0, 0)
+EmitterFileRAW::EmitterFileRAW(Parameters& param, bool emptySlots) : Emitter(0, 0)
 {
     filename   = param.toString("filename");
     stream     = nullptr;
     firstFrame = true;
+    this->emptySlots = emptySlots;
 }
 
 
@@ -50,6 +53,13 @@ void EmitterFileRAW::stop_engine ()
 
 void EmitterFileRAW::close()
 {
+    // On ajoute quelques données dans le fichier
+    int8_t buff[4096];
+    for(uint32_t i = 0; i < 4096; i += 1)
+    buff[i] = (rand()%8) - 4;
+    fwrite(buff, 4096, sizeof(int8_t), stream);
+    // On ajoute quelques données dans le fichier
+
     if (stream == nullptr){
         fprintf(stderr, "ReceiverFileRAW::close() error during file close operation (%s) !\n", filename.c_str());
         exit( -1 );
@@ -64,21 +74,30 @@ void EmitterFileRAW::close()
 
 void EmitterFileRAW::emission( std::vector<int8_t>& cbuffer )
 {
-#ifdef  _STORE_ZERO_
-    const uint32_t length = cbuffer.size() / 2;
-    int8_t* buff = new int8_t[length];
 
-    for(uint32_t i = 0; i < length; i += 1)
-        buff[i] = (rand()%8) - 4;
-    fwrite(buff, length, sizeof(int8_t), stream);
-#endif
+    if( emptySlots == true || (firstFrame == true) )
+    {
+        const uint32_t length = cbuffer.size() / 2;
+        int8_t* buff = new int8_t[length];
+        for(uint32_t i = 0; i < length; i += 1)
+            buff[i] = (rand()%8) - 4;
+        fwrite(buff, length, sizeof(int8_t), stream);
+        delete[]  buff;
+    }
 
     fwrite(cbuffer.data(), cbuffer.size(), sizeof(int8_t), stream);
 
-#ifdef _STORE_ZERO_
-    fwrite(buff, length, sizeof(int8_t), stream);
-    delete[] buff;
-#endif
+    if( emptySlots == true )
+    {
+        const uint32_t length = cbuffer.size() / 2;
+        int8_t* buff = new int8_t[length];
+        for(uint32_t i = 0; i < length; i += 1)
+            buff[i] = (rand()%8) - 4;
+        fwrite(buff, length, sizeof(int8_t), stream);
+        delete[]  buff;
+    }
+
+    firstFrame = false;
 }
 
 void EmitterFileRAW::set_txvga_gain(uint32_t value)
