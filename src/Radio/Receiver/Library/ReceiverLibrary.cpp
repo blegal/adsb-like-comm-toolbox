@@ -2,6 +2,7 @@
 
 #include "../File/ReceiverFileRAW.hpp"
 #include "../File/ReceiverFileUHD.hpp"
+#include "../File/ReceiverFileStreamRAW.hpp"
 
 #include "../Radio/HackRF/ReceiverHackRF.hpp"
 #include "../Radio/SoapyHackRF/ReceiverSoapyHackRF.hpp"
@@ -62,6 +63,9 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
         ReceiverUSRP* r = new ReceiverUSRP(param.toDouble("fc"), param.toDouble("fe"));
         radio = r;
 
+    //
+    //
+    //
     } else if( type == "file" && (module.find(".raw") != std::string::npos) ) {
         ReceiverFileRAW* r = new ReceiverFileRAW(param.toString("filename"));
         radio = r;
@@ -72,6 +76,13 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
 
     } else if( type == "file" && (module.find(".txt") != std::string::npos) ) {
         ReceiverFileUHD* r = new ReceiverFileUHD(param.toString("filename"));
+        radio = r;
+
+    //
+    //
+    //
+    } else if( type == "file-stream" && (module.find(".raw") != std::string::npos) ) {
+        ReceiverFileStreamRAW* r = new ReceiverFileStreamRAW(param.toString("filename"));
         radio = r;
     }
     else

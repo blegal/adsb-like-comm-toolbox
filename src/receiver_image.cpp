@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "bugprone-reserved-identifier"
 #include <iostream>
 
 #include <cmath>
@@ -131,8 +133,9 @@ int main(int argc, char* argv[])
 		{"conv",    required_argument,   NULL, 'c'}, // a partir d'un fichier
 		{"corr",    required_argument,   NULL, 'd'}, // a partir d'un fichier
 
-		{"radio",   required_argument,   NULL, 'r'}, // a partir d'un fichier
-		{"file",    required_argument,   NULL, 'F'}, // a partir d'un fichier
+		{"radio",       required_argument,   NULL, 'r'}, // a partir d'un fichier
+        {"file",        required_argument,   NULL, 'F'}, // a partir d'un fichier
+        {"file-stream", required_argument,   NULL, 'Q'}, // a partir d'un fichier
 
 		{"fc",      required_argument,   NULL, 'f'}, // changer la frequence de la porteuse
         {"fe",      required_argument,   NULL, 'e'}, // changer la frequence echantillonnage
@@ -225,6 +228,11 @@ int main(int argc, char* argv[])
 
             case 'F':
                 param.set("mode_radio", "file");
+                param.set("filename", optarg);
+                break;
+
+            case 'Q':
+                param.set("mode_radio", "file-stream");
                 param.set("filename", optarg);
                 break;
 
@@ -472,8 +480,10 @@ int main(int argc, char* argv[])
         //
         //
         const uint32_t verbose =  param.toInt("verbose");
-        const uint32_t length  = (buffer_abs.size() - 4 * f.frame_bits());
-        for(uint32_t k = 0; k <= length; k += 1)
+//      const uint32_t length  = (buffer_abs.size() - 4 * f.frame_bits());
+        const uint32_t length  = (buffer_abs.size() - coverage);
+        uint32_t lastFrame = 0;
+        for(uint32_t k = 0; k < length; k += 1)
 		{
 
             //
@@ -507,13 +517,14 @@ int main(int argc, char* argv[])
 
                 if( (ok == true && verbose >= 2) || (ok == false && verbose >= 1) )
                 {
-                    printf("%6d : ", k);
+                    printf("%6d [%4d] : ", k, k - lastFrame);
                     printf("%1.3f : ", s);
                     if( ok )
                          { green(); printf("[CRC OK] "); black(); }
                     else { red();   printf("[CRC KO] "); black(); }
                     F.dump();
                 }
+                lastFrame = k;
 
                 if( ok == true )
                 {
@@ -605,3 +616,5 @@ printf("%s", KNRM);
 
 	return 0;
 }
+
+#pragma clang diagnostic pop

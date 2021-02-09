@@ -1,12 +1,12 @@
-#ifndef _ReceiverFileRAW_
-#define _ReceiverFileRAW_
+#ifndef _ReceiverFileStreamRAW_
+#define _ReceiverFileStreamRAW_
 
 #include "../Receiver.hpp"
 
 class ReceiverFileStreamRAW : public Receiver{
-private :
-    std::vector<int8_t> data;
-    std::string filename;
+private:
+    vector<uint8_t> buffer;
+    FILE* stream;
 
 public :
     ReceiverFileStreamRAW(std::string filen);

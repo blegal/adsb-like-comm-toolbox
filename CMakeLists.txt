@@ -59,6 +59,7 @@ set(SOURCE_FILES
         src/Radio/Receiver/Radio/USRP/ReceiverUSRP.cpp
 
         src/Radio/Receiver/File/ReceiverFileRAW.cpp
+        src/Radio/Receiver/File/ReceiverFileStreamRAW.cpp
         src/Radio/Receiver/File/ReceiverFileUHD.cpp
         src/Radio/Receiver/Library/ReceiverLibrary.cpp
 
@@ -88,6 +89,7 @@ project(receiver_image)
 set(SOURCE_FILES
         src/Radio/Receiver/Receiver.cpp
         src/Radio/Receiver/File/ReceiverFileRAW.cpp
+        src/Radio/Receiver/File/ReceiverFileStreamRAW.cpp
         src/Radio/Receiver/File/ReceiverFileUHD.cpp
         src/Radio/Receiver/Radio/SoapyRTLSdr/ReceiverSoapyRTLSdr.cpp
         src/Radio/Receiver/Radio/SoapyHackRF/ReceiverSoapyHackRF.cpp

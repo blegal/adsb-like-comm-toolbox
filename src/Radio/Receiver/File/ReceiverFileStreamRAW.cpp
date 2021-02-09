@@ -3,65 +3,91 @@
 
 ReceiverFileStreamRAW::ReceiverFileStreamRAW(std::string filen) : Receiver(0, 0)
 {
-    filename = filen;
+    stream = fopen(filen.c_str(), "rb");
+    if (stream == NULL){
+        fprintf(stderr, "ReceiverFileStreamRAW::initialize() error during file openning (%s) !\n", filen.c_str());
+        exit( EXIT_FAILURE );
+    }
 }
 
 
 ReceiverFileStreamRAW::~ReceiverFileStreamRAW()
 {
-
+    fclose(stream);
 }
 
 
 void ReceiverFileStreamRAW::initialize()
 {
-    auto start   = chrono::high_resolution_clock::now();
 
-    FILE* stream = fopen(filename.c_str(), "rb");
-
-    if (stream == NULL){
-        fprintf(stderr, "ReceiverFileStreamRAW::initialize() error during file openning (%s) !\n", filename.c_str());
-        exit( -1 );
-    }
-
-    fseek(stream, 0L, SEEK_END);        // On se place a la fin du fichier
-    uint32_t fileSize = ftell(stream);  // On recupere la position actuelle
-    fseek(stream, 0L, SEEK_SET);        // On se repositionne au debut du fichier
-
-    data.resize( fileSize );
-    fread(data.data(), 1, fileSize, stream);
-
-
-    auto stop  = chrono::high_resolution_clock::now();
-    auto timer = chrono::duration_cast<chrono::milliseconds>(stop - start).count();
-    std::cout << "(II) Time required to load the " << (fileSize/1024) << " kB is equal to " << timer << " ms" << std::endl;
-
-    fclose(stream);
 }
 
 
 void ReceiverFileStreamRAW::reception(std::vector< std::complex<float> >& cbuffer, const uint32_t coverage)
 {
+    printf("ReceiverFileStreamRAW::reception() : cbuffer.size() = %lu | coverage = %u\n", cbuffer.size(), coverage);
 
-    if( cbuffer.size() != (data.size()/2) ) // Nombre de symbols et non d'echantillons
+    const uint32_t bComplex = cbuffer.size();
+    const uint32_t nComplex = bComplex - coverage;
+    const uint32_t nBytes   = 2 * nComplex;
+
+    //
+    // On commence par realiser l'overlap entre les fenetres
+    //
+    const uint32_t nOffset  = cbuffer.size() - coverage;
+    for(uint32_t i = 0; i < coverage; i += 1)
     {
-        cbuffer.resize(data.size()/2);
+        cbuffer[i] = cbuffer[nOffset + i];
+    }
+    for(uint32_t i = coverage; i < bComplex; i += 1)
+    {
+        cbuffer[i] = 0;
     }
 
-    uint32_t length = data.size();
-    for(uint32_t i = 0; i < length; i += 2)
+    //
+    // On redimentionne le buffer interne à la taille du buffer que l'on doit fournir
+    //
+    if( buffer.size() != nBytes )
+    {
+        buffer.resize( nBytes ); // 2 fois plus d'échantillons car I/Q
+    }
+
+    //
+    //
+    //
+    memset(buffer.data(), 1, nBytes);
+    uint32_t nRead = fread(buffer.data(), 1, nBytes, stream);
+
+    _alive = (nRead == nBytes);
+
+    const uint8_t* data = buffer.data();
+#if 1
+    for(uint32_t i = 0; i < nBytes; i += 2)
     {
         std::complex<float> value( (float)data[i], (float)data[i+1] );
-        cbuffer[i/2] = value;
+        cbuffer[coverage + i/2] = value;
     }
-    _alive = false; // On stop le prog
+#else
+    for(uint32_t i = 0; i < nRead; i += 2)
+    {
+        std::complex<float> value( (float)data[i], (float)data[i+1] );
+        cbuffer[coverage + i/2] = value;
+    }
+
+    std::complex<float> cstv( 1, 1 );
+    for(uint32_t i = coverage+(nRead/2); i < bComplex; i += 1)
+    {
+        cbuffer[coverage + i/2] = cstv;
+    }
+#endif
+    printf("ReceiverFileStreamRAW::reception() : nRead  = %u\n", nRead);
 }
 
 
 void ReceiverFileStreamRAW::reset()
 {
     fprintf(stderr, "RadioFichier::reset() not implemented yet !\n");
-    exit( -1 );
+    exit( EXIT_FAILURE );
 }
 
 
