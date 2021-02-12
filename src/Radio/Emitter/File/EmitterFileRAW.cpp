@@ -77,7 +77,7 @@ void EmitterFileRAW::emission( std::vector<int8_t>& cbuffer )
 
     if( emptySlots == true || (firstFrame == true) )
     {
-        const uint32_t length = cbuffer.size() / 2;
+        const uint32_t length = cbuffer.size() / 32;
         int8_t* buff = new int8_t[length];
         for(uint32_t i = 0; i < length; i += 1)
             buff[i] = (rand()%8) - 4;
@@ -89,7 +89,7 @@ void EmitterFileRAW::emission( std::vector<int8_t>& cbuffer )
 
     if( emptySlots == true )
     {
-        const uint32_t length = cbuffer.size() / 2;
+        const uint32_t length = cbuffer.size() / 32;
         int8_t* buff = new int8_t[length];
         for(uint32_t i = 0; i < length; i += 1)
             buff[i] = (rand()%8) - 4;
@@ -108,7 +108,7 @@ void EmitterFileRAW::set_txvga_gain(uint32_t value)
 
 void EmitterFileRAW::reset()
 {
-    fprintf(stderr, "ReceiverFileRAW::reset() not implemented yet !\n");
+    fprintf(stderr, "(EE) ReceiverFileRAW::reset() not implemented yet !\n");
     exit( -1 );
 }
 
