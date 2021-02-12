@@ -11,3 +11,5 @@ tty-histo/.idea/*
 images/*
 src/systemc/bin/main
 src/systemc/received_image.bmp
+
+src/systemc/bin/received_image.bmp
