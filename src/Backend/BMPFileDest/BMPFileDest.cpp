@@ -37,8 +37,8 @@ void BMPFileDest::execute(Frame* f)
 #define FRAME_INFOS         0x11 // 1111 0000
 #define FRAME_NEW_IMAGE     0x22 // 0000 1111
 #define FRAME_END_IMAGE     0x33 // 1100 1100
-#define FRAME_NEW_LINE      0x44 // 0011 0011
-#define FRAME_END_LINE      0x55 // 1010 1010
+// #define FRAME_NEW_LINE      0x44 // 0011 0011
+// #define FRAME_END_LINE      0x55 // 1010 1010
 #define FRAME_EMPTY         0x66 // 1001 1001
 
 void BMPFileDest::execute(FECFrame* f)
@@ -55,8 +55,8 @@ void BMPFileDest::execute(FECFrame* f)
     if(     (frame_type != FRAME_INFOS    ) &&
             (frame_type != FRAME_NEW_IMAGE) &&
             (frame_type != FRAME_END_IMAGE) &&
-            (frame_type != FRAME_NEW_LINE ) &&
-            (frame_type != FRAME_END_LINE ) &&
+            // (frame_type != FRAME_NEW_LINE ) &&
+            // (frame_type != FRAME_END_LINE ) &&
             (frame_type != FRAME_EMPTY    )
             ){
         red();
@@ -125,14 +125,14 @@ void BMPFileDest::execute(FECFrame* f)
         bmp = nullptr;
         lastFid = -1;
     }
-    else if(frame_type == FRAME_NEW_LINE)
-    {
-
-    }
-    else if(frame_type == FRAME_END_LINE)
-    {
-
-    }
+    // else if(frame_type == FRAME_NEW_LINE)
+    // {
+    //
+    // }
+    // else if(frame_type == FRAME_END_LINE)
+    // {
+    //
+    // }
     else if(frame_type == FRAME_INFOS)
     {
         uint8_t* ptr = bmp->data.data() + coord_y * BytesPerLine + (coord_x * nBytesPerPixel);
