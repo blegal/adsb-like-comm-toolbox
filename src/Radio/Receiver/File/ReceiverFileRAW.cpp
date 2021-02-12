@@ -21,7 +21,7 @@ void ReceiverFileRAW::initialize()
 
     if (stream == NULL){
         fprintf(stderr, "ReceiverFileRAW::initialize() error during file openning (%s) !\n", filename.c_str());
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     fseek(stream, 0L, SEEK_END);        // On se place a la fin du fichier
@@ -78,7 +78,7 @@ void ReceiverFileRAW::reception(std::vector< std::complex<float> >& cbuffer, con
 void ReceiverFileRAW::reset()
 {
     fprintf(stderr, "RadioFichier::reset() not implemented yet !\n");
-    exit( -1 );
+    exit( EXIT_FAILURE );
 }
 
 

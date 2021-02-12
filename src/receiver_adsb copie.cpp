@@ -38,7 +38,7 @@ bool isFinished = false;
 void my_ctrl_c_handler(int s){
     if( isFinished == true )
     {
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
     isFinished = true;
 }
@@ -229,7 +229,7 @@ int main(int argc, char* argv[])
                 param.set("ps_min",   std::stof(optarg));
                 if ( (param.toFloat("ps_min") > 1.0f) || (param.toFloat("ps_min") < 0.0f)) {
                     printf("erreur : --produit_scalaire (ps_min) doit etre compris entre 0 et 1\n");
-                    exit( -1 );
+                    exit( EXIT_FAILURE );
                 }
                 break;
 
@@ -284,7 +284,7 @@ int main(int argc, char* argv[])
         while (optind < argc)
             printf ("%s ", argv[optind++]);
         printf ("\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
     printf("%s",KNRM);
     cout << endl;

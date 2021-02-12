@@ -96,7 +96,7 @@ void Frame::set_payload(const std::vector<uint8_t>& v)
     if( v.size() != payload_v.size() )
     {
         std::cout << "Error in Frame::set_payload(v.size() = " << v.size() << ")" << std::endl;
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     const uint32_t ll = v.size();
@@ -113,7 +113,7 @@ void Frame::get_payload(std::vector<uint8_t>& v)
     if( v.size() != payload_v.size() )
     {
         std::cout << "Error in Frame::get_payload(v.size() = " << v.size() << ")" << std::endl;
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     const uint32_t ll = payload_v.size();
@@ -139,7 +139,7 @@ void Frame::get_frame_bits(std::vector<uint8_t>& buff)
     {
         std::cout << "Error in Frame::get_frame_bits, the number of received bits ( buff.size() = " << buff.size() << ")" << endl;
         std::cout << "      is not adapted to the Frame object." << std::endl;
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     uint8_t* ptr = buff.data();
@@ -205,7 +205,7 @@ bool Frame::fill_frame_bits(const std::vector<uint8_t>& in_buff)
     {
         std::cout << "Error in Frame::fill_frame_bits, the number of received bits ( buff.size() = " << in_buff.size() << ")" << endl;
         std::cout << "      is not adapted to the Frame object." << std::endl;
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     const uint8_t* ptr_in = in_buff.data();

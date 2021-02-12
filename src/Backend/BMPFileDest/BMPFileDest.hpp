@@ -32,7 +32,7 @@ public :
 
 	~BMPFileDest();
 
-    void execute(Frame*    f);
+//    void execute(Frame*    f);
     void execute(FECFrame* f);
 };
 

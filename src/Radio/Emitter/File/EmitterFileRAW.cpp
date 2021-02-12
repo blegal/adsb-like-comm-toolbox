@@ -34,7 +34,7 @@ void EmitterFileRAW::initialize()
 
     if (stream == nullptr){
         fprintf(stderr, "ReceiverFileRAW::initialize() error during file openning (%s) !\n", filename.c_str());
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -62,7 +62,7 @@ void EmitterFileRAW::close()
 
     if (stream == nullptr){
         fprintf(stderr, "ReceiverFileRAW::close() error during file close operation (%s) !\n", filename.c_str());
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
     if (stream != nullptr){
         fclose( stream );
@@ -109,7 +109,7 @@ void EmitterFileRAW::set_txvga_gain(uint32_t value)
 void EmitterFileRAW::reset()
 {
     fprintf(stderr, "(EE) ReceiverFileRAW::reset() not implemented yet !\n");
-    exit( -1 );
+    exit( EXIT_FAILURE );
 }
 
 

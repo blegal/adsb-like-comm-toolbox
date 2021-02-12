@@ -28,7 +28,7 @@ void ReceiverFileUHD::initialize()
     float vmax = -10000000;
     if (stream == NULL){
         fprintf(stderr, "RadioFichier::initialize() error during file openning (%s) !\n", filename.c_str());
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
     char line       [256];
     char* buffer_real;
@@ -85,7 +85,7 @@ void ReceiverFileUHD::reception(std::vector< std::complex<float> >& cbuffer, con
 void ReceiverFileUHD::reset()
 {
     fprintf(stderr, "RadioFichier::reset() not implemented yet !\n");
-    exit( -1 );
+    exit( EXIT_FAILURE );
 }
 
 

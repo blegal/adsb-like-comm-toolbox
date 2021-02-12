@@ -22,7 +22,6 @@ public :
 
 	~BinaryFileDest();
 
-    void execute(Frame*    f);
     void execute(FECFrame* f);
 };
 

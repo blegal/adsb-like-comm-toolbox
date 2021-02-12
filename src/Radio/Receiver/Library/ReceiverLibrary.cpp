@@ -90,7 +90,7 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
         cout << "Error in file (" << __FILE__ << ")" << " at line (" << __LINE__ << ")" << endl;
         cout << "mode_radio = " << type << endl;
         cout << "filename   = " << param.toString("filename")      << endl;
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
     return radio;
 }

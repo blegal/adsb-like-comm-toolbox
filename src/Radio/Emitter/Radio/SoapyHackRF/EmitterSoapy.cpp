@@ -179,7 +179,7 @@ void EmitterSoapy::reception( std::vector< std::complex<float> >& cbuffer)
     do{
         void *buffs[]  = {buff + nb_read};
         uint32_t nRead = sdr->readStream( tx_stream, buffs, to_read - nb_read, flags, time_ns, 1000000);
-        if( nRead < 0 ) exit( -1 );
+        if( nRead < 0 ) exit( EXIT_FAILURE );
         nb_read       += nRead;
         if( nb_read != to_read ){
             usleep( 500 );
@@ -231,5 +231,5 @@ void EmitterUSRP::emission(std::vector<int8_t>& cbuffer )
 void EmitterSoapy::reset()
 {
     fprintf(stderr, "EmitterSoapy::reset() not implemented yet !\n");
-    exit( -1 );
+    exit( EXIT_FAILURE );
 }

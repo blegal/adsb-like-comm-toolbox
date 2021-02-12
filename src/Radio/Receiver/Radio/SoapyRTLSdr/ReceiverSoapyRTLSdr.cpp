@@ -6,13 +6,13 @@ ReceiverSoapyRTLSdr::ReceiverSoapyRTLSdr(const float s_fc, const float s_fe) : R
     if( s_fc < 24000000 )
     {
         printf("[SoapyRTLSdr] The working frequency value is too small (%f < 24000000)\n", s_fc);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     if( s_fc > 1764000000 )
     {
         printf("[SoapyRTLSdr] The working frequency value is too high (%f > 1764000000)\n", s_fc);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 #if 0
     SoapySDR::KwargsList results = SoapySDR::Device::enumerate();
@@ -20,7 +20,7 @@ ReceiverSoapyRTLSdr::ReceiverSoapyRTLSdr(const float s_fc, const float s_fe) : R
     if( results.size() == 0 )
     {
         printf("[SoapyRTLSdr] No device was detected by SoapySDR::Device::enumerate() call\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     int idex = 256;
@@ -40,7 +40,7 @@ ReceiverSoapyRTLSdr::ReceiverSoapyRTLSdr(const float s_fc, const float s_fe) : R
     if( idex == 256 )
     {
         printf("[SoapyRTLSdr] No RTL-SdR device located on host...\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 #endif
     //
@@ -178,7 +178,7 @@ void ReceiverSoapyRTLSdr::reception( std::vector< std::complex<float> >& cbuffer
     do{
         void *buffs[]  = {buff + nb_read};
         uint32_t nRead = sdr->readStream( rx_stream, buffs, to_read - nb_read, flags, time_ns, 1000000);
-        if( nRead < 0 ) exit( -1 );
+        if( nRead < 0 ) exit( EXIT_FAILURE );
         nb_read       += nRead;
         if( nb_read != to_read ){
             usleep( 500 );
@@ -201,5 +201,5 @@ void ReceiverSoapyRTLSdr::reception( std::vector< std::complex<float> >& cbuffer
 void ReceiverSoapyRTLSdr::reset()
 {
     fprintf(stderr, "ReceiverSoapyRTLSdr::reset() not implemented yet !\n");
-    exit( -1 );
+    exit( EXIT_FAILURE );
 }

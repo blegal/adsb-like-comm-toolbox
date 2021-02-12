@@ -29,7 +29,7 @@ private:
 		if( f == NULL )
         {
           cout << "(EE) Error opening the input file (/tmp/reception.raw)" << endl;
-		    	exit( -1 );
+            exit( EXIT_FAILURE );
         }
 
 		while( feof(f) == 0 )

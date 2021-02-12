@@ -57,7 +57,7 @@ void Detector_AVX2::execute(float *buffer){
 
 #else
 	cout << "AVX2 decoding is not available on this platform..." << endl;
-	exit( -1 );
+    exit( EXIT_FAILURE );
 #endif
 }
 
@@ -122,6 +122,6 @@ void Detector_AVX2::execute(std::vector<float>* iBuffer, std::vector<float>* oBu
     }
 #else
     cout << "AVX2 decoding is not available on this platform..." << endl;
-	exit( -1 );
+    exit( EXIT_FAILURE );
 #endif
 }
