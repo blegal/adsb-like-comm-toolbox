@@ -11,8 +11,8 @@
 #define str_FRAME_INFOS         "FRAME_INFOS   "
 #define str_FRAME_NEW_IMAGE     "FRAME_NEW_IMG "
 #define str_FRAME_END_IMAGE     "FRAME_END_IMG "
-#define str_FRAME_NEW_LINE      "FRAME_NEW_LINE"
-#define str_FRAME_END_LINE      "FRAME_END_LINE"
+// #define str_FRAME_NEW_LINE      "FRAME_NEW_LINE"
+// #define str_FRAME_END_LINE      "FRAME_END_LINE"
 #define str_FRAME_EMPTY         "FRAME_EMPTY   "
 
 #endif

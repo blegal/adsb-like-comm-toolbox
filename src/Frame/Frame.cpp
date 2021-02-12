@@ -16,7 +16,7 @@ Frame::Frame(const uint32_t n, const uint8_t type)    // payload size in bytes
 
     //
     // On alloue l'espace memoire associé aux données + 24b CRC
-    //    
+    //
     config_v.resize   (2); // in bytes
     set_type   ( type );
     set_special( 0x00 );
@@ -309,8 +309,8 @@ void Frame::dump_frame()
         case FRAME_INFOS     : printf(str_FRAME_INFOS     ); break;
         case FRAME_NEW_IMAGE : printf(str_FRAME_NEW_IMAGE ); break;
         case FRAME_END_IMAGE : printf(str_FRAME_END_IMAGE ); break;
-        case FRAME_NEW_LINE  : printf(str_FRAME_NEW_LINE  ); break;
-        case FRAME_END_LINE  : printf(str_FRAME_END_LINE  ); break;
+        // case FRAME_NEW_LINE  : printf(str_FRAME_NEW_LINE  ); break;
+        // case FRAME_END_LINE  : printf(str_FRAME_END_LINE  ); break;
         case FRAME_EMPTY     : printf(str_FRAME_EMPTY     ); break;
         default              : printf("FRAME_UNKNOWN "    ); break;
     }
@@ -372,8 +372,8 @@ std::string Frame::to_string()
         case FRAME_INFOS     : outp += str_FRAME_INFOS;     break;
         case FRAME_NEW_IMAGE : outp += str_FRAME_NEW_IMAGE; break;
         case FRAME_END_IMAGE : outp += str_FRAME_END_IMAGE; break;
-        case FRAME_NEW_LINE  : outp += str_FRAME_NEW_LINE;  break;
-        case FRAME_END_LINE  : outp += str_FRAME_END_LINE;  break;
+        // case FRAME_NEW_LINE  : outp += str_FRAME_NEW_LINE;  break;
+        // case FRAME_END_LINE  : outp += str_FRAME_END_LINE;  break;
         case FRAME_EMPTY     : outp += str_FRAME_EMPTY;     break;
         default              : outp += "FRAME_UNKNOWN ";    break;
     }

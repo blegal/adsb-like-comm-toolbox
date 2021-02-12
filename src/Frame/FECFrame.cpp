@@ -239,8 +239,8 @@ void _dump_config( const uint16_t* ptr_16 )
         case FRAME_INFOS     : printf(str_FRAME_INFOS     ); break;
         case FRAME_NEW_IMAGE : printf(str_FRAME_NEW_IMAGE ); break;
         case FRAME_END_IMAGE : printf(str_FRAME_END_IMAGE ); break;
-        case FRAME_NEW_LINE  : printf(str_FRAME_NEW_LINE  ); break;
-        case FRAME_END_LINE  : printf(str_FRAME_END_LINE  ); break;
+        // case FRAME_NEW_LINE  : printf(str_FRAME_NEW_LINE  ); break;
+        // case FRAME_END_LINE  : printf(str_FRAME_END_LINE  ); break;
         case FRAME_EMPTY     : printf(str_FRAME_EMPTY     ); break;
         default              : printf("UNK. (0x%4.4X) ", type ); break;
     }
@@ -285,8 +285,8 @@ std::string FECFrame::to_string()
         case FRAME_INFOS     : outp += str_FRAME_INFOS;     break;
         case FRAME_NEW_IMAGE : outp += str_FRAME_NEW_IMAGE; break;
         case FRAME_END_IMAGE : outp += str_FRAME_END_IMAGE; break;
-        case FRAME_NEW_LINE  : outp += str_FRAME_NEW_LINE;  break;
-        case FRAME_END_LINE  : outp += str_FRAME_END_LINE;  break;
+        // case FRAME_NEW_LINE  : outp += str_FRAME_NEW_LINE;  break;
+        // case FRAME_END_LINE  : outp += str_FRAME_END_LINE;  break;
         case FRAME_EMPTY     : outp += str_FRAME_EMPTY;     break;
         default              : outp += "FRAME_UNKNOWN ";    break;
 //        default              : outp += "UNKNOWN TYPE" + int_to_hex<uint16_t>( get_config_u16(0) );    break;

@@ -8,8 +8,8 @@ void dump_config( const uint16_t* ptr_16 )
         case FRAME_INFOS     : printf(str_FRAME_INFOS     ); break;
         case FRAME_NEW_IMAGE : printf(str_FRAME_NEW_IMAGE ); break;
         case FRAME_END_IMAGE : printf(str_FRAME_END_IMAGE ); break;
-        case FRAME_NEW_LINE  : printf(str_FRAME_NEW_LINE  ); break;
-        case FRAME_END_LINE  : printf(str_FRAME_END_LINE  ); break;
+        // case FRAME_NEW_LINE  : printf(str_FRAME_NEW_LINE  ); break;
+        // case FRAME_END_LINE  : printf(str_FRAME_END_LINE  ); break;
         case FRAME_EMPTY     : printf(str_FRAME_EMPTY     ); break;
         default              : printf("FRAME_UNKNOWN "    ); break;
     }
