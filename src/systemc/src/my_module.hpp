@@ -35,11 +35,12 @@ public:
         byt2crc("byt2crc"),
         crc2fra("crc2fra")
 	{
-        mod.clock( clock );
+       // cout<<"Modcompute starting "<<endl;
+	    mod.clock( clock );
         mod.reset( reset );
         mod.e( e );
         mod.s(mod2det );
-
+       // cout<<"Modcompute ending "<<endl;
         det.clock( clock );
         det.reset( reset );
         det.e(mod2det);

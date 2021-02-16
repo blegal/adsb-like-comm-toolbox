@@ -29,12 +29,12 @@ private:
 	void do_gen( )
 	{
 		cout << "(II) CRCCheck :: START" << endl;
-        sc_uint<8> ibuffer[_BYTE_TYPE_ + _BYTE_LENGTH_ + _BYTE_PAYLOAD_];
+        sc_uint<8> ibuffer[_BYTE_HEADER_ + _BYTE_PAYLOAD_];
         const uint32_t P = 0x82f63b78;
         while( true )
         {
             uint32_t R = 0;
-            for (uint32_t i = 0; i < _BYTE_TYPE_ + _BYTE_LENGTH_ + _BYTE_PAYLOAD_; i += 1)
+            for (uint32_t i = 0; i < _BYTE_HEADER_ + _BYTE_PAYLOAD_; i += 1)
             {
 #pragma HLS PIPELINE
                 uint8_t v   = e.read();
@@ -61,7 +61,7 @@ private:
 #if 0
                 printf("(DD) CRC validé...\n");
 #endif
-                for (uint32_t i = 0; i < _BYTE_TYPE_ + _BYTE_LENGTH_ + _BYTE_PAYLOAD_; ++i) {
+                for (uint32_t i = 0; i < _BYTE_HEADER_ + _BYTE_PAYLOAD_; ++i) {
 #pragma HLS PIPELINE
                     s.write( ibuffer[i] );
                 }
@@ -70,7 +70,7 @@ private:
 #if 0
                 printf("0x%2.2X | ",   ibuffer[0].to_uint());
                 printf("0x%2.2X | 0x", ibuffer[1].to_uint());
-                for (uint32_t i = _BYTE_TYPE_ + _BYTE_LENGTH_; i < _BYTE_TYPE_ + _BYTE_LENGTH_ + _BYTE_PAYLOAD_; ++i)
+                for (uint32_t i = _BYTE_HEADER_; i < _BYTE_HEADER_ + _BYTE_PAYLOAD_; ++i)
                     printf("%2.2X", ibuffer[i].to_uint());
                 printf(" | 0x%2.2X%2.2X%2.2X%2.2X ", crc_t[0], crc_t[1], crc_t[2], crc_t[3]);
                 printf("| 0x%8.8X | 0x%8.8X\n", crc, R);
