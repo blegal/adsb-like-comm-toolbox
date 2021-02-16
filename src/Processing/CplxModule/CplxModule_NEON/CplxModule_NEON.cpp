@@ -46,6 +46,6 @@ void CplxModule_NEON::execute(std::vector< std::complex<float> >* buffer_in, std
     }
 
 #else
-    exit( -1 );
+    exit( EXIT_FAILURE );
 #endif
 }

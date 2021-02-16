@@ -69,7 +69,7 @@ void EmitterHackRF::initialize()
     result = hackrf_init();
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_init() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     for(uint32_t n = 0; n < modules.size(); n += 1)
@@ -80,14 +80,14 @@ void EmitterHackRF::initialize()
 
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_open() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     fprintf(stderr, "call hackrf_set_hw_sync_mode(%d)\n", 0);
     result = hackrf_set_hw_sync_mode(device, 0 ? HW_SYNC_MODE_ON : HW_SYNC_MODE_OFF);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_hw_sync_mode() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     set_freq          ( freq_hz );
@@ -105,7 +105,7 @@ void EmitterHackRF::set_freq(double value)
     int32_t result = hackrf_set_freq(device, freq_hz);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_freq() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -123,7 +123,7 @@ void EmitterHackRF::set_sample_rate(double value)
     int32_t result = hackrf_set_sample_rate(device, fech_hz);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_sample_rate() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }    
 }
 
@@ -142,7 +142,7 @@ void EmitterHackRF::set_amp_enable(bool value)
     int32_t result = hackrf_set_amp_enable(device, (uint8_t)control);   // doit etre 14, 0 sinon...
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_amp_enable() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -160,7 +160,7 @@ void EmitterHackRF::set_antenna_enable(bool value)
     int32_t result = hackrf_set_antenna_enable(device, (uint8_t)antenna);
     if (result != HACKRF_SUCCESS) {
         fprintf(stderr, "hackrf_set_antenna_enable() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -197,7 +197,7 @@ void EmitterHackRF::set_txvga_gain(uint32_t value)
     int32_t result  = hackrf_set_txvga_gain(device, txvga_gain);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_txvga_gain() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -216,7 +216,7 @@ void EmitterHackRF::start_engine( )
     const int result = hackrf_start_tx(device, tx_callback, (void *)this);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_start_rx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -233,7 +233,7 @@ void EmitterHackRF::stop_engine( )
     if( result != HACKRF_SUCCESS )
     {
         fprintf(stderr, "hackrf_stop_tx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -243,7 +243,7 @@ void EmitterHackRF::emission(std::vector<int8_t>& cbuffer )
     if( hackrf_is_streaming(device) != HACKRF_TRUE )
     {
         printf("(EE) The hackrf device is currently stopped, it is impossible to transfer data...\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     const uint32_t byte_to_send = cbuffer.size();
@@ -256,7 +256,7 @@ void EmitterHackRF::emission(std::vector<int8_t>& cbuffer )
     if( nWrite != byte_to_send )
     {
         printf("(EE) We got an issue when the data set was loaded in the buffer...\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     while( buff.NumFreeElements() < byte_to_send )
@@ -269,7 +269,7 @@ void EmitterHackRF::emission(std::vector<int8_t>& cbuffer )
     if( nWritE != byte_to_send )
     {
         printf("(EE) We got an issue when the data set was loaded in the buffer...\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -283,5 +283,5 @@ void EmitterHackRF::close()
 void EmitterHackRF::reset()
 {
     fprintf(stderr, "Emitter::reset() not implemented yet !\n");
-    exit( -1 );
+    exit( EXIT_FAILURE );
 }

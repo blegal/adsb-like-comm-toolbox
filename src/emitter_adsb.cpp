@@ -37,7 +37,7 @@ bool isFinished = false;
 void my_ctrl_c_handler(int s){
     if( isFinished == true )
     {
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
     isFinished = true;
 }

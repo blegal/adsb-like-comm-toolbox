@@ -13,53 +13,6 @@ BinaryFileDest::~BinaryFileDest()
 }
 
 
-void BinaryFileDest::execute(Frame* f)
-{
-    // Début de la gestion et generation des images
-    if(f->get_type() == FRAME_NEW_IMAGE)
-    {
-        if( file != nullptr )
-        {
-            printf("(EE) A new BMP image should be allocated whereas a picture already exist.\n");
-            exit( -1 );
-        }
-
-        file = fopen( filename.c_str(), "wb" );
-
-        printf("(DD) Ouverture du fichier (%s)\n", filename.c_str());
-
-    }
-    else if(f->get_type() == FRAME_END_IMAGE)
-    {
-        if( file == nullptr )
-        {
-            printf("(EE) A new BMP image should be allocated whereas a picture already exist.\n");
-            exit( -1 );
-        }
-
-        fclose( file );
-        file = nullptr;
-        printf("(DD) Fermeture du fichier (%s)\n", filename.c_str());
-    }
-    else if(f->get_type() == FRAME_INFOS)
-    {
-        if( file == nullptr )
-        {
-            printf("(EE) A new BMP image should be allocated whereas a picture already exist.\n");
-            exit( -1 );
-        }
-
-        fwrite( f->payload_to_emit(), sizeof(uint8_t), f->payload_size(), file);
-    }
-    else
-    {
-        printf("(EE) Something strange happen...\n");
-        printf("(EE) %s :: %d\n", __FILE__, __LINE__);
-        exit( -1 );
-    }
-}
-
-
 void BinaryFileDest::execute(FECFrame* f)
 {
     // Début de la gestion et generation des images
@@ -68,41 +21,41 @@ void BinaryFileDest::execute(FECFrame* f)
     {
         if( file != nullptr )
         {
-            printf("(EE) A new BMP image should be allocated whereas a picture already exist.\n");
-            exit( -1 );
+            printf("(EE) A new BinaryFile should be open but a BinaryFile already exist...\n");
+            exit( EXIT_FAILURE );
         }
 
         file = fopen( filename.c_str(), "wb" );
 
-        printf("(DD) Ouverture du fichier (%s)\n", filename.c_str());
+        printf("(II) Ouverture du fichier (%s)\n", filename.c_str());
 
     }
     else if(frame_type == FRAME_END_IMAGE)
     {
         if( file == nullptr )
         {
-            printf("(EE) A new BMP image should be allocated whereas a picture already exist.\n");
-            exit( -1 );
+            printf("(EE) A BinaryFile should be closed but no one is opened ?!\n");
+            exit( EXIT_FAILURE );
         }
 
         fclose( file );
         file = nullptr;
-        printf("(DD) Fermeture du fichier (%s)\n", filename.c_str());
+        printf("(II) Fermeture du fichier (%s)\n", filename.c_str());
     }
     else if(frame_type == FRAME_INFOS)
     {
         if( file == nullptr )
         {
-            printf("(EE) A new BMP image should be allocated whereas a picture already exist.\n");
-            exit( -1 );
+            printf("(EE) Some information should be write but no BinaryFile is opened.\n");
+            exit( EXIT_FAILURE );
         }
-
-        fwrite( (void*)f->get_ptr_payload(), sizeof(uint8_t), f->size_payload(), file);
+        const uint32_t nbytes     = f->get_config_u16(1);
+        fwrite( (void*)f->data().data(), sizeof(uint8_t), nbytes, file);
     }
     else
     {
         printf("(EE) Something strange happen...\n");
         printf("(EE) %s :: %d\n", __FILE__, __LINE__);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }

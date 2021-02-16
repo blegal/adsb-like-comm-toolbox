@@ -29,7 +29,7 @@ CplxModule* CplxModuleLibrary::allocate(Parameters& param)
     {
         std::cout << "(EE) Le type de module de CplxModule demandé n'est actuellement pas dispnible :" << std::endl;
         std::cout << "(EE) type = " << param.toString("mode_conv")                                     << std::endl;
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
     return conv;
 }

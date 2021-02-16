@@ -32,7 +32,7 @@ ReceiverHackRF::ReceiverHackRF(float s_fc, float s_fe) : Receiver(s_fc, s_fe), b
     result = hackrf_init();
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_init() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     for(uint32_t n = 0; n < modules.size(); n += 1)
@@ -43,13 +43,13 @@ ReceiverHackRF::ReceiverHackRF(float s_fc, float s_fe) : Receiver(s_fc, s_fe), b
 
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_open() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     result = hackrf_set_hw_sync_mode(device, 0 ? HW_SYNC_MODE_ON : HW_SYNC_MODE_OFF);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_hw_sync_mode() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     set_freq          ( freq_hz   );
@@ -84,14 +84,14 @@ int ReceiverHackRF::rx_callback(unsigned char *buf, uint32_t len)
     if( to_receive < len )
     {
         printf("(EE) Buffer overflow during reception...\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     const uint32_t nWrite = buff.Write( (int8_t *)buf, len );
     if( nWrite != len )
     {
         printf("(EE) An error appear during the data writing in the buffer...\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }else{
 //        printf("(II) Data were received (len = %d - buffer = %d)...\n", len, buff.NumElements());
     }
@@ -112,7 +112,7 @@ void ReceiverHackRF::set_freq(double value)
     int32_t result = hackrf_set_freq(device, freq_hz);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_freq() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -130,7 +130,7 @@ void ReceiverHackRF::set_sample_rate(double value)
     int32_t result = hackrf_set_sample_rate(device, fe);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_sample_rate() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }    
 }
 
@@ -149,7 +149,7 @@ void ReceiverHackRF::set_amp_enable(bool value)
     int32_t result = hackrf_set_amp_enable(device, (uint8_t)control);   // doit etre 14, 0 sinon...
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_amp_enable() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -167,7 +167,7 @@ void ReceiverHackRF::set_antenna_enable(bool value)
     int32_t result = hackrf_set_antenna_enable(device, (uint8_t)antenna);
     if (result != HACKRF_SUCCESS) {
         fprintf(stderr, "hackrf_set_antenna_enable() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -189,7 +189,7 @@ void ReceiverHackRF::set_vga_gain(uint32_t value)
     int32_t result  = hackrf_set_vga_gain(device, vga_gain);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_vga_gain() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -211,7 +211,7 @@ void ReceiverHackRF::set_lna_gain(uint32_t value)
     int32_t result = hackrf_set_lna_gain(device, lna_gain);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_set_lna_gain() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -226,13 +226,13 @@ void ReceiverHackRF::start_engine()
     int result = hackrf_start_rx(device, rx_callback, (void *)this);
     if( result != HACKRF_SUCCESS ) {
         fprintf(stderr, "hackrf_start_rx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     result = hackrf_is_streaming(device);
     if( result != HACKRF_TRUE ) {
         fprintf(stderr, "hackrf_start_rx() failed to check hackrf_is_streaming status: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -242,14 +242,14 @@ void ReceiverHackRF::stop_engine()
     int result = hackrf_is_streaming(device);
     if( result != HACKRF_TRUE ) {
         fprintf(stderr, "hackrf_stop_rx() failed because device is not steraming: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     result = hackrf_stop_rx(device);
     if( result != HACKRF_SUCCESS )
     {
         fprintf(stderr, "hackrf_stop_rx() failed: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 }
 
@@ -271,7 +271,7 @@ void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer, cons
     int result = hackrf_is_streaming(device);
     if( result != HACKRF_TRUE ) {
         fprintf(stderr, "ReceiverHackRF::reception() failed because device is not steraming: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     const uint32_t toRead = 2 * (cbuffer.size() - coverage); // le buffer parle en bytes (et non en nombre de couples I/Q)
@@ -281,7 +281,7 @@ void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer, cons
     if( toRead > buff.Capacity() )    // N : est exrimé en nombre de bytes (et non en nombre de couples I/Q)
     {
         fprintf(stderr, "ReceiverHackRF::reception() failed: the number of data to read is higher than buffer size (%d)\n", toRead);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     //
@@ -298,7 +298,7 @@ void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer, cons
     if( nRead != toRead )
     {
         fprintf(stderr, "ReceiverHackRF::reception() failed: the number of data to read is different than the resquest (%d)\n", toRead);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     for(uint32_t i = 0; i < toRead; i += 2)
@@ -313,5 +313,5 @@ void ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer, cons
 void ReceiverHackRF::reset()
 {
     fprintf(stderr, "ReceiverHackRF::reset() not implemented yet !\n");
-    exit( -1 );
+    exit( EXIT_FAILURE );
 }

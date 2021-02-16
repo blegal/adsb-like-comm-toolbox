@@ -44,7 +44,7 @@ Emitter* EmitterLibrary::allocate(Parameters& param)
         cout << "oups !" << endl;
         cout << "mode_radio = " << param.toString("mode_radio") << endl;
         cout << "filename   = " << param.toString("filename")   << endl;
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
     return radio;
 }

@@ -64,7 +64,7 @@ void MyAbsolute (const std::complex<float>* __restrict cplxIn,
     if( length & 0x07 )
     {
         printf("Oups il reste des données !\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 #endif
 }

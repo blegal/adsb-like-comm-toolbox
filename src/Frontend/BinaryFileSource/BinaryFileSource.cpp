@@ -28,7 +28,7 @@ void BinaryFileSource::execute(Frame* f)
     else
     {
         printf("(EE) The file stream has ended before...\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
 }
@@ -48,7 +48,7 @@ void BinaryFileSource::execute(FECFrame* f)
     else
     {
         printf("(EE) The file stream has ended before...\n");
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
 }

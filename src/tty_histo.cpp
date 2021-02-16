@@ -190,7 +190,7 @@ int main(int argc, char *argv[]) {
     if( stream == NULL )
     {
         printf("Erreur lors de l'ouverture du fichier (%s)\n", filename.c_str());
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
     float vmin = +10000000;
     float vmax = -10000000;

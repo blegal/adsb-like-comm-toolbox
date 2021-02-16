@@ -107,7 +107,7 @@ void BMPSource::execute(Frame* f)
     else
     {
         printf("(EE) Jamais nous n'aurions du arriver ici... ( curr_s == %d )\n", curr_s);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     frame += 1;
@@ -199,7 +199,7 @@ void BMPSource::execute(FECFrame* f)
     else
     {
         printf("(EE) Jamais nous n'aurions du arriver ici... ( curr_s == %d )\n", curr_s);
-        exit( -1 );
+        exit( EXIT_FAILURE );
     }
 
     frame += 1;

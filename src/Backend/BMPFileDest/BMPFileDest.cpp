@@ -30,9 +30,9 @@ BMPFileDest::~BMPFileDest()
 }
 
 
-void BMPFileDest::execute(Frame* f)
-{
-}
+//void BMPFileDest::execute(Frame* f)
+//{
+//}
 
 #define FRAME_INFOS         0x11 // 1111 0000
 #define FRAME_NEW_IMAGE     0x22 // 0000 1111
