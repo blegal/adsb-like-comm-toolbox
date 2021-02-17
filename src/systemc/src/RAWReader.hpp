@@ -44,7 +44,7 @@ private:
             }
         }
 
-				wait(100, SC_US);
+		wait(100, SC_US);
         cout << "(II) RAWReader :: STOP" << endl;
         sc_stop();
     }
