@@ -28,13 +28,8 @@ private:
 		FILE* f = fopen("/tmp/image.raw", "rb");
 		if( f == NULL )
         {
-<<<<<<< HEAD
-          cout << "(EE) Error opening the input file (/tmp/image.raw)" << endl;
-		    	exit( -1 );
-=======
-          cout << "(EE) Error opening the input file (/tmp/reception.raw)" << endl;
-            exit( EXIT_FAILURE );
->>>>>>> main
+        	cout << "(EE) Error opening the input file (/tmp/image.raw)" << endl;
+        	exit( EXIT_FAILURE );
         }
 
 		while( feof(f) == 0 )
