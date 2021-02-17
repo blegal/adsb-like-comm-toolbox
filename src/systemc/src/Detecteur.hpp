@@ -13,6 +13,8 @@
 #include <cstdint>
 #include "constantes.hpp"
 
+#define _DEBUG_SYNCHRO_
+
 SC_MODULE(Detecteur)
 {
 public:
@@ -31,7 +33,9 @@ private:
 
 	void do_gen( )
 	{
-//	    uint64_t counter = 0;
+#ifdef _DEBUG_SYNCHRO_
+	    uint64_t counter = 0;
+#endif
         float buffer[32];
         while( true )
         {
@@ -76,9 +80,13 @@ private:
                     s.write( e.read() );
                 for(uint8_t i = 0; i < factor * _BITS_CRC_; i += 1)
                     s.write( e.read() );
-//                counter += factor *(_BITS_TYPE_ + _BITS_LENGTH_ + _BITS_PAYLOAD_ + _BITS_CRC_);
+#ifdef _DEBUG_SYNCHRO_
+                counter += factor *(_BITS_TYPE_ + _BITS_LENGTH_ + _BITS_PAYLOAD_ + _BITS_CRC_);
+#endif
             }else{
-//                counter += 1;
+#ifdef _DEBUG_SYNCHRO_
+                counter += 1;
+#endif
             }
 
         }
