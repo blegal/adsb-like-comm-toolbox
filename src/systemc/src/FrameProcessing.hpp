@@ -37,8 +37,13 @@ private:
 
         while(true)
         {
-            uint8_t  type    = e.read();
-            uint16_t special = e.read();
+//            uint8_t  type    = e.read();
+//            uint16_t special = e.read();
+
+            uint16_t type = e.read(); type |= ((uint16_t)e.read())) << 8;
+            uint16_t mot1 = e.read(); mot1 |= ((uint16_t)e.read())) << 8;
+            uint16_t mot2 = e.read(); mot2 |= ((uint16_t)e.read())) << 8;
+            uint16_t mot3 = e.read(); mot3 |= ((uint16_t)e.read())) << 8;
 
             if( type == FRAME_NEW_IMAGE )
             {
@@ -111,7 +116,8 @@ private:
                 //
                 // Le type de trame n'est pas reconnu, on met directement a la bin les données
                 //
-                for(uint16_t i = 0; i < _BYTE_PAYLOAD_; i += 1)
+                cout << "(EE) Error detected on frame type :: flusing data to the bin..." << endl;
+                for(uint16_t i = 0; i < _BYTE_PAYLOAD_ + _BYTE_CRC_; i += 1)
                     e.read();
             }
         }
