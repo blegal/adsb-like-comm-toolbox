@@ -13,7 +13,7 @@
 #include <cstdint>
 #include "constantes.hpp"
 
-#define _DEBUG_SYNCHRO_
+// #define _DEBUG_SYNCHRO_
 
 SC_MODULE(Detecteur)
 {
@@ -66,7 +66,7 @@ private:
                 printf("%3d ", (int)buffer[i]);
             printf(" - %f\n", res);
 #endif
-            if( res >= 0.8f )
+            if( res >= 0.99f )
             {
 #ifdef _DEBUG_SYNCHRO_
                 printf("Detecteur::do_gen fired for sample (%llu - %f)\n", counter, res);
@@ -81,7 +81,7 @@ private:
                 for(uint8_t i = 0; i < factor * _BITS_CRC_; i += 1)
                     s.write( e.read() );
 #ifdef _DEBUG_SYNCHRO_
-                counter += factor *(_BITS_TYPE_ + _BITS_LENGTH_ + _BITS_PAYLOAD_ + _BITS_CRC_);
+                counter += factor *(_BITS_HEADER_ + _BITS_PAYLOAD_ + _BITS_CRC_);
 #endif
             }else{
 #ifdef _DEBUG_SYNCHRO_

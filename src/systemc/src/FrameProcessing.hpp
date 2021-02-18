@@ -33,23 +33,23 @@ private:
 
         uint32_t curr_adr;
 //        uint16_t curr_x;
-        uint16_t curr_y;
+        // uint16_t curr_y;
 
         while(true)
         {
 //            uint8_t  type    = e.read();
 //            uint16_t special = e.read();
 
-            uint16_t type = e.read(); type |= ((uint16_t)e.read())) << 8;
-            uint16_t mot1 = e.read(); mot1 |= ((uint16_t)e.read())) << 8;
-            uint16_t mot2 = e.read(); mot2 |= ((uint16_t)e.read())) << 8;
-            uint16_t mot3 = e.read(); mot3 |= ((uint16_t)e.read())) << 8;
+            uint16_t type = e.read(); type |= ((uint16_t)e.read()) << 8;
+            uint16_t mot1 = e.read(); mot1 |= ((uint16_t)e.read()) << 8;
+            uint16_t mot2 = e.read(); mot2 |= ((uint16_t)e.read()) << 8;
+            uint16_t mot3 = e.read(); mot3 |= ((uint16_t)e.read()) << 8;
 
             if( type == FRAME_NEW_IMAGE )
             {
                 cout << "(II) FrameProcessing :: FRAME_NEW_IMAGE" << endl;
                 curr_adr = 0;
-                curr_y   = 0;
+                // curr_y   = 0;
 
                 for(uint16_t i = 0; i < _BYTE_PAYLOAD_; i += 1)
                     e.read();
@@ -62,41 +62,42 @@ private:
                 sc_stop();
 #endif
                 curr_adr = 0;
-                curr_y   = 0;
+                // curr_y   = 0;
 
                 for(uint16_t i = 0; i < _BYTE_PAYLOAD_; i += 1)
                     e.read();
             }
-            else if( type == FRAME_NEW_LINE )
-            {
-                sc_uint< 8> r0 = e.read();
-                sc_uint< 8> r1 = e.read();
-                sc_uint<16> r2 = (r1, r0);
-                curr_y   = r2;
-                curr_adr = _IMAGE_WIDTH_ * curr_y;
-
-                for(uint16_t i = 2; i < _BYTE_PAYLOAD_; i += 1)
-                    e.read();
-                cout << "(II) FrameProcessing :: FRAME_NEW_LINE (" << curr_y << ")" << endl;
-            }
-            else if( type == FRAME_END_LINE )
-            {
-                sc_uint< 8> r0 = e.read();
-                sc_uint< 8> r1 = e.read();
-                sc_uint<16> r2 = (r1, r0);
-                curr_y   = r2;
-                curr_adr = _IMAGE_WIDTH_ * curr_y;
-
-                for(uint16_t i = 2; i < _BYTE_PAYLOAD_; i += 1)
-                    e.read();
-            }
+            // else if( type == FRAME_NEW_LINE )
+            // {
+            //     sc_uint< 8> r0 = e.read();
+            //     sc_uint< 8> r1 = e.read();
+            //     sc_uint<16> r2 = (r1, r0);
+            //     curr_y   = r2;
+            //     curr_adr = _IMAGE_WIDTH_ * curr_y;
+            //
+            //     for(uint16_t i = 2; i < _BYTE_PAYLOAD_; i += 1)
+            //         e.read();
+            //     cout << "(II) FrameProcessing :: FRAME_NEW_LINE (" << curr_y << ")" << endl;
+            // }
+            // else if( type == FRAME_END_LINE )
+            // {
+            //     sc_uint< 8> r0 = e.read();
+            //     sc_uint< 8> r1 = e.read();
+            //     sc_uint<16> r2 = (r1, r0);
+            //     curr_y   = r2;
+            //     curr_adr = _IMAGE_WIDTH_ * curr_y;
+            //
+            //     for(uint16_t i = 2; i < _BYTE_PAYLOAD_; i += 1)
+            //         e.read();
+            // }
             else if( type == FRAME_INFOS )
             {
                 //
                 // On utilise les données provenant de la trame pour calculer
                 // la position du bloc de pixel dans l'image
                 //
-                uint32_t curr_off = curr_adr + special * (_BYTE_PAYLOAD_ / 3);
+                cout << mot1 << mot2 << endl;
+                uint32_t curr_off = mot1 + _IMAGE_WIDTH_ * mot2;
 
 //                cout << "(II) FrameProcessing :: FRAME_INFOS :: curr_y = " <<  curr_y << " :: special = " << special << " :: curr_off = " << curr_off << endl;
 
