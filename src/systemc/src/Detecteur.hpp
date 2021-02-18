@@ -72,13 +72,13 @@ private:
                 printf("Detecteur::do_gen fired for sample (%llu - %f)\n", counter, res);
 #endif
                 const int factor = 2 * 2; // PPM modulation + UpSampling(2)
-                for(uint8_t i = 0; i < factor * _BITS_HEADER_; i += 1)
+                for(uint16_t i = 0; i < factor * _BITS_HEADER_; i += 1)
                     s.write( e.read() );
                 // for(uint8_t i = 0; i < factor * _BITS_LENGTH_; i += 1)
                 //     s.write( e.read() );
                 for(uint16_t i = 0; i < factor * _BITS_PAYLOAD_; i += 1)
                     s.write( e.read() );
-                for(uint8_t i = 0; i < factor * _BITS_CRC_; i += 1)
+                for(uint16_t     i = 0; i < factor * _BITS_CRC_; i += 1)
                     s.write( e.read() );
 #ifdef _DEBUG_SYNCHRO_
                 counter += factor *(_BITS_HEADER_ + _BITS_PAYLOAD_ + _BITS_CRC_);
