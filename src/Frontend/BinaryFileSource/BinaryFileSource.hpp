@@ -9,6 +9,8 @@ using namespace std;
 class BinaryFileSource : public Frontend{
 private :
     std::string filename;
+    uint32_t frame;
+    uint32_t curr_s;
 
     FILE* file;
 

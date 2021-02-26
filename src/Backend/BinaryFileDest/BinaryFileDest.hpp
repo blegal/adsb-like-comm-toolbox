@@ -14,7 +14,7 @@ using namespace std;
 class BinaryFileDest : public Backend{
 private :
     std::string filename;
-
+    uint32_t lastFid;
     FILE* file;
 
 public :
