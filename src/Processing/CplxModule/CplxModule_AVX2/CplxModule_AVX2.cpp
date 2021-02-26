@@ -58,14 +58,24 @@ void MyAbsolute (const std::complex<float>* __restrict cplxIn,
         pOut += 8;
     }
 
-    //
-    //
-    //
-    if( length & 0x07 )
+    int start = (length >> 3) << 3;
+    for (int i = start; i < length; i += 8)
     {
-        printf("Oups il reste des données !\n");
-        exit( EXIT_FAILURE );
+        float rr = cplxIn[i].real() * cplxIn[i].real() ;
+        float ii = cplxIn[i].imag() * cplxIn[i].imag() ;
+        float mod2 = rr + ii;
+        float mod = sqrtf(mod2);
+        absOut[i] = mod;
     }
+
+    //
+    //
+    //
+//    if( length & 0x07 )
+//    {
+//        printf("Oups il reste des données !\n");
+//        exit( EXIT_FAILURE );
+//    }
 #endif
 }
 

@@ -346,6 +346,10 @@ int main(int argc, char* argv[])
     {
         source->execute( &F ); // On fill les donnees de la trames avec des données de l'image
 
+        if (verbose == 1){
+            F.dump();
+        }
+
         isFinished = !source->is_alive();
 
         enc_chain->execute(F.data(), &buff_4);

@@ -4,9 +4,9 @@
 #include <complex>
 #include <cstring>
 #include <chrono>
+#include <unistd.h>
 
 #include <vector>
-
 #include <cstdio>
 #include <cstdlib>
 #include <getopt.h>
@@ -20,10 +20,12 @@
 //
 //  Definition des modules permettant d'utiliser le module Receiver (SdR)
 //
-
+#include "./Radio/Emitter/Library/EmitterLibrary.hpp"
 #include "./Radio/Receiver/Library/ReceiverLibrary.hpp"
 #include "./Processing/CplxModule/Library/CplxModuleLibrary.hpp"
 #include "./Processing/Detector/Library/DetectorLibrary.hpp"
+#include "./Backend/Library/BackendLibrary.hpp"
+
 
 #include "./Frame/Frame.hpp"
 #include "./Processing/Sampling/Down/DownSampling.hpp"
@@ -56,6 +58,7 @@ void show(std::vector<float>& v)
 }
 
 
+
 /*   ============================== MAIN =========================== */
 /*
 	4 ech = 1 symb
@@ -75,6 +78,7 @@ int main(int argc, char* argv[])
     uint32_t nbTramesDetectees = 0; // nbre trame ...
     uint32_t nbTotalTrames     = 0;
     uint32_t nbBonsCRCs        = 0;
+    string path_n;
 
     int c; //getopt
 
@@ -99,7 +103,7 @@ int main(int argc, char* argv[])
     param.set("mode_conv",        "scalar");
     param.set("mode_corr",        "scalar");
 
-    param.set("payload", 16);
+    param.set("payload", 60);
 
     param.set("verbose", false);
 
@@ -109,6 +113,7 @@ int main(int argc, char* argv[])
     param.set("dump_first_frame", false);
 
     param.set("crystal_correct",   0);
+    param.set("file_path", "received_frame.raw");
 
     static struct option long_options[] =
             {
@@ -247,14 +252,20 @@ int main(int argc, char* argv[])
     vector<complex<float> > buffer   ( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
     vector<complex<float> > buffer_fichier;
     vector<uint8_t        > detection( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
+    vector<int8_t        > detection_int( param.toDouble("fe")/2 ); // Notre buffer à nous dans le programme
 
     //
     // Selection du module SDR employé dans le programme
     //
 
+
     Receiver*   radio  = ReceiverLibrary::allocate  (param );
     Detector*   detect = DetectorLibrary::allocate  (param );
     CplxModule* conv   = CplxModuleLibrary::allocate(param );
+    // Backend* dest = BackendLibrary::allocate( param );
+
+
+    // Emitter*   radio_1  = EmitterLibrary::allocate  (param );
 
     Frame f( param.toInt("payload") );
 
@@ -302,7 +313,18 @@ int main(int argc, char* argv[])
     radio->initialize();
     radio->start_engine();
 
+
+
+
     auto start = std::chrono::system_clock::now();
+
+
+
+
+    // On selectionne le module d'emission en fonction des choix de l'utilisateur
+    //
+
+
 
     //
     // Selection du module de conversion employé dans le programme
@@ -328,6 +350,15 @@ int main(int argc, char* argv[])
     uint32_t loop_counter = 0;
     const bool verbose          = param.toBool("verbose");
     const bool dump_first_frame = param.toBool("dump_first_frame");
+
+    FILE* stream = fopen("received_frame.cu8", "wb");
+    bool firstFrame = true;
+    bool emptySlots = true;
+
+    if (stream == nullptr){
+        fprintf(stderr, "ReceiverFileRAW::initialize() error during file openning (%s) !\n", "received_frame.cu8");
+        exit( EXIT_FAILURE );
+    }
     while( radio->alive() && (isFinished == false) )
     {
         timer.start_loading();
@@ -344,6 +375,8 @@ int main(int argc, char* argv[])
         //
         if( detection.size() != buffer_abs.size() )
             detection.resize( buffer_abs.size() );
+            // detection_int.resize( buffer_abs.size() );
+
 
         // ============== detection & decodage ================
 
@@ -376,6 +409,7 @@ int main(int argc, char* argv[])
             if (s > ps_min)
             {
                 detection[k] = 250;
+                // detection_int[k]= 250 -128;
                 timer.start_decoding();
                 nbTramesDetectees +=1;    // On vient de detecter qqchose
 
@@ -413,10 +447,14 @@ int main(int argc, char* argv[])
                     const int fsize = 2 * 2 * f.frame_bits();
                     for(int q = 0; q < fsize - 1; q += 1)
                         detection[k+q] = valCRC ? 250 : 160 ;
+                        // detection_int[k+q] = valCRC ? 122 : 32 ;}
 
                     k += fsize - 1; // On saute tous les bits qui composaient notre trame...
+                    // dest->execute( &f );
                 }else{
                     detection[k] = 0;
+                    // detection_int[k] = 0;
+
                 }
 #if 0
                 printf("(DD) nbTramesDetectees = %d | nbTotalTrames = %4d  |  nbBonsCRCs = %4d\n", nbTramesDetectees, nbTotalTrames, nbBonsCRCs);
@@ -429,6 +467,8 @@ int main(int argc, char* argv[])
                     exit( 0 );
                 }
                 detection[k] = 0;
+                // detection_int[k] = 0;
+
             }
             k++;
         }
@@ -443,8 +483,45 @@ int main(int argc, char* argv[])
             ExportVector::SaveToU8 (detection, "Capture.Detect.u8");
             exit( 0 );
         }
-
         loop_counter += 1;
+        if( emptySlots == true || (firstFrame == true) )
+        {
+            const uint32_t length = detection.size() / 32;
+            uint8_t* buff = new uint8_t[length];
+            for(uint32_t i = 0; i < length; i += 1)
+                buff[i] = (rand()%8) - 4;
+            fwrite(buff, length, sizeof(uint8_t), stream);
+            delete[]  buff;
+        }
+
+        fwrite(detection.data(), detection.size(), sizeof(uint8_t), stream);
+
+        if( emptySlots == true )
+        {
+            const uint32_t length = detection.size() / 32;
+            uint8_t* buff = new uint8_t[length];
+            for(uint32_t i = 0; i < length; i += 1)
+                buff[i] = (rand()%8) - 4;
+            fwrite(buff, length, sizeof(uint8_t), stream);
+            delete[]  buff;
+        }
+
+        firstFrame = false;
+
+    }
+    int8_t buff[4096];
+    for(uint32_t i = 0; i < 4096; i += 1)
+    buff[i] = (rand()%8) - 4;
+    fwrite(buff, 4096, sizeof(int8_t), stream);
+    // On ajoute quelques données dans le fichier
+
+    if (stream == nullptr){
+        fprintf(stderr, "ReceiverFileRAW::close() error during file close operation (%s) !\n", "received_frame.cu8");
+        exit( EXIT_FAILURE );
+    }
+    if (stream != nullptr){
+        fclose( stream );
+        stream = nullptr;
     }
 
     printf("\n================================================================\n");

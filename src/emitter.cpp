@@ -98,7 +98,8 @@ int main(int argc, char* argv[])
 
                     {"payload",     required_argument, NULL, 'p'}, // changer la frequence de la porteuse
 
-                    {"BinaryFile",    required_argument, NULL, 'b'}, // changer la frequence de la porteuse
+                    {"Frontend",    required_argument, NULL, 'k'}, // changer la frequence de la porteuse
+                    {"frontend_opt",    required_argument, NULL, 'l'}, // changer la frequence de la porteuse
 
                     {"verbose",           no_argument, NULL, 'v'}, // changer la frequence de la porteuse
                     {"sleep",       required_argument, NULL, 's'}, // changer la frequence echantillonnage
@@ -123,7 +124,7 @@ int main(int argc, char* argv[])
     cout << "==================================== ADSB ====================================" << endl;
     printf("%s", KRED);
 
-    while ((c = getopt_long(argc, argv, "be:p:f:n:s:vt8", long_options, &option_index)) != -1) {
+    while ((c = getopt_long(argc, argv, "be:p:f:n:s:vt8k:l:", long_options, &option_index)) != -1) {
         //int this_option_optind = optind ? optind : 1;
         switch (c) {
             case 0:
@@ -156,8 +157,10 @@ int main(int argc, char* argv[])
                 param.set("filename",   optarg);
                 break;
 
-            case 'b':
-                param.set("frontend",    "BinaryFile");
+            case 'k':
+                param.set("frontend", optarg);
+                break;
+            case 'l':
                 param.set("frontend_opt", optarg);
                 break;
 
@@ -345,6 +348,9 @@ int main(int argc, char* argv[])
     while( isFinished == false )
     {
         source->execute( &F ); // On fill les donnees de la trames avec des données de l'image
+        if (verbose == 1){
+            F.dump();
+        }
 
         isFinished = !source->is_alive();
 

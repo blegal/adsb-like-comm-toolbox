@@ -98,9 +98,9 @@ int main(int argc, char* argv[])
     param.set("filename",   "hackrf");
 
     param.set("backend",       "BinaryFile");
-    param.set("backend_opt",   "received.txt");
+    param.set("backend_opt",   "received.bin");
 
-    param.set("fc",      868000000.0);
+    param.set("fc",      86000000.0);
     param.set("fe",        2000000.0);
 
     param.set("hackrf_amplifier", -1);
@@ -126,22 +126,23 @@ int main(int argc, char* argv[])
 
 	static struct option long_options[] =
 	{
-		{"verbose", no_argument,         NULL, 'v'},  // affiche temps sur chaque boucle Np + cplx => abs
-		{"seuil",   required_argument,   NULL, 's'},  // pour changer la valeur min de la correlation (synchro)
-		{"np",      required_argument,   NULL, 'n'},  // pour changer le nombre de boucle Np (ie nbre echantillon*200000) // Np = 10 => 0.5 s
+		    {"verbose", no_argument,         NULL, 'v'},  // affiche temps sur chaque boucle Np + cplx => abs
+		    {"seuil",   required_argument,   NULL, 's'},  // pour changer la valeur min de la correlation (synchro)
+		    {"np",      required_argument,   NULL, 'n'},  // pour changer le nombre de boucle Np (ie nbre echantillon*200000) // Np = 10 => 0.5 s
 
-		{"conv",    required_argument,   NULL, 'c'}, // a partir d'un fichier
-		{"corr",    required_argument,   NULL, 'd'}, // a partir d'un fichier
+		    {"conv",    required_argument,   NULL, 'c'}, // a partir d'un fichier
+		    {"corr",    required_argument,   NULL, 'd'}, // a partir d'un fichier
 
-		{"radio",       required_argument,   NULL, 'r'}, // a partir d'un fichier
+		    {"radio",       required_argument,   NULL, 'r'}, // a partir d'un fichier
         {"file",        required_argument,   NULL, 'F'}, // a partir d'un fichier
         {"file-stream", required_argument,   NULL, 'Q'}, // a partir d'un fichier
 
-		{"fc",      required_argument,   NULL, 'f'}, // changer la frequence de la porteuse
+		    {"fc",      required_argument,   NULL, 'f'}, // changer la frequence de la porteuse
         {"fe",      required_argument,   NULL, 'e'}, // changer la frequence echantillonnage
 
         {"payload", required_argument,   NULL, 'p'}, // changer la frequence echantillonnage
-
+        {"backend",    required_argument, NULL, 'k'}, // changer la frequence de la porteuse
+        {"backend_opt",    required_argument, NULL, 'l'}, // changer la frequence de la porteuse
         {"amplifier", required_argument,  NULL, 'A'}, // changer la frequence echantillonnage
         {"vga_gain", required_argument,   NULL, 'V'}, // changer la frequence echantillonnage
         {"lna_gain", required_argument,   NULL, 'L'}, // changer la frequence echantillonnage
@@ -165,7 +166,7 @@ int main(int argc, char* argv[])
 	// ============== GETOPT ================
 	printf("%s",KRED);
 
-	while ((c = getopt_long(argc, argv, "be:p:f:n:s:vt8",long_options, &option_index)) != -1) {
+	while ((c = getopt_long(argc, argv, "be:p:f:n:s:vt8k:l:",long_options, &option_index)) != -1) {
 		switch (c) {
 			case 0:
 			    printf ("%soption %s%s", long_options[option_index].name, KNRM, KRED);
@@ -235,7 +236,12 @@ int main(int argc, char* argv[])
                 param.set("mode_radio", "file-stream");
                 param.set("filename", optarg);
                 break;
-
+            case 'k':
+                param.set("backend", optarg);
+                break;
+            case 'l':
+                param.set("backend_opt", optarg);
+                break;
             case 'I':
                 param.set("mode_inter", true);
                 break;
@@ -369,7 +375,7 @@ int main(int argc, char* argv[])
     std::vector<uint8_t> buff_6;
     std::vector<uint8_t> buff_7;
 
-// #if 0
+// #if param->to_string("backend") == "BMPFile"
 //     BMP* bmp = nullptr;
 //     int32_t i_width  = -1;
 //     int32_t i_height = -1;
@@ -571,8 +577,8 @@ int main(int argc, char* argv[])
 #endif
 
 
-    delete dest;
     delete dec_chain;
+    delete dest;
 
     printf("\n================================================================\n");
     std::cout << "loading    : " << timer.loading()     << std::endl;

@@ -11,6 +11,7 @@ private :
     std::string filename;
     uint32_t frame;
     uint32_t curr_s;
+    bool isFinished;
 
     FILE* file;
 
