@@ -39,6 +39,7 @@ Emitter* EmitterLibrary::allocate(Parameters& param)
     {
         radio = new EmitterFileRAW( param.toString("filename"), false );
     }
+
     else
     {
         cout << "oups !" << endl;
