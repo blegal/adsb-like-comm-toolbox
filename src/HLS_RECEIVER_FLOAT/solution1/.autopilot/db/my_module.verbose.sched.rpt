@@ -1,0 +1,270 @@
+
+
+================================================================
+== Vivado HLS Report for 'my_module'
+================================================================
+* Date:           Thu Mar 25 13:23:35 2021
+
+* Version:        2020.1 (Build 2897737 on Wed May 27 20:21:37 MDT 2020)
+* Project:        HLS_RECEIVER_FLOAT
+* Solution:       solution1
+* Product family: artix7
+* Target device:  xc7a100t-csg324-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  | 10.00 ns | 8.955 ns |   1.25 ns  |
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+------+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval  | Pipeline|
+    |   min   |   max   |    min    |    max    | min |  max |   Type  |
+    +---------+---------+-----------+-----------+-----+------+---------+
+    |        2|     2312| 20.000 ns | 23.120 us |    2|  2312|   none  |
+    +---------+---------+-----------+-----------+-----+------+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 2
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 3 [2/2] (0.00ns)   --->   "call void @"ModuleCompute::ModuleCompute.1"(i1* %clock_form, i1* %reset_form, i8* %e_form, i8* %mod2dbl_1_form)" [systemc/src/ModuleCompute_old.hpp:28->systemc/src/my_module.hpp:35]   --->   Operation 3 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_1 : Operation 4 [2/2] (0.00ns)   --->   "call void @"Detecteur::Detecteur.1"(i1* %clock_form4, i1* %reset_form5, i8* %mod2dbl_1_form6, i8* %det2dow_1_form, i1* %my_module_det_s_calc_clock_m_if_Val, i1* %my_module_det_s_calc_reset_m_if_Val, i8* %my_module_det_s_calc_e_m_if_Val_V, i1* %my_module_det_s_calc_detect_m_if_Val, i1* %my_module_det_t_sep_clock_m_if_Val, i1* %my_module_det_t_sep_reset_m_if_Val, i8* %my_module_det_t_sep_e_m_if_Val_V, i1* %my_module_det_t_sep_detect_m_if_Val, i8* %my_module_det_t_sep_s_m_if_Val_V, i1* %my_module_det_dbl_clock_m_if_Val, i1* %my_module_det_dbl_reset_m_if_Val, i8* %my_module_det_dbl_e_m_if_Val_V, i8* %my_module_det_dbl_s1_m_if_Val_V, i8* %my_module_det_dbl_s2_m_if_Val_V, i8* %my_module_det_dbl2scalc_Val_V, i8* %my_module_det_dbl2tsep_Val_V, i1* %my_module_det_detect_Val)" [systemc/src/Detecteur.hpp:55->systemc/src/my_module.hpp:35]   --->   Operation 4 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_1 : Operation 5 [2/2] (0.00ns)   --->   "call void @"DownSampling::DownSampling.1"(i1* %clock_form7, i1* %reset_form8, i8* %det2dow_1_form9, i8* %dow2bit_1_form)" [systemc/src/DownSampling.hpp:28->systemc/src/my_module.hpp:35]   --->   Operation 5 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_1 : Operation 6 [2/2] (0.00ns)   --->   "call void @"BitDecider::BitDecider.1"(i1* %clock_form10, i1* %reset_form11, i8* %dow2bit_1_form12, i1* %bit2byt_1_form)" [systemc/src/BitDecider.hpp:27->systemc/src/my_module.hpp:35]   --->   Operation 6 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_1 : Operation 7 [2/2] (0.00ns)   --->   "call void @"BitsToBytes::BitsToBytes.1"(i1* %clock_form13, i1* %reset_form14, i1* %bit2byt_1_form15, i8* %byt2crc_1_form)" [systemc/src/BitsToBytes.hpp:27->systemc/src/my_module.hpp:35]   --->   Operation 7 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_1 : Operation 8 [2/2] (0.00ns)   --->   "call void @"CRCCheck::CRCCheck.1"(i1* %clock_form16, i1* %reset_form17, i8* %byt2crc_1_form18, i8* %crc2fra_1_form)" [systemc/src/CRCCheck.hpp:29->systemc/src/my_module.hpp:35]   --->   Operation 8 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_1 : Operation 9 [2/2] (0.00ns)   --->   "call void @"FrameProcessing::FrameProcessing.1"(i1* %clock_form19, i1* %reset_form20, i8* %crc2fra_1_form21, i32* %addr_form, i24* %rgbv_form)" [systemc/src/FrameProcessing.hpp:29->systemc/src/my_module.hpp:35]   --->   Operation 9 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 2 <SV = 1> <Delay = 0.00>
+ST_2 : Operation 10 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i24* %rgbv_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 10 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 11 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i32* %addr_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 11 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 12 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %crc2fra_1_form21, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 12 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 13 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %crc2fra_1_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 13 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 14 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %byt2crc_1_form18, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 14 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 15 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %byt2crc_1_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 15 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 16 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %bit2byt_1_form15, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 16 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 17 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %bit2byt_1_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 17 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 18 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %dow2bit_1_form12, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 18 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 19 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %dow2bit_1_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 19 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 20 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %det2dow_1_form9, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 20 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 21 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %my_module_det_detect_Val, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 21 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 22 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %my_module_det_dbl2tsep_Val_V, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 22 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 23 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %my_module_det_dbl2scalc_Val_V, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 23 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 24 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %my_module_det_dbl_s2_m_if_Val_V, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 24 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 25 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %my_module_det_dbl_s1_m_if_Val_V, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 25 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 26 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %my_module_det_dbl_e_m_if_Val_V, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 26 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 27 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %my_module_det_t_sep_s_m_if_Val_V, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 27 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 28 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %my_module_det_t_sep_detect_m_if_Val, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 28 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 29 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %my_module_det_t_sep_e_m_if_Val_V, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 29 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 30 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %my_module_det_s_calc_detect_m_if_Val, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 30 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 31 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %my_module_det_s_calc_e_m_if_Val_V, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 31 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 32 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %det2dow_1_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 32 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 33 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %mod2dbl_1_form6, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 33 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 34 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %mod2dbl_1_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 34 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 35 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 35 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 36 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock), !map !198"   --->   Operation 36 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 37 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset), !map !202"   --->   Operation 37 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 38 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %e), !map !206"   --->   Operation 38 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 39 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i32* %addr), !map !210"   --->   Operation 39 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 40 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i24* %rgbv), !map !214"   --->   Operation 40 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 41 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock_form), !map !218"   --->   Operation 41 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 42 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset_form), !map !222"   --->   Operation 42 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 43 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %e_form), !map !226"   --->   Operation 43 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 44 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %mod2dbl_1_form), !map !230"   --->   Operation 44 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 45 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock_form4), !map !234"   --->   Operation 45 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 46 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset_form5), !map !238"   --->   Operation 46 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 47 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %mod2dbl_1_form6), !map !242"   --->   Operation 47 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 48 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %det2dow_1_form), !map !246"   --->   Operation 48 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 49 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %my_module_det_s_calc_clock_m_if_Val), !map !250"   --->   Operation 49 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 50 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %my_module_det_s_calc_reset_m_if_Val), !map !254"   --->   Operation 50 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 51 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %my_module_det_s_calc_e_m_if_Val_V), !map !258"   --->   Operation 51 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 52 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %my_module_det_s_calc_detect_m_if_Val), !map !262"   --->   Operation 52 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 53 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %my_module_det_t_sep_clock_m_if_Val), !map !266"   --->   Operation 53 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 54 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %my_module_det_t_sep_reset_m_if_Val), !map !270"   --->   Operation 54 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 55 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %my_module_det_t_sep_e_m_if_Val_V), !map !274"   --->   Operation 55 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 56 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %my_module_det_t_sep_detect_m_if_Val), !map !278"   --->   Operation 56 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 57 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %my_module_det_t_sep_s_m_if_Val_V), !map !282"   --->   Operation 57 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 58 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %my_module_det_dbl_clock_m_if_Val), !map !286"   --->   Operation 58 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 59 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %my_module_det_dbl_reset_m_if_Val), !map !290"   --->   Operation 59 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 60 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %my_module_det_dbl_e_m_if_Val_V), !map !294"   --->   Operation 60 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 61 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %my_module_det_dbl_s1_m_if_Val_V), !map !298"   --->   Operation 61 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 62 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %my_module_det_dbl_s2_m_if_Val_V), !map !302"   --->   Operation 62 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 63 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %my_module_det_dbl2scalc_Val_V), !map !306"   --->   Operation 63 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 64 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %my_module_det_dbl2tsep_Val_V), !map !310"   --->   Operation 64 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 65 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %my_module_det_detect_Val), !map !314"   --->   Operation 65 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 66 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock_form7), !map !318"   --->   Operation 66 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 67 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset_form8), !map !322"   --->   Operation 67 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 68 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %det2dow_1_form9), !map !326"   --->   Operation 68 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 69 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %dow2bit_1_form), !map !330"   --->   Operation 69 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 70 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock_form10), !map !334"   --->   Operation 70 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 71 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset_form11), !map !338"   --->   Operation 71 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 72 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %dow2bit_1_form12), !map !342"   --->   Operation 72 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 73 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %bit2byt_1_form), !map !346"   --->   Operation 73 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 74 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock_form13), !map !350"   --->   Operation 74 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 75 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset_form14), !map !354"   --->   Operation 75 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 76 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %bit2byt_1_form15), !map !358"   --->   Operation 76 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 77 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %byt2crc_1_form), !map !362"   --->   Operation 77 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 78 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock_form16), !map !366"   --->   Operation 78 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 79 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset_form17), !map !370"   --->   Operation 79 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 80 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %byt2crc_1_form18), !map !374"   --->   Operation 80 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 81 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %crc2fra_1_form), !map !378"   --->   Operation 81 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 82 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock_form19), !map !382"   --->   Operation 82 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 83 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset_form20), !map !386"   --->   Operation 83 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 84 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %crc2fra_1_form21), !map !390"   --->   Operation 84 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 85 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i32* %addr_form), !map !394"   --->   Operation 85 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 86 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i24* %rgbv_form), !map !398"   --->   Operation 86 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 87 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %mod2dbl_1), !map !402"   --->   Operation 87 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 88 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %sc_fifo_chn_1), !map !406"   --->   Operation 88 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 89 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %sc_fifo_chn_13), !map !410"   --->   Operation 89 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 90 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %det2dow_1), !map !414"   --->   Operation 90 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 91 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %dow2bit_1), !map !418"   --->   Operation 91 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 92 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %bit2byt_1), !map !422"   --->   Operation 92 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 93 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %byt2crc_1), !map !426"   --->   Operation 93 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 94 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %crc2fra_1), !map !430"   --->   Operation 94 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 95 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 95 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 96 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([1 x i8]* @p_str30, i32 4, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i8* %e) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 96 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 97 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i32* %addr, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 97 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 98 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([1 x i8]* @p_str30, i32 5, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32* %addr) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 98 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 99 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i24* %rgbv, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 99 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 100 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([1 x i8]* @p_str30, i32 5, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i24* %rgbv) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 100 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 101 [1/2] (0.00ns)   --->   "call void @"ModuleCompute::ModuleCompute.1"(i1* %clock_form, i1* %reset_form, i8* %e_form, i8* %mod2dbl_1_form)" [systemc/src/ModuleCompute_old.hpp:28->systemc/src/my_module.hpp:35]   --->   Operation 101 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 102 [1/2] (0.00ns)   --->   "call void @"Detecteur::Detecteur.1"(i1* %clock_form4, i1* %reset_form5, i8* %mod2dbl_1_form6, i8* %det2dow_1_form, i1* %my_module_det_s_calc_clock_m_if_Val, i1* %my_module_det_s_calc_reset_m_if_Val, i8* %my_module_det_s_calc_e_m_if_Val_V, i1* %my_module_det_s_calc_detect_m_if_Val, i1* %my_module_det_t_sep_clock_m_if_Val, i1* %my_module_det_t_sep_reset_m_if_Val, i8* %my_module_det_t_sep_e_m_if_Val_V, i1* %my_module_det_t_sep_detect_m_if_Val, i8* %my_module_det_t_sep_s_m_if_Val_V, i1* %my_module_det_dbl_clock_m_if_Val, i1* %my_module_det_dbl_reset_m_if_Val, i8* %my_module_det_dbl_e_m_if_Val_V, i8* %my_module_det_dbl_s1_m_if_Val_V, i8* %my_module_det_dbl_s2_m_if_Val_V, i8* %my_module_det_dbl2scalc_Val_V, i8* %my_module_det_dbl2tsep_Val_V, i1* %my_module_det_detect_Val)" [systemc/src/Detecteur.hpp:55->systemc/src/my_module.hpp:35]   --->   Operation 102 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 103 [1/2] (0.00ns)   --->   "call void @"DownSampling::DownSampling.1"(i1* %clock_form7, i1* %reset_form8, i8* %det2dow_1_form9, i8* %dow2bit_1_form)" [systemc/src/DownSampling.hpp:28->systemc/src/my_module.hpp:35]   --->   Operation 103 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 104 [1/2] (0.00ns)   --->   "call void @"BitDecider::BitDecider.1"(i1* %clock_form10, i1* %reset_form11, i8* %dow2bit_1_form12, i1* %bit2byt_1_form)" [systemc/src/BitDecider.hpp:27->systemc/src/my_module.hpp:35]   --->   Operation 104 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 105 [1/2] (0.00ns)   --->   "call void @"BitsToBytes::BitsToBytes.1"(i1* %clock_form13, i1* %reset_form14, i1* %bit2byt_1_form15, i8* %byt2crc_1_form)" [systemc/src/BitsToBytes.hpp:27->systemc/src/my_module.hpp:35]   --->   Operation 105 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 106 [1/2] (0.00ns)   --->   "call void @"CRCCheck::CRCCheck.1"(i1* %clock_form16, i1* %reset_form17, i8* %byt2crc_1_form18, i8* %crc2fra_1_form)" [systemc/src/CRCCheck.hpp:29->systemc/src/my_module.hpp:35]   --->   Operation 106 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 107 [1/2] (0.00ns)   --->   "call void @"FrameProcessing::FrameProcessing.1"(i1* %clock_form19, i1* %reset_form20, i8* %crc2fra_1_form21, i32* %addr_form, i24* %rgbv_form)" [systemc/src/FrameProcessing.hpp:29->systemc/src/my_module.hpp:35]   --->   Operation 107 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 108 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [8 x i8]* @p_str19, i32 1024, i32 1024, i8* %mod2dbl_1, i8* %mod2dbl_1) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 108 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 109 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %mod2dbl_1, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 109 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 110 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [12 x i8]* @p_str40, i32 1, i32 1, i8* %sc_fifo_chn_1, i8* %sc_fifo_chn_1) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 110 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 111 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %sc_fifo_chn_1, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 111 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 112 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [12 x i8]* @p_str40, i32 1, i32 1, i8* %sc_fifo_chn_13, i8* %sc_fifo_chn_13) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 112 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 113 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %sc_fifo_chn_13, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 113 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 114 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [8 x i8]* @p_str20, i32 32, i32 32, i8* %det2dow_1, i8* %det2dow_1) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 114 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 115 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %det2dow_1, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 115 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 116 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [8 x i8]* @p_str21, i32 32, i32 32, i8* %dow2bit_1, i8* %dow2bit_1) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 116 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 117 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %dow2bit_1, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 117 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 118 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [8 x i8]* @p_str22, i32 32, i32 32, i1* %bit2byt_1, i1* %bit2byt_1) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 118 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 119 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %bit2byt_1, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 119 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 120 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [8 x i8]* @p_str23, i32 32, i32 32, i8* %byt2crc_1, i8* %byt2crc_1) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 120 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 121 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %byt2crc_1, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 121 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 122 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [8 x i8]* @p_str24, i32 32, i32 32, i8* %crc2fra_1, i8* %crc2fra_1) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 122 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 123 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %crc2fra_1, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:35]   --->   Operation 123 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 124 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecTopModule([10 x i8]* @p_str25, [10 x i8]* @p_str25) nounwind" [systemc/src/my_module.hpp:36]   --->   Operation 124 'spectopmodule' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 125 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([10 x i8]* @p_str25, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str27, i32 0, i32 0, i1* %clock) nounwind" [systemc/src/my_module.hpp:37]   --->   Operation 125 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 126 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([10 x i8]* @p_str25, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str28, i32 0, i32 0, i1* %reset) nounwind" [systemc/src/my_module.hpp:38]   --->   Operation 126 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 127 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:39]   --->   Operation 127 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 128 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([10 x i8]* @p_str25, i32 4, [13 x i8]* @p_str31, [2 x i8]* @p_str32, i32 0, i32 0, i8* %e) nounwind" [systemc/src/my_module.hpp:40]   --->   Operation 128 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 129 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i32* %addr, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:41]   --->   Operation 129 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 130 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([10 x i8]* @p_str25, i32 5, [14 x i8]* @p_str33, [5 x i8]* @p_str34, i32 0, i32 0, i32* %addr) nounwind" [systemc/src/my_module.hpp:42]   --->   Operation 130 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 131 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i24* %rgbv, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/my_module.hpp:43]   --->   Operation 131 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 132 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([10 x i8]* @p_str25, i32 5, [14 x i8]* @p_str35, [5 x i8]* @p_str36, i32 0, i32 0, i24* %rgbv) nounwind" [systemc/src/my_module.hpp:44]   --->   Operation 132 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 133 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %clock_form, i1* %clock) nounwind" [systemc/src/my_module.hpp:45]   --->   Operation 133 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 134 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %reset_form, i1* %reset) nounwind" [systemc/src/my_module.hpp:46]   --->   Operation 134 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 135 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %e_form, i8* %e) nounwind" [systemc/src/my_module.hpp:47]   --->   Operation 135 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 136 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %mod2dbl_1_form, i8* %mod2dbl_1) nounwind" [systemc/src/my_module.hpp:48]   --->   Operation 136 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 137 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %clock_form4, i1* %clock) nounwind" [systemc/src/my_module.hpp:49]   --->   Operation 137 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 138 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %reset_form5, i1* %reset) nounwind" [systemc/src/my_module.hpp:50]   --->   Operation 138 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 139 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %mod2dbl_1_form6, i8* %mod2dbl_1) nounwind" [systemc/src/my_module.hpp:51]   --->   Operation 139 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 140 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %det2dow_1_form, i8* %det2dow_1) nounwind" [systemc/src/my_module.hpp:52]   --->   Operation 140 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 141 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %clock_form7, i1* %clock) nounwind" [systemc/src/my_module.hpp:53]   --->   Operation 141 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 142 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %reset_form8, i1* %reset) nounwind" [systemc/src/my_module.hpp:54]   --->   Operation 142 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 143 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %det2dow_1_form9, i8* %det2dow_1) nounwind" [systemc/src/my_module.hpp:55]   --->   Operation 143 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 144 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %dow2bit_1_form, i8* %dow2bit_1) nounwind" [systemc/src/my_module.hpp:56]   --->   Operation 144 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 145 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %clock_form10, i1* %clock) nounwind" [systemc/src/my_module.hpp:57]   --->   Operation 145 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 146 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %reset_form11, i1* %reset) nounwind" [systemc/src/my_module.hpp:58]   --->   Operation 146 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 147 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %dow2bit_1_form12, i8* %dow2bit_1) nounwind" [systemc/src/my_module.hpp:59]   --->   Operation 147 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 148 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %bit2byt_1_form, i1* %bit2byt_1) nounwind" [systemc/src/my_module.hpp:60]   --->   Operation 148 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 149 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %clock_form13, i1* %clock) nounwind" [systemc/src/my_module.hpp:61]   --->   Operation 149 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 150 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %reset_form14, i1* %reset) nounwind" [systemc/src/my_module.hpp:62]   --->   Operation 150 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 151 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %bit2byt_1_form15, i1* %bit2byt_1) nounwind" [systemc/src/my_module.hpp:63]   --->   Operation 151 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 152 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %byt2crc_1_form, i8* %byt2crc_1) nounwind" [systemc/src/my_module.hpp:64]   --->   Operation 152 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 153 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %clock_form16, i1* %clock) nounwind" [systemc/src/my_module.hpp:65]   --->   Operation 153 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 154 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %reset_form17, i1* %reset) nounwind" [systemc/src/my_module.hpp:66]   --->   Operation 154 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 155 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %byt2crc_1_form18, i8* %byt2crc_1) nounwind" [systemc/src/my_module.hpp:67]   --->   Operation 155 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 156 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %crc2fra_1_form, i8* %crc2fra_1) nounwind" [systemc/src/my_module.hpp:68]   --->   Operation 156 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 157 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %clock_form19, i1* %clock) nounwind" [systemc/src/my_module.hpp:69]   --->   Operation 157 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 158 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %reset_form20, i1* %reset) nounwind" [systemc/src/my_module.hpp:70]   --->   Operation 158 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 159 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %crc2fra_1_form21, i8* %crc2fra_1) nounwind" [systemc/src/my_module.hpp:71]   --->   Operation 159 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 160 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i32* %addr_form, i32* %addr) nounwind" [systemc/src/my_module.hpp:72]   --->   Operation 160 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 161 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i24* %rgbv_form, i24* %rgbv) nounwind" [systemc/src/my_module.hpp:73]   --->   Operation 161 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 162 [1/1] (0.00ns)   --->   "ret void" [systemc/src/my_module.hpp:100]   --->   Operation 162 'ret' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 1.25ns.
+
+ <State 1>: 0ns
+The critical path consists of the following:
+
+ <State 2>: 0ns
+The critical path consists of the following:
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

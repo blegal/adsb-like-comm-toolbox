@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<autopilotfilemapping:AutoPilotFileMapping xmlns:autopilotfilemapping="www.autoesl.com/autopilotfilemapping">
+  <source>
+    <originFiles name="constantes.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/constantes.hpp"/>
+    <originFiles name="ModuleCompute_old.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/ModuleCompute_old.hpp"/>
+    <originFiles name="FrameProcessing.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/FrameProcessing.hpp"/>
+    <originFiles name="DownSampling.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/DownSampling.hpp"/>
+    <originFiles name="Doubleur_uint.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/Doubleur_uint.hpp"/>
+    <originFiles name="CRCCheck.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/CRCCheck.hpp"/>
+    <originFiles name="BitsToBytes.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/BitsToBytes.hpp"/>
+    <originFiles name="BitDecider.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/BitDecider.hpp"/>
+    <originFiles name="BitDecider.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/BitDecider.hpp"/>
+    <originFiles name="BitsToBytes.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/BitsToBytes.hpp"/>
+    <originFiles name="CRCCheck.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/CRCCheck.hpp"/>
+    <originFiles name="Detecteur.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/Detecteur.hpp"/>
+    <originFiles name="Doubleur_uint.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/Doubleur_uint.hpp"/>
+    <originFiles name="DownSampling.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/DownSampling.hpp"/>
+    <originFiles name="FrameProcessing.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/FrameProcessing.hpp"/>
+    <originFiles name="ModuleCompute_old.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/ModuleCompute_old.hpp"/>
+    <originFiles name="Seuil_calc.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/Seuil_calc.hpp"/>
+    <originFiles name="constantes.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/constantes.hpp"/>
+    <originFiles name="my_module.cpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/my_module.cpp"/>
+    <originFiles name="my_module.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/my_module.hpp"/>
+    <originFiles name="trames_separ.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/trames_separ.hpp"/>
+  </source>
+  <testbench/>
+</autopilotfilemapping:AutoPilotFileMapping>

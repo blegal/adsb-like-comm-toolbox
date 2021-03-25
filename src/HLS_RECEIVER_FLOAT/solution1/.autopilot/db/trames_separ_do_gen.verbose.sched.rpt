@@ -1,0 +1,199 @@
+
+
+================================================================
+== Vivado HLS Report for 'trames_separ_do_gen'
+================================================================
+* Date:           Thu Mar 25 13:23:32 2021
+
+* Version:        2020.1 (Build 2897737 on Wed May 27 20:21:37 MDT 2020)
+* Project:        HLS_RECEIVER_FLOAT
+* Solution:       solution1
+* Product family: artix7
+* Target device:  xc7a100t-csg324-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  | 10.00 ns | 7.816 ns |   1.25 ns  |
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+------+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval  | Pipeline|
+    |   min   |   max   |    min    |    max    | min |  max |   Type  |
+    +---------+---------+-----------+-----------+-----+------+---------+
+    |        3|     2309| 30.000 ns | 23.090 us |    3|  2309|   none  |
+    +---------+---------+-----------+-----------+-----+------+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +-------------+---------+---------+----------+-----------+-----------+------+----------+
+        |             |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |  Loop Name  |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +-------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- Loop 1     |        2|     2308| 2 ~ 2308 |          -|          -|  inf |    no    |
+        | + Loop 1.1  |      256|      256|         1|          -|          -|   256|    no    |
+        | + Loop 1.2  |     1920|     1920|         1|          -|          -|  1920|    no    |
+        | + Loop 1.3  |      128|      128|         1|          -|          -|   128|    no    |
+        +-------------+---------+---------+----------+-----------+-----------+------+----------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 0
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 5
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 5 3 
+3 --> 3 4 
+4 --> 4 5 
+5 --> 5 2 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock), !map !198"   --->   Operation 6 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset), !map !202"   --->   Operation 7 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %e), !map !206"   --->   Operation 8 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %detect), !map !210"   --->   Operation 9 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %s), !map !214"   --->   Operation 10 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([13 x i8]* @p_str70, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str27, i32 0, i32 0, i1* %clock) nounwind" [systemc/src/trames_separ.hpp:35]   --->   Operation 11 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([13 x i8]* @p_str70, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str28, i32 0, i32 0, i1* %reset) nounwind" [systemc/src/trames_separ.hpp:36]   --->   Operation 12 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/trames_separ.hpp:37]   --->   Operation 13 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %detect, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/trames_separ.hpp:38]   --->   Operation 14 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %s, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/trames_separ.hpp:39]   --->   Operation 15 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProcessDef([13 x i8]* @p_str70, i32 2, [7 x i8]* @p_str42) nounwind" [systemc/src/trames_separ.hpp:40]   --->   Operation 16 'specprocessdef' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "%tmp_1 = call i32 (...)* @_ssdm_op_SpecRegionBegin([15 x i8]* @p_str44)" [systemc/src/trames_separ.hpp:40]   --->   Operation 17 'specregionbegin' 'tmp_1' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProtocol(i32 1, [1 x i8]* @p_str30) nounwind" [systemc/src/trames_separ.hpp:40]   --->   Operation 18 'specprotocol' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "%p_ssdm_reset_v = call i32 (...)* @_ssdm_op_SpecStateBegin(i32 0, i32 0, i32 1) nounwind" [systemc/src/trames_separ.hpp:40]   --->   Operation 19 'specstatebegin' 'p_ssdm_reset_v' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "%empty = call i32 (...)* @_ssdm_op_SpecStateEnd(i32 %p_ssdm_reset_v) nounwind" [systemc/src/trames_separ.hpp:46]   --->   Operation 20 'specstateend' 'empty' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.00ns)   --->   "%empty_13 = call i32 (...)* @_ssdm_op_SpecRegionEnd([15 x i8]* @p_str44, i32 %tmp_1)" [systemc/src/trames_separ.hpp:46]   --->   Operation 21 'specregionend' 'empty_13' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 22 [1/1] (0.00ns)   --->   "br label %0" [systemc/src/trames_separ.hpp:46]   --->   Operation 22 'br' <Predicate = true> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 3.90>
+ST_2 : Operation 23 [1/1] (0.00ns)   --->   "%loop_begin = call i32 (...)* @_ssdm_op_SpecLoopBegin() nounwind"   --->   Operation 23 'specloopbegin' 'loop_begin' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 24 [1/1] (3.90ns)   --->   "%p_014_0 = call i8 @_ssdm_op_Read.ap_fifo.volatile.i8P(i8* %e)" [systemc/src/trames_separ.hpp:45]   --->   Operation 24 'read' 'p_014_0' <Predicate = true> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_2 : Operation 25 [1/1] (3.90ns)   --->   "%tmp = call i1 @_ssdm_op_Read.ap_fifo.volatile.i1P(i1* %detect)" [systemc/src/trames_separ.hpp:46]   --->   Operation 25 'read' 'tmp' <Predicate = true> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_2 : Operation 26 [1/1] (0.00ns)   --->   "br i1 %tmp, label %.preheader87.preheader, label %.loopexit" [systemc/src/trames_separ.hpp:47]   --->   Operation 26 'br' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 27 [1/1] (1.66ns)   --->   "br label %.preheader87" [systemc/src/trames_separ.hpp:50]   --->   Operation 27 'br' <Predicate = (tmp)> <Delay = 1.66>
+
+State 3 <SV = 2> <Delay = 7.81>
+ST_3 : Operation 28 [1/1] (0.00ns)   --->   "%i_0 = phi i9 [ %i, %1 ], [ 0, %.preheader87.preheader ]"   --->   Operation 28 'phi' 'i_0' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 29 [1/1] (1.58ns)   --->   "%icmp_ln50 = icmp eq i9 %i_0, -256" [systemc/src/trames_separ.hpp:50]   --->   Operation 29 'icmp' 'icmp_ln50' <Predicate = true> <Delay = 1.58> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 1.47> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 30 [1/1] (0.00ns)   --->   "%empty_14 = call i32 (...)* @_ssdm_op_SpecLoopTripCount(i64 256, i64 256, i64 256)"   --->   Operation 30 'speclooptripcount' 'empty_14' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 31 [1/1] (2.11ns)   --->   "%i = add i9 %i_0, 1" [systemc/src/trames_separ.hpp:50]   --->   Operation 31 'add' 'i' <Predicate = true> <Delay = 2.11> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.11> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 32 [1/1] (0.00ns)   --->   "br i1 %icmp_ln50, label %.preheader86.preheader, label %1" [systemc/src/trames_separ.hpp:50]   --->   Operation 32 'br' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 33 [1/1] (3.90ns)   --->   "%val_V = call i8 @_ssdm_op_Read.ap_fifo.volatile.i8P(i8* %e)" [systemc/src/trames_separ.hpp:52]   --->   Operation 33 'read' 'val_V' <Predicate = (!icmp_ln50)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_3 : Operation 34 [1/1] (3.90ns)   --->   "call void @_ssdm_op_Write.ap_fifo.volatile.i8P(i8* %s, i8 %val_V)" [systemc/src/trames_separ.hpp:52]   --->   Operation 34 'write' <Predicate = (!icmp_ln50)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_3 : Operation 35 [1/1] (3.90ns)   --->   "%tmp_i_i2_0 = call i1 @_ssdm_op_Read.ap_fifo.volatile.i1P(i1* %detect)" [systemc/src/trames_separ.hpp:53]   --->   Operation 35 'read' 'tmp_i_i2_0' <Predicate = (!icmp_ln50)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_3 : Operation 36 [1/1] (0.00ns)   --->   "br label %.preheader87" [systemc/src/trames_separ.hpp:50]   --->   Operation 36 'br' <Predicate = (!icmp_ln50)> <Delay = 0.00>
+ST_3 : Operation 37 [1/1] (1.66ns)   --->   "br label %.preheader86" [systemc/src/trames_separ.hpp:55]   --->   Operation 37 'br' <Predicate = (icmp_ln50)> <Delay = 1.66>
+
+State 4 <SV = 3> <Delay = 7.81>
+ST_4 : Operation 38 [1/1] (0.00ns)   --->   "%i1_0 = phi i11 [ %i_1, %2 ], [ 0, %.preheader86.preheader ]"   --->   Operation 38 'phi' 'i1_0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 39 [1/1] (1.81ns)   --->   "%icmp_ln55 = icmp eq i11 %i1_0, -128" [systemc/src/trames_separ.hpp:55]   --->   Operation 39 'icmp' 'icmp_ln55' <Predicate = true> <Delay = 1.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 1.47> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 40 [1/1] (0.00ns)   --->   "%empty_15 = call i32 (...)* @_ssdm_op_SpecLoopTripCount(i64 1920, i64 1920, i64 1920)"   --->   Operation 40 'speclooptripcount' 'empty_15' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 41 [1/1] (2.12ns)   --->   "%i_1 = add i11 %i1_0, 1" [systemc/src/trames_separ.hpp:55]   --->   Operation 41 'add' 'i_1' <Predicate = true> <Delay = 2.12> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.11> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 42 [1/1] (0.00ns)   --->   "br i1 %icmp_ln55, label %.preheader.preheader, label %2" [systemc/src/trames_separ.hpp:55]   --->   Operation 42 'br' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 43 [1/1] (3.90ns)   --->   "%val_V_1 = call i8 @_ssdm_op_Read.ap_fifo.volatile.i8P(i8* %e)" [systemc/src/trames_separ.hpp:57]   --->   Operation 43 'read' 'val_V_1' <Predicate = (!icmp_ln55)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_4 : Operation 44 [1/1] (3.90ns)   --->   "call void @_ssdm_op_Write.ap_fifo.volatile.i8P(i8* %s, i8 %val_V_1)" [systemc/src/trames_separ.hpp:57]   --->   Operation 44 'write' <Predicate = (!icmp_ln55)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_4 : Operation 45 [1/1] (3.90ns)   --->   "%tmp_i_i1_0 = call i1 @_ssdm_op_Read.ap_fifo.volatile.i1P(i1* %detect)" [systemc/src/trames_separ.hpp:58]   --->   Operation 45 'read' 'tmp_i_i1_0' <Predicate = (!icmp_ln55)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_4 : Operation 46 [1/1] (0.00ns)   --->   "br label %.preheader86" [systemc/src/trames_separ.hpp:55]   --->   Operation 46 'br' <Predicate = (!icmp_ln55)> <Delay = 0.00>
+ST_4 : Operation 47 [1/1] (1.66ns)   --->   "br label %.preheader" [systemc/src/trames_separ.hpp:60]   --->   Operation 47 'br' <Predicate = (icmp_ln55)> <Delay = 1.66>
+
+State 5 <SV = 4> <Delay = 7.81>
+ST_5 : Operation 48 [1/1] (0.00ns)   --->   "%i2_0 = phi i8 [ %i_2, %3 ], [ 0, %.preheader.preheader ]"   --->   Operation 48 'phi' 'i2_0' <Predicate = (tmp)> <Delay = 0.00>
+ST_5 : Operation 49 [1/1] (1.47ns)   --->   "%icmp_ln60 = icmp eq i8 %i2_0, -128" [systemc/src/trames_separ.hpp:60]   --->   Operation 49 'icmp' 'icmp_ln60' <Predicate = (tmp)> <Delay = 1.47> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 1.47> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_5 : Operation 50 [1/1] (0.00ns)   --->   "%empty_16 = call i32 (...)* @_ssdm_op_SpecLoopTripCount(i64 128, i64 128, i64 128)"   --->   Operation 50 'speclooptripcount' 'empty_16' <Predicate = (tmp)> <Delay = 0.00>
+ST_5 : Operation 51 [1/1] (2.11ns)   --->   "%i_2 = add i8 %i2_0, 1" [systemc/src/trames_separ.hpp:60]   --->   Operation 51 'add' 'i_2' <Predicate = (tmp)> <Delay = 2.11> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.11> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_5 : Operation 52 [1/1] (0.00ns)   --->   "br i1 %icmp_ln60, label %.loopexit.loopexit, label %3" [systemc/src/trames_separ.hpp:60]   --->   Operation 52 'br' <Predicate = (tmp)> <Delay = 0.00>
+ST_5 : Operation 53 [1/1] (3.90ns)   --->   "%val_V_2 = call i8 @_ssdm_op_Read.ap_fifo.volatile.i8P(i8* %e)" [systemc/src/trames_separ.hpp:62]   --->   Operation 53 'read' 'val_V_2' <Predicate = (tmp & !icmp_ln60)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_5 : Operation 54 [1/1] (3.90ns)   --->   "call void @_ssdm_op_Write.ap_fifo.volatile.i8P(i8* %s, i8 %val_V_2)" [systemc/src/trames_separ.hpp:62]   --->   Operation 54 'write' <Predicate = (tmp & !icmp_ln60)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_5 : Operation 55 [1/1] (3.90ns)   --->   "%tmp_i_i_0 = call i1 @_ssdm_op_Read.ap_fifo.volatile.i1P(i1* %detect)" [systemc/src/trames_separ.hpp:63]   --->   Operation 55 'read' 'tmp_i_i_0' <Predicate = (tmp & !icmp_ln60)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_5 : Operation 56 [1/1] (0.00ns)   --->   "br label %.preheader" [systemc/src/trames_separ.hpp:60]   --->   Operation 56 'br' <Predicate = (tmp & !icmp_ln60)> <Delay = 0.00>
+ST_5 : Operation 57 [1/1] (0.00ns)   --->   "br label %.loopexit"   --->   Operation 57 'br' <Predicate = (tmp & icmp_ln60)> <Delay = 0.00>
+ST_5 : Operation 58 [1/1] (0.00ns)   --->   "br label %0" [systemc/src/trames_separ.hpp:68]   --->   Operation 58 'br' <Predicate = (icmp_ln60) | (!tmp)> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 1.25ns.
+
+ <State 1>: 0ns
+The critical path consists of the following:
+
+ <State 2>: 3.91ns
+The critical path consists of the following:
+	fifo read on port 'e' (systemc/src/trames_separ.hpp:45) [25]  (3.91 ns)
+
+ <State 3>: 7.82ns
+The critical path consists of the following:
+	fifo read on port 'e' (systemc/src/trames_separ.hpp:52) [37]  (3.91 ns)
+	fifo write on port 's' (systemc/src/trames_separ.hpp:52) [38]  (3.91 ns)
+
+ <State 4>: 7.82ns
+The critical path consists of the following:
+	fifo read on port 'e' (systemc/src/trames_separ.hpp:57) [50]  (3.91 ns)
+	fifo write on port 's' (systemc/src/trames_separ.hpp:57) [51]  (3.91 ns)
+
+ <State 5>: 7.82ns
+The critical path consists of the following:
+	fifo read on port 'e' (systemc/src/trames_separ.hpp:62) [63]  (3.91 ns)
+	fifo write on port 's' (systemc/src/trames_separ.hpp:62) [64]  (3.91 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

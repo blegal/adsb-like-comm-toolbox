@@ -1,0 +1,590 @@
+
+
+================================================================
+== Vivado HLS Report for 'BitDecider'
+================================================================
+* Date:           Thu Mar 25 13:23:27 2021
+
+* Version:        2020.1 (Build 2897737 on Wed May 27 20:21:37 MDT 2020)
+* Project:        HLS_RECEIVER_FLOAT
+* Solution:       solution1
+* Product family: artix7
+* Target device:  xc7a100t-csg324-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  | 10.00 ns | 5.383 ns |   1.25 ns  |
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max    | min | max |   Type  |
+    +---------+---------+----------+-----------+-----+-----+---------+
+    |        0|        5|   0 ns   | 50.000 ns |    0|    5|   none  |
+    +---------+---------+----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +-----------------------------+-------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |                             |                   |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+        |           Instance          |       Module      |   min   |   max   |    min    |    max    | min | max |   Type  |
+        +-----------------------------+-------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |grp_BitDecider_do_gen_fu_58  |BitDecider_do_gen  |        4|        4| 40.000 ns | 40.000 ns |    4|    4|   none  |
+        +-----------------------------+-------------------+---------+---------+-----------+-----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+-------+--------+-------+-----+
+|       Name      | BRAM_18K| DSP48E|   FF   |  LUT  | URAM|
++-----------------+---------+-------+--------+-------+-----+
+|DSP              |        -|      -|       -|      -|    -|
+|Expression       |        -|      -|       -|      -|    -|
+|FIFO             |        -|      -|       -|      -|    -|
+|Instance         |        -|      -|      13|     50|    -|
+|Memory           |        -|      -|       -|      -|    -|
+|Multiplexer      |        -|      -|       -|      -|    -|
+|Register         |        -|      -|       -|      -|    -|
++-----------------+---------+-------+--------+-------+-----+
+|Total            |        0|      0|      13|     50|    0|
++-----------------+---------+-------+--------+-------+-----+
+|Available        |      270|    240|  126800|  63400|    0|
++-----------------+---------+-------+--------+-------+-----+
+|Utilization (%)  |        0|      0|   ~0   |   ~0  |    0|
++-----------------+---------+-------+--------+-------+-----+
+
++ Detail: 
+    * Instance: 
+    +-----------------------------+-------------------+---------+-------+----+----+-----+
+    |           Instance          |       Module      | BRAM_18K| DSP48E| FF | LUT| URAM|
+    +-----------------------------+-------------------+---------+-------+----+----+-----+
+    |grp_BitDecider_do_gen_fu_58  |BitDecider_do_gen  |        0|      0|  13|  50|    0|
+    +-----------------------------+-------------------+---------+-------+----+----+-----+
+    |Total                        |                   |        0|      0|  13|  50|    0|
+    +-----------------------------+-------------------+---------+-------+----+----+-----+
+
+    * DSP48E: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------+-----+-----+------------+--------------------------+--------------+
+| RTL Ports | Dir | Bits|  Protocol  |       Source Object      |    C Type    |
++-----------+-----+-----+------------+--------------------------+--------------+
+|clock      |  in |    1| ap_ctrl_hs | BitDecider::BitDecider.1 | return value |
+|reset      |  in |    1| ap_ctrl_hs | BitDecider::BitDecider.1 | return value |
+|e_dout     |  in |    8|   ap_fifo  |             e            |    pointer   |
+|e_empty_n  |  in |    1|   ap_fifo  |             e            |    pointer   |
+|e_read     | out |    1|   ap_fifo  |             e            |    pointer   |
+|s_din      | out |    1|   ap_fifo  |             s            |    pointer   |
+|s_full_n   |  in |    1|   ap_fifo  |             s            |    pointer   |
+|s_write    | out |    1|   ap_fifo  |             s            |    pointer   |
++-----------+-----+-----+------------+--------------------------+--------------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 2
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 3 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock), !map !198"   --->   Operation 3 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset), !map !202"   --->   Operation 4 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %e), !map !206"   --->   Operation 5 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %s), !map !210"   --->   Operation 6 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/BitDecider.hpp:23]   --->   Operation 7 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([1 x i8]* @p_str30, i32 4, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i8* %e) nounwind" [systemc/src/BitDecider.hpp:23]   --->   Operation 8 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %s, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/BitDecider.hpp:23]   --->   Operation 9 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([1 x i8]* @p_str30, i32 5, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i1* %s) nounwind" [systemc/src/BitDecider.hpp:23]   --->   Operation 10 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecTopModule([11 x i8]* @p_str58, [11 x i8]* @p_str58) nounwind" [systemc/src/BitDecider.hpp:24]   --->   Operation 11 'spectopmodule' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%BitDecider_ssdm_t = load i1* @BitDecider_ssdm_thread_M_do_gen, align 1" [systemc/src/BitDecider.hpp:25]   --->   Operation 12 'load' 'BitDecider_ssdm_t' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "br i1 %BitDecider_ssdm_t, label %1, label %2" [systemc/src/BitDecider.hpp:25]   --->   Operation 13 'br' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProcessDecl([11 x i8]* @p_str58, i32 2, [7 x i8]* @p_str42) nounwind" [systemc/src/BitDecider.hpp:25]   --->   Operation 14 'specprocessdecl' <Predicate = (!BitDecider_ssdm_t)> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecSensitive([7 x i8]* @p_str42, [6 x i8]* @p_str27, i1* %clock, i32 1) nounwind" [systemc/src/BitDecider.hpp:26]   --->   Operation 15 'specsensitive' <Predicate = (!BitDecider_ssdm_t)> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecSensitive([7 x i8]* @p_str42, [6 x i8]* @p_str28, i1* %reset, i32 3) nounwind" [systemc/src/BitDecider.hpp:27]   --->   Operation 16 'specsensitive' <Predicate = (!BitDecider_ssdm_t)> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([11 x i8]* @p_str58, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str27, i32 0, i32 0, i1* %clock) nounwind" [systemc/src/BitDecider.hpp:28]   --->   Operation 17 'specport' <Predicate = (!BitDecider_ssdm_t)> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([11 x i8]* @p_str58, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str28, i32 0, i32 0, i1* %reset) nounwind" [systemc/src/BitDecider.hpp:29]   --->   Operation 18 'specport' <Predicate = (!BitDecider_ssdm_t)> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/BitDecider.hpp:30]   --->   Operation 19 'specinterface' <Predicate = (!BitDecider_ssdm_t)> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([11 x i8]* @p_str58, i32 4, [13 x i8]* @p_str50, [2 x i8]* @p_str32, i32 0, i32 0, i8* %e) nounwind" [systemc/src/BitDecider.hpp:31]   --->   Operation 20 'specport' <Predicate = (!BitDecider_ssdm_t)> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %s, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/BitDecider.hpp:32]   --->   Operation 21 'specinterface' <Predicate = (!BitDecider_ssdm_t)> <Delay = 0.00>
+ST_1 : Operation 22 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([11 x i8]* @p_str58, i32 5, [13 x i8]* @p_str57, [2 x i8]* @p_str51, i32 0, i32 0, i1* %s) nounwind" [systemc/src/BitDecider.hpp:33]   --->   Operation 22 'specport' <Predicate = (!BitDecider_ssdm_t)> <Delay = 0.00>
+ST_1 : Operation 23 [1/1] (0.00ns)   --->   "ret void" [systemc/src/BitDecider.hpp:27]   --->   Operation 23 'ret' <Predicate = (!BitDecider_ssdm_t)> <Delay = 0.00>
+ST_1 : Operation 24 [2/2] (0.00ns)   --->   "call void @"BitDecider::do_gen"(i1* %clock, i1* %reset, i8* %e, i1* %s)" [systemc/src/BitDecider.hpp:25]   --->   Operation 24 'call' <Predicate = (BitDecider_ssdm_t)> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 2 <SV = 1> <Delay = 0.00>
+ST_2 : Operation 25 [1/2] (0.00ns)   --->   "call void @"BitDecider::do_gen"(i1* %clock, i1* %reset, i8* %e, i1* %s)" [systemc/src/BitDecider.hpp:25]   --->   Operation 25 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 26 [1/1] (0.00ns)   --->   "unreachable"   --->   Operation 26 'unreachable' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+STG Binding: 
+---------------- STG Properties BEGIN ----------------
+- Is combinational: 0
+- Is one-state seq: 0
+- Is datapath-only: 0
+- Is pipelined: 0
+- Is top level: 1
+Port [ Return ] is wired: 1; IO mode=ap_ctrl_hs:ce=0
+Port [ clock]:  wired=1; compound=0; hidden=0; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ reset]:  wired=1; compound=0; hidden=0; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ e]:  wired=1; compound=1; hidden=0; nouse=0; global=0; static=0; extern=0; dir=0; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ s]:  wired=1; compound=1; hidden=0; nouse=0; global=0; static=0; extern=0; dir=1; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ BitDecider_ssdm_thread_M_do_gen]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=0; extern=1; dir=0; type=0; pingpong=0; private_global=1; linkage=0; visibility=0; IO mode=ap_none:ce=0
+---------------- STG Properties END ------------------
+
+---------------- Datapath Model BEGIN ----------------
+
+<LifeTime>
+<method=bitvector/>
+specbitsmap_ln0      (specbitsmap    ) [ 000]
+specbitsmap_ln0      (specbitsmap    ) [ 000]
+specbitsmap_ln0      (specbitsmap    ) [ 000]
+specbitsmap_ln0      (specbitsmap    ) [ 000]
+specinterface_ln23   (specinterface  ) [ 000]
+specport_ln23        (specport       ) [ 000]
+specinterface_ln23   (specinterface  ) [ 000]
+specport_ln23        (specport       ) [ 000]
+spectopmodule_ln24   (spectopmodule  ) [ 000]
+BitDecider_ssdm_t    (load           ) [ 010]
+br_ln25              (br             ) [ 000]
+specprocessdecl_ln25 (specprocessdecl) [ 000]
+specsensitive_ln26   (specsensitive  ) [ 000]
+specsensitive_ln27   (specsensitive  ) [ 000]
+specport_ln28        (specport       ) [ 000]
+specport_ln29        (specport       ) [ 000]
+specinterface_ln30   (specinterface  ) [ 000]
+specport_ln31        (specport       ) [ 000]
+specinterface_ln32   (specinterface  ) [ 000]
+specport_ln33        (specport       ) [ 000]
+ret_ln27             (ret            ) [ 000]
+call_ln25            (call           ) [ 000]
+unreachable_ln0      (unreachable    ) [ 000]
+</LifeTime>
+
+<model>
+
+<comp_list>
+<comp id="0" class="1000" name="clock">
+<pin_list>
+<pin id="1" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="clock"/></StgValue>
+</bind>
+</comp>
+
+<comp id="2" class="1000" name="reset">
+<pin_list>
+<pin id="3" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="reset"/></StgValue>
+</bind>
+</comp>
+
+<comp id="4" class="1000" name="e">
+<pin_list>
+<pin id="5" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="e"/></StgValue>
+</bind>
+</comp>
+
+<comp id="6" class="1000" name="s">
+<pin_list>
+<pin id="7" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="s"/></StgValue>
+</bind>
+</comp>
+
+<comp id="8" class="1000" name="BitDecider_ssdm_thread_M_do_gen">
+<pin_list>
+<pin id="9" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="BitDecider_ssdm_thread_M_do_gen"/></StgValue>
+</bind>
+</comp>
+
+<comp id="10" class="1001" name="const_10">
+<pin_list>
+<pin id="11" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecBitsMap"/></StgValue>
+</bind>
+</comp>
+
+<comp id="12" class="1001" name="const_12">
+<pin_list>
+<pin id="13" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecInterface"/></StgValue>
+</bind>
+</comp>
+
+<comp id="14" class="1001" name="const_14">
+<pin_list>
+<pin id="15" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str29"/></StgValue>
+</bind>
+</comp>
+
+<comp id="16" class="1001" name="const_16">
+<pin_list>
+<pin id="17" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="18" class="1001" name="const_18">
+<pin_list>
+<pin id="19" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str30"/></StgValue>
+</bind>
+</comp>
+
+<comp id="20" class="1001" name="const_20">
+<pin_list>
+<pin id="21" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecPort"/></StgValue>
+</bind>
+</comp>
+
+<comp id="22" class="1001" name="const_22">
+<pin_list>
+<pin id="23" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="24" class="1001" name="const_24">
+<pin_list>
+<pin id="25" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="26" class="1001" name="const_26">
+<pin_list>
+<pin id="27" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecTopModule"/></StgValue>
+</bind>
+</comp>
+
+<comp id="28" class="1001" name="const_28">
+<pin_list>
+<pin id="29" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str58"/></StgValue>
+</bind>
+</comp>
+
+<comp id="30" class="1001" name="const_30">
+<pin_list>
+<pin id="31" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecProcessDecl"/></StgValue>
+</bind>
+</comp>
+
+<comp id="32" class="1001" name="const_32">
+<pin_list>
+<pin id="33" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="34" class="1001" name="const_34">
+<pin_list>
+<pin id="35" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str42"/></StgValue>
+</bind>
+</comp>
+
+<comp id="36" class="1001" name="const_36">
+<pin_list>
+<pin id="37" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecSensitive"/></StgValue>
+</bind>
+</comp>
+
+<comp id="38" class="1001" name="const_38">
+<pin_list>
+<pin id="39" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str27"/></StgValue>
+</bind>
+</comp>
+
+<comp id="40" class="1001" name="const_40">
+<pin_list>
+<pin id="41" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="42" class="1001" name="const_42">
+<pin_list>
+<pin id="43" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str28"/></StgValue>
+</bind>
+</comp>
+
+<comp id="44" class="1001" name="const_44">
+<pin_list>
+<pin id="45" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="46" class="1001" name="const_46">
+<pin_list>
+<pin id="47" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str26"/></StgValue>
+</bind>
+</comp>
+
+<comp id="48" class="1001" name="const_48">
+<pin_list>
+<pin id="49" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str50"/></StgValue>
+</bind>
+</comp>
+
+<comp id="50" class="1001" name="const_50">
+<pin_list>
+<pin id="51" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str32"/></StgValue>
+</bind>
+</comp>
+
+<comp id="52" class="1001" name="const_52">
+<pin_list>
+<pin id="53" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str57"/></StgValue>
+</bind>
+</comp>
+
+<comp id="54" class="1001" name="const_54">
+<pin_list>
+<pin id="55" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str51"/></StgValue>
+</bind>
+</comp>
+
+<comp id="56" class="1001" name="const_56">
+<pin_list>
+<pin id="57" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="BitDecider::do_gen"/></StgValue>
+</bind>
+</comp>
+
+<comp id="58" class="1004" name="grp_BitDecider_do_gen_fu_58">
+<pin_list>
+<pin id="59" dir="0" index="0" bw="0" slack="0"/>
+<pin id="60" dir="0" index="1" bw="1" slack="0"/>
+<pin id="61" dir="0" index="2" bw="1" slack="0"/>
+<pin id="62" dir="0" index="3" bw="8" slack="0"/>
+<pin id="63" dir="0" index="4" bw="1" slack="0"/>
+<pin id="64" dir="1" index="5" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="call(48) " fcode="call"/>
+<opset="call_ln25/1 "/>
+</bind>
+</comp>
+
+<comp id="70" class="1004" name="BitDecider_ssdm_t_load_fu_70">
+<pin_list>
+<pin id="71" dir="0" index="0" bw="1" slack="0"/>
+<pin id="72" dir="1" index="1" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="BitDecider_ssdm_t/1 "/>
+</bind>
+</comp>
+
+</comp_list>
+
+<net_list>
+<net id="65"><net_src comp="56" pin="0"/><net_sink comp="58" pin=0"/></net>
+
+<net id="66"><net_src comp="0" pin="0"/><net_sink comp="58" pin=1"/></net>
+
+<net id="67"><net_src comp="2" pin="0"/><net_sink comp="58" pin=2"/></net>
+
+<net id="68"><net_src comp="4" pin="0"/><net_sink comp="58" pin=3"/></net>
+
+<net id="69"><net_src comp="6" pin="0"/><net_sink comp="58" pin=4"/></net>
+
+<net id="73"><net_src comp="8" pin="0"/><net_sink comp="70" pin=0"/></net>
+
+</net_list>
+
+</model> 
+---------------- Datapath Model END ------------------
+
+* FSMD analyzer results:
+  - Output states:
+	Port: s | {1 2 }
+ - Input state : 
+	Port: BitDecider::BitDecider.1 : e | {1 2 }
+	Port: BitDecider::BitDecider.1 : BitDecider_ssdm_thread_M_do_gen | {1 }
+  - Chain level:
+	State 1
+		br_ln25 : 1
+	State 2
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+
+* Functional unit list:
+|----------|-----------------------------|---------|---------|
+| Operation|       Functional Unit       |    FF   |   LUT   |
+|----------|-----------------------------|---------|---------|
+|   call   | grp_BitDecider_do_gen_fu_58 |    9    |    11   |
+|----------|-----------------------------|---------|---------|
+|   Total  |                             |    9    |    11   |
+|----------|-----------------------------|---------|---------|
+
+Memories:
+N/A
+
+* Register list:
+N/A
+
+* Multiplexer (MUX) list: 
+|--------|------|------|------|--------|
+|  Comp  |  Pin | Size |  BW  | S x BW |
+|--------|------|------|------|--------|
+|  Total |      |      |      |    0   |
+|--------|------|------|------|--------|
+
+
+
+* Summary:
++-----------+--------+--------+
+|           |   FF   |   LUT  |
++-----------+--------+--------+
+|  Function |    9   |   11   |
+|   Memory  |    -   |    -   |
+|Multiplexer|    -   |    -   |
+|  Register |    -   |    -   |
++-----------+--------+--------+
+|   Total   |    9   |   11   |
++-----------+--------+--------+

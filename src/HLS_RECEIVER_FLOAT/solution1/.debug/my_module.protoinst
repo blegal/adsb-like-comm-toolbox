@@ -1,0 +1,9 @@
+{
+	"version": "1.0",
+	"modules": {
+		"my_module::my_module": {
+			"proto_instances": {
+			}
+		}
+	}
+}
