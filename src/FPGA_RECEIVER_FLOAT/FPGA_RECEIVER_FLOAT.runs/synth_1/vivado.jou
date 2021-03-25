@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2020.1 (64-bit)
+# SW Build 2902540 on Wed May 27 19:54:35 MDT 2020
+# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+# Start of session at: Thu Mar 25 14:01:39 2021
+# Process ID: 942196
+# Current directory: /home/oasa/Documents/ef/adsb-like-comm-toolbox/src/FPGA_RECEIVER_FLOAT/FPGA_RECEIVER_FLOAT.runs/synth_1
+# Command line: vivado -log nexys_tcp_vga_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source nexys_tcp_vga_top.tcl
+# Log file: /home/oasa/Documents/ef/adsb-like-comm-toolbox/src/FPGA_RECEIVER_FLOAT/FPGA_RECEIVER_FLOAT.runs/synth_1/nexys_tcp_vga_top.vds
+# Journal file: /home/oasa/Documents/ef/adsb-like-comm-toolbox/src/FPGA_RECEIVER_FLOAT/FPGA_RECEIVER_FLOAT.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source nexys_tcp_vga_top.tcl -notrace
