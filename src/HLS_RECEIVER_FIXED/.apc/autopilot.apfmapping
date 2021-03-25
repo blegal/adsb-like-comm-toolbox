@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<autopilotfilemapping:AutoPilotFileMapping xmlns:autopilotfilemapping="www.autoesl.com/autopilotfilemapping">
+  <source>
+    <originFiles name="trames_separ1.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/trames_separ1.hpp"/>
+    <originFiles name="my_module1.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/my_module1.hpp"/>
+    <originFiles name="my_module1.cpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/my_module1.cpp"/>
+    <originFiles name="constantes.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/constantes.hpp"/>
+    <originFiles name="Seuil_calc1.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/Seuil_calc1.hpp"/>
+    <originFiles name="ModuleCompute_old.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/ModuleCompute_old.hpp"/>
+    <originFiles name="FrameProcessing.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/FrameProcessing.hpp"/>
+    <originFiles name="DownSampling.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/DownSampling.hpp"/>
+    <originFiles name="Doubleur_uint.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/Doubleur_uint.hpp"/>
+    <originFiles name="Detecteur1.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/Detecteur1.hpp"/>
+    <originFiles name="CRCCheck.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/CRCCheck.hpp"/>
+    <originFiles name="BitsToBytes.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/BitsToBytes.hpp"/>
+    <originFiles name="BitDecider.hpp" path="/home/oasa/Documents/ef/adsb-like-comm-toolbox/src/systemc/src/BitDecider.hpp"/>
+  </source>
+  <testbench/>
+</autopilotfilemapping:AutoPilotFileMapping>

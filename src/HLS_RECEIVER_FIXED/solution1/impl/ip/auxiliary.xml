@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="my_module1" xd:componentRef="my_module1" xd:initiationInterval="2313" xd:clockPeriod="10.000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:arg xd:name="e" xd:originalName="e" xd:direction="in" xd:interfaceRef="e" xd:busTypeRef="acc_fifo"/>
+  <xd:arg xd:name="addr" xd:originalName="addr" xd:direction="out" xd:interfaceRef="addr" xd:busTypeRef="acc_fifo" xd:firstOut="-1"/>
+  <xd:arg xd:name="rgbv" xd:originalName="rgbv" xd:direction="out" xd:interfaceRef="rgbv" xd:busTypeRef="acc_fifo" xd:firstOut="-1"/>
+  <xd:latencyEstimates xd:best-case="2" xd:worst-case="2312" xd:average-case="581"/>
+  <xd:resourceEstimates xd:LUT="3886" xd:FF="1881" xd:BRAM="4" xd:DSP="19"/>
+</xd:acceleratorMap>

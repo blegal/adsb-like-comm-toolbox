@@ -1,0 +1,470 @@
+
+
+================================================================
+== Vivado HLS Report for 'Seuil_calc1_do_gen'
+================================================================
+* Date:           Thu Mar 25 13:02:59 2021
+
+* Version:        2020.1 (Build 2897737 on Wed May 27 20:21:37 MDT 2020)
+* Project:        HLS_RECEIVER_FLOAT
+* Solution:       solution1
+* Product family: artix7
+* Target device:  xc7a100t-csg324-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  | 10.00 ns | 8.190 ns |   1.25 ns  |
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max    | min | max |   Type  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |        7|        7| 70.000 ns | 70.000 ns |    7|    7|   none  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +----------+---------+---------+----------+-----------+-----------+------+----------+
+        |          |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        | Loop Name|   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +----------+---------+---------+----------+-----------+-----------+------+----------+
+        |- Loop 1  |        6|        6|         6|          1|          1|  inf |    yes   |
+        +----------+---------+---------+----------+-----------+-----------+------+----------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 0
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
++ Individual pipeline summary: 
+  * Pipeline-0: initiation interval (II) = 1, depth = 6
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 7
+* Pipeline : 1
+  Pipeline-0 : II = 1, D = 6, States = { 2 3 4 5 6 7 }
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 
+4 --> 5 
+5 --> 6 
+6 --> 7 
+7 --> 2 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "%buffer_V_1_01066 = alloca i8"   --->   Operation 8 'alloca' 'buffer_V_1_01066' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "%buffer_1_V = alloca i8"   --->   Operation 9 'alloca' 'buffer_1_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "%buffer_2_V = alloca i8"   --->   Operation 10 'alloca' 'buffer_2_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "%buffer_3_V = alloca i8"   --->   Operation 11 'alloca' 'buffer_3_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%buffer_4_V = alloca i8"   --->   Operation 12 'alloca' 'buffer_4_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%buffer_5_V = alloca i8"   --->   Operation 13 'alloca' 'buffer_5_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%buffer_6_V = alloca i8"   --->   Operation 14 'alloca' 'buffer_6_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%buffer_7_V = alloca i8"   --->   Operation 15 'alloca' 'buffer_7_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "%buffer_8_V = alloca i8"   --->   Operation 16 'alloca' 'buffer_8_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "%buffer_9_V = alloca i8"   --->   Operation 17 'alloca' 'buffer_9_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "%buffer_10_V = alloca i8"   --->   Operation 18 'alloca' 'buffer_10_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "%buffer_11_V = alloca i8"   --->   Operation 19 'alloca' 'buffer_11_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "%buffer_12_V = alloca i8"   --->   Operation 20 'alloca' 'buffer_12_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.00ns)   --->   "%buffer_13_V = alloca i8"   --->   Operation 21 'alloca' 'buffer_13_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 22 [1/1] (0.00ns)   --->   "%buffer_14_V = alloca i8"   --->   Operation 22 'alloca' 'buffer_14_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 23 [1/1] (0.00ns)   --->   "%buffer_15_V = alloca i8"   --->   Operation 23 'alloca' 'buffer_15_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 24 [1/1] (0.00ns)   --->   "%buffer_16_V = alloca i8"   --->   Operation 24 'alloca' 'buffer_16_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 25 [1/1] (0.00ns)   --->   "%buffer_17_V = alloca i8"   --->   Operation 25 'alloca' 'buffer_17_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 26 [1/1] (0.00ns)   --->   "%buffer_18_V = alloca i8"   --->   Operation 26 'alloca' 'buffer_18_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 27 [1/1] (0.00ns)   --->   "%buffer_19_V = alloca i8"   --->   Operation 27 'alloca' 'buffer_19_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 28 [1/1] (0.00ns)   --->   "%buffer_20_V = alloca i8"   --->   Operation 28 'alloca' 'buffer_20_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 29 [1/1] (0.00ns)   --->   "%buffer_21_V = alloca i8"   --->   Operation 29 'alloca' 'buffer_21_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 30 [1/1] (0.00ns)   --->   "%buffer_22_V = alloca i8"   --->   Operation 30 'alloca' 'buffer_22_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 31 [1/1] (0.00ns)   --->   "%buffer_23_V = alloca i8"   --->   Operation 31 'alloca' 'buffer_23_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 32 [1/1] (0.00ns)   --->   "%buffer_24_V = alloca i8"   --->   Operation 32 'alloca' 'buffer_24_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 33 [1/1] (0.00ns)   --->   "%buffer_25_V = alloca i8"   --->   Operation 33 'alloca' 'buffer_25_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 34 [1/1] (0.00ns)   --->   "%buffer_26_V = alloca i8"   --->   Operation 34 'alloca' 'buffer_26_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 35 [1/1] (0.00ns)   --->   "%buffer_27_V = alloca i8"   --->   Operation 35 'alloca' 'buffer_27_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 36 [1/1] (0.00ns)   --->   "%buffer_28_V = alloca i8"   --->   Operation 36 'alloca' 'buffer_28_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 37 [1/1] (0.00ns)   --->   "%buffer_29_V = alloca i8"   --->   Operation 37 'alloca' 'buffer_29_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 38 [1/1] (0.00ns)   --->   "%buffer_30_V = alloca i8"   --->   Operation 38 'alloca' 'buffer_30_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 39 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock), !map !253"   --->   Operation 39 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 40 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset), !map !257"   --->   Operation 40 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 41 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %e), !map !261"   --->   Operation 41 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 42 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %detect), !map !265"   --->   Operation 42 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 43 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([12 x i8]* @p_str67, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str27, i32 0, i32 0, i1* %clock) nounwind" [systemc/src/Seuil_calc1.hpp:36]   --->   Operation 43 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 44 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([12 x i8]* @p_str67, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str28, i32 0, i32 0, i1* %reset) nounwind" [systemc/src/Seuil_calc1.hpp:37]   --->   Operation 44 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 45 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/Seuil_calc1.hpp:38]   --->   Operation 45 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 46 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %detect, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/Seuil_calc1.hpp:39]   --->   Operation 46 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 47 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProcessDef([12 x i8]* @p_str67, i32 2, [7 x i8]* @p_str42) nounwind" [systemc/src/Seuil_calc1.hpp:40]   --->   Operation 47 'specprocessdef' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 48 [1/1] (0.00ns)   --->   "%tmp = call i32 (...)* @_ssdm_op_SpecRegionBegin([15 x i8]* @p_str44)" [systemc/src/Seuil_calc1.hpp:40]   --->   Operation 48 'specregionbegin' 'tmp' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 49 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProtocol(i32 1, [1 x i8]* @p_str30) nounwind" [systemc/src/Seuil_calc1.hpp:40]   --->   Operation 49 'specprotocol' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 50 [1/1] (0.00ns)   --->   "%p_ssdm_reset_v = call i32 (...)* @_ssdm_op_SpecStateBegin(i32 0, i32 0, i32 1) nounwind" [systemc/src/Seuil_calc1.hpp:40]   --->   Operation 50 'specstatebegin' 'p_ssdm_reset_v' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 51 [1/1] (0.00ns)   --->   "%empty = call i32 (...)* @_ssdm_op_SpecStateEnd(i32 %p_ssdm_reset_v) nounwind" [systemc/src/Seuil_calc1.hpp:42]   --->   Operation 51 'specstateend' 'empty' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 52 [1/1] (0.00ns)   --->   "%empty_63 = call i32 (...)* @_ssdm_op_SpecRegionEnd([15 x i8]* @p_str44, i32 %tmp)" [systemc/src/Seuil_calc1.hpp:42]   --->   Operation 52 'specregionend' 'empty_63' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 53 [1/1] (0.00ns)   --->   "br label %hls_label_0" [systemc/src/Seuil_calc1.hpp:42]   --->   Operation 53 'br' <Predicate = true> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 3.90>
+ST_2 : Operation 54 [1/1] (3.90ns)   --->   "%val_V = call i8 @_ssdm_op_Read.ap_fifo.volatile.i8P(i8* %e)" [systemc/src/Seuil_calc1.hpp:51]   --->   Operation 54 'read' 'val_V' <Predicate = true> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+
+State 3 <SV = 2> <Delay = 8.19>
+ST_3 : Operation 55 [1/1] (0.00ns)   --->   "%buffer_V_1_01066_loa = load i8* %buffer_V_1_01066" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 55 'load' 'buffer_V_1_01066_loa' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 56 [1/1] (0.00ns)   --->   "%buffer_1_V_load = load i8* %buffer_1_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 56 'load' 'buffer_1_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 57 [1/1] (0.00ns)   --->   "%buffer_2_V_load = load i8* %buffer_2_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 57 'load' 'buffer_2_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 58 [1/1] (0.00ns)   --->   "%buffer_3_V_load = load i8* %buffer_3_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 58 'load' 'buffer_3_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 59 [1/1] (0.00ns)   --->   "%buffer_4_V_load = load i8* %buffer_4_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 59 'load' 'buffer_4_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 60 [1/1] (0.00ns)   --->   "%buffer_5_V_load = load i8* %buffer_5_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 60 'load' 'buffer_5_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 61 [1/1] (0.00ns)   --->   "%buffer_6_V_load = load i8* %buffer_6_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 61 'load' 'buffer_6_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 62 [1/1] (0.00ns)   --->   "%buffer_7_V_load = load i8* %buffer_7_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 62 'load' 'buffer_7_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 63 [1/1] (0.00ns)   --->   "%buffer_8_V_load = load i8* %buffer_8_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 63 'load' 'buffer_8_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 64 [1/1] (0.00ns)   --->   "%buffer_9_V_load = load i8* %buffer_9_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 64 'load' 'buffer_9_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 65 [1/1] (0.00ns)   --->   "%buffer_10_V_load = load i8* %buffer_10_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 65 'load' 'buffer_10_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 66 [1/1] (0.00ns)   --->   "%buffer_11_V_load = load i8* %buffer_11_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 66 'load' 'buffer_11_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 67 [1/1] (0.00ns)   --->   "%buffer_12_V_load = load i8* %buffer_12_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 67 'load' 'buffer_12_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 68 [1/1] (0.00ns)   --->   "%buffer_13_V_load = load i8* %buffer_13_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 68 'load' 'buffer_13_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 69 [1/1] (0.00ns)   --->   "%buffer_14_V_load = load i8* %buffer_14_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 69 'load' 'buffer_14_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 70 [1/1] (0.00ns)   --->   "%buffer_15_V_load = load i8* %buffer_15_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 70 'load' 'buffer_15_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 71 [1/1] (0.00ns)   --->   "%buffer_16_V_load = load i8* %buffer_16_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 71 'load' 'buffer_16_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 72 [1/1] (0.00ns)   --->   "%buffer_17_V_load = load i8* %buffer_17_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 72 'load' 'buffer_17_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 73 [1/1] (0.00ns)   --->   "%buffer_18_V_load = load i8* %buffer_18_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 73 'load' 'buffer_18_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 74 [1/1] (0.00ns)   --->   "%buffer_19_V_load = load i8* %buffer_19_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 74 'load' 'buffer_19_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 75 [1/1] (0.00ns)   --->   "%buffer_20_V_load = load i8* %buffer_20_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 75 'load' 'buffer_20_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 76 [1/1] (0.00ns)   --->   "%buffer_21_V_load = load i8* %buffer_21_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 76 'load' 'buffer_21_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 77 [1/1] (0.00ns)   --->   "%buffer_22_V_load = load i8* %buffer_22_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 77 'load' 'buffer_22_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 78 [1/1] (0.00ns)   --->   "%buffer_23_V_load = load i8* %buffer_23_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 78 'load' 'buffer_23_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 79 [1/1] (0.00ns)   --->   "%buffer_24_V_load = load i8* %buffer_24_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 79 'load' 'buffer_24_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 80 [1/1] (0.00ns)   --->   "%buffer_25_V_load = load i8* %buffer_25_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 80 'load' 'buffer_25_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 81 [1/1] (0.00ns)   --->   "%buffer_26_V_load = load i8* %buffer_26_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 81 'load' 'buffer_26_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 82 [1/1] (0.00ns)   --->   "%buffer_27_V_load = load i8* %buffer_27_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 82 'load' 'buffer_27_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 83 [1/1] (0.00ns)   --->   "%buffer_28_V_load = load i8* %buffer_28_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 83 'load' 'buffer_28_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 84 [1/1] (0.00ns)   --->   "%buffer_29_V_load = load i8* %buffer_29_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 84 'load' 'buffer_29_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 85 [1/1] (0.00ns)   --->   "%buffer_30_V_load = load i8* %buffer_30_V" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 85 'load' 'buffer_30_V_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 86 [1/1] (0.00ns)   --->   "%zext_ln215 = zext i8 %buffer_V_1_01066_loa to i9" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 86 'zext' 'zext_ln215' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 87 [1/1] (0.00ns)   --->   "%zext_ln215_1 = zext i8 %buffer_1_V_load to i9" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 87 'zext' 'zext_ln215_1' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 88 [1/1] (0.00ns)   --->   "%zext_ln215_2 = zext i8 %buffer_4_V_load to i9" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 88 'zext' 'zext_ln215_2' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 89 [1/1] (0.00ns)   --->   "%zext_ln215_3 = zext i8 %buffer_5_V_load to i9" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 89 'zext' 'zext_ln215_3' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 90 [1/1] (0.00ns)   --->   "%zext_ln215_4 = zext i8 %buffer_14_V_load to i9" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 90 'zext' 'zext_ln215_4' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 91 [1/1] (0.00ns)   --->   "%zext_ln215_5 = zext i8 %buffer_15_V_load to i9" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 91 'zext' 'zext_ln215_5' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 92 [1/1] (0.00ns)   --->   "%zext_ln215_6 = zext i8 %buffer_18_V_load to i9" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 92 'zext' 'zext_ln215_6' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 93 [1/1] (0.00ns)   --->   "%zext_ln215_7 = zext i8 %buffer_19_V_load to i9" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 93 'zext' 'zext_ln215_7' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 94 [1/1] (2.11ns)   --->   "%add_ln215 = add i9 %zext_ln215, %zext_ln215_1" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 94 'add' 'add_ln215' <Predicate = true> <Delay = 2.11> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 95 [1/1] (0.00ns)   --->   "%zext_ln215_40 = zext i9 %add_ln215 to i10" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 95 'zext' 'zext_ln215_40' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 96 [1/1] (2.11ns)   --->   "%add_ln215_1 = add i9 %zext_ln215_3, %zext_ln215_2" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 96 'add' 'add_ln215_1' <Predicate = true> <Delay = 2.11> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 97 [1/1] (0.00ns)   --->   "%zext_ln215_41 = zext i9 %add_ln215_1 to i10" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 97 'zext' 'zext_ln215_41' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 98 [1/1] (2.11ns)   --->   "%add_ln215_2 = add i10 %zext_ln215_40, %zext_ln215_41" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 98 'add' 'add_ln215_2' <Predicate = true> <Delay = 2.11> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 99 [1/1] (0.00ns)   --->   "%zext_ln215_42 = zext i10 %add_ln215_2 to i11" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 99 'zext' 'zext_ln215_42' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 100 [1/1] (2.11ns)   --->   "%add_ln215_3 = add i9 %zext_ln215_5, %zext_ln215_4" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 100 'add' 'add_ln215_3' <Predicate = true> <Delay = 2.11> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 101 [1/1] (0.00ns)   --->   "%zext_ln215_43 = zext i9 %add_ln215_3 to i10" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 101 'zext' 'zext_ln215_43' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 102 [1/1] (2.11ns)   --->   "%add_ln215_4 = add i9 %zext_ln215_7, %zext_ln215_6" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 102 'add' 'add_ln215_4' <Predicate = true> <Delay = 2.11> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 103 [1/1] (0.00ns)   --->   "%zext_ln215_44 = zext i9 %add_ln215_4 to i10" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 103 'zext' 'zext_ln215_44' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 104 [1/1] (2.11ns)   --->   "%add_ln215_5 = add i10 %zext_ln215_43, %zext_ln215_44" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 104 'add' 'add_ln215_5' <Predicate = true> <Delay = 2.11> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 105 [1/1] (0.00ns)   --->   "%zext_ln215_45 = zext i10 %add_ln215_5 to i11" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 105 'zext' 'zext_ln215_45' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 106 [1/1] (2.12ns)   --->   "%ps_V = add i11 %zext_ln215_42, %zext_ln215_45" [systemc/src/Seuil_calc1.hpp:53]   --->   Operation 106 'add' 'ps_V' <Predicate = true> <Delay = 2.12> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 107 [1/1] (0.00ns)   --->   "%zext_ln215_8 = zext i8 %buffer_V_1_01066_loa to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 107 'zext' 'zext_ln215_8' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 108 [1/1] (4.37ns)   --->   "%mul_ln1352 = mul i16 %zext_ln215_8, %zext_ln215_8" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 108 'mul' 'mul_ln1352' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 109 [1/1] (0.00ns)   --->   "%zext_ln215_46 = zext i16 %mul_ln1352 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 109 'zext' 'zext_ln215_46' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 110 [1/1] (0.00ns)   --->   "%zext_ln215_9 = zext i8 %buffer_1_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 110 'zext' 'zext_ln215_9' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 111 [1/1] (3.36ns) (grouped into DSP with root node add_ln700)   --->   "%mul_ln1352_1 = mul i16 %zext_ln215_9, %zext_ln215_9" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 111 'mul' 'mul_ln1352_1' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 112 [1/1] (0.00ns) (grouped into DSP with root node add_ln700)   --->   "%zext_ln215_47 = zext i16 %mul_ln1352_1 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 112 'zext' 'zext_ln215_47' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 113 [1/1] (0.00ns)   --->   "%zext_ln215_10 = zext i8 %buffer_2_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 113 'zext' 'zext_ln215_10' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 114 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_1)   --->   "%mul_ln1352_2 = mul i16 %zext_ln215_10, %zext_ln215_10" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 114 'mul' 'mul_ln1352_2' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 115 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_1)   --->   "%zext_ln215_48 = zext i16 %mul_ln1352_2 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 115 'zext' 'zext_ln215_48' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 116 [1/1] (0.00ns)   --->   "%zext_ln215_11 = zext i8 %buffer_3_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 116 'zext' 'zext_ln215_11' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 117 [1/1] (4.37ns)   --->   "%mul_ln1352_3 = mul i16 %zext_ln215_11, %zext_ln215_11" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 117 'mul' 'mul_ln1352_3' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 118 [1/1] (0.00ns)   --->   "%zext_ln215_49 = zext i16 %mul_ln1352_3 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 118 'zext' 'zext_ln215_49' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 119 [1/1] (0.00ns)   --->   "%zext_ln215_12 = zext i8 %buffer_4_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 119 'zext' 'zext_ln215_12' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 120 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_3)   --->   "%mul_ln1352_4 = mul i16 %zext_ln215_12, %zext_ln215_12" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 120 'mul' 'mul_ln1352_4' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 121 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_3)   --->   "%zext_ln215_50 = zext i16 %mul_ln1352_4 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 121 'zext' 'zext_ln215_50' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 122 [1/1] (0.00ns)   --->   "%zext_ln215_13 = zext i8 %buffer_5_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 122 'zext' 'zext_ln215_13' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 123 [1/1] (4.37ns)   --->   "%mul_ln1352_5 = mul i16 %zext_ln215_13, %zext_ln215_13" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 123 'mul' 'mul_ln1352_5' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 124 [1/1] (0.00ns)   --->   "%zext_ln215_51 = zext i16 %mul_ln1352_5 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 124 'zext' 'zext_ln215_51' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 125 [1/1] (0.00ns)   --->   "%zext_ln215_14 = zext i8 %buffer_6_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 125 'zext' 'zext_ln215_14' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 126 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_4)   --->   "%mul_ln1352_6 = mul i16 %zext_ln215_14, %zext_ln215_14" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 126 'mul' 'mul_ln1352_6' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 127 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_4)   --->   "%zext_ln215_52 = zext i16 %mul_ln1352_6 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 127 'zext' 'zext_ln215_52' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 128 [1/1] (0.00ns)   --->   "%zext_ln215_15 = zext i8 %buffer_7_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 128 'zext' 'zext_ln215_15' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 129 [1/1] (4.37ns)   --->   "%mul_ln1352_7 = mul i16 %zext_ln215_15, %zext_ln215_15" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 129 'mul' 'mul_ln1352_7' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 130 [1/1] (0.00ns)   --->   "%zext_ln215_53 = zext i16 %mul_ln1352_7 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 130 'zext' 'zext_ln215_53' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 131 [1/1] (0.00ns)   --->   "%zext_ln215_16 = zext i8 %buffer_8_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 131 'zext' 'zext_ln215_16' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 132 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_7)   --->   "%mul_ln1352_8 = mul i16 %zext_ln215_16, %zext_ln215_16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 132 'mul' 'mul_ln1352_8' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 133 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_7)   --->   "%zext_ln215_54 = zext i16 %mul_ln1352_8 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 133 'zext' 'zext_ln215_54' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 134 [1/1] (0.00ns)   --->   "%zext_ln215_17 = zext i8 %buffer_9_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 134 'zext' 'zext_ln215_17' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 135 [1/1] (4.37ns)   --->   "%mul_ln1352_9 = mul i16 %zext_ln215_17, %zext_ln215_17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 135 'mul' 'mul_ln1352_9' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 136 [1/1] (0.00ns)   --->   "%zext_ln215_55 = zext i16 %mul_ln1352_9 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 136 'zext' 'zext_ln215_55' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 137 [1/1] (0.00ns)   --->   "%zext_ln215_18 = zext i8 %buffer_10_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 137 'zext' 'zext_ln215_18' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 138 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_8)   --->   "%mul_ln1352_10 = mul i16 %zext_ln215_18, %zext_ln215_18" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 138 'mul' 'mul_ln1352_10' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 139 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_8)   --->   "%zext_ln215_56 = zext i16 %mul_ln1352_10 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 139 'zext' 'zext_ln215_56' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 140 [1/1] (0.00ns)   --->   "%zext_ln215_19 = zext i8 %buffer_11_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 140 'zext' 'zext_ln215_19' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 141 [1/1] (4.37ns)   --->   "%mul_ln1352_11 = mul i16 %zext_ln215_19, %zext_ln215_19" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 141 'mul' 'mul_ln1352_11' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 142 [1/1] (0.00ns)   --->   "%zext_ln215_57 = zext i16 %mul_ln1352_11 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 142 'zext' 'zext_ln215_57' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 143 [1/1] (0.00ns)   --->   "%zext_ln215_20 = zext i8 %buffer_12_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 143 'zext' 'zext_ln215_20' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 144 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_10)   --->   "%mul_ln1352_12 = mul i16 %zext_ln215_20, %zext_ln215_20" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 144 'mul' 'mul_ln1352_12' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 145 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_10)   --->   "%zext_ln215_58 = zext i16 %mul_ln1352_12 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 145 'zext' 'zext_ln215_58' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 146 [1/1] (0.00ns)   --->   "%zext_ln215_21 = zext i8 %buffer_13_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 146 'zext' 'zext_ln215_21' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 147 [1/1] (4.37ns)   --->   "%mul_ln1352_13 = mul i16 %zext_ln215_21, %zext_ln215_21" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 147 'mul' 'mul_ln1352_13' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 148 [1/1] (0.00ns)   --->   "%zext_ln215_59 = zext i16 %mul_ln1352_13 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 148 'zext' 'zext_ln215_59' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 149 [1/1] (0.00ns)   --->   "%zext_ln215_22 = zext i8 %buffer_14_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 149 'zext' 'zext_ln215_22' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 150 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_11)   --->   "%mul_ln1352_14 = mul i16 %zext_ln215_22, %zext_ln215_22" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 150 'mul' 'mul_ln1352_14' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 151 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_11)   --->   "%zext_ln215_60 = zext i16 %mul_ln1352_14 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 151 'zext' 'zext_ln215_60' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 152 [1/1] (0.00ns)   --->   "%zext_ln215_23 = zext i8 %buffer_15_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 152 'zext' 'zext_ln215_23' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 153 [1/1] (4.37ns)   --->   "%mul_ln1352_15 = mul i16 %zext_ln215_23, %zext_ln215_23" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 153 'mul' 'mul_ln1352_15' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 154 [1/1] (0.00ns)   --->   "%zext_ln215_61 = zext i16 %mul_ln1352_15 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 154 'zext' 'zext_ln215_61' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 155 [1/1] (0.00ns)   --->   "%zext_ln215_24 = zext i8 %buffer_16_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 155 'zext' 'zext_ln215_24' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 156 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_15)   --->   "%mul_ln1352_16 = mul i16 %zext_ln215_24, %zext_ln215_24" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 156 'mul' 'mul_ln1352_16' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 157 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_15)   --->   "%zext_ln215_62 = zext i16 %mul_ln1352_16 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 157 'zext' 'zext_ln215_62' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 158 [1/1] (0.00ns)   --->   "%zext_ln215_25 = zext i8 %buffer_17_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 158 'zext' 'zext_ln215_25' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 159 [1/1] (4.37ns)   --->   "%mul_ln1352_17 = mul i16 %zext_ln215_25, %zext_ln215_25" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 159 'mul' 'mul_ln1352_17' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 160 [1/1] (0.00ns)   --->   "%zext_ln215_63 = zext i16 %mul_ln1352_17 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 160 'zext' 'zext_ln215_63' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 161 [1/1] (0.00ns)   --->   "%zext_ln215_26 = zext i8 %buffer_18_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 161 'zext' 'zext_ln215_26' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 162 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_16)   --->   "%mul_ln1352_18 = mul i16 %zext_ln215_26, %zext_ln215_26" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 162 'mul' 'mul_ln1352_18' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 163 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_16)   --->   "%zext_ln215_64 = zext i16 %mul_ln1352_18 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 163 'zext' 'zext_ln215_64' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 164 [1/1] (0.00ns)   --->   "%zext_ln215_27 = zext i8 %buffer_19_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 164 'zext' 'zext_ln215_27' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 165 [1/1] (4.37ns)   --->   "%mul_ln1352_19 = mul i16 %zext_ln215_27, %zext_ln215_27" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 165 'mul' 'mul_ln1352_19' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 166 [1/1] (0.00ns)   --->   "%zext_ln215_65 = zext i16 %mul_ln1352_19 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 166 'zext' 'zext_ln215_65' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 167 [1/1] (0.00ns)   --->   "%zext_ln215_28 = zext i8 %buffer_20_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 167 'zext' 'zext_ln215_28' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 168 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_18)   --->   "%mul_ln1352_20 = mul i16 %zext_ln215_28, %zext_ln215_28" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 168 'mul' 'mul_ln1352_20' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 169 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_18)   --->   "%zext_ln215_66 = zext i16 %mul_ln1352_20 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 169 'zext' 'zext_ln215_66' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 170 [1/1] (0.00ns)   --->   "%zext_ln215_29 = zext i8 %buffer_21_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 170 'zext' 'zext_ln215_29' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 171 [1/1] (4.37ns)   --->   "%mul_ln1352_21 = mul i16 %zext_ln215_29, %zext_ln215_29" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 171 'mul' 'mul_ln1352_21' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 172 [1/1] (0.00ns)   --->   "%zext_ln215_67 = zext i16 %mul_ln1352_21 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 172 'zext' 'zext_ln215_67' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 173 [1/1] (0.00ns)   --->   "%zext_ln215_30 = zext i8 %buffer_22_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 173 'zext' 'zext_ln215_30' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 174 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_19)   --->   "%mul_ln1352_22 = mul i16 %zext_ln215_30, %zext_ln215_30" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 174 'mul' 'mul_ln1352_22' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 175 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_19)   --->   "%zext_ln215_68 = zext i16 %mul_ln1352_22 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 175 'zext' 'zext_ln215_68' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 176 [1/1] (0.00ns)   --->   "%zext_ln215_31 = zext i8 %buffer_23_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 176 'zext' 'zext_ln215_31' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 177 [1/1] (4.37ns)   --->   "%mul_ln1352_23 = mul i16 %zext_ln215_31, %zext_ln215_31" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 177 'mul' 'mul_ln1352_23' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 178 [1/1] (0.00ns)   --->   "%zext_ln215_69 = zext i16 %mul_ln1352_23 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 178 'zext' 'zext_ln215_69' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 179 [1/1] (0.00ns)   --->   "%zext_ln215_32 = zext i8 %buffer_24_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 179 'zext' 'zext_ln215_32' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 180 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_22)   --->   "%mul_ln1352_24 = mul i16 %zext_ln215_32, %zext_ln215_32" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 180 'mul' 'mul_ln1352_24' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 181 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_22)   --->   "%zext_ln215_70 = zext i16 %mul_ln1352_24 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 181 'zext' 'zext_ln215_70' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 182 [1/1] (0.00ns)   --->   "%zext_ln215_33 = zext i8 %buffer_25_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 182 'zext' 'zext_ln215_33' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 183 [1/1] (4.37ns)   --->   "%mul_ln1352_25 = mul i16 %zext_ln215_33, %zext_ln215_33" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 183 'mul' 'mul_ln1352_25' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 184 [1/1] (0.00ns)   --->   "%zext_ln215_71 = zext i16 %mul_ln1352_25 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 184 'zext' 'zext_ln215_71' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 185 [1/1] (0.00ns)   --->   "%zext_ln215_34 = zext i8 %buffer_26_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 185 'zext' 'zext_ln215_34' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 186 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_23)   --->   "%mul_ln1352_26 = mul i16 %zext_ln215_34, %zext_ln215_34" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 186 'mul' 'mul_ln1352_26' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 187 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_23)   --->   "%zext_ln215_72 = zext i16 %mul_ln1352_26 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 187 'zext' 'zext_ln215_72' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 188 [1/1] (0.00ns)   --->   "%zext_ln215_35 = zext i8 %buffer_27_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 188 'zext' 'zext_ln215_35' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 189 [1/1] (4.37ns)   --->   "%mul_ln1352_27 = mul i16 %zext_ln215_35, %zext_ln215_35" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 189 'mul' 'mul_ln1352_27' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 190 [1/1] (0.00ns)   --->   "%zext_ln215_73 = zext i16 %mul_ln1352_27 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 190 'zext' 'zext_ln215_73' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 191 [1/1] (0.00ns)   --->   "%zext_ln215_36 = zext i8 %buffer_28_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 191 'zext' 'zext_ln215_36' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 192 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_25)   --->   "%mul_ln1352_28 = mul i16 %zext_ln215_36, %zext_ln215_36" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 192 'mul' 'mul_ln1352_28' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 193 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_25)   --->   "%zext_ln215_74 = zext i16 %mul_ln1352_28 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 193 'zext' 'zext_ln215_74' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 194 [1/1] (0.00ns)   --->   "%zext_ln215_37 = zext i8 %buffer_29_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 194 'zext' 'zext_ln215_37' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 195 [1/1] (4.37ns)   --->   "%mul_ln1352_29 = mul i16 %zext_ln215_37, %zext_ln215_37" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 195 'mul' 'mul_ln1352_29' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 196 [1/1] (0.00ns)   --->   "%zext_ln215_75 = zext i16 %mul_ln1352_29 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 196 'zext' 'zext_ln215_75' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 197 [1/1] (0.00ns)   --->   "%zext_ln215_38 = zext i8 %buffer_30_V_load to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 197 'zext' 'zext_ln215_38' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 198 [1/1] (3.36ns) (grouped into DSP with root node add_ln700_26)   --->   "%mul_ln1352_30 = mul i16 %zext_ln215_38, %zext_ln215_38" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 198 'mul' 'mul_ln1352_30' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 199 [1/1] (0.00ns) (grouped into DSP with root node add_ln700_26)   --->   "%zext_ln215_76 = zext i16 %mul_ln1352_30 to i17" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 199 'zext' 'zext_ln215_76' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 200 [1/1] (0.00ns)   --->   "%zext_ln215_39 = zext i8 %val_V to i16" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 200 'zext' 'zext_ln215_39' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 201 [1/1] (4.37ns)   --->   "%mul_ln1352_31 = mul i16 %zext_ln215_39, %zext_ln215_39" [systemc/src/Seuil_calc1.hpp:61]   --->   Operation 201 'mul' 'mul_ln1352_31' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 202 [1/1] (0.00ns)   --->   "%zext_ln700 = zext i16 %mul_ln1352_31 to i17" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 202 'zext' 'zext_ln700' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 203 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700 = add i17 %zext_ln215_46, %zext_ln215_47" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 203 'add' 'add_ln700' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 204 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_1 = add i17 %zext_ln215_49, %zext_ln215_48" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 204 'add' 'add_ln700_1' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 205 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_3 = add i17 %zext_ln215_51, %zext_ln215_50" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 205 'add' 'add_ln700_3' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 206 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_4 = add i17 %zext_ln215_53, %zext_ln215_52" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 206 'add' 'add_ln700_4' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 207 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_7 = add i17 %zext_ln215_55, %zext_ln215_54" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 207 'add' 'add_ln700_7' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 208 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_8 = add i17 %zext_ln215_57, %zext_ln215_56" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 208 'add' 'add_ln700_8' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 209 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_10 = add i17 %zext_ln215_59, %zext_ln215_58" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 209 'add' 'add_ln700_10' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 210 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_11 = add i17 %zext_ln215_61, %zext_ln215_60" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 210 'add' 'add_ln700_11' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 211 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_15 = add i17 %zext_ln215_63, %zext_ln215_62" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 211 'add' 'add_ln700_15' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 212 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_16 = add i17 %zext_ln215_65, %zext_ln215_64" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 212 'add' 'add_ln700_16' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 213 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_18 = add i17 %zext_ln215_67, %zext_ln215_66" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 213 'add' 'add_ln700_18' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 214 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_19 = add i17 %zext_ln215_69, %zext_ln215_68" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 214 'add' 'add_ln700_19' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 215 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_22 = add i17 %zext_ln215_71, %zext_ln215_70" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 215 'add' 'add_ln700_22' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 216 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_23 = add i17 %zext_ln215_73, %zext_ln215_72" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 216 'add' 'add_ln700_23' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 217 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_25 = add i17 %zext_ln215_75, %zext_ln215_74" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 217 'add' 'add_ln700_25' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 218 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln700_26 = add i17 %zext_ln700, %zext_ln215_76" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 218 'add' 'add_ln700_26' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_3 : Operation 219 [1/1] (0.00ns)   --->   "store i8 %val_V, i8* %buffer_30_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 219 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 220 [1/1] (0.00ns)   --->   "store i8 %buffer_30_V_load, i8* %buffer_29_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 220 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 221 [1/1] (0.00ns)   --->   "store i8 %buffer_29_V_load, i8* %buffer_28_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 221 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 222 [1/1] (0.00ns)   --->   "store i8 %buffer_28_V_load, i8* %buffer_27_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 222 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 223 [1/1] (0.00ns)   --->   "store i8 %buffer_27_V_load, i8* %buffer_26_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 223 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 224 [1/1] (0.00ns)   --->   "store i8 %buffer_26_V_load, i8* %buffer_25_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 224 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 225 [1/1] (0.00ns)   --->   "store i8 %buffer_25_V_load, i8* %buffer_24_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 225 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 226 [1/1] (0.00ns)   --->   "store i8 %buffer_24_V_load, i8* %buffer_23_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 226 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 227 [1/1] (0.00ns)   --->   "store i8 %buffer_23_V_load, i8* %buffer_22_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 227 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 228 [1/1] (0.00ns)   --->   "store i8 %buffer_22_V_load, i8* %buffer_21_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 228 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 229 [1/1] (0.00ns)   --->   "store i8 %buffer_21_V_load, i8* %buffer_20_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 229 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 230 [1/1] (0.00ns)   --->   "store i8 %buffer_20_V_load, i8* %buffer_19_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 230 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 231 [1/1] (0.00ns)   --->   "store i8 %buffer_19_V_load, i8* %buffer_18_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 231 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 232 [1/1] (0.00ns)   --->   "store i8 %buffer_18_V_load, i8* %buffer_17_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 232 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 233 [1/1] (0.00ns)   --->   "store i8 %buffer_17_V_load, i8* %buffer_16_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 233 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 234 [1/1] (0.00ns)   --->   "store i8 %buffer_16_V_load, i8* %buffer_15_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 234 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 235 [1/1] (0.00ns)   --->   "store i8 %buffer_15_V_load, i8* %buffer_14_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 235 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 236 [1/1] (0.00ns)   --->   "store i8 %buffer_14_V_load, i8* %buffer_13_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 236 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 237 [1/1] (0.00ns)   --->   "store i8 %buffer_13_V_load, i8* %buffer_12_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 237 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 238 [1/1] (0.00ns)   --->   "store i8 %buffer_12_V_load, i8* %buffer_11_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 238 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 239 [1/1] (0.00ns)   --->   "store i8 %buffer_11_V_load, i8* %buffer_10_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 239 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 240 [1/1] (0.00ns)   --->   "store i8 %buffer_10_V_load, i8* %buffer_9_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 240 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 241 [1/1] (0.00ns)   --->   "store i8 %buffer_9_V_load, i8* %buffer_8_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 241 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 242 [1/1] (0.00ns)   --->   "store i8 %buffer_8_V_load, i8* %buffer_7_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 242 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 243 [1/1] (0.00ns)   --->   "store i8 %buffer_7_V_load, i8* %buffer_6_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 243 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 244 [1/1] (0.00ns)   --->   "store i8 %buffer_6_V_load, i8* %buffer_5_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 244 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 245 [1/1] (0.00ns)   --->   "store i8 %buffer_5_V_load, i8* %buffer_4_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 245 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 246 [1/1] (0.00ns)   --->   "store i8 %buffer_4_V_load, i8* %buffer_3_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 246 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 247 [1/1] (0.00ns)   --->   "store i8 %buffer_3_V_load, i8* %buffer_2_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 247 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 248 [1/1] (0.00ns)   --->   "store i8 %buffer_2_V_load, i8* %buffer_1_V" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 248 'store' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 249 [1/1] (0.00ns)   --->   "store i8 %buffer_1_V_load, i8* %buffer_V_1_01066" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 249 'store' <Predicate = true> <Delay = 0.00>
+
+State 4 <SV = 3> <Delay = 6.64>
+ST_4 : Operation 250 [1/1] (0.00ns)   --->   "%zext_ln700_1 = zext i17 %add_ln700 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 250 'zext' 'zext_ln700_1' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 251 [1/1] (0.00ns)   --->   "%zext_ln700_2 = zext i17 %add_ln700_1 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 251 'zext' 'zext_ln700_2' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 252 [1/1] (2.18ns)   --->   "%add_ln700_2 = add i18 %zext_ln700_1, %zext_ln700_2" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 252 'add' 'add_ln700_2' <Predicate = true> <Delay = 2.18> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 253 [1/1] (0.00ns)   --->   "%zext_ln700_3 = zext i18 %add_ln700_2 to i19" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 253 'zext' 'zext_ln700_3' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 254 [1/1] (0.00ns)   --->   "%zext_ln700_4 = zext i17 %add_ln700_3 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 254 'zext' 'zext_ln700_4' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 255 [1/1] (0.00ns)   --->   "%zext_ln700_5 = zext i17 %add_ln700_4 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 255 'zext' 'zext_ln700_5' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 256 [1/1] (2.18ns)   --->   "%add_ln700_5 = add i18 %zext_ln700_4, %zext_ln700_5" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 256 'add' 'add_ln700_5' <Predicate = true> <Delay = 2.18> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 257 [1/1] (0.00ns)   --->   "%zext_ln700_6 = zext i18 %add_ln700_5 to i19" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 257 'zext' 'zext_ln700_6' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 258 [1/1] (2.21ns)   --->   "%add_ln700_6 = add i19 %zext_ln700_3, %zext_ln700_6" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 258 'add' 'add_ln700_6' <Predicate = true> <Delay = 2.21> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 259 [1/1] (0.00ns)   --->   "%zext_ln700_8 = zext i17 %add_ln700_7 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 259 'zext' 'zext_ln700_8' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 260 [1/1] (0.00ns)   --->   "%zext_ln700_9 = zext i17 %add_ln700_8 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 260 'zext' 'zext_ln700_9' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 261 [1/1] (2.18ns)   --->   "%add_ln700_9 = add i18 %zext_ln700_8, %zext_ln700_9" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 261 'add' 'add_ln700_9' <Predicate = true> <Delay = 2.18> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 262 [1/1] (0.00ns)   --->   "%zext_ln700_10 = zext i18 %add_ln700_9 to i19" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 262 'zext' 'zext_ln700_10' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 263 [1/1] (0.00ns)   --->   "%zext_ln700_11 = zext i17 %add_ln700_10 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 263 'zext' 'zext_ln700_11' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 264 [1/1] (0.00ns)   --->   "%zext_ln700_12 = zext i17 %add_ln700_11 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 264 'zext' 'zext_ln700_12' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 265 [1/1] (2.18ns)   --->   "%add_ln700_12 = add i18 %zext_ln700_11, %zext_ln700_12" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 265 'add' 'add_ln700_12' <Predicate = true> <Delay = 2.18> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 266 [1/1] (0.00ns)   --->   "%zext_ln700_13 = zext i18 %add_ln700_12 to i19" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 266 'zext' 'zext_ln700_13' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 267 [1/1] (2.21ns)   --->   "%add_ln700_13 = add i19 %zext_ln700_10, %zext_ln700_13" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 267 'add' 'add_ln700_13' <Predicate = true> <Delay = 2.21> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 268 [1/1] (0.00ns)   --->   "%zext_ln700_15 = zext i17 %add_ln700_15 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 268 'zext' 'zext_ln700_15' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 269 [1/1] (0.00ns)   --->   "%zext_ln700_16 = zext i17 %add_ln700_16 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 269 'zext' 'zext_ln700_16' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 270 [1/1] (2.18ns)   --->   "%add_ln700_17 = add i18 %zext_ln700_15, %zext_ln700_16" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 270 'add' 'add_ln700_17' <Predicate = true> <Delay = 2.18> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 271 [1/1] (0.00ns)   --->   "%zext_ln700_17 = zext i18 %add_ln700_17 to i19" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 271 'zext' 'zext_ln700_17' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 272 [1/1] (0.00ns)   --->   "%zext_ln700_18 = zext i17 %add_ln700_18 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 272 'zext' 'zext_ln700_18' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 273 [1/1] (0.00ns)   --->   "%zext_ln700_19 = zext i17 %add_ln700_19 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 273 'zext' 'zext_ln700_19' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 274 [1/1] (2.18ns)   --->   "%add_ln700_20 = add i18 %zext_ln700_18, %zext_ln700_19" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 274 'add' 'add_ln700_20' <Predicate = true> <Delay = 2.18> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 275 [1/1] (0.00ns)   --->   "%zext_ln700_20 = zext i18 %add_ln700_20 to i19" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 275 'zext' 'zext_ln700_20' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 276 [1/1] (2.21ns)   --->   "%add_ln700_21 = add i19 %zext_ln700_17, %zext_ln700_20" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 276 'add' 'add_ln700_21' <Predicate = true> <Delay = 2.21> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 277 [1/1] (0.00ns)   --->   "%zext_ln700_21 = zext i19 %add_ln700_21 to i20" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 277 'zext' 'zext_ln700_21' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 278 [1/1] (0.00ns)   --->   "%zext_ln700_22 = zext i17 %add_ln700_22 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 278 'zext' 'zext_ln700_22' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 279 [1/1] (0.00ns)   --->   "%zext_ln700_23 = zext i17 %add_ln700_23 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 279 'zext' 'zext_ln700_23' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 280 [1/1] (2.18ns)   --->   "%add_ln700_24 = add i18 %zext_ln700_22, %zext_ln700_23" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 280 'add' 'add_ln700_24' <Predicate = true> <Delay = 2.18> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 281 [1/1] (0.00ns)   --->   "%zext_ln700_24 = zext i18 %add_ln700_24 to i19" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 281 'zext' 'zext_ln700_24' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 282 [1/1] (0.00ns)   --->   "%zext_ln700_25 = zext i17 %add_ln700_25 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 282 'zext' 'zext_ln700_25' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 283 [1/1] (0.00ns)   --->   "%zext_ln700_26 = zext i17 %add_ln700_26 to i18" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 283 'zext' 'zext_ln700_26' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 284 [1/1] (2.18ns)   --->   "%add_ln700_27 = add i18 %zext_ln700_25, %zext_ln700_26" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 284 'add' 'add_ln700_27' <Predicate = true> <Delay = 2.18> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 285 [1/1] (0.00ns)   --->   "%zext_ln700_27 = zext i18 %add_ln700_27 to i19" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 285 'zext' 'zext_ln700_27' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 286 [1/1] (2.21ns)   --->   "%add_ln700_28 = add i19 %zext_ln700_24, %zext_ln700_27" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 286 'add' 'add_ln700_28' <Predicate = true> <Delay = 2.21> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 287 [1/1] (0.00ns)   --->   "%zext_ln700_28 = zext i19 %add_ln700_28 to i20" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 287 'zext' 'zext_ln700_28' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 288 [1/1] (2.25ns)   --->   "%add_ln700_29 = add i20 %zext_ln700_21, %zext_ln700_28" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 288 'add' 'add_ln700_29' <Predicate = true> <Delay = 2.25> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.25> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+
+State 5 <SV = 4> <Delay = 7.85>
+ST_5 : Operation 289 [1/1] (0.00ns)   --->   "%zext_ln700_7 = zext i19 %add_ln700_6 to i20" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 289 'zext' 'zext_ln700_7' <Predicate = true> <Delay = 0.00>
+ST_5 : Operation 290 [1/1] (0.00ns)   --->   "%zext_ln700_14 = zext i19 %add_ln700_13 to i20" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 290 'zext' 'zext_ln700_14' <Predicate = true> <Delay = 0.00>
+ST_5 : Operation 291 [1/1] (0.00ns) (grouped into TernaryAdder)   --->   "%add_ln700_14 = add i20 %zext_ln700_7, %zext_ln700_14" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 291 'add' 'add_ln700_14' <Predicate = true> <Delay = 0.00> <Core = "TAddSub">   --->   Core 83 'TAddSub' <Latency = 0> <II = 1> <Delay = 2.07> <IPBlock> <Opcode : 'add' 'sub'> <InPorts = 3> <OutPorts = 1> <Sync> <CReg>
+ST_5 : Operation 292 [1/1] (4.15ns) (root node of TernaryAdder)   --->   "%add_ln700_30 = add i20 %add_ln700_29, %add_ln700_14" [systemc/src/Seuil_calc1.hpp:62]   --->   Operation 292 'add' 'add_ln700_30' <Predicate = true> <Delay = 4.15> <Core = "TAddSub">   --->   Core 83 'TAddSub' <Latency = 0> <II = 1> <Delay = 2.07> <IPBlock> <Opcode : 'add' 'sub'> <InPorts = 3> <OutPorts = 1> <Sync> <CReg>
+ST_5 : Operation 293 [1/1] (0.00ns)   --->   "%r_V = call i17 @_ssdm_op_PartSelect.i17.i20.i32.i32(i20 %add_ln700_30, i32 2, i32 18)" [systemc/src/Seuil_calc1.hpp:66]   --->   Operation 293 'partselect' 'r_V' <Predicate = true> <Delay = 0.00>
+ST_5 : Operation 294 [1/1] (2.38ns)   --->   "%icmp_ln879 = icmp eq i17 %r_V, 0" [systemc/src/Seuil_calc1.hpp:67]   --->   Operation 294 'icmp' 'icmp_ln879' <Predicate = true> <Delay = 2.38> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 2.40> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_5 : Operation 295 [1/1] (1.31ns)   --->   "%res_2_V_1 = select i1 %icmp_ln879, i17 31, i17 %r_V" [systemc/src/Seuil_calc1.hpp:67]   --->   Operation 295 'select' 'res_2_V_1' <Predicate = true> <Delay = 1.31> <Core = "Sel">   --->   Core 26 'Sel' <Latency = 0> <II = 1> <Delay = 1.31> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+
+State 6 <SV = 5> <Delay = 7.18>
+ST_6 : Operation 296 [1/1] (0.00ns)   --->   "%lhs_V = zext i11 %ps_V to i22" [systemc/src/Seuil_calc1.hpp:65]   --->   Operation 296 'zext' 'lhs_V' <Predicate = true> <Delay = 0.00>
+ST_6 : Operation 297 [1/1] (7.18ns) (root node of the DSP)   --->   "%ret_V = mul i22 %lhs_V, %lhs_V" [systemc/src/Seuil_calc1.hpp:65]   --->   Operation 297 'mul' 'ret_V' <Predicate = true> <Delay = 7.18> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_6 : Operation 298 [1/1] (0.00ns)   --->   "%zext_ln895 = zext i17 %res_2_V_1 to i27" [systemc/src/Seuil_calc1.hpp:69]   --->   Operation 298 'zext' 'zext_ln895' <Predicate = true> <Delay = 0.00>
+ST_6 : Operation 299 [1/1] (7.18ns) (root node of the DSP)   --->   "%mul_ln895 = mul i27 %zext_ln895, 27" [systemc/src/Seuil_calc1.hpp:69]   --->   Operation 299 'mul' 'mul_ln895' <Predicate = true> <Delay = 7.18> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+
+State 7 <SV = 6> <Delay = 7.29>
+ST_7 : Operation 300 [1/1] (0.00ns)   --->   "%loop_begin = call i32 (...)* @_ssdm_op_SpecLoopBegin() nounwind"   --->   Operation 300 'specloopbegin' 'loop_begin' <Predicate = true> <Delay = 0.00>
+ST_7 : Operation 301 [1/1] (0.00ns)   --->   "%tmp_2 = call i32 (...)* @_ssdm_op_SpecRegionBegin([12 x i8]* @p_str69)" [systemc/src/Seuil_calc1.hpp:44]   --->   Operation 301 'specregionbegin' 'tmp_2' <Predicate = true> <Delay = 0.00>
+ST_7 : Operation 302 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPipeline(i32 -1, i32 1, i32 1, i32 0, [1 x i8]* @p_str30) nounwind" [systemc/src/Seuil_calc1.hpp:45]   --->   Operation 302 'specpipeline' <Predicate = true> <Delay = 0.00>
+ST_7 : Operation 303 [1/1] (0.00ns)   --->   "%zext_ln895_1 = zext i22 %ret_V to i27" [systemc/src/Seuil_calc1.hpp:69]   --->   Operation 303 'zext' 'zext_ln895_1' <Predicate = true> <Delay = 0.00>
+ST_7 : Operation 304 [1/1] (2.40ns)   --->   "%icmp_ln895 = icmp ult i27 %zext_ln895_1, %mul_ln895" [systemc/src/Seuil_calc1.hpp:69]   --->   Operation 304 'icmp' 'icmp_ln895' <Predicate = true> <Delay = 2.40> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 2.40> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_7 : Operation 305 [1/1] (0.97ns)   --->   "%condition = xor i1 %icmp_ln895, true" [systemc/src/Seuil_calc1.hpp:69]   --->   Operation 305 'xor' 'condition' <Predicate = true> <Delay = 0.97> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.97> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_7 : Operation 306 [1/1] (3.90ns)   --->   "call void @_ssdm_op_Write.ap_fifo.volatile.i1P(i1* %detect, i1 %condition)" [systemc/src/Seuil_calc1.hpp:70]   --->   Operation 306 'write' <Predicate = true> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 1> <Depth = 0> <FIFO>
+ST_7 : Operation 307 [1/1] (0.00ns)   --->   "%empty_64 = call i32 (...)* @_ssdm_op_SpecRegionEnd([12 x i8]* @p_str69, i32 %tmp_2)" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 307 'specregionend' 'empty_64' <Predicate = true> <Delay = 0.00>
+ST_7 : Operation 308 [1/1] (0.00ns)   --->   "br label %hls_label_0" [systemc/src/Seuil_calc1.hpp:79]   --->   Operation 308 'br' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 1.25ns.
+
+ <State 1>: 0ns
+The critical path consists of the following:
+
+ <State 2>: 3.91ns
+The critical path consists of the following:
+	fifo read on port 'e' (systemc/src/Seuil_calc1.hpp:51) [86]  (3.91 ns)
+
+ <State 3>: 8.19ns
+The critical path consists of the following:
+	'load' operation ('buffer_V_1_01066_loa', systemc/src/Seuil_calc1.hpp:61) on local variable 'buffer_V_1_01066' [52]  (0 ns)
+	'mul' operation ('mul_ln1352', systemc/src/Seuil_calc1.hpp:61) [109]  (4.37 ns)
+	'add' operation of DSP[204] ('add_ln700', systemc/src/Seuil_calc1.hpp:62) [204]  (3.82 ns)
+
+ <State 4>: 6.65ns
+The critical path consists of the following:
+	'add' operation ('add_ln700_17', systemc/src/Seuil_calc1.hpp:62) [237]  (2.18 ns)
+	'add' operation ('add_ln700_21', systemc/src/Seuil_calc1.hpp:62) [245]  (2.22 ns)
+	'add' operation ('add_ln700_29', systemc/src/Seuil_calc1.hpp:62) [261]  (2.25 ns)
+
+ <State 5>: 7.86ns
+The critical path consists of the following:
+	'add' operation ('add_ln700_14', systemc/src/Seuil_calc1.hpp:62) [232]  (0 ns)
+	'add' operation ('add_ln700_30', systemc/src/Seuil_calc1.hpp:62) [262]  (4.15 ns)
+	'icmp' operation ('icmp_ln879', systemc/src/Seuil_calc1.hpp:67) [266]  (2.38 ns)
+	'select' operation ('res_2.V', systemc/src/Seuil_calc1.hpp:67) [267]  (1.32 ns)
+
+ <State 6>: 7.18ns
+The critical path consists of the following:
+	'mul' operation of DSP[264] ('ret.V', systemc/src/Seuil_calc1.hpp:65) [264]  (7.18 ns)
+
+ <State 7>: 7.29ns
+The critical path consists of the following:
+	'icmp' operation ('icmp_ln895', systemc/src/Seuil_calc1.hpp:69) [271]  (2.41 ns)
+	'xor' operation ('condition', systemc/src/Seuil_calc1.hpp:69) [272]  (0.978 ns)
+	fifo write on port 'detect' (systemc/src/Seuil_calc1.hpp:70) [273]  (3.91 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+	State 6
+	State 7
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

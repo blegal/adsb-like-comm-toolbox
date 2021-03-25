@@ -1,0 +1,955 @@
+
+
+================================================================
+== Vivado HLS Report for 'Detecteur1'
+================================================================
+* Date:           Thu Mar 25 13:03:01 2021
+
+* Version:        2020.1 (Build 2897737 on Wed May 27 20:21:37 MDT 2020)
+* Project:        HLS_RECEIVER_FLOAT
+* Solution:       solution1
+* Product family: artix7
+* Target device:  xc7a100t-csg324-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  | 10.00 ns | 8.190 ns |   1.25 ns  |
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+------+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval  | Pipeline|
+    |   min   |   max   |    min    |    max    | min |  max |   Type  |
+    +---------+---------+-----------+-----------+-----+------+---------+
+    |        1|     2311| 10.000 ns | 23.110 us |    1|  2311|   none  |
+    +---------+---------+-----------+-----------+-----+------+---------+
+
+    + Detail: 
+        * Instance: 
+        +--------------------------+---------------+---------+---------+----------+-----------+-----+------+---------+
+        |                          |               |  Latency (cycles) |  Latency (absolute)  |  Interval  | Pipeline|
+        |         Instance         |     Module    |   min   |   max   |    min   |    max    | min |  max |   Type  |
+        +--------------------------+---------------+---------+---------+----------+-----------+-----+------+---------+
+        |grp_Seuil_calc1_fu_100    |Seuil_calc1    |        0|        8|   0 ns   | 80.000 ns |    0|     8|   none  |
+        |grp_trames_separ1_fu_114  |trames_separ1  |        0|     2310|   0 ns   | 23.100 us |    0|  2310|   none  |
+        |grp_DOUBLEUR_U_fu_130     |DOUBLEUR_U     |        0|        3|   0 ns   | 30.000 ns |    0|     3|   none  |
+        +--------------------------+---------------+---------+---------+----------+-----------+-----+------+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+-------+--------+-------+-----+
+|       Name      | BRAM_18K| DSP48E|   FF   |  LUT  | URAM|
++-----------------+---------+-------+--------+-------+-----+
+|DSP              |        -|      -|       -|      -|    -|
+|Expression       |        -|      -|       -|      -|    -|
+|FIFO             |        3|      -|     125|    227|    -|
+|Instance         |        0|     18|     771|   1545|    -|
+|Memory           |        -|      -|       -|      -|    -|
+|Multiplexer      |        -|      -|       -|      -|    -|
+|Register         |        -|      -|       -|      -|    -|
++-----------------+---------+-------+--------+-------+-----+
+|Total            |        3|     18|     896|   1772|    0|
++-----------------+---------+-------+--------+-------+-----+
+|Available        |      270|    240|  126800|  63400|    0|
++-----------------+---------+-------+--------+-------+-----+
+|Utilization (%)  |        1|      7|   ~0   |      2|    0|
++-----------------+---------+-------+--------+-------+-----+
+
++ Detail: 
+    * Instance: 
+    +--------------------------+---------------+---------+-------+-----+------+-----+
+    |         Instance         |     Module    | BRAM_18K| DSP48E|  FF |  LUT | URAM|
+    +--------------------------+---------------+---------+-------+-----+------+-----+
+    |grp_DOUBLEUR_U_fu_130     |DOUBLEUR_U     |        0|      0|    2|    38|    0|
+    |grp_Seuil_calc1_fu_100    |Seuil_calc1    |        0|     18|  735|  1328|    0|
+    |grp_trames_separ1_fu_114  |trames_separ1  |        0|      0|   34|   179|    0|
+    +--------------------------+---------------+---------+-------+-----+------+-----+
+    |Total                     |               |        0|     18|  771|  1545|    0|
+    +--------------------------+---------------+---------+-------+-----+------+-----+
+
+    * DSP48E: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +--------------------+---------+----+----+-----+------+-----+---------+
+    |        Name        | BRAM_18K| FF | LUT| URAM| Depth| Bits| Size:D*B|
+    +--------------------+---------+----+----+-----+------+-----+---------+
+    |dbl2scalc_1_fifo_U  |        1|  43|   0|    -|  1024|    8|     8192|
+    |dbl2tsep_1_fifo_U   |        1|  43|   0|    -|  1024|    8|     8192|
+    |detect_1_fifo_U     |        1|  39|   0|    -|  1024|    1|     1024|
+    +--------------------+---------+----+----+-----+------+-----+---------+
+    |Total               |        3| 125|   0|    0|  3072|   17|    17408|
+    +--------------------+---------+----+----+-----+------+-----+---------+
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------+-----+-----+------------+--------------------------+--------------+
+| RTL Ports | Dir | Bits|  Protocol  |       Source Object      |    C Type    |
++-----------+-----+-----+------------+--------------------------+--------------+
+|clock      |  in |    1| ap_ctrl_hs | Detecteur1::Detecteur1.1 | return value |
+|reset      |  in |    1| ap_ctrl_hs | Detecteur1::Detecteur1.1 | return value |
+|e_dout     |  in |    8|   ap_fifo  |             e            |    pointer   |
+|e_empty_n  |  in |    1|   ap_fifo  |             e            |    pointer   |
+|e_read     | out |    1|   ap_fifo  |             e            |    pointer   |
+|s_din      | out |    8|   ap_fifo  |             s            |    pointer   |
+|s_full_n   |  in |    1|   ap_fifo  |             s            |    pointer   |
+|s_write    | out |    1|   ap_fifo  |             s            |    pointer   |
++-----------+-----+-----+------------+--------------------------+--------------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 2
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 3 [2/2] (0.00ns)   --->   "call void @"Seuil_calc1::Seuil_calc1.1"(i1* %clock_form2, i1* %reset_form3, i8* %dbl2scalc_1_form4, i1* %detect_1_form)" [systemc/src/Seuil_calc1.hpp:33->systemc/src/Detecteur1.hpp:33]   --->   Operation 3 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_1 : Operation 4 [2/2] (0.00ns)   --->   "call void @"trames_separ1::trames_separ1.1"(i1* %clock_form5, i1* %reset_form6, i8* %dbl2tsep_1_form7, i1* %detect_1_form8, i8* %s_form)" [systemc/src/trames_separ1.hpp:32->systemc/src/Detecteur1.hpp:33]   --->   Operation 4 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_1 : Operation 5 [2/2] (0.00ns)   --->   "call void @"DOUBLEUR_U::DOUBLEUR_U.1"(i1* %clock_form, i1* %reset_form, i8* %e_form, i8* %dbl2scalc_1_form, i8* %dbl2tsep_1_form)" [systemc/src/Doubleur_uint.hpp:29->systemc/src/Detecteur1.hpp:33]   --->   Operation 5 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 2 <SV = 1> <Delay = 0.00>
+ST_2 : Operation 6 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %dbl2tsep_1_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 6 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 7 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %dbl2scalc_1_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 7 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 8 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 8 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 9 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %detect_1_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 9 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 10 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %dbl2scalc_1_form4, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 10 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 11 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %s_form, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 11 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 12 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %detect_1_form8, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 12 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 13 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %dbl2tsep_1_form7, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30)"   --->   Operation 13 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 14 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock), !map !253"   --->   Operation 14 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 15 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset), !map !257"   --->   Operation 15 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 16 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %e), !map !261"   --->   Operation 16 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 17 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %s), !map !265"   --->   Operation 17 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 18 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock_form2), !map !269"   --->   Operation 18 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 19 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset_form3), !map !273"   --->   Operation 19 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 20 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %dbl2scalc_1_form4), !map !277"   --->   Operation 20 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 21 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %detect_1_form), !map !281"   --->   Operation 21 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 22 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock_form5), !map !285"   --->   Operation 22 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 23 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset_form6), !map !289"   --->   Operation 23 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 24 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %dbl2tsep_1_form7), !map !293"   --->   Operation 24 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 25 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %detect_1_form8), !map !297"   --->   Operation 25 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 26 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %s_form), !map !301"   --->   Operation 26 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 27 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock_form), !map !305"   --->   Operation 27 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 28 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset_form), !map !309"   --->   Operation 28 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 29 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %e_form), !map !313"   --->   Operation 29 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 30 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %dbl2scalc_1_form), !map !317"   --->   Operation 30 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 31 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %dbl2tsep_1_form), !map !321"   --->   Operation 31 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 32 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %dbl2scalc_1), !map !325"   --->   Operation 32 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 33 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %dbl2tsep_1), !map !329"   --->   Operation 33 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 34 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %detect_1), !map !333"   --->   Operation 34 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 35 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/Detecteur1.hpp:33]   --->   Operation 35 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 36 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([1 x i8]* @p_str30, i32 4, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i8* %e) nounwind" [systemc/src/Detecteur1.hpp:33]   --->   Operation 36 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 37 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %s, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/Detecteur1.hpp:33]   --->   Operation 37 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 38 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([1 x i8]* @p_str30, i32 5, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i8* %s) nounwind" [systemc/src/Detecteur1.hpp:33]   --->   Operation 38 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 39 [1/2] (0.00ns)   --->   "call void @"Seuil_calc1::Seuil_calc1.1"(i1* %clock_form2, i1* %reset_form3, i8* %dbl2scalc_1_form4, i1* %detect_1_form)" [systemc/src/Seuil_calc1.hpp:33->systemc/src/Detecteur1.hpp:33]   --->   Operation 39 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 40 [1/2] (0.00ns)   --->   "call void @"trames_separ1::trames_separ1.1"(i1* %clock_form5, i1* %reset_form6, i8* %dbl2tsep_1_form7, i1* %detect_1_form8, i8* %s_form)" [systemc/src/trames_separ1.hpp:32->systemc/src/Detecteur1.hpp:33]   --->   Operation 40 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 41 [1/2] (0.00ns)   --->   "call void @"DOUBLEUR_U::DOUBLEUR_U.1"(i1* %clock_form, i1* %reset_form, i8* %e_form, i8* %dbl2scalc_1_form, i8* %dbl2tsep_1_form)" [systemc/src/Doubleur_uint.hpp:29->systemc/src/Detecteur1.hpp:33]   --->   Operation 41 'call' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 42 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [10 x i8]* @p_str63, i32 1024, i32 1024, i8* %dbl2scalc_1, i8* %dbl2scalc_1) nounwind" [systemc/src/Detecteur1.hpp:33]   --->   Operation 42 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 43 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %dbl2scalc_1, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/Detecteur1.hpp:33]   --->   Operation 43 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 44 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [9 x i8]* @p_str64, i32 1024, i32 1024, i8* %dbl2tsep_1, i8* %dbl2tsep_1) nounwind" [systemc/src/Detecteur1.hpp:33]   --->   Operation 44 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 45 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %dbl2tsep_1, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/Detecteur1.hpp:33]   --->   Operation 45 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 46 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecChannel([1 x i8]* @p_str30, i32 1, [1 x i8]* @p_str30, [7 x i8]* @p_str65, i32 1024, i32 1024, i1* %detect_1, i1* %detect_1) nounwind" [systemc/src/Detecteur1.hpp:33]   --->   Operation 46 'specchannel' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 47 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %detect_1, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/Detecteur1.hpp:33]   --->   Operation 47 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 48 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecTopModule([11 x i8]* @p_str66, [11 x i8]* @p_str66) nounwind" [systemc/src/Detecteur1.hpp:34]   --->   Operation 48 'spectopmodule' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 49 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([11 x i8]* @p_str66, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str27, i32 0, i32 0, i1* %clock) nounwind" [systemc/src/Detecteur1.hpp:35]   --->   Operation 49 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 50 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([11 x i8]* @p_str66, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str28, i32 0, i32 0, i1* %reset) nounwind" [systemc/src/Detecteur1.hpp:36]   --->   Operation 50 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 51 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/Detecteur1.hpp:37]   --->   Operation 51 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 52 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([11 x i8]* @p_str66, i32 4, [13 x i8]* @p_str50, [2 x i8]* @p_str32, i32 0, i32 0, i8* %e) nounwind" [systemc/src/Detecteur1.hpp:38]   --->   Operation 52 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 53 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %s, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/Detecteur1.hpp:39]   --->   Operation 53 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 54 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([11 x i8]* @p_str66, i32 5, [13 x i8]* @p_str50, [2 x i8]* @p_str51, i32 0, i32 0, i8* %s) nounwind" [systemc/src/Detecteur1.hpp:40]   --->   Operation 54 'specport' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 55 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %clock_form, i1* %clock) nounwind" [systemc/src/Detecteur1.hpp:41]   --->   Operation 55 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 56 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %reset_form, i1* %reset) nounwind" [systemc/src/Detecteur1.hpp:42]   --->   Operation 56 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 57 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %e_form, i8* %e) nounwind" [systemc/src/Detecteur1.hpp:43]   --->   Operation 57 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 58 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %dbl2scalc_1_form, i8* %dbl2scalc_1) nounwind" [systemc/src/Detecteur1.hpp:44]   --->   Operation 58 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 59 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %dbl2tsep_1_form, i8* %dbl2tsep_1) nounwind" [systemc/src/Detecteur1.hpp:45]   --->   Operation 59 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 60 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %clock_form2, i1* %clock) nounwind" [systemc/src/Detecteur1.hpp:46]   --->   Operation 60 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 61 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %reset_form3, i1* %reset) nounwind" [systemc/src/Detecteur1.hpp:47]   --->   Operation 61 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 62 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %dbl2scalc_1_form4, i8* %dbl2scalc_1) nounwind" [systemc/src/Detecteur1.hpp:48]   --->   Operation 62 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 63 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %detect_1_form, i1* %detect_1) nounwind" [systemc/src/Detecteur1.hpp:49]   --->   Operation 63 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 64 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %clock_form5, i1* %clock) nounwind" [systemc/src/Detecteur1.hpp:50]   --->   Operation 64 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 65 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %reset_form6, i1* %reset) nounwind" [systemc/src/Detecteur1.hpp:51]   --->   Operation 65 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 66 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %dbl2tsep_1_form7, i8* %dbl2tsep_1) nounwind" [systemc/src/Detecteur1.hpp:52]   --->   Operation 66 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 67 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i1* %detect_1_form8, i1* %detect_1) nounwind" [systemc/src/Detecteur1.hpp:53]   --->   Operation 67 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 68 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPortMap(i8* %s_form, i8* %s) nounwind" [systemc/src/Detecteur1.hpp:54]   --->   Operation 68 'specportmap' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 69 [1/1] (0.00ns)   --->   "ret void" [systemc/src/Detecteur1.hpp:59]   --->   Operation 69 'ret' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+STG Binding: 
+---------------- STG Properties BEGIN ----------------
+- Is combinational: 0
+- Is one-state seq: 0
+- Is datapath-only: 0
+- Is pipelined: 0
+- Is top level: 1
+Port [ Return ] is wired: 1; IO mode=ap_ctrl_hs:ce=0
+Port [ clock]:  wired=1; compound=0; hidden=0; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ reset]:  wired=1; compound=0; hidden=0; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ e]:  wired=1; compound=1; hidden=0; nouse=1; global=0; static=0; extern=0; dir=0; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ s]:  wired=1; compound=1; hidden=0; nouse=1; global=0; static=0; extern=0; dir=1; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ clock_form2]:  wired=1; compound=0; hidden=1; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ reset_form3]:  wired=1; compound=0; hidden=1; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ dbl2scalc_1_form4]:  wired=1; compound=1; hidden=1; nouse=0; global=0; static=0; extern=0; dir=0; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ detect_1_form]:  wired=1; compound=1; hidden=1; nouse=0; global=0; static=0; extern=0; dir=1; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ clock_form5]:  wired=1; compound=0; hidden=1; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ reset_form6]:  wired=1; compound=0; hidden=1; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ dbl2tsep_1_form7]:  wired=1; compound=1; hidden=1; nouse=0; global=0; static=0; extern=0; dir=0; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ detect_1_form8]:  wired=1; compound=1; hidden=1; nouse=0; global=0; static=0; extern=0; dir=0; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ s_form]:  wired=1; compound=1; hidden=1; nouse=0; global=0; static=0; extern=0; dir=1; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ clock_form]:  wired=1; compound=0; hidden=1; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ reset_form]:  wired=1; compound=0; hidden=1; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ e_form]:  wired=1; compound=1; hidden=1; nouse=0; global=0; static=0; extern=0; dir=0; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ dbl2scalc_1_form]:  wired=1; compound=1; hidden=1; nouse=0; global=0; static=0; extern=0; dir=1; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ dbl2tsep_1_form]:  wired=1; compound=1; hidden=1; nouse=0; global=0; static=0; extern=0; dir=1; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ dbl2scalc_1]:  wired=1; compound=1; hidden=1; nouse=1; global=0; static=0; extern=0; dir=2; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ dbl2tsep_1]:  wired=1; compound=1; hidden=1; nouse=1; global=0; static=0; extern=0; dir=2; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ detect_1]:  wired=1; compound=1; hidden=1; nouse=1; global=0; static=0; extern=0; dir=2; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ Seuil_calc1_ssdm_thread_M_do_gen]:  wired=0; compound=0; hidden=1; nouse=1; global=1; static=0; extern=1; dir=0; type=0; pingpong=0; private_global=0; linkage=0; visibility=0; IO mode=ap_none:ce=0
+Port [ trames_separ1_ssdm_thread_M_do_gen]:  wired=0; compound=0; hidden=1; nouse=1; global=1; static=0; extern=1; dir=0; type=0; pingpong=0; private_global=0; linkage=0; visibility=0; IO mode=ap_none:ce=0
+Port [ DOUBLEUR_U_ssdm_thread_M_do_gen]:  wired=0; compound=0; hidden=1; nouse=1; global=1; static=0; extern=1; dir=0; type=0; pingpong=0; private_global=0; linkage=0; visibility=0; IO mode=ap_none:ce=0
+---------------- STG Properties END ------------------
+
+---------------- Datapath Model BEGIN ----------------
+
+<LifeTime>
+<method=bitvector/>
+specinterface_ln0  (specinterface) [ 000]
+specinterface_ln0  (specinterface) [ 000]
+specinterface_ln0  (specinterface) [ 000]
+specinterface_ln0  (specinterface) [ 000]
+specinterface_ln0  (specinterface) [ 000]
+specinterface_ln0  (specinterface) [ 000]
+specinterface_ln0  (specinterface) [ 000]
+specinterface_ln0  (specinterface) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specbitsmap_ln0    (specbitsmap  ) [ 000]
+specinterface_ln33 (specinterface) [ 000]
+specport_ln33      (specport     ) [ 000]
+specinterface_ln33 (specinterface) [ 000]
+specport_ln33      (specport     ) [ 000]
+call_ln33          (call         ) [ 000]
+call_ln32          (call         ) [ 000]
+call_ln29          (call         ) [ 000]
+specchannel_ln33   (specchannel  ) [ 000]
+specinterface_ln33 (specinterface) [ 000]
+specchannel_ln33   (specchannel  ) [ 000]
+specinterface_ln33 (specinterface) [ 000]
+specchannel_ln33   (specchannel  ) [ 000]
+specinterface_ln33 (specinterface) [ 000]
+spectopmodule_ln34 (spectopmodule) [ 000]
+specport_ln35      (specport     ) [ 000]
+specport_ln36      (specport     ) [ 000]
+specinterface_ln37 (specinterface) [ 000]
+specport_ln38      (specport     ) [ 000]
+specinterface_ln39 (specinterface) [ 000]
+specport_ln40      (specport     ) [ 000]
+specportmap_ln41   (specportmap  ) [ 000]
+specportmap_ln42   (specportmap  ) [ 000]
+specportmap_ln43   (specportmap  ) [ 000]
+specportmap_ln44   (specportmap  ) [ 000]
+specportmap_ln45   (specportmap  ) [ 000]
+specportmap_ln46   (specportmap  ) [ 000]
+specportmap_ln47   (specportmap  ) [ 000]
+specportmap_ln48   (specportmap  ) [ 000]
+specportmap_ln49   (specportmap  ) [ 000]
+specportmap_ln50   (specportmap  ) [ 000]
+specportmap_ln51   (specportmap  ) [ 000]
+specportmap_ln52   (specportmap  ) [ 000]
+specportmap_ln53   (specportmap  ) [ 000]
+specportmap_ln54   (specportmap  ) [ 000]
+ret_ln59           (ret          ) [ 000]
+</LifeTime>
+
+<model>
+
+<comp_list>
+<comp id="0" class="1000" name="clock">
+<pin_list>
+<pin id="1" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="clock"/></StgValue>
+</bind>
+</comp>
+
+<comp id="2" class="1000" name="reset">
+<pin_list>
+<pin id="3" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="reset"/></StgValue>
+</bind>
+</comp>
+
+<comp id="4" class="1000" name="e">
+<pin_list>
+<pin id="5" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="e"/></StgValue>
+</bind>
+</comp>
+
+<comp id="6" class="1000" name="s">
+<pin_list>
+<pin id="7" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="s"/></StgValue>
+</bind>
+</comp>
+
+<comp id="8" class="1000" name="clock_form2">
+<pin_list>
+<pin id="9" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="clock_form2"/></StgValue>
+</bind>
+</comp>
+
+<comp id="10" class="1000" name="reset_form3">
+<pin_list>
+<pin id="11" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="reset_form3"/></StgValue>
+</bind>
+</comp>
+
+<comp id="12" class="1000" name="dbl2scalc_1_form4">
+<pin_list>
+<pin id="13" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="dbl2scalc_1_form4"/></StgValue>
+</bind>
+</comp>
+
+<comp id="14" class="1000" name="detect_1_form">
+<pin_list>
+<pin id="15" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="detect_1_form"/></StgValue>
+</bind>
+</comp>
+
+<comp id="16" class="1000" name="clock_form5">
+<pin_list>
+<pin id="17" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="clock_form5"/></StgValue>
+</bind>
+</comp>
+
+<comp id="18" class="1000" name="reset_form6">
+<pin_list>
+<pin id="19" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="reset_form6"/></StgValue>
+</bind>
+</comp>
+
+<comp id="20" class="1000" name="dbl2tsep_1_form7">
+<pin_list>
+<pin id="21" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="dbl2tsep_1_form7"/></StgValue>
+</bind>
+</comp>
+
+<comp id="22" class="1000" name="detect_1_form8">
+<pin_list>
+<pin id="23" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="detect_1_form8"/></StgValue>
+</bind>
+</comp>
+
+<comp id="24" class="1000" name="s_form">
+<pin_list>
+<pin id="25" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="s_form"/></StgValue>
+</bind>
+</comp>
+
+<comp id="26" class="1000" name="clock_form">
+<pin_list>
+<pin id="27" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="clock_form"/></StgValue>
+</bind>
+</comp>
+
+<comp id="28" class="1000" name="reset_form">
+<pin_list>
+<pin id="29" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="reset_form"/></StgValue>
+</bind>
+</comp>
+
+<comp id="30" class="1000" name="e_form">
+<pin_list>
+<pin id="31" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="e_form"/></StgValue>
+</bind>
+</comp>
+
+<comp id="32" class="1000" name="dbl2scalc_1_form">
+<pin_list>
+<pin id="33" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="dbl2scalc_1_form"/></StgValue>
+</bind>
+</comp>
+
+<comp id="34" class="1000" name="dbl2tsep_1_form">
+<pin_list>
+<pin id="35" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="dbl2tsep_1_form"/></StgValue>
+</bind>
+</comp>
+
+<comp id="36" class="1000" name="dbl2scalc_1">
+<pin_list>
+<pin id="37" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="dbl2scalc_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="38" class="1000" name="dbl2tsep_1">
+<pin_list>
+<pin id="39" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="dbl2tsep_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="40" class="1000" name="detect_1">
+<pin_list>
+<pin id="41" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="detect_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="42" class="1000" name="Seuil_calc1_ssdm_thread_M_do_gen">
+<pin_list>
+<pin id="43" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="Seuil_calc1_ssdm_thread_M_do_gen"/></StgValue>
+</bind>
+</comp>
+
+<comp id="44" class="1000" name="trames_separ1_ssdm_thread_M_do_gen">
+<pin_list>
+<pin id="45" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="trames_separ1_ssdm_thread_M_do_gen"/></StgValue>
+</bind>
+</comp>
+
+<comp id="46" class="1000" name="DOUBLEUR_U_ssdm_thread_M_do_gen">
+<pin_list>
+<pin id="47" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="DOUBLEUR_U_ssdm_thread_M_do_gen"/></StgValue>
+</bind>
+</comp>
+
+<comp id="48" class="1001" name="const_48">
+<pin_list>
+<pin id="49" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="Seuil_calc1::Seuil_calc1.1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="50" class="1001" name="const_50">
+<pin_list>
+<pin id="51" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="trames_separ1::trames_separ1.1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="52" class="1001" name="const_52">
+<pin_list>
+<pin id="53" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="DOUBLEUR_U::DOUBLEUR_U.1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="54" class="1001" name="const_54">
+<pin_list>
+<pin id="55" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecInterface"/></StgValue>
+</bind>
+</comp>
+
+<comp id="56" class="1001" name="const_56">
+<pin_list>
+<pin id="57" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str29"/></StgValue>
+</bind>
+</comp>
+
+<comp id="58" class="1001" name="const_58">
+<pin_list>
+<pin id="59" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="60" class="1001" name="const_60">
+<pin_list>
+<pin id="61" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str30"/></StgValue>
+</bind>
+</comp>
+
+<comp id="62" class="1001" name="const_62">
+<pin_list>
+<pin id="63" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecBitsMap"/></StgValue>
+</bind>
+</comp>
+
+<comp id="64" class="1001" name="const_64">
+<pin_list>
+<pin id="65" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecPort"/></StgValue>
+</bind>
+</comp>
+
+<comp id="66" class="1001" name="const_66">
+<pin_list>
+<pin id="67" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="68" class="1001" name="const_68">
+<pin_list>
+<pin id="69" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="70" class="1001" name="const_70">
+<pin_list>
+<pin id="71" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecChannel"/></StgValue>
+</bind>
+</comp>
+
+<comp id="72" class="1001" name="const_72">
+<pin_list>
+<pin id="73" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="74" class="1001" name="const_74">
+<pin_list>
+<pin id="75" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str63"/></StgValue>
+</bind>
+</comp>
+
+<comp id="76" class="1001" name="const_76">
+<pin_list>
+<pin id="77" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="78" class="1001" name="const_78">
+<pin_list>
+<pin id="79" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str64"/></StgValue>
+</bind>
+</comp>
+
+<comp id="80" class="1001" name="const_80">
+<pin_list>
+<pin id="81" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str65"/></StgValue>
+</bind>
+</comp>
+
+<comp id="82" class="1001" name="const_82">
+<pin_list>
+<pin id="83" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecTopModule"/></StgValue>
+</bind>
+</comp>
+
+<comp id="84" class="1001" name="const_84">
+<pin_list>
+<pin id="85" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str66"/></StgValue>
+</bind>
+</comp>
+
+<comp id="86" class="1001" name="const_86">
+<pin_list>
+<pin id="87" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str26"/></StgValue>
+</bind>
+</comp>
+
+<comp id="88" class="1001" name="const_88">
+<pin_list>
+<pin id="89" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str27"/></StgValue>
+</bind>
+</comp>
+
+<comp id="90" class="1001" name="const_90">
+<pin_list>
+<pin id="91" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str28"/></StgValue>
+</bind>
+</comp>
+
+<comp id="92" class="1001" name="const_92">
+<pin_list>
+<pin id="93" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str50"/></StgValue>
+</bind>
+</comp>
+
+<comp id="94" class="1001" name="const_94">
+<pin_list>
+<pin id="95" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str32"/></StgValue>
+</bind>
+</comp>
+
+<comp id="96" class="1001" name="const_96">
+<pin_list>
+<pin id="97" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="p_str51"/></StgValue>
+</bind>
+</comp>
+
+<comp id="98" class="1001" name="const_98">
+<pin_list>
+<pin id="99" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecPortMap"/></StgValue>
+</bind>
+</comp>
+
+<comp id="100" class="1004" name="grp_Seuil_calc1_fu_100">
+<pin_list>
+<pin id="101" dir="0" index="0" bw="0" slack="0"/>
+<pin id="102" dir="0" index="1" bw="1" slack="0"/>
+<pin id="103" dir="0" index="2" bw="1" slack="0"/>
+<pin id="104" dir="0" index="3" bw="8" slack="0"/>
+<pin id="105" dir="0" index="4" bw="1" slack="0"/>
+<pin id="106" dir="0" index="5" bw="1" slack="0"/>
+<pin id="107" dir="1" index="6" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="call(48) " fcode="call"/>
+<opset="call_ln33/1 "/>
+</bind>
+</comp>
+
+<comp id="114" class="1004" name="grp_trames_separ1_fu_114">
+<pin_list>
+<pin id="115" dir="0" index="0" bw="0" slack="0"/>
+<pin id="116" dir="0" index="1" bw="1" slack="0"/>
+<pin id="117" dir="0" index="2" bw="1" slack="0"/>
+<pin id="118" dir="0" index="3" bw="8" slack="0"/>
+<pin id="119" dir="0" index="4" bw="1" slack="0"/>
+<pin id="120" dir="0" index="5" bw="8" slack="0"/>
+<pin id="121" dir="0" index="6" bw="1" slack="0"/>
+<pin id="122" dir="1" index="7" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="call(48) " fcode="call"/>
+<opset="call_ln32/1 "/>
+</bind>
+</comp>
+
+<comp id="130" class="1004" name="grp_DOUBLEUR_U_fu_130">
+<pin_list>
+<pin id="131" dir="0" index="0" bw="0" slack="0"/>
+<pin id="132" dir="0" index="1" bw="1" slack="0"/>
+<pin id="133" dir="0" index="2" bw="1" slack="0"/>
+<pin id="134" dir="0" index="3" bw="8" slack="0"/>
+<pin id="135" dir="0" index="4" bw="8" slack="0"/>
+<pin id="136" dir="0" index="5" bw="8" slack="0"/>
+<pin id="137" dir="0" index="6" bw="1" slack="0"/>
+<pin id="138" dir="1" index="7" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="call(48) " fcode="call"/>
+<opset="call_ln29/1 "/>
+</bind>
+</comp>
+
+</comp_list>
+
+<net_list>
+<net id="108"><net_src comp="48" pin="0"/><net_sink comp="100" pin=0"/></net>
+
+<net id="109"><net_src comp="8" pin="0"/><net_sink comp="100" pin=1"/></net>
+
+<net id="110"><net_src comp="10" pin="0"/><net_sink comp="100" pin=2"/></net>
+
+<net id="111"><net_src comp="12" pin="0"/><net_sink comp="100" pin=3"/></net>
+
+<net id="112"><net_src comp="14" pin="0"/><net_sink comp="100" pin=4"/></net>
+
+<net id="113"><net_src comp="42" pin="0"/><net_sink comp="100" pin=5"/></net>
+
+<net id="123"><net_src comp="50" pin="0"/><net_sink comp="114" pin=0"/></net>
+
+<net id="124"><net_src comp="16" pin="0"/><net_sink comp="114" pin=1"/></net>
+
+<net id="125"><net_src comp="18" pin="0"/><net_sink comp="114" pin=2"/></net>
+
+<net id="126"><net_src comp="20" pin="0"/><net_sink comp="114" pin=3"/></net>
+
+<net id="127"><net_src comp="22" pin="0"/><net_sink comp="114" pin=4"/></net>
+
+<net id="128"><net_src comp="24" pin="0"/><net_sink comp="114" pin=5"/></net>
+
+<net id="129"><net_src comp="44" pin="0"/><net_sink comp="114" pin=6"/></net>
+
+<net id="139"><net_src comp="52" pin="0"/><net_sink comp="130" pin=0"/></net>
+
+<net id="140"><net_src comp="26" pin="0"/><net_sink comp="130" pin=1"/></net>
+
+<net id="141"><net_src comp="28" pin="0"/><net_sink comp="130" pin=2"/></net>
+
+<net id="142"><net_src comp="30" pin="0"/><net_sink comp="130" pin=3"/></net>
+
+<net id="143"><net_src comp="32" pin="0"/><net_sink comp="130" pin=4"/></net>
+
+<net id="144"><net_src comp="34" pin="0"/><net_sink comp="130" pin=5"/></net>
+
+<net id="145"><net_src comp="46" pin="0"/><net_sink comp="130" pin=6"/></net>
+
+</net_list>
+
+</model> 
+---------------- Datapath Model END ------------------
+
+* FSMD analyzer results:
+  - Output states:
+	Port: detect_1_form | {1 2 }
+	Port: s_form | {1 2 }
+	Port: dbl2scalc_1_form | {1 2 }
+	Port: dbl2tsep_1_form | {1 2 }
+ - Input state : 
+	Port: Detecteur1::Detecteur1.1 : dbl2scalc_1_form4 | {1 2 }
+	Port: Detecteur1::Detecteur1.1 : dbl2tsep_1_form7 | {1 2 }
+	Port: Detecteur1::Detecteur1.1 : detect_1_form8 | {1 2 }
+	Port: Detecteur1::Detecteur1.1 : e_form | {1 2 }
+	Port: Detecteur1::Detecteur1.1 : Seuil_calc1_ssdm_thread_M_do_gen | {1 2 }
+	Port: Detecteur1::Detecteur1.1 : trames_separ1_ssdm_thread_M_do_gen | {1 2 }
+	Port: Detecteur1::Detecteur1.1 : DOUBLEUR_U_ssdm_thread_M_do_gen | {1 2 }
+  - Chain level:
+	State 1
+	State 2
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+
+* Functional unit list:
+|----------|--------------------------|---------|---------|---------|
+| Operation|      Functional Unit     |  DSP48E |    FF   |   LUT   |
+|----------|--------------------------|---------|---------|---------|
+|          |  grp_Seuil_calc1_fu_100  |    18   |   663   |   1194  |
+|   call   | grp_trames_separ1_fu_114 |    0    |    57   |    86   |
+|          |   grp_DOUBLEUR_U_fu_130  |    0    |    0    |    0    |
+|----------|--------------------------|---------|---------|---------|
+|   Total  |                          |    18   |   720   |   1280  |
+|----------|--------------------------|---------|---------|---------|
+
+Memories:
+N/A
+
+* Register list:
+N/A
+
+* Multiplexer (MUX) list: 
+|--------|------|------|------|--------|
+|  Comp  |  Pin | Size |  BW  | S x BW |
+|--------|------|------|------|--------|
+|  Total |      |      |      |    0   |
+|--------|------|------|------|--------|
+
+
+
+* Summary:
++-----------+--------+--------+--------+
+|           | DSP48E |   FF   |   LUT  |
++-----------+--------+--------+--------+
+|  Function |   18   |   720  |  1280  |
+|   Memory  |    -   |    -   |    -   |
+|Multiplexer|    -   |    -   |    -   |
+|  Register |    -   |    -   |    -   |
++-----------+--------+--------+--------+
+|   Total   |   18   |   720  |  1280  |
++-----------+--------+--------+--------+

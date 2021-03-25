@@ -1,0 +1,156 @@
+
+
+================================================================
+== Vivado HLS Report for 'DownSampling_do_gen'
+================================================================
+* Date:           Thu Mar 25 13:03:01 2021
+
+* Version:        2020.1 (Build 2897737 on Wed May 27 20:21:37 MDT 2020)
+* Project:        HLS_RECEIVER_FLOAT
+* Solution:       solution1
+* Product family: artix7
+* Target device:  xc7a100t-csg324-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  | 10.00 ns | 6.023 ns |   1.25 ns  |
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max    | min | max |   Type  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |        4|        4| 40.000 ns | 40.000 ns |    4|    4|   none  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +----------+---------+---------+----------+-----------+-----------+------+----------+
+        |          |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        | Loop Name|   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +----------+---------+---------+----------+-----------+-----------+------+----------+
+        |- Loop 1  |        3|        3|         3|          -|          -|  inf |    no    |
+        +----------+---------+---------+----------+-----------+-----------+------+----------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 0
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 4
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 
+4 --> 2 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock), !map !253"   --->   Operation 5 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset), !map !257"   --->   Operation 6 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %e), !map !261"   --->   Operation 7 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %s), !map !265"   --->   Operation 8 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([13 x i8]* @p_str59, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str27, i32 0, i32 0, i1* %clock) nounwind" [systemc/src/DownSampling.hpp:31]   --->   Operation 9 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([13 x i8]* @p_str59, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str28, i32 0, i32 0, i1* %reset) nounwind" [systemc/src/DownSampling.hpp:32]   --->   Operation 10 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/DownSampling.hpp:33]   --->   Operation 11 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %s, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/DownSampling.hpp:34]   --->   Operation 12 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProcessDef([13 x i8]* @p_str59, i32 2, [7 x i8]* @p_str42) nounwind" [systemc/src/DownSampling.hpp:35]   --->   Operation 13 'specprocessdef' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%tmp = call i32 (...)* @_ssdm_op_SpecRegionBegin([15 x i8]* @p_str44)" [systemc/src/DownSampling.hpp:35]   --->   Operation 14 'specregionbegin' 'tmp' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProtocol(i32 1, [1 x i8]* @p_str30) nounwind" [systemc/src/DownSampling.hpp:35]   --->   Operation 15 'specprotocol' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "%p_ssdm_reset_v = call i32 (...)* @_ssdm_op_SpecStateBegin(i32 0, i32 0, i32 1) nounwind" [systemc/src/DownSampling.hpp:35]   --->   Operation 16 'specstatebegin' 'p_ssdm_reset_v' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "%empty = call i32 (...)* @_ssdm_op_SpecStateEnd(i32 %p_ssdm_reset_v) nounwind" [systemc/src/DownSampling.hpp:34]   --->   Operation 17 'specstateend' 'empty' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "%empty_72 = call i32 (...)* @_ssdm_op_SpecRegionEnd([15 x i8]* @p_str44, i32 %tmp)" [systemc/src/DownSampling.hpp:34]   --->   Operation 18 'specregionend' 'empty_72' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "br label %0" [systemc/src/DownSampling.hpp:34]   --->   Operation 19 'br' <Predicate = true> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 3.90>
+ST_2 : Operation 20 [1/1] (3.90ns)   --->   "%val_V = call i8 @_ssdm_op_Read.ap_fifo.volatile.i8P(i8* %e)" [systemc/src/DownSampling.hpp:38]   --->   Operation 20 'read' 'val_V' <Predicate = true> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 8> <Depth = 0> <FIFO>
+
+State 3 <SV = 2> <Delay = 6.02>
+ST_3 : Operation 21 [1/1] (0.00ns)   --->   "%zext_ln38 = zext i8 %val_V to i9" [systemc/src/DownSampling.hpp:38]   --->   Operation 21 'zext' 'zext_ln38' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 22 [1/1] (3.90ns)   --->   "%DownSampling_e_m_if_s = call i8 @_ssdm_op_Read.ap_fifo.volatile.i8P(i8* %e)" [systemc/src/DownSampling.hpp:40]   --->   Operation 22 'read' 'DownSampling_e_m_if_s' <Predicate = true> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 8> <Depth = 0> <FIFO>
+ST_3 : Operation 23 [1/1] (0.00ns)   --->   "%zext_ln40 = zext i8 %DownSampling_e_m_if_s to i9" [systemc/src/DownSampling.hpp:40]   --->   Operation 23 'zext' 'zext_ln40' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 24 [1/1] (2.11ns)   --->   "%add_ln40 = add i9 %zext_ln40, %zext_ln38" [systemc/src/DownSampling.hpp:40]   --->   Operation 24 'add' 'add_ln40' <Predicate = true> <Delay = 2.11> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 2.11> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 25 [1/1] (0.00ns)   --->   "%trunc_ln = call i8 @_ssdm_op_PartSelect.i8.i9.i32.i32(i9 %add_ln40, i32 1, i32 8)" [systemc/src/DownSampling.hpp:41]   --->   Operation 25 'partselect' 'trunc_ln' <Predicate = true> <Delay = 0.00>
+
+State 4 <SV = 3> <Delay = 3.90>
+ST_4 : Operation 26 [1/1] (3.90ns)   --->   "call void @_ssdm_op_Write.ap_fifo.volatile.i8P(i8* %s, i8 %trunc_ln)" [systemc/src/DownSampling.hpp:41]   --->   Operation 26 'write' <Predicate = true> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 8> <Depth = 0> <FIFO>
+ST_4 : Operation 27 [1/1] (0.00ns)   --->   "br label %0" [systemc/src/DownSampling.hpp:42]   --->   Operation 27 'br' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 1.25ns.
+
+ <State 1>: 0ns
+The critical path consists of the following:
+
+ <State 2>: 3.91ns
+The critical path consists of the following:
+	fifo read on port 'e' (systemc/src/DownSampling.hpp:38) [21]  (3.91 ns)
+
+ <State 3>: 6.02ns
+The critical path consists of the following:
+	fifo read on port 'e' (systemc/src/DownSampling.hpp:40) [23]  (3.91 ns)
+	'add' operation ('add_ln40', systemc/src/DownSampling.hpp:40) [25]  (2.12 ns)
+
+ <State 4>: 3.91ns
+The critical path consists of the following:
+	fifo write on port 's' (systemc/src/DownSampling.hpp:41) [27]  (3.91 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

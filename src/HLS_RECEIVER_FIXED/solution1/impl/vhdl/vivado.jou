@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2020.1 (64-bit)
+# SW Build 2902540 on Wed May 27 19:54:35 MDT 2020
+# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+# Start of session at: Thu Mar 25 13:03:29 2021
+# Process ID: 719557
+# Current directory: /home/oasa/Documents/ef/adsb-like-comm-toolbox/src/HLS_RECEIVER_FLOAT/solution1/impl/vhdl
+# Command line: vivado -notrace -mode batch -source run_vivado.tcl
+# Log file: /home/oasa/Documents/ef/adsb-like-comm-toolbox/src/HLS_RECEIVER_FLOAT/solution1/impl/vhdl/vivado.log
+# Journal file: /home/oasa/Documents/ef/adsb-like-comm-toolbox/src/HLS_RECEIVER_FLOAT/solution1/impl/vhdl/vivado.jou
+#-----------------------------------------------------------
+source run_vivado.tcl -notrace

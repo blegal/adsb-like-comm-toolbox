@@ -1,0 +1,155 @@
+
+
+================================================================
+== Vivado HLS Report for 'BitsToBytes_do_gen'
+================================================================
+* Date:           Thu Mar 25 13:02:58 2021
+
+* Version:        2020.1 (Build 2897737 on Wed May 27 20:21:37 MDT 2020)
+* Project:        HLS_RECEIVER_FLOAT
+* Solution:       solution1
+* Product family: artix7
+* Target device:  xc7a100t-csg324-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  | 10.00 ns | 3.908 ns |   1.25 ns  |
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |       11|       11| 0.110 us | 0.110 us |   11|   11|   none  |
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +-------------+---------+---------+----------+-----------+-----------+------+----------+
+        |             |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |  Loop Name  |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +-------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- Loop 1     |       10|       10|        10|          -|          -|  inf |    no    |
+        | + Loop 1.1  |        8|        8|         1|          -|          -|     8|    no    |
+        +-------------+---------+---------+----------+-----------+-----------+------+----------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 0
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 3
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 3 2 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock), !map !253"   --->   Operation 4 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset), !map !257"   --->   Operation 5 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %e), !map !261"   --->   Operation 6 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %s), !map !265"   --->   Operation 7 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([12 x i8]* @p_str56, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str27, i32 0, i32 0, i1* %clock) nounwind" [systemc/src/BitsToBytes.hpp:30]   --->   Operation 8 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([12 x i8]* @p_str56, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str28, i32 0, i32 0, i1* %reset) nounwind" [systemc/src/BitsToBytes.hpp:31]   --->   Operation 9 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/BitsToBytes.hpp:32]   --->   Operation 10 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %s, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/BitsToBytes.hpp:33]   --->   Operation 11 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProcessDef([12 x i8]* @p_str56, i32 2, [7 x i8]* @p_str42) nounwind" [systemc/src/BitsToBytes.hpp:34]   --->   Operation 12 'specprocessdef' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%tmp = call i32 (...)* @_ssdm_op_SpecRegionBegin([15 x i8]* @p_str44)" [systemc/src/BitsToBytes.hpp:34]   --->   Operation 13 'specregionbegin' 'tmp' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProtocol(i32 1, [1 x i8]* @p_str30) nounwind" [systemc/src/BitsToBytes.hpp:34]   --->   Operation 14 'specprotocol' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%p_ssdm_reset_v = call i32 (...)* @_ssdm_op_SpecStateBegin(i32 0, i32 0, i32 1) nounwind" [systemc/src/BitsToBytes.hpp:34]   --->   Operation 15 'specstatebegin' 'p_ssdm_reset_v' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "%empty = call i32 (...)* @_ssdm_op_SpecStateEnd(i32 %p_ssdm_reset_v) nounwind" [systemc/src/BitsToBytes.hpp:39]   --->   Operation 16 'specstateend' 'empty' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "%empty_81 = call i32 (...)* @_ssdm_op_SpecRegionEnd([15 x i8]* @p_str44, i32 %tmp)" [systemc/src/BitsToBytes.hpp:39]   --->   Operation 17 'specregionend' 'empty_81' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "br label %0" [systemc/src/BitsToBytes.hpp:39]   --->   Operation 18 'br' <Predicate = true> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 1.66>
+ST_2 : Operation 19 [1/1] (0.00ns)   --->   "%loop_begin = call i32 (...)* @_ssdm_op_SpecLoopBegin() nounwind"   --->   Operation 19 'specloopbegin' 'loop_begin' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 20 [1/1] (1.66ns)   --->   "br label %1" [systemc/src/BitsToBytes.hpp:37]   --->   Operation 20 'br' <Predicate = true> <Delay = 1.66>
+
+State 3 <SV = 2> <Delay = 3.90>
+ST_3 : Operation 21 [1/1] (0.00ns)   --->   "%v_assign = phi i8 [ 0, %0 ], [ %v, %2 ]"   --->   Operation 21 'phi' 'v_assign' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 22 [1/1] (0.00ns)   --->   "%q_0 = phi i4 [ 0, %0 ], [ %q, %2 ]"   --->   Operation 22 'phi' 'q_0' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 23 [1/1] (1.44ns)   --->   "%icmp_ln37 = icmp eq i4 %q_0, -8" [systemc/src/BitsToBytes.hpp:37]   --->   Operation 23 'icmp' 'icmp_ln37' <Predicate = true> <Delay = 1.44> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 1.44> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 24 [1/1] (0.00ns)   --->   "%empty_82 = call i32 (...)* @_ssdm_op_SpecLoopTripCount(i64 8, i64 8, i64 8)"   --->   Operation 24 'speclooptripcount' 'empty_82' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 25 [1/1] (1.77ns)   --->   "%q = add i4 %q_0, 1" [systemc/src/BitsToBytes.hpp:37]   --->   Operation 25 'add' 'q' <Predicate = true> <Delay = 1.77> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 1.77> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 26 [1/1] (0.00ns)   --->   "br i1 %icmp_ln37, label %3, label %2" [systemc/src/BitsToBytes.hpp:37]   --->   Operation 26 'br' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 27 [1/1] (3.90ns)   --->   "%val_V = call i1 @_ssdm_op_Read.ap_fifo.volatile.i1P(i1* %e)" [systemc/src/BitsToBytes.hpp:39]   --->   Operation 27 'read' 'val_V' <Predicate = (!icmp_ln37)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 8> <Depth = 0> <FIFO>
+ST_3 : Operation 28 [1/1] (0.00ns)   --->   "%trunc_ln40 = trunc i8 %v_assign to i7" [systemc/src/BitsToBytes.hpp:40]   --->   Operation 28 'trunc' 'trunc_ln40' <Predicate = (!icmp_ln37)> <Delay = 0.00>
+ST_3 : Operation 29 [1/1] (0.00ns)   --->   "%v = call i8 @_ssdm_op_BitConcatenate.i8.i7.i1(i7 %trunc_ln40, i1 %val_V)" [systemc/src/BitsToBytes.hpp:40]   --->   Operation 29 'bitconcatenate' 'v' <Predicate = (!icmp_ln37)> <Delay = 0.00>
+ST_3 : Operation 30 [1/1] (0.00ns)   --->   "br label %1" [systemc/src/BitsToBytes.hpp:37]   --->   Operation 30 'br' <Predicate = (!icmp_ln37)> <Delay = 0.00>
+ST_3 : Operation 31 [1/1] (3.90ns)   --->   "call void @_ssdm_op_Write.ap_fifo.volatile.i8P(i8* %s, i8 %v_assign)" [systemc/src/BitsToBytes.hpp:42]   --->   Operation 31 'write' <Predicate = (icmp_ln37)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 8> <Depth = 0> <FIFO>
+ST_3 : Operation 32 [1/1] (0.00ns)   --->   "br label %0" [systemc/src/BitsToBytes.hpp:43]   --->   Operation 32 'br' <Predicate = (icmp_ln37)> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 1.25ns.
+
+ <State 1>: 0ns
+The critical path consists of the following:
+
+ <State 2>: 1.66ns
+The critical path consists of the following:
+	multiplexor before 'phi' operation ('v') with incoming values : ('v', systemc/src/BitsToBytes.hpp:40) [24]  (1.66 ns)
+
+ <State 3>: 3.91ns
+The critical path consists of the following:
+	'phi' operation ('v') with incoming values : ('v', systemc/src/BitsToBytes.hpp:40) [24]  (0 ns)
+	fifo write on port 's' (systemc/src/BitsToBytes.hpp:42) [36]  (3.91 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A
