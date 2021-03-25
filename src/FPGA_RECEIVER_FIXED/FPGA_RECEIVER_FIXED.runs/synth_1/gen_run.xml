@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="synth_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1616676414">
+  <File Type="VDS-TIMING-PB" Name="nexys_tcp_vga_top_timing_summary_synth.pb"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="nexys_tcp_vga_top_timing_summary_synth.rpt"/>
+  <File Type="RDS-DCP" Name="nexys_tcp_vga_top.dcp"/>
+  <File Type="RDS-UTIL-PB" Name="nexys_tcp_vga_top_utilization_synth.pb"/>
+  <File Type="RDS-UTIL" Name="nexys_tcp_vga_top_utilization_synth.rpt"/>
+  <File Type="RDS-PROPCONSTRS" Name="nexys_tcp_vga_top_drc_synth.rpt"/>
+  <File Type="RDS-RDS" Name="nexys_tcp_vga_top.vds"/>
+  <File Type="REPORTS-TCL" Name="nexys_tcp_vga_top_reports.tcl"/>
+  <File Type="PA-TCL" Name="nexys_tcp_vga_top.tcl"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/imports/nexys_tcp_vga/IPs/FC1002_RMII.edn">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../adsb_receiver_fpga/nexys_tcp_vga/IPs/FC1002_RMII.edn"/>
+        <Attr Name="ImportTime" Val="1606396670"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/src/vga_bitmap_640x480.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../../../Downloads/nexys_tcp_vga/src/vga_bitmap_640x480.vhd"/>
+        <Attr Name="ImportTime" Val="1607269402"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/nexys_tcp_vga/src/nexys_tcp_vga_top.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../adsb_receiver_fpga/nexys_tcp_vga/src/nexys_tcp_vga_top.vhd"/>
+        <Attr Name="ImportTime" Val="1616672997"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="nexys_tcp_vga_top"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <File Path="$PSRCDIR/constrs_1/imports/xdc/Nexys-A7-100T-Master.xdc">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../adsb_receiver_fpga/nexys_tcp_vga/xdc/Nexys-A7-100T-Master.xdc"/>
+        <Attr Name="ImportTime" Val="1616666749"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TargetConstrsFile" Val="$PSRCDIR/constrs_1/imports/xdc/Nexys-A7-100T-Master.xdc"/>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1">
+    <Filter Type="Utils"/>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2020"/>
+    <Step Id="synth_design"/>
+  </Strategy>
+  <BlockFileSet Type="BlockSrcs" Name="my_module1_0"/>
+</GenRun>

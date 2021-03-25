@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2020.1 (64-bit)
+# SW Build 2902540 on Wed May 27 19:54:35 MDT 2020
+# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+# Start of session at: Thu Mar 25 13:07:44 2021
+# Process ID: 753764
+# Current directory: /home/oasa/Documents/ef/adsb-like-comm-toolbox/src/adsb_receiver_fpga/receiver_adsb_fpga.runs/my_module1_0_synth_1
+# Command line: vivado -log my_module1_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source my_module1_0.tcl
+# Log file: /home/oasa/Documents/ef/adsb-like-comm-toolbox/src/adsb_receiver_fpga/receiver_adsb_fpga.runs/my_module1_0_synth_1/my_module1_0.vds
+# Journal file: /home/oasa/Documents/ef/adsb-like-comm-toolbox/src/adsb_receiver_fpga/receiver_adsb_fpga.runs/my_module1_0_synth_1/vivado.jou
+#-----------------------------------------------------------
+source my_module1_0.tcl -notrace
