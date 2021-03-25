@@ -1,0 +1,570 @@
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-10] Setting target device to 'xc7a100t-csg324-1'
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'systemc/src/my_module2.cpp' ... 
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:01:11 ; elapsed = 00:00:31 . Memory (MB): peak = 1635.094 ; gain = 1230.723 ; free physical = 4050 ; free virtual = 37909
+INFO: [HLS 200-10] Validating synthesis directives ...
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:01:11 ; elapsed = 00:00:31 . Memory (MB): peak = 1635.094 ; gain = 1230.723 ; free physical = 4050 ; free virtual = 37909
+INFO: [HLS 200-10] Starting code transformations ...
+WARNING: [XFORM 203-503] Ignored unroll directive 'Loop-2.1.1' (systemc/src/CRCCheck.hpp:47) in function 'CRCCheck::do_gen()': multiple loop unroll directives in one loop, use the first one and ignore the rest.
+INFO: [HLS 200-489] Unrolling loop with tag "__ssdm_reset__"(systemc/src/DownSampling.hpp:39) in function 'DownSampling::do_gen()' completely with a factor of 1.
+INFO: [XFORM 203-603] Inlining function 'ModuleCompute::int_sqrt32' into 'ModuleCompute::do_gen' (systemc/src/ModuleCompute_old.hpp:99).
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:01:13 ; elapsed = 00:00:32 . Memory (MB): peak = 1635.094 ; gain = 1230.723 ; free physical = 4007 ; free virtual = 37886
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:01:13 ; elapsed = 00:00:33 . Memory (MB): peak = 1635.094 ; gain = 1230.723 ; free physical = 3992 ; free virtual = 37874
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'Loop-1' (systemc/src/Seuil_calc2.hpp:52) in function 'Seuil_calc2::do_gen' for pipelining.
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'Loop-1.1' (systemc/src/CRCCheck.hpp:41) in function 'CRCCheck::do_gen' for pipelining.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1.1' (systemc/src/Seuil_calc2.hpp:52) in function 'Seuil_calc2::do_gen' completely with a factor of 31.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1.1.1' (systemc/src/CRCCheck.hpp:47) in function 'CRCCheck::do_gen' completely with a factor of 8.
+INFO: [XFORM 203-102] Automatically partitioning small array 'crc_t' (systemc/src/CRCCheck.hpp:53) completely based on array size.
+INFO: [XFORM 203-101] Partitioning array 'buffer.V' (systemc/src/Seuil_calc2.hpp:40) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'crc_t' (systemc/src/CRCCheck.hpp:53) in dimension 1 completely.
+INFO: [XFORM 203-11] Balancing expressions in function 'Seuil_calc2::do_gen' (systemc/src/Seuil_calc2.hpp:35)...7 expression(s) balanced.
+INFO: [XFORM 203-11] Balancing expressions in function 'FrameProcessing::do_gen' (systemc/src/FrameProcessing.hpp:31)...3 expression(s) balanced.
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:01:16 ; elapsed = 00:00:35 . Memory (MB): peak = 1635.094 ; gain = 1230.723 ; free physical = 3960 ; free virtual = 37835
+WARNING: [XFORM 203-561] 'Loop-1' (systemc/src/trames_separ2.hpp:47:13) in function 'trames_separ2::do_gen' is an infinite loop.
+WARNING: [XFORM 203-561] 'Loop-1' (systemc/src/Seuil_calc2.hpp:77:9) in function 'Seuil_calc2::do_gen' is an infinite loop.
+WARNING: [XFORM 203-561] 'Loop-1' (systemc/src/ModuleCompute_old.hpp:70:13) in function 'ModuleCompute::do_gen' is an infinite loop.
+WARNING: [XFORM 203-561] 'Loop-1' (systemc/src/FrameProcessing.hpp:51:13) in function 'FrameProcessing::do_gen' is an infinite loop.
+WARNING: [XFORM 203-561] 'Loop-1' (systemc/src/DownSampling.hpp:42:9) in function 'DownSampling::do_gen' is an infinite loop.
+WARNING: [XFORM 203-561] 'Loop-1' (systemc/src/Doubleur_uint.hpp:41:9) in function 'DOUBLEUR_U::do_gen' is an infinite loop.
+WARNING: [XFORM 203-561] 'Loop-1' (systemc/src/CRCCheck.hpp:41:32) in function 'CRCCheck::do_gen' is an infinite loop.
+WARNING: [XFORM 203-542] Cannot flatten a loop nest 'Loop-1' (systemc/src/CRCCheck.hpp:41:32) in function 'CRCCheck::do_gen' : 
+
+more than one sub loop.
+WARNING: [XFORM 203-561] 'Loop-1' (systemc/src/BitsToBytes.hpp:37:32) in function 'BitsToBytes::do_gen' is an infinite loop.
+WARNING: [XFORM 203-561] 'Loop-1' (systemc/src/BitDecider.hpp:42:9) in function 'BitDecider::do_gen' is an infinite loop.
+INFO: [HLS 200-472] Inferring partial write operation for 'ibuffer.V' (systemc/src/CRCCheck.hpp:45:17)
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:01:17 ; elapsed = 00:00:37 . Memory (MB): peak = 1635.094 ; gain = 1230.723 ; free physical = 3785 ; free virtual = 37669
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [SCA 200-201] Elaborating SystemC module 'BitDecider'.
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [SCA 200-201] Found the clock port of process 'BitDecider::do_gen': 'clock'.
+INFO: [SCA 200-201] Found the reset port of process 'BitDecider::do_gen': 'reset'.
+INFO: [SCA 200-201] Elaborating SystemC module 'BitsToBytes'.
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [SCA 200-201] Found the clock port of process 'BitsToBytes::do_gen': 'clock'.
+INFO: [SCA 200-201] Found the reset port of process 'BitsToBytes::do_gen': 'reset'.
+INFO: [SCA 200-201] Elaborating SystemC module 'CRCCheck'.
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [SCA 200-201] Found the clock port of process 'CRCCheck::do_gen': 'clock'.
+INFO: [SCA 200-201] Found the reset port of process 'CRCCheck::do_gen': 'reset'.
+INFO: [SCA 200-201] Elaborating SystemC module 'DOUBLEUR_U'.
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [SCA 200-201] Found the clock port of process 'DOUBLEUR_U::do_gen': 'clock'.
+INFO: [SCA 200-201] Found the reset port of process 'DOUBLEUR_U::do_gen': 'reset'.
+INFO: [SCA 200-201] Elaborating SystemC module 'Seuil_calc2'.
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [SCA 200-201] Found the clock port of process 'Seuil_calc2::do_gen': 'clock'.
+INFO: [SCA 200-201] Found the reset port of process 'Seuil_calc2::do_gen': 'reset'.
+INFO: [SCA 200-201] Elaborating SystemC module 'trames_separ2'.
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [SCA 200-201] Found the clock port of process 'trames_separ2::do_gen': 'clock'.
+INFO: [SCA 200-201] Found the reset port of process 'trames_separ2::do_gen': 'reset'.
+INFO: [SCA 200-201] Elaborating SystemC module 'Detecteur2'.
+INFO: [SCA 200-201] Analyzing the module hierarchy:
+INFO: [SCA 200-201] Contains sub-module: 'Seuil_calc2'
+INFO: [SCA 200-201] Contains sub-module: 'trames_separ2'
+INFO: [SCA 200-201] Contains sub-module: 'DOUBLEUR_U'
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [SCA 200-201] Elaborating SystemC module 'DownSampling'.
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [SCA 200-201] Found the clock port of process 'DownSampling::do_gen': 'clock'.
+INFO: [SCA 200-201] Found the reset port of process 'DownSampling::do_gen': 'reset'.
+INFO: [SCA 200-201] Elaborating SystemC module 'FrameProcessing'.
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [SCA 200-201] Found the clock port of process 'FrameProcessing::do_gen': 'clock'.
+INFO: [SCA 200-201] Found the reset port of process 'FrameProcessing::do_gen': 'reset'.
+INFO: [SCA 200-201] Elaborating SystemC module 'ModuleCompute'.
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [SCA 200-201] Found the clock port of process 'ModuleCompute::do_gen': 'clock'.
+INFO: [SCA 200-201] Found the reset port of process 'ModuleCompute::do_gen': 'reset'.
+INFO: [SCA 200-201] Elaborating SystemC module 'my_module2'.
+INFO: [SCA 200-201] Analyzing the module hierarchy:
+INFO: [SCA 200-201] Contains sub-module: 'ModuleCompute'
+INFO: [SCA 200-201] Contains sub-module: 'Detecteur2'
+INFO: [SCA 200-201] Contains sub-module: 'DownSampling'
+INFO: [SCA 200-201] Contains sub-module: 'BitDecider'
+INFO: [SCA 200-201] Contains sub-module: 'BitsToBytes'
+INFO: [SCA 200-201] Contains sub-module: 'CRCCheck'
+INFO: [SCA 200-201] Contains sub-module: 'FrameProcessing'
+INFO: [SCA 200-201] Performing SystemC synthesis linting.
+INFO: [SCA 200-201] Analyzing ports and processes.
+INFO: [HLS 200-10] Synthesizing SystemC module 'BitDecider'
+INFO: [HLS 200-10] Found SystemC process: 'BitDecider_do_gen' 
+INFO: [HLS 200-10] Synthesizing 'BitDecider_do_gen' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'BitDecider_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 37.25 seconds; current allocated memory: 330.062 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 330.147 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'BitDecider_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'BitDecider_do_gen'.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 330.329 MB.
+INFO: [HLS 200-10] Synthesizing 'BitDecider' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'BitDecider' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.03 seconds; current allocated memory: 330.668 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 330.765 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'BitDecider' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'BitDecider/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'BitDecider/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'BitDecider/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'BitDecider/s' to 'ap_fifo'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'BitDecider'.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 330.891 MB.
+INFO: [HLS 200-10] Synthesizing SystemC module 'BitsToBytes'
+INFO: [HLS 200-10] Found SystemC process: 'BitsToBytes_do_gen' 
+INFO: [HLS 200-10] Synthesizing 'BitsToBytes_do_gen' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'BitsToBytes_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 331.122 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 331.237 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'BitsToBytes_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'BitsToBytes_do_gen'.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 331.453 MB.
+INFO: [HLS 200-10] Synthesizing 'BitsToBytes' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'BitsToBytes' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.03 seconds; current allocated memory: 331.766 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 331.863 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'BitsToBytes' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'BitsToBytes/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'BitsToBytes/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'BitsToBytes/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'BitsToBytes/s' to 'ap_fifo'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'BitsToBytes'.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 332.003 MB.
+INFO: [HLS 200-10] Synthesizing SystemC module 'CRCCheck'
+INFO: [HLS 200-10] Found SystemC process: 'CRCCheck_do_gen' 
+INFO: [HLS 200-10] Synthesizing 'CRCCheck_do_gen' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'CRCCheck_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'Loop 1.1'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+INFO: [SCHED 204-61] Pipelining loop 'Loop 1.4'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 2.
+WARNING: [SCHED 204-21] Estimated clock period (8.955ns) exceeds the target (target clock period: 10ns, clock uncertainty: 1.25ns, effective delay budget: 8.75ns).
+WARNING: [SCHED 204-21] The critical path in module 'CRCCheck_do_gen' consists of the following:
+	'select' operation ('select_ln49_3', systemc/src/CRCCheck.hpp:49) [65]  (0.995 ns)
+	'select' operation ('select_ln49_4', systemc/src/CRCCheck.hpp:49) [70]  (0.995 ns)
+	'select' operation ('select_ln49_5', systemc/src/CRCCheck.hpp:49) [75]  (0.995 ns)
+	'select' operation ('select_ln49_6', systemc/src/CRCCheck.hpp:49) [80]  (0.995 ns)
+	'select' operation ('select_ln49_7', systemc/src/CRCCheck.hpp:49) [85]  (0.995 ns)
+	'phi' operation ('R_0', systemc/src/CRCCheck.hpp:49) with incoming values : ('select_ln49_7', systemc/src/CRCCheck.hpp:49) [29]  (0 ns)
+	'xor' operation ('R', systemc/src/CRCCheck.hpp:46) [45]  (0.995 ns)
+	'select' operation ('select_ln49', systemc/src/CRCCheck.hpp:49) [50]  (0.995 ns)
+	'select' operation ('select_ln49_1', systemc/src/CRCCheck.hpp:49) [55]  (0.995 ns)
+	'select' operation ('select_ln49_2', systemc/src/CRCCheck.hpp:49) [60]  (0.995 ns)
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.1 seconds; current allocated memory: 332.610 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.08 seconds; current allocated memory: 333.107 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'CRCCheck_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SYN 201-210] Renamed object name 'CRCCheck_do_gen_ibuffer_V' to 'CRCCheck_do_gen_ibkb' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'CRCCheck_mux_42_8_1_1' to 'CRCCheck_mux_42_8cud' due to the length limit 20
+INFO: [RTGEN 206-100] Generating core module 'CRCCheck_mux_42_8cud': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'CRCCheck_do_gen'.
+INFO: [HLS 200-111]  Elapsed time: 0.1 seconds; current allocated memory: 333.945 MB.
+INFO: [HLS 200-10] Synthesizing 'CRCCheck' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'CRCCheck' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.18 seconds; current allocated memory: 335.943 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.03 seconds; current allocated memory: 336.038 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'CRCCheck' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'CRCCheck/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'CRCCheck/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'CRCCheck/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'CRCCheck/s' to 'ap_fifo'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'CRCCheck'.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 336.142 MB.
+INFO: [HLS 200-10] Synthesizing SystemC module 'DOUBLEUR_U'
+INFO: [HLS 200-10] Found SystemC process: 'DOUBLEUR_U_do_gen' 
+INFO: [HLS 200-10] Synthesizing 'DOUBLEUR_U_do_gen' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'DOUBLEUR_U_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.11 seconds; current allocated memory: 336.408 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 336.495 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'DOUBLEUR_U_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'DOUBLEUR_U_do_gen'.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 336.663 MB.
+INFO: [HLS 200-10] Synthesizing 'DOUBLEUR_U' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'DOUBLEUR_U' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 336.893 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.03 seconds; current allocated memory: 337.008 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'DOUBLEUR_U' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'DOUBLEUR_U/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'DOUBLEUR_U/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'DOUBLEUR_U/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'DOUBLEUR_U/s1' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'DOUBLEUR_U/s2' to 'ap_fifo'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'DOUBLEUR_U'.
+INFO: [HLS 200-111]  Elapsed time: 0.03 seconds; current allocated memory: 337.132 MB.
+INFO: [HLS 200-10] Synthesizing SystemC module 'Seuil_calc2'
+INFO: [HLS 200-10] Found SystemC process: 'Seuil_calc2_do_gen' 
+INFO: [HLS 200-10] Synthesizing 'Seuil_calc2_do_gen' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'Seuil_calc2_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'Loop 1'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 5.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.1 seconds; current allocated memory: 337.839 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.08 seconds; current allocated memory: 338.321 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'Seuil_calc2_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SYN 201-210] Renamed object name 'Seuil_calc2_mac_mulsub_8ns_8ns_16ns_17_1_1' to 'Seuil_calc2_mac_mdEe' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'Seuil_calc2_mul_mul_11ns_11ns_22_1_1' to 'Seuil_calc2_mul_meOg' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'Seuil_calc2_mul_mul_17ns_6ns_27_1_1' to 'Seuil_calc2_mul_mfYi' due to the length limit 20
+INFO: [RTGEN 206-100] Generating core module 'Seuil_calc2_mac_mdEe': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'Seuil_calc2_mul_meOg': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'Seuil_calc2_mul_mfYi': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'Seuil_calc2_do_gen'.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 339.037 MB.
+INFO: [HLS 200-10] Synthesizing 'Seuil_calc2' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'Seuil_calc2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.16 seconds; current allocated memory: 341.000 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 341.095 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'Seuil_calc2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'Seuil_calc2/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'Seuil_calc2/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'Seuil_calc2/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'Seuil_calc2/detect' to 'ap_fifo'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'Seuil_calc2'.
+INFO: [HLS 200-111]  Elapsed time: 0.05 seconds; current allocated memory: 341.171 MB.
+INFO: [HLS 200-10] Synthesizing SystemC module 'trames_separ2'
+INFO: [HLS 200-10] Found SystemC process: 'trames_separ2_do_gen' 
+INFO: [HLS 200-10] Synthesizing 'trames_separ2_do_gen' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'trames_separ2_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.19 seconds; current allocated memory: 341.571 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 341.761 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'trames_separ2_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'trames_separ2_do_gen'.
+INFO: [HLS 200-111]  Elapsed time: 0.05 seconds; current allocated memory: 342.026 MB.
+INFO: [HLS 200-10] Synthesizing 'trames_separ2' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'trames_separ2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 342.758 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 342.874 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'trames_separ2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'trames_separ2/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'trames_separ2/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'trames_separ2/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'trames_separ2/detect' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'trames_separ2/s' to 'ap_fifo'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'trames_separ2'.
+INFO: [HLS 200-111]  Elapsed time: 0.05 seconds; current allocated memory: 342.990 MB.
+INFO: [HLS 200-10] Synthesizing SystemC module 'Detecteur2'
+INFO: [HLS 200-10] Synthesizing 'Detecteur2' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'Detecteur2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.06 seconds; current allocated memory: 343.250 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.05 seconds; current allocated memory: 343.531 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'Detecteur2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'Detecteur2/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'Detecteur2/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'Detecteur2/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'Detecteur2/s' to 'ap_fifo'.
+WARNING: [RTGEN 206-101] Reset signal 'reset' was already created
+WARNING: [RTGEN 206-101] Reset signal 'reset' was already created
+WARNING: [RTGEN 206-101] Reset signal 'reset' was already created
+INFO: [RTGEN 206-100] Finished creating RTL model for 'Detecteur2'.
+INFO: [HLS 200-111]  Elapsed time: 0.08 seconds; current allocated memory: 343.866 MB.
+INFO: [HLS 200-10] Synthesizing SystemC module 'DownSampling'
+INFO: [HLS 200-10] Found SystemC process: 'DownSampling_do_gen' 
+INFO: [HLS 200-10] Synthesizing 'DownSampling_do_gen' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'DownSampling_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.14 seconds; current allocated memory: 344.212 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 344.310 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'DownSampling_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'DownSampling_do_gen'.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 344.453 MB.
+INFO: [HLS 200-10] Synthesizing 'DownSampling' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'DownSampling' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.05 seconds; current allocated memory: 344.734 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 344.830 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'DownSampling' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'DownSampling/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'DownSampling/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'DownSampling/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'DownSampling/s' to 'ap_fifo'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'DownSampling'.
+INFO: [HLS 200-111]  Elapsed time: 0.05 seconds; current allocated memory: 344.960 MB.
+INFO: [HLS 200-10] Synthesizing SystemC module 'FrameProcessing'
+INFO: [HLS 200-10] Found SystemC process: 'FrameProcessing_do_gen' 
+INFO: [HLS 200-10] Synthesizing 'FrameProcessing_do_gen' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'FrameProcessing_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.26 seconds; current allocated memory: 345.442 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 345.756 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'FrameProcessing_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'FrameProcessing_do_gen'.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 346.323 MB.
+INFO: [HLS 200-10] Synthesizing 'FrameProcessing' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'FrameProcessing' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.14 seconds; current allocated memory: 347.730 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.05 seconds; current allocated memory: 347.846 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'FrameProcessing' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'FrameProcessing/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'FrameProcessing/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'FrameProcessing/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'FrameProcessing/addr' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'FrameProcessing/rgbv' to 'ap_fifo'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'FrameProcessing'.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 347.976 MB.
+INFO: [HLS 200-10] Synthesizing SystemC module 'ModuleCompute'
+INFO: [HLS 200-10] Found SystemC process: 'ModuleCompute_do_gen' 
+INFO: [HLS 200-10] Synthesizing 'ModuleCompute_do_gen' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'ModuleCompute_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.12 seconds; current allocated memory: 348.307 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.05 seconds; current allocated memory: 348.472 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'ModuleCompute_do_gen' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SYN 201-210] Renamed object name 'ModuleCompute_mac_muladd_8s_8s_16ns_16_1_1' to 'ModuleCompute_macg8j' due to the length limit 20
+INFO: [RTGEN 206-100] Generating core module 'ModuleCompute_macg8j': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'ModuleCompute_do_gen'.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 348.726 MB.
+INFO: [HLS 200-10] Synthesizing 'ModuleCompute' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'ModuleCompute' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 349.359 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 349.456 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'ModuleCompute' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'ModuleCompute/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'ModuleCompute/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'ModuleCompute/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'ModuleCompute/s' to 'ap_fifo'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'ModuleCompute'.
+INFO: [HLS 200-111]  Elapsed time: 0.06 seconds; current allocated memory: 349.597 MB.
+INFO: [HLS 200-10] Synthesizing SystemC module 'my_module2'
+INFO: [HLS 200-10] Synthesizing 'my_module2' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'my_module2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 349.991 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.11 seconds; current allocated memory: 350.573 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'my_module2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'my_module2/clock' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'my_module2/reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'my_module2/e' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'my_module2/addr' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'my_module2/rgbv' to 'ap_fifo'.
+WARNING: [RTGEN 206-101] Reset signal 'reset' was already created
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================

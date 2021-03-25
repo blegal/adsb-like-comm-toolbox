@@ -1,0 +1,111 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0xE4582F3010C7B77F",
+      "device": "xc7a100tcsg324-1",
+      "name": "bd_0",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2020.1",
+      "validated": "true"
+    },
+    "design_tree": {
+      "hls_inst": ""
+    },
+    "interface_ports": {
+      "addr": {
+        "mode": "Master",
+        "vlnv": "xilinx.com:interface:acc_fifo_write_rtl:1.0"
+      },
+      "e": {
+        "mode": "Master",
+        "vlnv": "xilinx.com:interface:acc_fifo_read_rtl:1.0"
+      },
+      "rgbv": {
+        "mode": "Master",
+        "vlnv": "xilinx.com:interface:acc_fifo_write_rtl:1.0"
+      }
+    },
+    "ports": {
+      "clock": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "bd_0_clock_0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000.0"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000",
+            "value_src": "default"
+          }
+        }
+      },
+      "reset": {
+        "type": "rst",
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
+      }
+    },
+    "components": {
+      "hls_inst": {
+        "vlnv": "xilinx.com:hls:my_module2:1.0",
+        "xci_name": "bd_0_hls_inst_0"
+      }
+    },
+    "interface_nets": {
+      "hls_inst_addr": {
+        "interface_ports": [
+          "addr",
+          "hls_inst/addr"
+        ]
+      },
+      "hls_inst_e": {
+        "interface_ports": [
+          "e",
+          "hls_inst/e"
+        ]
+      },
+      "hls_inst_rgbv": {
+        "interface_ports": [
+          "rgbv",
+          "hls_inst/rgbv"
+        ]
+      }
+    },
+    "nets": {
+      "clock_0_1": {
+        "ports": [
+          "clock",
+          "hls_inst/clock"
+        ]
+      },
+      "reset_0_1": {
+        "ports": [
+          "reset",
+          "hls_inst/reset"
+        ]
+      }
+    }
+  }
+}

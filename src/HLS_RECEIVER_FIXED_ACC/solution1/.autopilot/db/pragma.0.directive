@@ -1,0 +1,37 @@
+<AutoPilot:ProjectResources xmlns:AutoPilot="com.autoesl.autopilot.ui.directiveView">
+    <sourceFile name="">
+        <directive functionLabel="" functionName="and_reduce" label="">
+            <pragma name="UNROLL"/>
+        </directive>
+        <directive functionLabel="" functionName="or_reduce" label="">
+            <pragma name="UNROLL"/>
+        </directive>
+        <directive functionLabel="" functionName="xor_reduce" label="">
+            <pragma name="UNROLL"/>
+        </directive>
+        <directive functionLabel="" functionName="wait" label="">
+            <pragma name="UNROLL">
+                <option name="complete" positionalBoolean="type" value=""/>
+            </pragma>
+        </directive>
+        <directive functionLabel="" functionName="do_gen" label="">
+            <pragma name="ARRAY_PARTITION">
+                <option name="variable" positionalBoolean="4" value="buffer"/>
+                <option name="complete" positionalBoolean="type" value=""/>
+                <option name="dim" value="0"/>
+            </pragma>
+        </directive>
+        <directive functionLabel="" functionName="do_gen" label="">
+            <pragma name="PIPELINE"/>
+        </directive>
+        <directive functionLabel="" functionName="do_gen" label="">
+            <pragma name="PIPELINE"/>
+        </directive>
+        <directive functionLabel="" functionName="do_gen" label="">
+            <pragma name="UNROLL"/>
+        </directive>
+        <directive functionLabel="" functionName="do_gen" label="">
+            <pragma name="PIPELINE"/>
+        </directive>
+    </sourceFile>
+</AutoPilot:ProjectResources>

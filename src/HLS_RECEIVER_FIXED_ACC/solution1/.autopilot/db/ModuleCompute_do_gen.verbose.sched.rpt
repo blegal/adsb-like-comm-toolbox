@@ -1,0 +1,193 @@
+
+
+================================================================
+== Vivado HLS Report for 'ModuleCompute_do_gen'
+================================================================
+* Date:           Thu Mar 25 14:10:50 2021
+
+* Version:        2020.1 (Build 2897737 on Wed May 27 20:21:37 MDT 2020)
+* Project:        HLS_RECEIVER_FIXED_ACC
+* Solution:       solution1
+* Product family: artix7
+* Target device:  xc7a100t-csg324-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  | 10.00 ns | 8.190 ns |   1.25 ns  |
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |       21|       21| 0.210 us | 0.210 us |   21|   21|   none  |
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +-------------+---------+---------+----------+-----------+-----------+------+----------+
+        |             |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |  Loop Name  |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +-------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- Loop 1     |       20|       20|        20|          -|          -|  inf |    no    |
+        | + Loop 1.1  |       16|       16|         2|          -|          -|     8|    no    |
+        +-------------+---------+---------+----------+-----------+-----------+------+----------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 0
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 6
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 
+4 --> 5 
+5 --> 6 2 
+6 --> 5 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %clock), !map !257"   --->   Operation 7 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %reset), !map !261"   --->   Operation 8 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %e), !map !265"   --->   Operation 9 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i8* %s), !map !269"   --->   Operation 10 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([14 x i8]* @p_str74, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str27, i32 0, i32 0, i1* %clock) nounwind" [systemc/src/ModuleCompute_old.hpp:83]   --->   Operation 11 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecPort([14 x i8]* @p_str74, i32 0, [7 x i8]* @p_str26, [6 x i8]* @p_str28, i32 0, i32 0, i1* %reset) nounwind" [systemc/src/ModuleCompute_old.hpp:84]   --->   Operation 12 'specport' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %e, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/ModuleCompute_old.hpp:85]   --->   Operation 13 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i8* %s, [8 x i8]* @p_str29, i32 0, i32 0, [1 x i8]* @p_str30, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30, [1 x i8]* @p_str30, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str30, [1 x i8]* @p_str30) nounwind" [systemc/src/ModuleCompute_old.hpp:86]   --->   Operation 14 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProcessDef([14 x i8]* @p_str74, i32 2, [7 x i8]* @p_str42) nounwind" [systemc/src/ModuleCompute_old.hpp:87]   --->   Operation 15 'specprocessdef' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "%tmp = call i32 (...)* @_ssdm_op_SpecRegionBegin([15 x i8]* @p_str44)" [systemc/src/ModuleCompute_old.hpp:87]   --->   Operation 16 'specregionbegin' 'tmp' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecProtocol(i32 1, [1 x i8]* @p_str30) nounwind" [systemc/src/ModuleCompute_old.hpp:87]   --->   Operation 17 'specprotocol' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "%p_ssdm_reset_v = call i32 (...)* @_ssdm_op_SpecStateBegin(i32 0, i32 0, i32 1) nounwind" [systemc/src/ModuleCompute_old.hpp:87]   --->   Operation 18 'specstatebegin' 'p_ssdm_reset_v' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "%empty = call i32 (...)* @_ssdm_op_SpecStateEnd(i32 %p_ssdm_reset_v) nounwind" [systemc/src/ModuleCompute_old.hpp:92]   --->   Operation 19 'specstateend' 'empty' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "%empty_68 = call i32 (...)* @_ssdm_op_SpecRegionEnd([15 x i8]* @p_str44, i32 %tmp)" [systemc/src/ModuleCompute_old.hpp:92]   --->   Operation 20 'specregionend' 'empty_68' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.00ns)   --->   "br label %0" [systemc/src/ModuleCompute_old.hpp:92]   --->   Operation 21 'br' <Predicate = true> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 3.90>
+ST_2 : Operation 22 [1/1] (3.90ns)   --->   "%val_V = call i8 @_ssdm_op_Read.ap_fifo.volatile.i8P(i8* %e)" [systemc/src/ModuleCompute_old.hpp:95]   --->   Operation 22 'read' 'val_V' <Predicate = true> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 8> <Depth = 0> <FIFO>
+
+State 3 <SV = 2> <Delay = 3.90>
+ST_3 : Operation 23 [1/1] (3.90ns)   --->   "%val_V_3 = call i8 @_ssdm_op_Read.ap_fifo.volatile.i8P(i8* %e)" [systemc/src/ModuleCompute_old.hpp:96]   --->   Operation 23 'read' 'val_V_3' <Predicate = true> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 8> <Depth = 0> <FIFO>
+
+State 4 <SV = 3> <Delay = 8.19>
+ST_4 : Operation 24 [1/1] (0.00ns)   --->   "%lhs_V = sext i8 %val_V to i16" [systemc/src/ModuleCompute_old.hpp:97]   --->   Operation 24 'sext' 'lhs_V' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 25 [1/1] (3.36ns) (grouped into DSP with root node add_ln99)   --->   "%ret_V = mul i16 %lhs_V, %lhs_V" [systemc/src/ModuleCompute_old.hpp:97]   --->   Operation 25 'mul' 'ret_V' <Predicate = true> <Delay = 3.36> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_4 : Operation 26 [1/1] (0.00ns)   --->   "%lhs_V_7 = sext i8 %val_V_3 to i16" [systemc/src/ModuleCompute_old.hpp:98]   --->   Operation 26 'sext' 'lhs_V_7' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 27 [1/1] (4.37ns)   --->   "%ret_V_7 = mul i16 %lhs_V_7, %lhs_V_7" [systemc/src/ModuleCompute_old.hpp:98]   --->   Operation 27 'mul' 'ret_V_7' <Predicate = true> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 28 [1/1] (3.82ns) (root node of the DSP)   --->   "%add_ln99 = add i16 %ret_V_7, %ret_V" [systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 28 'add' 'add_ln99' <Predicate = true> <Delay = 3.82> <Core = "DSP48">   --->   Core 88 'DSP48' <Latency = 0> <II = 1> <Delay = 7.18> <IPBlock> <Opcode : 'mul' 'add' 'sub' 'select'> <InPorts = 0> <OutPorts = 1> <Sync> <CReg>
+ST_4 : Operation 29 [1/1] (1.66ns)   --->   "br label %1" [systemc/src/ModuleCompute_old.hpp:70->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 29 'br' <Predicate = true> <Delay = 1.66>
+
+State 5 <SV = 4> <Delay = 7.72>
+ST_5 : Operation 30 [1/1] (0.00ns)   --->   "%rc_V = phi i8 [ 0, %0 ], [ %select_ln74, %2 ]" [systemc/src/ModuleCompute_old.hpp:74->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 30 'phi' 'rc_V' <Predicate = true> <Delay = 0.00>
+ST_5 : Operation 31 [1/1] (0.00ns)   --->   "%add_0_i = phi i8 [ -128, %0 ], [ %add_1, %2 ]"   --->   Operation 31 'phi' 'add_0_i' <Predicate = true> <Delay = 0.00>
+ST_5 : Operation 32 [1/1] (0.00ns)   --->   "%i_0_i = phi i4 [ 0, %0 ], [ %i, %2 ]"   --->   Operation 32 'phi' 'i_0_i' <Predicate = true> <Delay = 0.00>
+ST_5 : Operation 33 [1/1] (1.44ns)   --->   "%icmp_ln70 = icmp eq i4 %i_0_i, -8" [systemc/src/ModuleCompute_old.hpp:70->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 33 'icmp' 'icmp_ln70' <Predicate = true> <Delay = 1.44> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 2.38> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_5 : Operation 34 [1/1] (0.00ns)   --->   "%empty_69 = call i32 (...)* @_ssdm_op_SpecLoopTripCount(i64 8, i64 8, i64 8)"   --->   Operation 34 'speclooptripcount' 'empty_69' <Predicate = true> <Delay = 0.00>
+ST_5 : Operation 35 [1/1] (1.77ns)   --->   "%i = add i4 %i_0_i, 1" [systemc/src/ModuleCompute_old.hpp:70->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 35 'add' 'i' <Predicate = true> <Delay = 1.77> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 1.77> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_5 : Operation 36 [1/1] (0.00ns)   --->   "br i1 %icmp_ln70, label %int_sqrt32.exit, label %2" [systemc/src/ModuleCompute_old.hpp:70->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 36 'br' <Predicate = true> <Delay = 0.00>
+ST_5 : Operation 37 [1/1] (0.97ns)   --->   "%res = or i8 %add_0_i, %rc_V" [systemc/src/ModuleCompute_old.hpp:72->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 37 'or' 'res' <Predicate = (!icmp_ln70)> <Delay = 0.97> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.97> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_5 : Operation 38 [1/1] (0.00ns)   --->   "%zext_ln73 = zext i8 %res to i16" [systemc/src/ModuleCompute_old.hpp:73->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 38 'zext' 'zext_ln73' <Predicate = (!icmp_ln70)> <Delay = 0.00>
+ST_5 : Operation 39 [1/1] (4.37ns)   --->   "%g2 = mul i16 %zext_ln73, %zext_ln73" [systemc/src/ModuleCompute_old.hpp:73->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 39 'mul' 'g2' <Predicate = (!icmp_ln70)> <Delay = 4.37> <Core = "Mul">   --->   Core 16 'Mul' <Latency = 0> <II = 1> <Delay = 4.37> <FuncUnit> <Opcode : 'mul'> <InPorts = 2> <OutPorts = 1>
+ST_5 : Operation 40 [1/1] (2.38ns)   --->   "%icmp_ln74 = icmp ugt i16 %g2, %add_ln99" [systemc/src/ModuleCompute_old.hpp:74->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 40 'icmp' 'icmp_ln74' <Predicate = (!icmp_ln70)> <Delay = 2.38> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 2.38> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_5 : Operation 41 [1/1] (0.00ns)   --->   "%add = call i7 @_ssdm_op_PartSelect.i7.i8.i32.i32(i8 %add_0_i, i32 1, i32 7)" [systemc/src/ModuleCompute_old.hpp:78->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 41 'partselect' 'add' <Predicate = (!icmp_ln70)> <Delay = 0.00>
+ST_5 : Operation 42 [1/1] (0.00ns)   --->   "%add_1 = zext i7 %add to i8" [systemc/src/ModuleCompute_old.hpp:78->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 42 'zext' 'add_1' <Predicate = (!icmp_ln70)> <Delay = 0.00>
+ST_5 : Operation 43 [1/1] (3.90ns)   --->   "call void @_ssdm_op_Write.ap_fifo.volatile.i8P(i8* %s, i8 %rc_V)" [systemc/src/ModuleCompute_old.hpp:100]   --->   Operation 43 'write' <Predicate = (icmp_ln70)> <Delay = 3.90> <Core = "FIFO_SRL">   --->   Core 36 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 3.90> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 8> <Depth = 0> <FIFO>
+ST_5 : Operation 44 [1/1] (0.00ns)   --->   "br label %0" [systemc/src/ModuleCompute_old.hpp:103]   --->   Operation 44 'br' <Predicate = (icmp_ln70)> <Delay = 0.00>
+
+State 6 <SV = 5> <Delay = 1.04>
+ST_6 : Operation 45 [1/1] (1.04ns)   --->   "%select_ln74 = select i1 %icmp_ln74, i8 %rc_V, i8 %res" [systemc/src/ModuleCompute_old.hpp:74->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 45 'select' 'select_ln74' <Predicate = true> <Delay = 1.04> <Core = "Sel">   --->   Core 26 'Sel' <Latency = 0> <II = 1> <Delay = 1.04> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_6 : Operation 46 [1/1] (0.00ns)   --->   "br label %1" [systemc/src/ModuleCompute_old.hpp:70->systemc/src/ModuleCompute_old.hpp:99]   --->   Operation 46 'br' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 1.25ns.
+
+ <State 1>: 0ns
+The critical path consists of the following:
+
+ <State 2>: 3.91ns
+The critical path consists of the following:
+	fifo read on port 'e' (systemc/src/ModuleCompute_old.hpp:95) [21]  (3.91 ns)
+
+ <State 3>: 3.91ns
+The critical path consists of the following:
+	fifo read on port 'e' (systemc/src/ModuleCompute_old.hpp:96) [22]  (3.91 ns)
+
+ <State 4>: 8.19ns
+The critical path consists of the following:
+	'mul' operation ('ret.V', systemc/src/ModuleCompute_old.hpp:98) [26]  (4.37 ns)
+	'add' operation of DSP[27] ('x', systemc/src/ModuleCompute_old.hpp:99) [27]  (3.82 ns)
+
+ <State 5>: 7.72ns
+The critical path consists of the following:
+	'phi' operation ('rc.V', systemc/src/ModuleCompute_old.hpp:74->systemc/src/ModuleCompute_old.hpp:99) with incoming values : ('select_ln74', systemc/src/ModuleCompute_old.hpp:74->systemc/src/ModuleCompute_old.hpp:99) [30]  (0 ns)
+	'or' operation ('res', systemc/src/ModuleCompute_old.hpp:72->systemc/src/ModuleCompute_old.hpp:99) [38]  (0.975 ns)
+	'mul' operation ('g2', systemc/src/ModuleCompute_old.hpp:73->systemc/src/ModuleCompute_old.hpp:99) [40]  (4.37 ns)
+	'icmp' operation ('icmp_ln74', systemc/src/ModuleCompute_old.hpp:74->systemc/src/ModuleCompute_old.hpp:99) [41]  (2.38 ns)
+
+ <State 6>: 1.04ns
+The critical path consists of the following:
+	'select' operation ('select_ln74', systemc/src/ModuleCompute_old.hpp:74->systemc/src/ModuleCompute_old.hpp:99) [42]  (1.04 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+	State 6
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

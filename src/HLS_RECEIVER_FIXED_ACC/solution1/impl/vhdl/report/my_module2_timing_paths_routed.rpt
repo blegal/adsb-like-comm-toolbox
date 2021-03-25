@@ -1,0 +1,683 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1 (lin64) Build 2902540 Wed May 27 19:54:35 MDT 2020
+| Date         : Thu Mar 25 14:15:38 2021
+| Host         : JARVIS running 64-bit Ubuntu 20.04.2 LTS
+| Command      : report_timing -max_paths 10 -file ./report/my_module2_timing_paths_routed.rpt
+| Design       : bd_0_wrapper
+| Device       : 7a100t-csg324
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+-----------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             1.640ns  (required time - arrival time)
+  Source:                 bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/B[9]
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clock rise@10.000ns - clock rise@0.000ns)
+  Data Path Delay:        7.644ns  (logic 2.882ns (37.701%)  route 4.762ns (62.299%))
+  Logic Levels:           8  (CARRY4=3 LUT3=2 LUT4=1 LUT5=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 10.924 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clock (IN)
+                         net (fo=954, unset)          0.973     0.973    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/clock
+    SLICE_X6Y45          FDRE                                         r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X6Y45          FDRE (Prop_fdre_C_Q)         0.518     1.491 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/Q
+                         net (fo=3, routed)           1.141     2.632    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104[3]
+    SLICE_X7Y44          LUT3 (Prop_lut3_I0_O)        0.150     2.782 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_4/O
+                         net (fo=2, routed)           0.810     3.592    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_4_n_8
+    SLICE_X7Y45          LUT4 (Prop_lut4_I3_O)        0.332     3.924 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_8/O
+                         net (fo=1, routed)           0.000     3.924    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_8_n_8
+    SLICE_X7Y45          CARRY4 (Prop_carry4_S[0]_O[0])
+                                                      0.247     4.171 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0/O[0]
+                         net (fo=3, routed)           0.645     4.817    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_n_15
+    SLICE_X7Y47          LUT3 (Prop_lut3_I0_O)        0.299     5.116 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_11/O
+                         net (fo=2, routed)           0.805     5.920    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_11_n_8
+    SLICE_X9Y47          LUT5 (Prop_lut5_I3_O)        0.153     6.073 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_3/O
+                         net (fo=2, routed)           0.538     6.611    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_3_n_8
+    SLICE_X8Y47          LUT6 (Prop_lut6_I0_O)        0.327     6.938 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_7/O
+                         net (fo=1, routed)           0.000     6.938    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_7_n_8
+    SLICE_X8Y47          CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533     7.471 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0/CO[3]
+                         net (fo=1, routed)           0.000     7.471    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_n_8
+    SLICE_X8Y48          CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.323     7.794 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__1/O[1]
+                         net (fo=2, routed)           0.823     8.617    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2[9]
+    DSP48_X0Y21          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/B[9]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     10.000    10.000 r  
+                                                      0.000    10.000 r  clock (IN)
+                         net (fo=954, unset)          0.924    10.924    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/clock
+    DSP48_X0Y21          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/CLK
+                         clock pessimism              0.000    10.924    
+                         clock uncertainty           -0.035    10.889    
+    DSP48_X0Y21          DSP48E1 (Setup_dsp48e1_CLK_B[9])
+                                                     -0.632    10.257    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg
+  -------------------------------------------------------------------
+                         required time                         10.257    
+                         arrival time                          -8.617    
+  -------------------------------------------------------------------
+                         slack                                  1.640    
+
+Slack (MET) :             1.728ns  (required time - arrival time)
+  Source:                 bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/A[9]
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clock rise@10.000ns - clock rise@0.000ns)
+  Data Path Delay:        7.644ns  (logic 2.882ns (37.701%)  route 4.762ns (62.299%))
+  Logic Levels:           8  (CARRY4=3 LUT3=2 LUT4=1 LUT5=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 10.924 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clock (IN)
+                         net (fo=954, unset)          0.973     0.973    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/clock
+    SLICE_X6Y45          FDRE                                         r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X6Y45          FDRE (Prop_fdre_C_Q)         0.518     1.491 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/Q
+                         net (fo=3, routed)           1.141     2.632    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104[3]
+    SLICE_X7Y44          LUT3 (Prop_lut3_I0_O)        0.150     2.782 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_4/O
+                         net (fo=2, routed)           0.810     3.592    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_4_n_8
+    SLICE_X7Y45          LUT4 (Prop_lut4_I3_O)        0.332     3.924 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_8/O
+                         net (fo=1, routed)           0.000     3.924    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_8_n_8
+    SLICE_X7Y45          CARRY4 (Prop_carry4_S[0]_O[0])
+                                                      0.247     4.171 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0/O[0]
+                         net (fo=3, routed)           0.645     4.817    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_n_15
+    SLICE_X7Y47          LUT3 (Prop_lut3_I0_O)        0.299     5.116 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_11/O
+                         net (fo=2, routed)           0.805     5.920    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_11_n_8
+    SLICE_X9Y47          LUT5 (Prop_lut5_I3_O)        0.153     6.073 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_3/O
+                         net (fo=2, routed)           0.538     6.611    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_3_n_8
+    SLICE_X8Y47          LUT6 (Prop_lut6_I0_O)        0.327     6.938 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_7/O
+                         net (fo=1, routed)           0.000     6.938    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_7_n_8
+    SLICE_X8Y47          CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533     7.471 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0/CO[3]
+                         net (fo=1, routed)           0.000     7.471    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_n_8
+    SLICE_X8Y48          CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.323     7.794 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__1/O[1]
+                         net (fo=2, routed)           0.823     8.617    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2[9]
+    DSP48_X0Y21          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/A[9]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     10.000    10.000 r  
+                                                      0.000    10.000 r  clock (IN)
+                         net (fo=954, unset)          0.924    10.924    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/clock
+    DSP48_X0Y21          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/CLK
+                         clock pessimism              0.000    10.924    
+                         clock uncertainty           -0.035    10.889    
+    DSP48_X0Y21          DSP48E1 (Setup_dsp48e1_CLK_A[9])
+                                                     -0.544    10.345    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg
+  -------------------------------------------------------------------
+                         required time                         10.345    
+                         arrival time                          -8.617    
+  -------------------------------------------------------------------
+                         slack                                  1.728    
+
+Slack (MET) :             1.732ns  (required time - arrival time)
+  Source:                 bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/A[8]
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clock rise@10.000ns - clock rise@0.000ns)
+  Data Path Delay:        7.651ns  (logic 2.778ns (36.308%)  route 4.873ns (63.692%))
+  Logic Levels:           8  (CARRY4=3 LUT3=2 LUT4=1 LUT5=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 10.924 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clock (IN)
+                         net (fo=954, unset)          0.973     0.973    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/clock
+    SLICE_X6Y45          FDRE                                         r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X6Y45          FDRE (Prop_fdre_C_Q)         0.518     1.491 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/Q
+                         net (fo=3, routed)           1.141     2.632    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104[3]
+    SLICE_X7Y44          LUT3 (Prop_lut3_I0_O)        0.150     2.782 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_4/O
+                         net (fo=2, routed)           0.810     3.592    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_4_n_8
+    SLICE_X7Y45          LUT4 (Prop_lut4_I3_O)        0.332     3.924 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_8/O
+                         net (fo=1, routed)           0.000     3.924    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_8_n_8
+    SLICE_X7Y45          CARRY4 (Prop_carry4_S[0]_O[0])
+                                                      0.247     4.171 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0/O[0]
+                         net (fo=3, routed)           0.645     4.817    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_n_15
+    SLICE_X7Y47          LUT3 (Prop_lut3_I0_O)        0.299     5.116 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_11/O
+                         net (fo=2, routed)           0.805     5.920    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_11_n_8
+    SLICE_X9Y47          LUT5 (Prop_lut5_I3_O)        0.153     6.073 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_3/O
+                         net (fo=2, routed)           0.538     6.611    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_3_n_8
+    SLICE_X8Y47          LUT6 (Prop_lut6_I0_O)        0.327     6.938 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_7/O
+                         net (fo=1, routed)           0.000     6.938    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_7_n_8
+    SLICE_X8Y47          CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533     7.471 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0/CO[3]
+                         net (fo=1, routed)           0.000     7.471    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_n_8
+    SLICE_X8Y48          CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.219     7.690 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__1/O[0]
+                         net (fo=2, routed)           0.934     8.624    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2[8]
+    DSP48_X0Y21          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/A[8]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     10.000    10.000 r  
+                                                      0.000    10.000 r  clock (IN)
+                         net (fo=954, unset)          0.924    10.924    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/clock
+    DSP48_X0Y21          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/CLK
+                         clock pessimism              0.000    10.924    
+                         clock uncertainty           -0.035    10.889    
+    DSP48_X0Y21          DSP48E1 (Setup_dsp48e1_CLK_A[8])
+                                                     -0.533    10.356    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg
+  -------------------------------------------------------------------
+                         required time                         10.356    
+                         arrival time                          -8.624    
+  -------------------------------------------------------------------
+                         slack                                  1.732    
+
+Slack (MET) :             1.744ns  (required time - arrival time)
+  Source:                 bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/C[23]
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clock rise@10.000ns - clock rise@0.000ns)
+  Data Path Delay:        6.296ns  (logic 2.772ns (44.025%)  route 3.524ns (55.975%))
+  Logic Levels:           9  (CARRY4=5 LUT2=1 LUT3=1 LUT4=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 10.924 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clock (IN)
+                         net (fo=954, unset)          0.973     0.973    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/clock
+    SLICE_X12Y66         FDRE                                         r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X12Y66         FDRE (Prop_fdre_C_Q)         0.518     1.491 f  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/Q
+                         net (fo=24, routed)          0.696     2.187    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196[7]
+    SLICE_X12Y66         LUT2 (Prop_lut2_I0_O)        0.146     2.333 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_85/O
+                         net (fo=1, routed)           0.576     2.909    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_85_n_8
+    SLICE_X13Y66         LUT6 (Prop_lut6_I5_O)        0.328     3.237 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_75/O
+                         net (fo=1, routed)           0.000     3.237    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_75_n_8
+    SLICE_X13Y66         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.398     3.635 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_41/CO[3]
+                         net (fo=1, routed)           0.000     3.635    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_41_n_8
+    SLICE_X13Y67         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     3.857 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_39/O[0]
+                         net (fo=2, routed)           0.754     4.611    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_39_n_15
+    SLICE_X10Y65         LUT3 (Prop_lut3_I2_O)        0.299     4.910 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_15/O
+                         net (fo=2, routed)           0.445     5.355    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_15_n_8
+    SLICE_X11Y66         LUT4 (Prop_lut4_I0_O)        0.124     5.479 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_19/O
+                         net (fo=1, routed)           0.000     5.479    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_19_n_8
+    SLICE_X11Y66         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     5.880 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_4/CO[3]
+                         net (fo=1, routed)           0.000     5.880    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_4_n_8
+    SLICE_X11Y67         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.994 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_3/CO[3]
+                         net (fo=1, routed)           0.000     5.994    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_3_n_8
+    SLICE_X11Y68         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     6.216 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_2/O[0]
+                         net (fo=33, routed)          1.054     7.269    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/C[14]
+    DSP48_X0Y24          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/C[23]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     10.000    10.000 r  
+                                                      0.000    10.000 r  clock (IN)
+                         net (fo=954, unset)          0.924    10.924    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/clock
+    DSP48_X0Y24          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/CLK
+                         clock pessimism              0.000    10.924    
+                         clock uncertainty           -0.035    10.889    
+    DSP48_X0Y24          DSP48E1 (Setup_dsp48e1_CLK_C[23])
+                                                     -1.876     9.013    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p
+  -------------------------------------------------------------------
+                         required time                          9.013    
+                         arrival time                          -7.269    
+  -------------------------------------------------------------------
+                         slack                                  1.744    
+
+Slack (MET) :             1.744ns  (required time - arrival time)
+  Source:                 bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/C[41]
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clock rise@10.000ns - clock rise@0.000ns)
+  Data Path Delay:        6.296ns  (logic 2.772ns (44.025%)  route 3.524ns (55.975%))
+  Logic Levels:           9  (CARRY4=5 LUT2=1 LUT3=1 LUT4=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 10.924 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clock (IN)
+                         net (fo=954, unset)          0.973     0.973    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/clock
+    SLICE_X12Y66         FDRE                                         r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X12Y66         FDRE (Prop_fdre_C_Q)         0.518     1.491 f  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/Q
+                         net (fo=24, routed)          0.696     2.187    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196[7]
+    SLICE_X12Y66         LUT2 (Prop_lut2_I0_O)        0.146     2.333 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_85/O
+                         net (fo=1, routed)           0.576     2.909    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_85_n_8
+    SLICE_X13Y66         LUT6 (Prop_lut6_I5_O)        0.328     3.237 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_75/O
+                         net (fo=1, routed)           0.000     3.237    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_75_n_8
+    SLICE_X13Y66         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.398     3.635 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_41/CO[3]
+                         net (fo=1, routed)           0.000     3.635    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_41_n_8
+    SLICE_X13Y67         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     3.857 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_39/O[0]
+                         net (fo=2, routed)           0.754     4.611    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_39_n_15
+    SLICE_X10Y65         LUT3 (Prop_lut3_I2_O)        0.299     4.910 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_15/O
+                         net (fo=2, routed)           0.445     5.355    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_15_n_8
+    SLICE_X11Y66         LUT4 (Prop_lut4_I0_O)        0.124     5.479 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_19/O
+                         net (fo=1, routed)           0.000     5.479    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_19_n_8
+    SLICE_X11Y66         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     5.880 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_4/CO[3]
+                         net (fo=1, routed)           0.000     5.880    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_4_n_8
+    SLICE_X11Y67         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.994 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_3/CO[3]
+                         net (fo=1, routed)           0.000     5.994    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_3_n_8
+    SLICE_X11Y68         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     6.216 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_2/O[0]
+                         net (fo=33, routed)          1.054     7.269    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/C[14]
+    DSP48_X0Y24          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/C[41]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     10.000    10.000 r  
+                                                      0.000    10.000 r  clock (IN)
+                         net (fo=954, unset)          0.924    10.924    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/clock
+    DSP48_X0Y24          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/CLK
+                         clock pessimism              0.000    10.924    
+                         clock uncertainty           -0.035    10.889    
+    DSP48_X0Y24          DSP48E1 (Setup_dsp48e1_CLK_C[41])
+                                                     -1.876     9.013    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p
+  -------------------------------------------------------------------
+                         required time                          9.013    
+                         arrival time                          -7.269    
+  -------------------------------------------------------------------
+                         slack                                  1.744    
+
+Slack (MET) :             1.744ns  (required time - arrival time)
+  Source:                 bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/C[43]
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clock rise@10.000ns - clock rise@0.000ns)
+  Data Path Delay:        6.296ns  (logic 2.772ns (44.025%)  route 3.524ns (55.975%))
+  Logic Levels:           9  (CARRY4=5 LUT2=1 LUT3=1 LUT4=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 10.924 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clock (IN)
+                         net (fo=954, unset)          0.973     0.973    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/clock
+    SLICE_X12Y66         FDRE                                         r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X12Y66         FDRE (Prop_fdre_C_Q)         0.518     1.491 f  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/Q
+                         net (fo=24, routed)          0.696     2.187    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196[7]
+    SLICE_X12Y66         LUT2 (Prop_lut2_I0_O)        0.146     2.333 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_85/O
+                         net (fo=1, routed)           0.576     2.909    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_85_n_8
+    SLICE_X13Y66         LUT6 (Prop_lut6_I5_O)        0.328     3.237 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_75/O
+                         net (fo=1, routed)           0.000     3.237    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_75_n_8
+    SLICE_X13Y66         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.398     3.635 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_41/CO[3]
+                         net (fo=1, routed)           0.000     3.635    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_41_n_8
+    SLICE_X13Y67         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     3.857 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_39/O[0]
+                         net (fo=2, routed)           0.754     4.611    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_39_n_15
+    SLICE_X10Y65         LUT3 (Prop_lut3_I2_O)        0.299     4.910 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_15/O
+                         net (fo=2, routed)           0.445     5.355    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_15_n_8
+    SLICE_X11Y66         LUT4 (Prop_lut4_I0_O)        0.124     5.479 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_19/O
+                         net (fo=1, routed)           0.000     5.479    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_19_n_8
+    SLICE_X11Y66         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     5.880 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_4/CO[3]
+                         net (fo=1, routed)           0.000     5.880    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_4_n_8
+    SLICE_X11Y67         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.994 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_3/CO[3]
+                         net (fo=1, routed)           0.000     5.994    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_3_n_8
+    SLICE_X11Y68         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     6.216 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_2/O[0]
+                         net (fo=33, routed)          1.054     7.269    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/C[14]
+    DSP48_X0Y24          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/C[43]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     10.000    10.000 r  
+                                                      0.000    10.000 r  clock (IN)
+                         net (fo=954, unset)          0.924    10.924    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/clock
+    DSP48_X0Y24          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/CLK
+                         clock pessimism              0.000    10.924    
+                         clock uncertainty           -0.035    10.889    
+    DSP48_X0Y24          DSP48E1 (Setup_dsp48e1_CLK_C[43])
+                                                     -1.876     9.013    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p
+  -------------------------------------------------------------------
+                         required time                          9.013    
+                         arrival time                          -7.269    
+  -------------------------------------------------------------------
+                         slack                                  1.744    
+
+Slack (MET) :             1.771ns  (required time - arrival time)
+  Source:                 bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/B[10]
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clock rise@10.000ns - clock rise@0.000ns)
+  Data Path Delay:        7.518ns  (logic 2.798ns (37.219%)  route 4.720ns (62.781%))
+  Logic Levels:           8  (CARRY4=3 LUT3=2 LUT4=1 LUT5=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 10.924 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clock (IN)
+                         net (fo=954, unset)          0.973     0.973    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/clock
+    SLICE_X6Y45          FDRE                                         r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X6Y45          FDRE (Prop_fdre_C_Q)         0.518     1.491 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/Q
+                         net (fo=3, routed)           1.141     2.632    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104[3]
+    SLICE_X7Y44          LUT3 (Prop_lut3_I0_O)        0.150     2.782 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_4/O
+                         net (fo=2, routed)           0.810     3.592    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_4_n_8
+    SLICE_X7Y45          LUT4 (Prop_lut4_I3_O)        0.332     3.924 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_8/O
+                         net (fo=1, routed)           0.000     3.924    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_8_n_8
+    SLICE_X7Y45          CARRY4 (Prop_carry4_S[0]_O[0])
+                                                      0.247     4.171 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0/O[0]
+                         net (fo=3, routed)           0.645     4.817    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_n_15
+    SLICE_X7Y47          LUT3 (Prop_lut3_I0_O)        0.299     5.116 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_11/O
+                         net (fo=2, routed)           0.805     5.920    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_11_n_8
+    SLICE_X9Y47          LUT5 (Prop_lut5_I3_O)        0.153     6.073 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_3/O
+                         net (fo=2, routed)           0.538     6.611    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_3_n_8
+    SLICE_X8Y47          LUT6 (Prop_lut6_I0_O)        0.327     6.938 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_7/O
+                         net (fo=1, routed)           0.000     6.938    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_7_n_8
+    SLICE_X8Y47          CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533     7.471 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0/CO[3]
+                         net (fo=1, routed)           0.000     7.471    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_n_8
+    SLICE_X8Y48          CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239     7.710 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__1/O[2]
+                         net (fo=2, routed)           0.780     8.491    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2[10]
+    DSP48_X0Y21          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/B[10]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     10.000    10.000 r  
+                                                      0.000    10.000 r  clock (IN)
+                         net (fo=954, unset)          0.924    10.924    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/clock
+    DSP48_X0Y21          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/CLK
+                         clock pessimism              0.000    10.924    
+                         clock uncertainty           -0.035    10.889    
+    DSP48_X0Y21          DSP48E1 (Setup_dsp48e1_CLK_B[10])
+                                                     -0.627    10.262    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg
+  -------------------------------------------------------------------
+                         required time                         10.262    
+                         arrival time                          -8.491    
+  -------------------------------------------------------------------
+                         slack                                  1.771    
+
+Slack (MET) :             1.803ns  (required time - arrival time)
+  Source:                 bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/C[40]
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clock rise@10.000ns - clock rise@0.000ns)
+  Data Path Delay:        6.237ns  (logic 2.772ns (44.444%)  route 3.465ns (55.556%))
+  Logic Levels:           9  (CARRY4=5 LUT2=1 LUT3=1 LUT4=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 10.924 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clock (IN)
+                         net (fo=954, unset)          0.973     0.973    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/clock
+    SLICE_X12Y66         FDRE                                         r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X12Y66         FDRE (Prop_fdre_C_Q)         0.518     1.491 f  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/Q
+                         net (fo=24, routed)          0.696     2.187    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196[7]
+    SLICE_X12Y66         LUT2 (Prop_lut2_I0_O)        0.146     2.333 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_85/O
+                         net (fo=1, routed)           0.576     2.909    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_85_n_8
+    SLICE_X13Y66         LUT6 (Prop_lut6_I5_O)        0.328     3.237 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_75/O
+                         net (fo=1, routed)           0.000     3.237    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_75_n_8
+    SLICE_X13Y66         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.398     3.635 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_41/CO[3]
+                         net (fo=1, routed)           0.000     3.635    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_41_n_8
+    SLICE_X13Y67         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     3.857 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_39/O[0]
+                         net (fo=2, routed)           0.754     4.611    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_39_n_15
+    SLICE_X10Y65         LUT3 (Prop_lut3_I2_O)        0.299     4.910 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_15/O
+                         net (fo=2, routed)           0.445     5.355    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_15_n_8
+    SLICE_X11Y66         LUT4 (Prop_lut4_I0_O)        0.124     5.479 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_19/O
+                         net (fo=1, routed)           0.000     5.479    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_19_n_8
+    SLICE_X11Y66         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     5.880 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_4/CO[3]
+                         net (fo=1, routed)           0.000     5.880    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_4_n_8
+    SLICE_X11Y67         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.994 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_3/CO[3]
+                         net (fo=1, routed)           0.000     5.994    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_3_n_8
+    SLICE_X11Y68         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     6.216 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_2/O[0]
+                         net (fo=33, routed)          0.994     7.210    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/C[14]
+    DSP48_X0Y24          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/C[40]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     10.000    10.000 r  
+                                                      0.000    10.000 r  clock (IN)
+                         net (fo=954, unset)          0.924    10.924    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/clock
+    DSP48_X0Y24          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/CLK
+                         clock pessimism              0.000    10.924    
+                         clock uncertainty           -0.035    10.889    
+    DSP48_X0Y24          DSP48E1 (Setup_dsp48e1_CLK_C[40])
+                                                     -1.876     9.013    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p
+  -------------------------------------------------------------------
+                         required time                          9.013    
+                         arrival time                          -7.210    
+  -------------------------------------------------------------------
+                         slack                                  1.803    
+
+Slack (MET) :             1.827ns  (required time - arrival time)
+  Source:                 bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/C[35]
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clock rise@10.000ns - clock rise@0.000ns)
+  Data Path Delay:        6.213ns  (logic 2.772ns (44.618%)  route 3.441ns (55.382%))
+  Logic Levels:           9  (CARRY4=5 LUT2=1 LUT3=1 LUT4=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 10.924 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clock (IN)
+                         net (fo=954, unset)          0.973     0.973    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/clock
+    SLICE_X12Y66         FDRE                                         r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X12Y66         FDRE (Prop_fdre_C_Q)         0.518     1.491 f  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196_reg[7]/Q
+                         net (fo=24, routed)          0.696     2.187    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/val_V_3_reg_196[7]
+    SLICE_X12Y66         LUT2 (Prop_lut2_I0_O)        0.146     2.333 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_85/O
+                         net (fo=1, routed)           0.576     2.909    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_85_n_8
+    SLICE_X13Y66         LUT6 (Prop_lut6_I5_O)        0.328     3.237 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_75/O
+                         net (fo=1, routed)           0.000     3.237    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_75_n_8
+    SLICE_X13Y66         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.398     3.635 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_41/CO[3]
+                         net (fo=1, routed)           0.000     3.635    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_41_n_8
+    SLICE_X13Y67         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     3.857 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_39/O[0]
+                         net (fo=2, routed)           0.754     4.611    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_39_n_15
+    SLICE_X10Y65         LUT3 (Prop_lut3_I2_O)        0.299     4.910 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_15/O
+                         net (fo=2, routed)           0.445     5.355    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_15_n_8
+    SLICE_X11Y66         LUT4 (Prop_lut4_I0_O)        0.124     5.479 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_19/O
+                         net (fo=1, routed)           0.000     5.479    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_19_n_8
+    SLICE_X11Y66         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     5.880 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_4/CO[3]
+                         net (fo=1, routed)           0.000     5.880    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_4_n_8
+    SLICE_X11Y67         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.994 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_3/CO[3]
+                         net (fo=1, routed)           0.000     5.994    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_3_n_8
+    SLICE_X11Y68         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     6.216 r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/p_i_2/O[0]
+                         net (fo=33, routed)          0.970     7.186    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/C[14]
+    DSP48_X0Y24          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/C[35]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     10.000    10.000 r  
+                                                      0.000    10.000 r  clock (IN)
+                         net (fo=954, unset)          0.924    10.924    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/clock
+    DSP48_X0Y24          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p/CLK
+                         clock pessimism              0.000    10.924    
+                         clock uncertainty           -0.035    10.889    
+    DSP48_X0Y24          DSP48E1 (Setup_dsp48e1_CLK_C[35])
+                                                     -1.876     9.013    bd_0_i/hls_inst/U0/grp_ModuleCompute_fu_212/grp_ModuleCompute_do_gen_fu_58/ModuleCompute_macg8j_U51/ModuleCompute_macg8j_DSP48_3_U/p
+  -------------------------------------------------------------------
+                         required time                          9.013    
+                         arrival time                          -7.186    
+  -------------------------------------------------------------------
+                         slack                                  1.827    
+
+Slack (MET) :             1.833ns  (required time - arrival time)
+  Source:                 bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/C
+                            (rising edge-triggered cell FDRE clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Destination:            bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/B[7]
+                            (rising edge-triggered cell DSP48E1 clocked by clock  {rise@0.000ns fall@5.000ns period=10.000ns})
+  Path Group:             clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.000ns  (clock rise@10.000ns - clock rise@0.000ns)
+  Data Path Delay:        7.450ns  (logic 2.669ns (35.826%)  route 4.781ns (64.174%))
+  Logic Levels:           7  (CARRY4=2 LUT3=2 LUT4=1 LUT5=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 10.924 - 10.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clock rise edge)      0.000     0.000 r  
+                                                      0.000     0.000 r  clock (IN)
+                         net (fo=954, unset)          0.973     0.973    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/clock
+    SLICE_X6Y45          FDRE                                         r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X6Y45          FDRE (Prop_fdre_C_Q)         0.518     1.491 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104_reg[3]__0/Q
+                         net (fo=3, routed)           1.141     2.632    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/buffer_5_V_fu_104[3]
+    SLICE_X7Y44          LUT3 (Prop_lut3_I0_O)        0.150     2.782 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_4/O
+                         net (fo=2, routed)           0.810     3.592    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_4_n_8
+    SLICE_X7Y45          LUT4 (Prop_lut4_I3_O)        0.332     3.924 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_8/O
+                         net (fo=1, routed)           0.000     3.924    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_i_8_n_8
+    SLICE_X7Y45          CARRY4 (Prop_carry4_S[0]_O[0])
+                                                      0.247     4.171 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0/O[0]
+                         net (fo=3, routed)           0.645     4.817    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__0_carry__0_n_15
+    SLICE_X7Y47          LUT3 (Prop_lut3_I0_O)        0.299     5.116 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_11/O
+                         net (fo=2, routed)           0.805     5.920    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_11_n_8
+    SLICE_X9Y47          LUT5 (Prop_lut5_I3_O)        0.153     6.073 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_3/O
+                         net (fo=2, routed)           0.538     6.611    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_3_n_8
+    SLICE_X8Y47          LUT6 (Prop_lut6_I0_O)        0.327     6.938 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_7/O
+                         net (fo=1, routed)           0.000     6.938    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0_i_7_n_8
+    SLICE_X8Y47          CARRY4 (Prop_carry4_S[1]_O[3])
+                                                      0.643     7.581 r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2__54_carry__0/O[3]
+                         net (fo=2, routed)           0.842     8.423    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ps_V_fu_437_p2[7]
+    DSP48_X0Y21          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/B[7]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clock rise edge)     10.000    10.000 r  
+                                                      0.000    10.000 r  clock (IN)
+                         net (fo=954, unset)          0.924    10.924    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/clock
+    DSP48_X0Y21          DSP48E1                                      r  bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg/CLK
+                         clock pessimism              0.000    10.924    
+                         clock uncertainty           -0.035    10.889    
+    DSP48_X0Y21          DSP48E1 (Setup_dsp48e1_CLK_B[7])
+                                                     -0.633    10.256    bd_0_i/hls_inst/U0/grp_Detecteur2_fu_226/grp_Seuil_calc2_fu_100/grp_Seuil_calc2_do_gen_fu_56/ret_V_6_reg_902_reg
+  -------------------------------------------------------------------
+                         required time                         10.256    
+                         arrival time                          -8.423    
+  -------------------------------------------------------------------
+                         slack                                  1.833    
+
+
+
+

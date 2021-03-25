@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Thu Mar 25 14:12:52 2021" VIVADOVERSION="2020.1">
+
+  <SYSTEMINFO ARCH="artix7" DEVICE="7a100t" NAME="bd_0" PACKAGE="csg324" SPEEDGRADE="-1"/>
+
+  <EXTERNALPORTS>
+    <PORT CLKFREQUENCY="100000000.0" DIR="I" NAME="clock" SIGIS="clk" SIGNAME="External_Ports_clock">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="clock"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" NAME="reset" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="External_Ports_reset">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="reset"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="31" NAME="addr_wr_data" RIGHT="0" SIGIS="undef" SIGNAME="hls_inst_addr_din">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="addr_din"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" NAME="addr_full_n" SIGIS="undef" SIGNAME="hls_inst_addr_full_n">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="addr_full_n"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="addr_wr_en" SIGIS="undef" SIGNAME="hls_inst_addr_write">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="addr_write"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" LEFT="7" NAME="e_rd_data" RIGHT="0" SIGIS="undef" SIGNAME="hls_inst_e_dout">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="e_dout"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" NAME="e_empty_n" SIGIS="undef" SIGNAME="hls_inst_e_empty_n">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="e_empty_n"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="e_rd_en" SIGIS="undef" SIGNAME="hls_inst_e_read">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="e_read"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="23" NAME="rgbv_wr_data" RIGHT="0" SIGIS="undef" SIGNAME="hls_inst_rgbv_din">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="rgbv_din"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" NAME="rgbv_full_n" SIGIS="undef" SIGNAME="hls_inst_rgbv_full_n">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="rgbv_full_n"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="rgbv_wr_en" SIGIS="undef" SIGNAME="hls_inst_rgbv_write">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="hls_inst" PORT="rgbv_write"/>
+      </CONNECTIONS>
+    </PORT>
+  </EXTERNALPORTS>
+
+  <EXTERNALINTERFACES>
+    <BUSINTERFACE BUSNAME="hls_inst_addr" NAME="addr" TYPE="INITIATOR">
+      <PORTMAPS>
+        <PORTMAP LOGICAL="WR_DATA" PHYSICAL="addr_wr_data"/>
+        <PORTMAP LOGICAL="FULL_N" PHYSICAL="addr_full_n"/>
+        <PORTMAP LOGICAL="WR_EN" PHYSICAL="addr_wr_en"/>
+      </PORTMAPS>
+    </BUSINTERFACE>
+    <BUSINTERFACE BUSNAME="hls_inst_e" NAME="e" TYPE="INITIATOR">
+      <PORTMAPS>
+        <PORTMAP LOGICAL="RD_DATA" PHYSICAL="e_rd_data"/>
+        <PORTMAP LOGICAL="EMPTY_N" PHYSICAL="e_empty_n"/>
+        <PORTMAP LOGICAL="RD_EN" PHYSICAL="e_rd_en"/>
+      </PORTMAPS>
+    </BUSINTERFACE>
+    <BUSINTERFACE BUSNAME="hls_inst_rgbv" NAME="rgbv" TYPE="INITIATOR">
+      <PORTMAPS>
+        <PORTMAP LOGICAL="WR_DATA" PHYSICAL="rgbv_wr_data"/>
+        <PORTMAP LOGICAL="FULL_N" PHYSICAL="rgbv_full_n"/>
+        <PORTMAP LOGICAL="WR_EN" PHYSICAL="rgbv_wr_en"/>
+      </PORTMAPS>
+    </BUSINTERFACE>
+  </EXTERNALINTERFACES>
+
+  <MODULES>
+    <MODULE COREREVISION="2103251412" FULLNAME="/hls_inst" HWVERSION="1.0" INSTANCE="hls_inst" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="my_module2" VLNV="xilinx.com:hls:my_module2:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="Component_Name" VALUE="bd_0_hls_inst_0"/>
+        <PARAMETER NAME="clk_period" VALUE="10"/>
+        <PARAMETER NAME="machine" VALUE="64"/>
+        <PARAMETER NAME="combinational" VALUE="0"/>
+        <PARAMETER NAME="latency" VALUE="2"/>
+        <PARAMETER NAME="II" VALUE="x"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT CLKFREQUENCY="100000000.0" DIR="I" NAME="clock" SIGIS="clk" SIGNAME="External_Ports_clock">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="clock"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="reset" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="External_Ports_reset">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="reset"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="7" NAME="e_dout" RIGHT="0" SIGIS="undef" SIGNAME="hls_inst_e_dout">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="bd_0_imp" PORT="e_rd_data"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="e_empty_n" SIGIS="undef" SIGNAME="hls_inst_e_empty_n">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="bd_0_imp" PORT="e_empty_n"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="e_read" SIGIS="undef" SIGNAME="hls_inst_e_read">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="bd_0_imp" PORT="e_rd_en"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="31" NAME="addr_din" RIGHT="0" SIGIS="undef" SIGNAME="hls_inst_addr_din">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="bd_0_imp" PORT="addr_wr_data"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="addr_full_n" SIGIS="undef" SIGNAME="hls_inst_addr_full_n">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="bd_0_imp" PORT="addr_full_n"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="addr_write" SIGIS="undef" SIGNAME="hls_inst_addr_write">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="bd_0_imp" PORT="addr_wr_en"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="23" NAME="rgbv_din" RIGHT="0" SIGIS="undef" SIGNAME="hls_inst_rgbv_din">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="bd_0_imp" PORT="rgbv_wr_data"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="rgbv_full_n" SIGIS="undef" SIGNAME="hls_inst_rgbv_full_n">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="bd_0_imp" PORT="rgbv_full_n"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="rgbv_write" SIGIS="undef" SIGNAME="hls_inst_rgbv_write">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="bd_0_imp" PORT="rgbv_wr_en"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES>
+        <BUSINTERFACE BUSNAME="hls_inst_e" NAME="e" TYPE="INITIATOR" VLNV="xilinx.com:interface:acc_fifo_read:1.0">
+          <PORTMAPS>
+            <PORTMAP LOGICAL="RD_DATA" PHYSICAL="e_dout"/>
+            <PORTMAP LOGICAL="EMPTY_N" PHYSICAL="e_empty_n"/>
+            <PORTMAP LOGICAL="RD_EN" PHYSICAL="e_read"/>
+          </PORTMAPS>
+        </BUSINTERFACE>
+        <BUSINTERFACE BUSNAME="hls_inst_addr" NAME="addr" TYPE="INITIATOR" VLNV="xilinx.com:interface:acc_fifo_write:1.0">
+          <PORTMAPS>
+            <PORTMAP LOGICAL="WR_DATA" PHYSICAL="addr_din"/>
+            <PORTMAP LOGICAL="FULL_N" PHYSICAL="addr_full_n"/>
+            <PORTMAP LOGICAL="WR_EN" PHYSICAL="addr_write"/>
+          </PORTMAPS>
+        </BUSINTERFACE>
+        <BUSINTERFACE BUSNAME="hls_inst_rgbv" NAME="rgbv" TYPE="INITIATOR" VLNV="xilinx.com:interface:acc_fifo_write:1.0">
+          <PORTMAPS>
+            <PORTMAP LOGICAL="WR_DATA" PHYSICAL="rgbv_din"/>
+            <PORTMAP LOGICAL="FULL_N" PHYSICAL="rgbv_full_n"/>
+            <PORTMAP LOGICAL="WR_EN" PHYSICAL="rgbv_write"/>
+          </PORTMAPS>
+        </BUSINTERFACE>
+      </BUSINTERFACES>
+    </MODULE>
+  </MODULES>
+
+</EDKSYSTEM>
