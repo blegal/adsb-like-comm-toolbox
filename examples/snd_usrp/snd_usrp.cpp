@@ -3,6 +3,7 @@
 #include <csignal>
 #include <unistd.h>
 #include <fstream>
+#include <bitset>
 
 
 #include <chrono>
