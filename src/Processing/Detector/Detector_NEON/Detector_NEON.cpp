@@ -56,7 +56,6 @@ void Detector_NEON::execute(float *buffer){
     exit( EXIT_FAILURE );
 #endif
 	array[0] = (ps/sqrt(sum));
-//	return (ps/sqrt(sum));
 #else
     printf("Le decodeur instancie pour realiser le traitement est le Detector_NEON, mais ce dernier");
     printf("ne peut pas fonctionner sur le systeme hote...");
