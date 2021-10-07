@@ -62,6 +62,7 @@ set(SOURCE_FILES
         ../src/Radio/Receiver/Radio/SoapyUHD/ReceiverSoapyUHD.cpp
         ../src/Radio/Receiver/Radio/HackRF/ReceiverHackRF.cpp
         ../src/Radio/Receiver/Radio/USRP/ReceiverUSRP.cpp
+        ../src/Radio/Receiver/Radio/ThreadUSRP/ReceiverThreadUSRP.cpp
 
         ../src/Radio/Receiver/File/ReceiverFileRAW.cpp
         ../src/Radio/Receiver/File/ReceiverFileStreamRAW.cpp
@@ -119,6 +120,7 @@ set(SOURCE_FILES
         ../src/Radio/Receiver/Radio/SoapyUHD/ReceiverSoapyUHD.cpp
         ../src/Radio/Receiver/Radio/HackRF/ReceiverHackRF.cpp
         ../src/Radio/Receiver/Radio/USRP/ReceiverUSRP.cpp
+        ../src/Radio/Receiver/Radio/ThreadUSRP/ReceiverThreadUSRP.cpp
 
         ../src/Radio/Receiver/File/ReceiverFileRAW.cpp
         ../src/Radio/Receiver/File/ReceiverFileStreamRAW.cpp
@@ -176,6 +178,7 @@ set(SOURCE_FILES
         ../src/Radio/Receiver/Radio/SoapyUHD/ReceiverSoapyUHD.cpp
         ../src/Radio/Receiver/Radio/HackRF/ReceiverHackRF.cpp
         ../src/Radio/Receiver/Radio/USRP/ReceiverUSRP.cpp
+        ../src/Radio/Receiver/Radio/ThreadUSRP/ReceiverThreadUSRP.cpp
 
         ../src/Radio/Receiver/File/ReceiverFileRAW.cpp
         ../src/Radio/Receiver/File/ReceiverFileStreamRAW.cpp
