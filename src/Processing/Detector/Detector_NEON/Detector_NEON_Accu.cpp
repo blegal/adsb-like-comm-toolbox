@@ -51,6 +51,8 @@ void Detector_NEON_Accu::execute(std::vector<float>* iBuffer, std::vector<float>
         const float32x4_t sqr   = vsqrtq_f32(sum);
         const float32x4_t score = vdivq_f32 (c0, sqr);
 
+        vst1q_f32( ptr_o + i, score );
+
         #pragma unroll
         for(uint32_t k = 0; k < 4; k += 1)
         {
@@ -64,7 +66,6 @@ void Detector_NEON_Accu::execute(std::vector<float>* iBuffer, std::vector<float>
             accu += (dt * dt);
         }
 
-        vst1q_f32( ptr_o + i, score );
     }
 
 #else
