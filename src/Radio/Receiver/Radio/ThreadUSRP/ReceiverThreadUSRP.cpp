@@ -14,7 +14,7 @@ ReceiverThreadUSRP::ReceiverThreadUSRP(float s_fc, float s_fe) : Receiver(s_fc, 
     fc = s_fc;
     fe = s_fe;
 
-    string usrp_addr("type=b200");                       // L'adresse de l'USRP est écrite en dur pour l'instant
+    string usrp_addr("type=b200");                 // L'adresse de l'USRP est écrite en dur pour l'instant
     usrp = uhd::usrp::multi_usrp::make(usrp_addr); // Initialisation de l'USRP
 }
 
@@ -31,8 +31,7 @@ void ReceiverThreadUSRP::initialize(){
 	usrp->set_rx_freq(fc);             // Set de la fréquence porteuse
 	usrp->set_rx_antenna("RX2");
 
-    uhd::stream_args_t stream_args("fc32", "sc16");
-    stream_args.args["recv_buff_size"] = "1048576";
+    uhd::stream_args_t stream_args("fc32", "sc12");
 
     // Type des données à échantillonner (ici complexes float 64 - 32 bits par voie)
 	rx_stream = usrp->get_rx_stream(stream_args);    // Pointeur sur les data reçues
