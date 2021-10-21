@@ -48,14 +48,29 @@ void DownSampling::execute(const std::vector<uint8_t>& ibuffer, std::vector<uint
     {
         uint32_t sum = (uint32_t)ibuffer[scale * i];
         for(uint32_t j = 1 ; j < scale; j += 1)
-            sum += (int32_t)ibuffer[scale * i + j];
-#if 0
-        sum = (sum > +127) ? +127 : sum;
-        sum = (sum < -127) ? -127 : sum;
-        obuffer[i] = sum;
-#else
+            sum += (uint32_t)ibuffer[scale * i + j];
         obuffer[i] = (sum > 255) ? 255 : sum;
-//        obuffer[i] = (sum / scale);
-#endif
+    }
+}
+
+
+void DownSampling::execute(const std::vector<uint16_t>& ibuffer, std::vector<uint16_t>& obuffer)
+{
+    // Le buffer de sortie doit etre 2x plus grand...
+    if( obuffer.size() != (ibuffer.size()/scale) )
+    {
+        printf("\x1B[33m(WW) vector size was updated in DownSampling(%s::%d)\x1B[0m\n", __FILE__, __LINE__);
+        printf("\x1B[33m(WW) -> ibuffer.size() = %lu (waiting : %lu)\x1B[0m\n", ibuffer.size(), 2 * obuffer.size());
+        printf("\x1B[33m(WW) -> obuffer.size() = %lu\x1B[0m\n", obuffer.size());
+        obuffer.resize(ibuffer.size()/scale);
+    }
+
+    const uint32_t ll = obuffer.size();
+    for(uint32_t i = 0 ; i < ll; i += 1)
+    {
+        uint32_t sum = (uint32_t)ibuffer[scale * i];
+        for(uint32_t j = 1 ; j < scale; j += 1)
+            sum += (uint32_t)ibuffer[scale * i + j];
+        obuffer[i] = (sum > 65535) ? 65535 : sum;
     }
 }

@@ -1,4 +1,4 @@
-#include "Detector_NEON.hpp"
+#include "Detector_NEON_Intra.hpp"
 
 #if defined(__ARM_NEON)
     #include <arm_neon.h>
@@ -11,18 +11,6 @@ Detector_NEON::Detector_NEON() : Detector(1)
 
 
 void Detector_NEON::execute(float *buffer){
-#if 0
-	float ref_ps = (*buffer) + *(buffer + 1) + *(buffer + 3) + *(buffer + 4) + *(buffer + 14) + *(buffer + 15) + *(buffer + 18) + *(buffer + 19);
-
-	float ref_sum = 0.0;
-	for (int j=0; j<32; j++){
-		float temp = *(buffer + j);
-		ref_sum += temp * temp;	
-	}
-	ref_sum = ref_sum * 8;
-
-	printf("%f - %f\n", ref_ps, ref_sum);
-#endif
 #if defined(__ARM_NEON)
 	const float32x2_t a0 = vld1_f32(buffer +   0);
 	const float32x2_t a1 = vld1_f32(buffer +   3);
@@ -51,10 +39,6 @@ void Detector_NEON::execute(float *buffer){
 
 	const float32x2_t r = vadd_f32(vget_high_f32(t0), vget_low_f32(t0));
 	const float sum = 8.0f * vget_lane_f32(vpadd_f32(r, r), 0);
-#if 0
-	printf("%f - %f\n", ps, sum);
-    exit( EXIT_FAILURE );
-#endif
 	array[0] = (ps/sqrt(sum));
 #else
     printf("Le decodeur instancie pour realiser le traitement est le Detector_NEON, mais ce dernier");

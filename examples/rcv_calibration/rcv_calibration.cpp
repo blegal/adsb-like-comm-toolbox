@@ -386,15 +386,10 @@ int main(int argc, char* argv[])
 
     uint32_t loop_counter = 0;
 
-    vector<int32_t> histo(1024);
-
-    for(int i = 0; i <  1024; i++) histo[i] = 0;
-
     Histo mHisto;
 
 	while( radio->alive() && (isFinished == false) )
 	{
-        auto startIter = std::chrono::system_clock::now();
 	    const uint32_t coverage = 0;
 
         radio->reception(buffer, coverage);
@@ -409,13 +404,6 @@ int main(int argc, char* argv[])
             mHisto.stats();
             mHisto.clear();
         }
-
-        //
-        // ON GARDE UNE TRACE DU TEMPS D'EXECUTION DE L'ITERATION POUR L'HISTOGRAMME DU REPORT
-        //
-        auto stopIter = std::chrono::system_clock::now();
-        int ms = chrono::duration_cast<chrono::milliseconds>(stopIter - startIter).count();
-        histo[ms] += 1;
 
         loop_counter += 1;
 	}
@@ -434,34 +422,6 @@ int main(int argc, char* argv[])
     printf("\n");
     std::cout << "Temps total : " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms" << std::endl;
     printf("\n");
-
-
-    int sumv = 0;
-    for(int i = 0; i <  1024; i++)
-    {
-        sumv += histo[i];
-    }
-    int first = 0;
-    for(int i = 0; i <  1024; i++)
-    {
-        if(histo[i] != 0) break;
-        first = i;
-    }
-    int last = 0;
-    for(int i = 0; i <  1024; i++)
-    {
-        if(histo[1023-i] != 0) break;
-        last = 1023 - i;
-    }
-    for(int i = 0; i <  1024; i++)
-    {
-        histo[i] = (10000 * histo[i]) /  sumv;
-    }
-    for(int i = first; i <=  last; i++)
-    {
-        printf("%4d - %1.3f\n", i, ((float)histo[i])/100.0f);
-    }
-
 
     delete radio;
 

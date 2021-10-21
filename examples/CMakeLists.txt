@@ -79,7 +79,9 @@ set(SOURCE_FILES
         ../src/Processing/Sampling/Down/DownSampling.cpp
         ../src/Processing/Detector/Detector.cpp
         ../src/Processing/Detector/Detector_x86/Detector_x86.cpp
-        ../src/Processing/Detector/Detector_NEON/Detector_NEON.cpp
+        ../src/Processing/Detector/Detector_NEON/Detector_NEON_Intra.cpp
+        ../src/Processing/Detector/Detector_NEON/Detector_NEON_Inter.cpp
+        ../src/Processing/Detector/Detector_NEON/Detector_NEON_Accu.cpp
         ../src/Processing/Detector/Detector_AVX2/Detector_AVX2.cpp
         ../src/Processing/Detector/Library/DetectorLibrary.cpp
 
@@ -137,7 +139,9 @@ set(SOURCE_FILES
         ../src/Processing/Sampling/Down/DownSampling.cpp
         ../src/Processing/Detector/Detector.cpp
         ../src/Processing/Detector/Detector_x86/Detector_x86.cpp
-        ../src/Processing/Detector/Detector_NEON/Detector_NEON.cpp
+        ../src/Processing/Detector/Detector_NEON/Detector_NEON_Intra.cpp
+        ../src/Processing/Detector/Detector_NEON/Detector_NEON_Inter.cpp
+        ../src/Processing/Detector/Detector_NEON/Detector_NEON_Accu.cpp
         ../src/Processing/Detector/Detector_AVX2/Detector_AVX2.cpp
         ../src/Processing/Detector/Library/DetectorLibrary.cpp
 
@@ -195,7 +199,9 @@ set(SOURCE_FILES
         ../src/Processing/Sampling/Down/DownSampling.cpp
         ../src/Processing/Detector/Detector.cpp
         ../src/Processing/Detector/Detector_x86/Detector_x86.cpp
-        ../src/Processing/Detector/Detector_NEON/Detector_NEON.cpp
+        ../src/Processing/Detector/Detector_NEON/Detector_NEON_Intra.cpp
+        ../src/Processing/Detector/Detector_NEON/Detector_NEON_Inter.cpp
+        ../src/Processing/Detector/Detector_NEON/Detector_NEON_Accu.cpp
         ../src/Processing/Detector/Detector_AVX2/Detector_AVX2.cpp
         ../src/Processing/Detector/Library/DetectorLibrary.cpp
 

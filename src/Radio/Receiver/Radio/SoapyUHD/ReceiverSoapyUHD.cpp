@@ -54,7 +54,7 @@ ReceiverSoapyUHD::ReceiverSoapyUHD(const float s_fc, const float s_fe) : Receive
 
     set_sample_rate( s_fe );
     set_freq       ( s_fc );
-//    set_gain       (     0 );
+    set_gain       (     50 );
 //    set_lna_gain  (    16 );
 //    set_amp_enable( false );
 

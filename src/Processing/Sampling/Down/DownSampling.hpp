@@ -18,8 +18,9 @@ public :
 
 	~DownSampling();
 
-    void execute(const std::vector<float >&  ibuffer, std::vector<float >&  obuffer);
-    void execute(const std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer);
+    void execute(const std::vector<float   >& ibuffer, std::vector<float   >& obuffer);
+    void execute(const std::vector<uint8_t >& ibuffer, std::vector<uint8_t >& obuffer);
+    void execute(const std::vector<uint16_t>& ibuffer, std::vector<uint16_t>& obuffer);
 };
 
 #endif

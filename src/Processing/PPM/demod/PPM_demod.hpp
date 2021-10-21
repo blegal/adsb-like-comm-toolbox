@@ -10,16 +10,14 @@
 using namespace std;
 
 class PPM_demod{
-protected :
-	std::vector<float> array;
-
 public :
 	PPM_demod( );
 
 	~PPM_demod();
 
-    void execute(std::vector<float >& ibuffer, std::vector<uint8_t>& obuffer);
-    void execute(std::vector<uint8_t>& ibuffer, std::vector<uint8_t>& obuffer);
+    void execute(std::vector<float   >& ibuffer, std::vector<uint8_t>& obuffer);
+    void execute(std::vector<uint8_t >& ibuffer, std::vector<uint8_t>& obuffer);
+    void execute(std::vector<uint16_t>& ibuffer, std::vector<uint8_t>& obuffer);
 };
 
 #endif

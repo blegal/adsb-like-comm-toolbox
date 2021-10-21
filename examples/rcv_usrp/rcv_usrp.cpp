@@ -129,8 +129,16 @@ int main(int argc, char* argv[])
 
     param.set("receiver_gain", -1);
 
-    param.set("mode_conv",  "AVX2"); // scalar
-    param.set("mode_corr",  "AVX2"); // scalar
+#if defined(__ARM_NEON)
+    param.set("mode_conv", "NEON"); // scalar
+    param.set("mode_corr", "NEON"); // scalar
+#elif defined(__AVX2__)
+    param.set("mode_conv", "AVX2"); // scalar
+    param.set("mode_corr", "AVX2"); // scalar
+#else
+    param.set("mode_conv", "scalar"); // scalar
+    param.set("mode_corr", "scalar"); // scalar
+#endif
 
     param.set("payload", 60);
 

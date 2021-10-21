@@ -2,7 +2,9 @@
 
 #include "../Detector_x86/Detector_x86.hpp"
 #include "../Detector_AVX2/Detector_AVX2.hpp"
-#include "../Detector_NEON/Detector_NEON.hpp"
+#include "../Detector_NEON/Detector_NEON_Intra.hpp"
+#include "../Detector_NEON/Detector_NEON_Inter.hpp"
+#include "../Detector_NEON/Detector_NEON_Accu.hpp"
 
 DetectorLibrary::DetectorLibrary()
 {
@@ -24,6 +26,10 @@ Detector* DetectorLibrary::allocate(Parameters& param)
         detect = new Detector_AVX2();
     } else if( param.toString("mode_corr") == "NEON" ){
         detect = new Detector_NEON();
+    } else if( param.toString("mode_corr") == "NEON_Inter" ){
+        detect = new Detector_NEON_Inter();
+    } else if( param.toString("mode_corr") == "NEON_Accu" ){
+        detect = new Detector_NEON_Accu();
     }
     else
     {
