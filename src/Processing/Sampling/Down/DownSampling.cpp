@@ -16,9 +16,9 @@ DownSampling::~DownSampling()
 void DownSampling::execute(const std::vector<float>& ibuffer, std::vector<float>& obuffer)
 {
 	// Le buffer de sortie doit etre 2x plus grand...
-    if( obuffer.size() != (ibuffer.size()/scale) )
+    if( obuffer.size() != (ibuffer.size() / scale) )
     {
-        obuffer.resize(ibuffer.size()/scale);
+        obuffer.resize(ibuffer.size() / scale);
     }
 
     uint32_t ll = obuffer.size();

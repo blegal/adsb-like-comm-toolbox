@@ -24,16 +24,12 @@
 
 #include "../../src/Radio/Receiver/Library/ReceiverLibrary.hpp"
 
-//#define _TIME_PROFILE_
-
 //
 //  CplxModule des nombres complexes => module flottant
 //
 
 #include "../../src/Processing/CplxModule/Library/CplxModuleLibrary.hpp"
 #include "../../src/Processing/Detector/Library/DetectorLibrary.hpp"
-//#include "../../src/Chains/ADBS-like/Decoder/Decoder_ADBS_like_chain.hpp"
-//#include "../../src/Chains/ADBS-like-fec/Decoder/Decoder_ADBS_FEC_chain.hpp"
 #include "../../src/Processing/ADSBSynchro/RemoveADSBSynchro/RemoveADSBSynchro.hpp"
 #include "../../src/Processing/DataPacking/BitPacking/BitPacking.hpp"
 #include "../../src/Processing/CRC32b/CheckCRC32b/CheckCRC32b.hpp"
@@ -51,6 +47,7 @@
 #include "../../src/couleur.h"
 
 #include "tools.hpp"
+#include "ADSBFrame.hpp"
 #include "Avion.hpp"
 
 using namespace std;
@@ -65,11 +62,100 @@ void my_ctrl_c_handler(int s) {
 }
 
 
+struct LLR
+{
+    uint32_t index;
+    float    value;
+};
+
+bool compareLLRs(const LLR a, const LLR b)
+{
+    return a.value < b.value;
+}
+
+
 /*   ============================== MAIN =========================== */
 /*
 	4 ech = 1 symb
 	1 trame = 120 symb = 480 ech
 */
+
+
+#include "brute_force/brute_force_1x.hpp"
+#include "brute_force/brute_force_2x.hpp"
+#include "brute_force/brute_force_3x.hpp"
+
+// try_brute_force_1x
+
+
+const int max_level = 8;
+bool try_brute_force_llrs(
+        std::vector<LLR> vec_score,
+        vector<uint8_t>& vec_pack,
+        vector<uint8_t>& vec_demod,
+        vector<uint8_t>& vec_sync,
+        uint32_t start, uint32_t level)
+{
+    if( level >= max_level )
+        return false;
+
+    for (int j = start; j < max_level; j += 1)
+    {
+//        printf("Level %d - Start %d] Iter = %d, Switching bit %d\n", level, start, j, vec_score[j].index);
+        flipbit( vec_pack.data(), vec_score[j].index ); // On flip le bit le moins fiable
+
+        bool crc_is_ok = check_crc<112 / 8>( vec_pack.data() );
+        if (crc_is_ok == true){
+            vec_demod[vec_score[j].index + 8] = vec_demod[vec_score[j].index + 8];       // On inverse le bit
+            vec_sync [vec_score[j].index    ] = !vec_sync[vec_score[j].index    ];       // On inverse le bit
+            return true;
+        }else{
+            bool result = try_brute_force_llrs(vec_score, vec_pack, vec_demod, vec_sync, j+1, level+1);
+            if( result == true )
+            {
+                vec_demod[vec_score[j].index + 8] = vec_demod[vec_score[j].index + 8];       // On inverse le bit
+                vec_sync [vec_score[j].index    ] = !vec_sync[vec_score[j].index    ];       // On inverse le bit
+                return true;
+            }
+        }
+        flipbit( vec_pack.data(), vec_score[j].index );
+    }
+    return false;
+}
+
+
+bool try_brute_force_llrs(vector<uint8_t>& vec_pack, vector<uint8_t>& vec_demod, vector<uint8_t>& vec_sync, vector<float>& vec_down)
+{
+    bool crc_brute_llr = false;
+    //
+    // On calcule la difference les "LLRs"
+    //
+    std::vector<LLR> vec_score (112);
+    for(int32_t ii = 16; ii < 240; ii += 2)
+    {
+        const float diff = vec_down[ii] - vec_down[ii + 1];
+        LLR llr;
+        llr.value = std::abs(diff);
+        llr.index = (ii / 2) - 8;
+        vec_score[(ii / 2) - 8] = llr;
+    }
+
+    //
+    // On trie les LLRs en fonction de leurs probabilités
+    //
+    sort(vec_score.begin(), vec_score.end(), compareLLRs);
+
+    for(int32_t ii = 0; ii < 6; ii += 1)
+        printf("%3d : [index = %3d, value = %17.13f]\n", ii, vec_score[ii].index, vec_score[ii].value);
+
+    bool resu = try_brute_force_llrs( vec_score, vec_pack, vec_demod, vec_sync, 0, 0);
+//    exit( 0 );
+    return resu;
+}
+
+
+
+
 int main(int argc, char *argv[]) {
     init_crc_lut();
 
@@ -91,6 +177,7 @@ int main(int argc, char *argv[]) {
     uint32_t nbBonsCRC_init  = 0;
     uint32_t nbBonsCRCs_1x   = 0;
     uint32_t nbBonsCRCs_2x   = 0;
+    uint32_t nbBonsCRCs_3x   = 0;
     uint32_t nbBonsCRCs_llr  = 0;
     uint32_t nbDF18Frames    = 0;
     uint32_t nbStrangeFrames = 0;
@@ -135,6 +222,7 @@ int main(int argc, char *argv[]) {
 
     param.set("brute_force_1x", false);
     param.set("brute_force_2x", false);
+    param.set("brute_force_3x", false);
     param.set("brute_force_llr",false);
 
 
@@ -161,6 +249,7 @@ int main(int argc, char *argv[]) {
                     {"rcv-gain",    required_argument, NULL, 'L'}, // changer la frequence echantillonnage
                     {"brute-force-1x",  no_argument,       NULL, '1'}, // changer la frequence echantillonnage
                     {"brute-force-2x",  no_argument,       NULL, '2'}, // changer la frequence echantillonnage
+                    {"brute-force-3x",  no_argument,       NULL, '3'}, // changer la frequence echantillonnage
                     {"brute-force-llr", no_argument,       NULL, 'X'}, // changer la frequence echantillonnage
 
                     {"inter",       no_argument,       NULL, 'I'}, // changer la frequence echantillonnage
@@ -266,6 +355,10 @@ int main(int argc, char *argv[]) {
 
             case '2':
                 param.set("brute_force_2x", true);
+                break;
+
+            case '3':
+                param.set("brute_force_3x", true);
                 break;
 
             case 'X':
@@ -383,10 +476,10 @@ int main(int argc, char *argv[]) {
 
     const bool brute_force_1x  = param.toBool("brute_force_1x");
     const bool brute_force_2x  = param.toBool("brute_force_2x");
+    const bool brute_force_3x  = param.toBool("brute_force_3x");
     const bool brute_force_llr = param.toBool("brute_force_llr");
 
     uint32_t loop_counter = 0;
-
 
     std::vector<float> buffer_abs;
     std::vector<float> buffer_detect;
@@ -443,7 +536,7 @@ int main(int argc, char *argv[]) {
         file_frames_bin = fopen( "file_frames_bin.txt", "w" );
         file_frames_dec = fopen( "file_frames_dec.txt", "w" );
         file_planes     = fopen( "file_planes.txt", "w" );
-        file_coords     = fopen( "file_coords.txt", "w" );
+        file_coords     = fopen( "file_coords.m", "w" );
     }
 
     bool firstAcq = true;
@@ -555,26 +648,13 @@ int main(int argc, char *argv[]) {
                 for (int x = 0; x < vec_data.size(); x += 1)    // On extrait les 120 bits (x2) du vecteur
                     vec_data[x] = buffer_abs[x + k];            // d'echantillons (modules complexes de IQ)
 
-                o_down.execute(vec_data, vec_down);         // 480 values => 240 values
-                o_ppm.execute (vec_down, vec_demod);     // 240 values => 120 bits
+                o_down.execute(vec_data,  vec_down);     // 480 values => 240 values
+                o_ppm.execute (vec_down,  vec_demod);    // 240 values => 120 bits
                 o_sync.execute(vec_demod, vec_sync);     // 112 bits
-                o_pack.execute(vec_sync, vec_pack);         // 15 octets
+                o_pack.execute(vec_sync,  vec_pack);     // 15 octets
 
                 const bool crc_initial = check_crc  <112 / 8>( vec_pack.data() );
-#if _LOUPIAS_CRC_TEST_
-                bool ok_slow  = CRC(vec_demod.data());
-                if ( ok_slow != ok_fast )
-                {
-                    red();
-                    printf(" [ THERE IS SOMETHING STRANGE ])\n");
-                    black();
-                    printf("  "); for(int32_t i = 0; i < vec_demod.size(); i += 1) printf("%d", vec_demod[i]); printf("\n");
-                    printf("  "); for(int32_t i = 0; i < vec_sync.size(); i += 1) printf("%d ", vec_sync[i] ); printf("\n");
-                    printf("  "); for(int32_t i = 0; i < vec_pack.size(); i += 1) printf("%2.2X", vec_pack[i]); printf("\n");
-                    printf("  brute_crc_flo = %d\n", ok_slow  );
-                    printf("  check_crc     = %d\n", ok_fast  );
-                }
-#endif
+
                 //
                 // On stocke les données pour une utilisation ultérieure
                 //
@@ -589,137 +669,33 @@ int main(int argc, char *argv[]) {
                 bool crc_brute_1x = false;
                 if ( (crc_initial == false) && (brute_force_1x == true) )
                 {
-                    const int32_t stop_1_bit = 112;
-                    for (int j = 0; j < stop_1_bit; j += 1)
-                    {
-                        flipbit( vec_pack.data(), j );
-
-                        crc_brute_1x = check_crc<112 / 8>( vec_pack.data() );
-                        if (crc_brute_1x == true)
-                        {
-                            vec_demod[j + 8] = !vec_demod[j + 8];       // On inverse le bit
-                            vec_sync [j    ] = !vec_sync [j    ];       // On inverse le bit
-
-#if 0
-                            yellow();
-                            printf("%6d : %6d | [ !!! BIT FLIP TECHNIQUE SAVED A FRAME !!! ] \n", loop_counter, k);
-                            black();
-#endif
-                            break;
-                        }
-
-                        flipbit( vec_pack.data(), j );
-                    }
+                    crc_brute_1x = try_brute_force_1x( vec_pack, vec_demod, vec_sync );
                 }
 
-#if 0
-                if ( (ok_fast == false) && (brute_force == true) )
-                {
-                    const int32_t stop_1_bit = 112; // Cela implique que l'on corrige un bit dans le CRC si nécessaire
-                    for (int j = 0; j < stop_1_bit; j += 1)
-                    {
-                        vec_demod[j] = !vec_demod[j]; // On inverse le bit
-
-                        const bool brute_crc_flo = CRC(vec_demod.data());
-
-                        if (brute_crc_flo == true)
-                        {
-                            o_sync.execute(vec_demod, vec_sync); // 112 bits
-                            o_pack.execute(vec_sync, vec_pack);    //  15 octets
-                            const bool brute_crc = check_crc<112 / 8>(vec_pack.data());
-
-                            if (brute_crc == false) {
-                                red();
-                                printf(" [THERE IS SOMETHING WRONG] (brute_crc_flo = %d and brute_crc = %d and bit-flip = %d)\n", brute_crc_flo, brute_crc, j);
-                                black();
-                            }else{
-                                yellow();
-                                printf("%6d : %6d | [ !!! BIT FLIP TECHNIQUE SAVED A FRAME !!! ] \n", loop_counter, k);
-                                black();
-                                nbSavedCRCs += 1;
-                                ok_fast      = true;
-                                o_pack.execute(vec_sync, vec_pack);
-                                break;
-                            }
-                        }
-                        vec_demod[j] = !vec_demod[j]; // On re-inverse le bit
-                    }
-                }
-#endif
-
-                
-#define _BRUTE_FORCE_2x_
                 bool crc_brute_2x = false;
-#ifdef _BRUTE_FORCE_2x_
                 if ( (crc_initial == false) && (crc_brute_1x == false) && (brute_force_2x == true) )
                 {
-                    const int32_t stop_1_bit = 112;      //
-                    const int32_t stop_2_bit = 112 - 24;
-
-                    for (int ii = 0; ii < stop_1_bit; ii += 1)
-                    {
-                        flipbit( vec_pack.data(), ii );
-
-                        for (int jj = ii + 1; jj < stop_2_bit; jj += 1)
-                        {
-                            flipbit( vec_pack.data(), jj );
-
-                            crc_brute_2x  = check_crc<112 / 8>( vec_pack.data() );
-                            if (crc_brute_2x == true)
-                            {
-                                vec_demod[ii + 8] = !vec_demod[ii + 8]; // On inverse le bit
-                                vec_sync [ii    ] = !vec_sync [ii    ]; // On inverse le bit
-                                vec_demod[jj + 8] = !vec_demod[jj + 8]; // On inverse le bit
-                                vec_sync [jj    ] = !vec_sync [jj    ]; // On inverse le bit
-#if 0
-                                magenta();
-                                printf("%6d : %6d | [ !!! 2x BIT FLIP TECHNIQUE SAVED A FRAME !!! ] \n", loop_counter, k);
-                                black();
-#endif
-//                                o_pack.execute(vec_sync, vec_pack);
-                                break;
-                            }
-
-                            flipbit( vec_pack.data(), jj );
-                        }
-
-                        if( crc_brute_2x == true ) break;
-
-                        flipbit( vec_pack.data(), ii );
-                    }
+                    crc_brute_2x = try_brute_force_2x( vec_pack, vec_demod, vec_sync );
                 }
-#endif
 
-                
-#define _BRUTE_FORCE_LLR_
-#ifdef  _BRUTE_FORCE_LLR_
+                bool crc_brute_3x = false;
+                if ( (crc_initial == false) && (crc_brute_1x == false) && (crc_brute_2x == false) && (brute_force_3x == true) )
+                {
+                    crc_brute_3x = try_brute_force_3x( vec_pack, vec_demod, vec_sync );
+                }
+
                 bool crc_brute_llr = false;
                 if ( (crc_initial == false) && (crc_brute_1x == false) && (crc_brute_2x == false) && (brute_force_llr == true)  )
                 {
-                    std::vector<float> vec_score (112);
-                    for(int32_t ii = 16; ii < 240; ii += 2)
-                    {
-                        const float diff = vec_down[ii] - vec_down[ii + 1];
-                        const float abso = std::abs(diff);
-                        vec_score[(ii / 2) - 8] = abso;
-                    }
-
-                    sort(vec_score.begin(), vec_score.end());
-
-                    for(int32_t ii = 0; ii < vec_score.size(); ii += 1)
-                        printf("%3d : (%17.13f)\n", ii, vec_score[ii]);
-                    
-                    crc_brute_llr = true;
-
-                    exit( 0 );
+                    crc_brute_llr = try_brute_force_llrs( vec_pack, vec_demod, vec_sync, vec_down );
                 }
-#endif
 
-                const bool crc_is_ok  = ((crc_initial == true)  || (crc_brute_1x == true) || (crc_brute_2x == true));
+                const bool crc_is_ok  = ((crc_initial == true)  || (crc_brute_1x == true) || (crc_brute_2x == true) || (crc_brute_3x == true));
                 nbBonsCRCs     += crc_is_ok;
                 nbBonsCRC_init += (crc_initial   == true);
                 nbBonsCRCs_1x  += (crc_brute_1x  == true);
                 nbBonsCRCs_2x  += (crc_brute_2x  == true);
+                nbBonsCRCs_3x  += (crc_brute_3x  == true);
                 nbBonsCRCs_llr += (crc_brute_llr == true);
 
                 if ((crc_is_ok == true) || (crc_is_ok == false && verbose >= 2))
@@ -727,9 +703,9 @@ int main(int argc, char *argv[]) {
                     char* crc_show;
                          if( crc_initial   == true ) crc_show = "\x1B[32mOK\x1B[0m";
                     else if( crc_brute_1x  == true ) crc_show = "\x1B[33mOK\x1B[0m";
-                    else if( crc_brute_2x  == true ) crc_show = "\x1B[35mOK\x1B[0m";
+                    else if( crc_brute_2x  == true ) crc_show = "\x1B[31;1mOK\x1B[0m";
+                    else if( crc_brute_3x  == true ) crc_show = "\x1B[31mOK\x1B[0m";
                     else if( crc_brute_llr == true ) crc_show = "\x1B[36mOK\x1B[0m";
-//                    printf("%d %d %d %d => %s\n", crc_initial, nbBonsCRCs_1x, nbBonsCRCs_2x, nbBonsCRCs_llr, crc_show);
 
                     if( verbose >= 1 )
                     {
@@ -817,12 +793,14 @@ int main(int argc, char *argv[]) {
                             const float f_latitude      = pack_bits_float(vec_sync.data() + 54, 17);//(float)enc_latitude  / 131072.0; // divise par 2^17
                             const float f_longitude     = pack_bits_float(vec_sync.data() + 71, 17);//(float)enc_longitude / 131072.0; // divise par 2^17
 
+//                            printf("%06X | CPR_format = %d\n", oaci_value, CPR_format);
+
                             //
                             // On calcule les parametres reels
                             //
 
-                            float final_lat    = ComputeLatitude (f_latitude,  ref_latitude,                CPR_format);
-                            float final_lon    = ComputeLongitude(f_longitude, final_lat,    ref_longitude, CPR_format);
+                            float final_lat    = ComputeLatitude (f_latitude,  ref_latitude,                 CPR_format);
+                            float final_lon    = ComputeLongitude(f_longitude, final_lat,     ref_longitude, CPR_format);
                             const int32_t dist = distance(final_lat, final_lon, ref_latitude, ref_longitude);
 
 
@@ -866,6 +844,17 @@ int main(int argc, char *argv[]) {
                                     printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |    %4d |    %4d |  %4d |  %s |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, (int32_t) speed, (int32_t) Vr, (int32_t) angle, crc_show);
                                 if( file_frames_dec != nullptr )
                                     fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |    %4d |    %4d |  %4d |  OK |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, (int32_t) speed, (int32_t) Vr, (int32_t) angle);
+
+                                int32_t ew_dir           = (vec_pack[5]&4) >> 2;
+                                int32_t ew_velocity      = ((vec_pack[5] & 3) << 8) | vec_pack[6];
+                                int32_t ns_dir           = (vec_pack[7]&0x80) >> 7;
+                                int32_t ns_velocity      = ((vec_pack[7] & 0x7f) << 3) | ((vec_pack[8] & 0xe0) >> 5);
+                                int32_t vert_rate_source = (vec_pack[8]&0x10) >> 4;
+                                int32_t vert_rate_sign   = (vec_pack[8]&0x8) >> 3;
+                                int32_t vert_rate        = ((vec_pack[8]&7) << 6) | ((vec_pack[9] & 0xfc) >> 2);
+                                /* Compute velocity and angle from the two speed components. */
+                                int32_t velocity = sqrt( ns_velocity * ns_velocity + ew_velocity * ew_velocity);
+
                                 ptr_avion->set_speed_horizontal(speed);
                                 ptr_avion->set_speed_vertical(Vr);
                                 ptr_avion->set_angle(angle);
@@ -878,10 +867,9 @@ int main(int argc, char *argv[]) {
                             int32_t altitude = 0;
                             for (int q = 0; q < 12; q++) {
                                 if (q > 8)
-                                    altitude += vec_demod[39 + 9 + q] * pow(2, 10 - q - 1);
-                                else {
-                                    if (q < 8)
-                                        altitude += vec_demod[39 + 9 + q] * pow(2, 10 - q); }
+                                altitude += vec_demod[39 + 9 + q] * pow(2, 10 - q - 1);
+                                else if (q < 8)
+                                altitude += vec_demod[39 + 9 + q] * pow(2, 10 - q);
                             }
                             altitude = altitude * 25 - 1000;
 
@@ -994,6 +982,7 @@ int main(int argc, char *argv[]) {
             std::cout << " - Number of initially correct  CRC values     : " << nbBonsCRC_init    << std::endl;
             std::cout << " - Number of saved frames with bit-flip (x1)   : " << nbBonsCRCs_1x     << std::endl;
             std::cout << " - Number of saved frames with bit-flip (x2)   : " << nbBonsCRCs_2x     << std::endl;
+            std::cout << " - Number of saved frames with bit-flip (x3)   : " << nbBonsCRCs_3x     << std::endl;
             std::cout << "Number of discarded frames with DF = 18        : " << nbDF18Frames      << " (type == 18)" <<std::endl;
             std::cout << "Number of discarded frames with strange values : " << nbStrangeFrames   << " (type != 17 && type != 18)" <<std::endl;
 
@@ -1002,13 +991,9 @@ int main(int argc, char *argv[]) {
             printf("-------+--------+----------+-------------------+-----------+-----------+-----------+-----------+-------+------+-----------+--------------------+--------+----------|\n");
             for (uint32_t i = 0; i < liste_v.size(); i += 1)
             {
-                if( liste_v.at(i)->get_messages() >= 1 )    // Pour filter les bétises...
+                if( liste_v.at(i)->get_messages() > 1 )    // Pour filter les bétises...
                     liste_v.at(i)->print();
             }
-//            std::cout << std::endl;
-//            std::cout << std::endl;
-//            std::cout << "MESSAGES:" << std::endl;
-//            printf("|      n       |  t (in s)  |  Corr. |  DF |   AA   | FTC |    CS    | ALT (ft) | CPRF | LON (deg) | LAT (deg) | Speed.H | Speed.V | Angle | CRC |\n");
         }
         //
         // ON GARDE UNE TRACE DU TEMPS D'EXECUTION DE L'ITERATION POUR L'HISTOGRAMME DU REPORT
@@ -1020,13 +1005,57 @@ int main(int argc, char *argv[]) {
     //
     if( file_coords != nullptr )
     {
+        //
+        // LATTITUDE
+        //
+        fprintf(file_coords, "lat = [\n");
+        for (uint32_t ii = 0; ii < liste_v.size(); ii += 1)    // pour tous les avions
+        {
+            for (uint32_t jj = 0; jj < liste_v.at(ii)->list_lat.size(); jj += 1)    // pour tous les positions
+                {
+                if( jj != (liste_v.at(ii)->list_lat.size() - 1) )
+                    fprintf(file_coords, "%24.22f,\n", liste_v.at(ii)->list_lat[jj]);
+                else
+                    fprintf(file_coords, "%24.22f\n", liste_v.at(ii)->list_lat[jj]);
+                }
+        }
+        fprintf(file_coords, "];\n");
+        fprintf(file_coords, "\n");
+
+        //
+        // LONGITUDE
+        //
+        fprintf(file_coords, "lon = [\n");
         for (uint32_t ii = 0; ii < liste_v.size(); ii += 1)    // pour tous les avions
         {
             for (uint32_t jj = 0; jj < liste_v.at(ii)->list_long.size(); jj += 1)    // pour tous les positions
             {
-                fprintf(file_coords, "%24.22f,%24.22f,#00FF00\n", liste_v.at(ii)->list_lat[jj], liste_v.at(ii)->list_long[jj]);
+                if( jj != (liste_v.at(ii)->list_long.size() - 1) )
+                    fprintf(file_coords, "%24.22f,\n", liste_v.at(ii)->list_long[jj]);
+                else
+                    fprintf(file_coords, "%24.22f\n", liste_v.at(ii)->list_long[jj]);
+            }
+        };
+        fprintf(file_coords, "];\n");
+        fprintf(file_coords, "\n");
+        //
+        // OACI = COULEUR
+        //
+        fprintf(file_coords, "col = [\n");
+        for (uint32_t ii = 0; ii < liste_v.size(); ii += 1)    // pour tous les avions
+        {
+            for (uint32_t jj = 0; jj < liste_v.at(ii)->list_long.size(); jj += 1)    // pour tous les positions
+            {
+                if( jj != (liste_v.at(ii)->list_long.size() - 1) )
+                    fprintf(file_coords, "'#%6.6X',\n", liste_v.at(ii)->get_OACI());
+                else
+                    fprintf(file_coords, "'#%6.6X'\n", liste_v.at(ii)->get_OACI());
             }
         }
+        fprintf(file_coords, "];\n");
+        fprintf(file_coords, "\n");
+        fprintf(file_coords, "geoplot(lat,lon,'x');\n");
+        fprintf(file_coords, "geobasemap streets\n");
     }
 
     printf("\n================================================================\n");
@@ -1051,6 +1080,7 @@ int main(int argc, char *argv[]) {
     std::cout << " - Number of initially correct  CRC values     : " << nbBonsCRC_init    << std::endl;
     std::cout << " - Number of saved frames with bit-flip (x1)   : " << nbBonsCRCs_1x     << std::endl;
     std::cout << " - Number of saved frames with bit-flip (x2)   : " << nbBonsCRCs_2x     << std::endl;
+    std::cout << " - Number of saved frames with bit-flip (x3)   : " << nbBonsCRCs_3x     << std::endl;
     std::cout << "Number of discarded frames with strange values : " << nbStrangeFrames   << " (type != 17)" <<std::endl;
 
     printf("\n");
@@ -1058,15 +1088,6 @@ int main(int argc, char *argv[]) {
 
     printf("\n");
     std::cout << "Temps total : " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms" << std::endl;
-#ifdef _TIME_PROFILE_
-    std::cout << " -  timer_reception     = " << (timer_reception/1000/1000)     << " ms" << std::endl;
-    std::cout << " -  timer_conv_cplx     = " << (timer_conv_cplx/1000/1000)     << " ms" << std::endl;
-    std::cout << " -  timer_detecteur     = " << (timer_detecteur/1000/1000)     << " ms" << std::endl;
-    std::cout << " -  timer_extraction    = " << (timer_extraction/1000/1000)    << " ms" << std::endl;
-    std::cout << " -  timer_down_sampling = " << (timer_down_sampling/1000/1000) << " ms" << std::endl;
-    std::cout << " -  timer_demodulator   = " << (timer_demodulator/1000/1000)   << " ms" << std::endl;
-    std::cout << " -  timer_parsing       = " << (timer_parsing/1000/1000)       << " ms" << std::endl;
-#endif
     printf("\n");
 
     if( StoreDataSet == true )

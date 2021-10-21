@@ -5,24 +5,24 @@ class Avion {
 private:
     float altitude;
 
-    float speed_h;
-    float speed_v;
-    float angle;
+    float speed_h;      // vitesse horizontale
+    float speed_v;      // vitesse verticale
+    float angle;        // angle de l'avion
 
-    float dist_cur;
-    float dist_min;
-    float dist_max;
-    float dist_curr;
+    float dist_min;     // distance minimum mesurée
+    float dist_max;     // distance maximum mesurée
+    float dist_curr;    // distance actuelle de l'avion
 
-    int32_t OACI;
-    int32_t type;
-    char name[9];
+    int32_t OACI;       // identifiant hexadecimal
+    int32_t type;       // type de l'avion
+    char name[9];       // nom de l'avion
+    bool GNSS;          // informations GNSS ?
 
-    int32_t updates;
+    int32_t updates;    // nombre de messages recus
 
     std::chrono::time_point<std::chrono::system_clock> lastUpdate;
     bool modified;
-    bool GNSS;
+
 
 public:
 
@@ -35,20 +35,21 @@ public:
 
 public:
 
-    Avion(int32_t _OACI) {
-        speed_h  = 0.0f;
-        speed_v  = 0.0f;
-        angle    = 0.0f;
-        dist_cur = 0.0f;
-        dist_min = 0.0f;
-        dist_max = 0.0f;
-        OACI     = _OACI;
-        updates  = 0;
-        altitude = 0.0f;
+    Avion(const int32_t _OACI) {
+        speed_h   = 0.0f;
+        speed_v   = 0.0f;
+        angle     = 0.0f;
+
+        dist_min  = 0.0f;
+        dist_max  = 0.0f;
         dist_curr = 0.0f;
-        modified = false;
-        GNSS     = false;
-        type     = 0;       // Le type de l'avion ou du moins de l'objet volant !
+
+        OACI      = _OACI;
+        updates   = 0;
+        altitude  = 0.0f;
+        modified  = false;
+        GNSS      = false;
+        type      = 0;       // Le type de l'avion ou du moins de l'objet volant !
 
         mini_score = 1.0f;
         maxi_score = 0.0f;
@@ -59,18 +60,21 @@ public:
         name[8] = 0;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     void set_GNSS_mode(const bool value)
     {
         GNSS = value;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void update_distance()
     {
         const float lat = get_latitude();
         const float lon = get_longitude();
         dist_curr       = distance(lat, lon, 44.820783, -0.501887);
-        if( dist_max != 0 )
-        {
+        if( dist_max != 0 ){
             dist_max        = ( dist_max > dist_curr ) ? dist_max : dist_curr;
             dist_min        = ( dist_min < dist_curr ) ? dist_min : dist_curr;
         }else{
@@ -78,6 +82,8 @@ public:
             dist_min        = dist_curr;
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     int32_t get_type() const
     {
@@ -88,6 +94,8 @@ public:
     {
         type = value;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     float get_latitude() const
     {
@@ -102,6 +110,8 @@ public:
         list_lat.push_back( value );
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     float get_longitude() const
     {
         if( list_long.size() != 0 )
@@ -114,6 +124,8 @@ public:
     {
         list_long.push_back( value );
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     float get_score() const
     {
@@ -137,6 +149,8 @@ public:
         last_score = value;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     float get_speed_horizontal() const
     {
         return speed_h;
@@ -146,6 +160,8 @@ public:
     {
         speed_h = value;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     float get_speed_vertical() const
     {
@@ -157,6 +173,8 @@ public:
         speed_v = value;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     float get_angle() const
     {
         return angle;
@@ -167,6 +185,8 @@ public:
         angle = value;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     float get_altitude() const
     {
         return altitude;
@@ -176,6 +196,8 @@ public:
     {
         altitude = value;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     float get_dist_cur() const
     {
@@ -192,10 +214,14 @@ public:
         return dist_max;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     int32_t get_OACI() const
     {
         return OACI;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     char *get_name() {
         return name;
@@ -204,6 +230,8 @@ public:
     void set_name(const char *value) {
         strcpy(name, value);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     int32_t get_messages() const
     {
@@ -216,6 +244,8 @@ public:
         updates += 1;
         modified = true;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void print()
     {
@@ -237,12 +267,13 @@ public:
 
         printf("%5d km [%3d,%3d] | ", (int32_t) get_dist_cur(), (int32_t) get_dist_min(), (int32_t) get_dist_max());
         printf("%6d | ", get_messages());
+
         const auto curr   = std::chrono::system_clock::now();
         const int32_t seconds = std::chrono::duration_cast<std::chrono::seconds>(curr - lastUpdate).count();
-        if( seconds > 60 )
-            printf("%5d mn |\n", seconds/60);
-        else
-            printf("%6d s |\n", seconds);
+
+        if( seconds > 60 ) printf("%5d mn |\n", seconds/60);
+        else               printf("%6d s |\n",  seconds);
+
         if( modified ) black();
         modified = false;
     }
