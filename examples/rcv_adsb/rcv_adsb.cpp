@@ -479,8 +479,6 @@ int main(int argc, char *argv[]) {
     const bool brute_force_3x  = param.toBool("brute_force_3x");
     const bool brute_force_llr = param.toBool("brute_force_llr");
 
-    uint32_t loop_counter = 0;
-
     std::vector<float> buffer_abs;
     std::vector<float> buffer_detect;
 
@@ -563,6 +561,8 @@ int main(int argc, char *argv[]) {
     }
 
     const uint32_t acq_per_sec = 2 * param.toInt("fe") / (buffer.size() -vec_data.size());
+
+    uint32_t acq_counter = 0;
 
     while (radio->alive() && (isFinished == false))
     {
@@ -762,9 +762,9 @@ int main(int argc, char *argv[]) {
                             caractere[8] = 0;
 
                             if (dump_decoded_frame && (dump_resume == false))
-                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d | %s |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, caractere, crc_show);
+                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d | %s |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, caractere, crc_show);
                             if( file_frames_dec != nullptr )
-                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d | %s |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, caractere);
+                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d | %s |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, caractere);
 
                             ptr_avion->set_type(typeAricraft);
                             ptr_avion->set_name(caractere);
@@ -773,9 +773,9 @@ int main(int argc, char *argv[]) {
                         if ((type_frame >= 5) && (type_frame <= 8) )
                         {
                             if (dump_decoded_frame && (dump_resume == false))
-                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, crc_show);
+                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, crc_show);
                             if( file_frames_dec != nullptr )
-                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame);
+                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame);
                         }
 
                         if ((type_frame >= 9) && (type_frame <= 18) )
@@ -789,9 +789,9 @@ int main(int argc, char *argv[]) {
                             //
                             // On extrait les informations de la trame
                             //
-                            const int32_t CPR_format    = pack_bits(vec_sync.data() + 53, 1);
-                            const float f_latitude      = pack_bits_float(vec_sync.data() + 54, 17);//(float)enc_latitude  / 131072.0; // divise par 2^17
-                            const float f_longitude     = pack_bits_float(vec_sync.data() + 71, 17);//(float)enc_longitude / 131072.0; // divise par 2^17
+                            const int32_t CPR_format = pack_bits(vec_sync.data() + 53, 1);
+                            const float f_latitude   = pack_bits_float(vec_sync.data() + 54, 17);//(float)enc_latitude  / 131072.0; // divise par 2^17
+                            const float f_longitude  = pack_bits_float(vec_sync.data() + 71, 17);//(float)enc_longitude / 131072.0; // divise par 2^17
 
 //                            printf("%06X | CPR_format = %d\n", oaci_value, CPR_format);
 
@@ -805,10 +805,10 @@ int main(int argc, char *argv[]) {
 
 
                             if (dump_decoded_frame && (dump_resume == false)) {
-                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |   %6d |    %d |  %8.5f |  %8.5f | %3d |         |         |       |  %s |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, (int32_t)altitude, CPR_format, final_lon, final_lat, dist, crc_show);
+                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |   %6d |    %d |  %8.5f |  %8.5f | %3d |         |         |       |  %s |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, (int32_t)altitude, CPR_format, final_lon, final_lat, dist, crc_show);
                             }
                             if( file_frames_dec != nullptr )
-                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |   %6d |    %d |  %8.5f |  %8.5f | %3d |         |         |       |  OK |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, (int32_t)altitude, CPR_format, final_lon, final_lat, dist);
+                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |   %6d |    %d |  %8.5f |  %8.5f | %3d |         |         |       |  OK |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, (int32_t)altitude, CPR_format, final_lon, final_lat, dist);
 
                             ptr_avion->set_altitude (altitude);
                             ptr_avion->set_GNSS_mode(false);
@@ -841,9 +841,9 @@ int main(int argc, char *argv[]) {
                                 if (vec_demod[39 + 37] == 1) Vr = -Vr; // en feet/min
                                 Vr = Vr * 0.3048;
                                 if (dump_decoded_frame && (dump_resume == false))
-                                    printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |    %4d |    %4d |  %4d |  %s |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, (int32_t) speed, (int32_t) Vr, (int32_t) angle, crc_show);
+                                    printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |    %4d |    %4d |  %4d |  %s |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, (int32_t) speed, (int32_t) Vr, (int32_t) angle, crc_show);
                                 if( file_frames_dec != nullptr )
-                                    fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |    %4d |    %4d |  %4d |  OK |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, (int32_t) speed, (int32_t) Vr, (int32_t) angle);
+                                    fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |    %4d |    %4d |  %4d |  OK |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, (int32_t) speed, (int32_t) Vr, (int32_t) angle);
 
                                 int32_t ew_dir           = (vec_pack[5]&4) >> 2;
                                 int32_t ew_velocity      = ((vec_pack[5] & 3) << 8) | vec_pack[6];
@@ -881,9 +881,9 @@ int main(int argc, char *argv[]) {
                             const int32_t dist        = distance(final_lat, final_lon, ref_latitude, ref_longitude);
 
                             if (dump_decoded_frame && (dump_resume == false))
-                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |   %6d |    %d |  %8.5f |  %8.5f | %3d |         |         |       |  %s |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, (int32_t)altitude, CPR_format, final_lon, final_lat, dist, crc_show);
+                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |   %6d |    %d |  %8.5f |  %8.5f | %3d |         |         |       |  %s |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, (int32_t)altitude, CPR_format, final_lon, final_lat, dist, crc_show);
                             if( file_frames_dec != nullptr )
-                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |   %6d |    %d |  %8.5f |  %8.5f | %3d |         |         |       |  OK |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, (int32_t)altitude, CPR_format, final_lon, final_lat, dist);
+                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |   %6d |    %d |  %8.5f |  %8.5f | %3d |         |         |       |  OK |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, (int32_t)altitude, CPR_format, final_lon, final_lat, dist);
                             ptr_avion->set_altitude (altitude);
                             ptr_avion->set_GNSS_mode(true);
                             ptr_avion->set_latitude (final_lat);
@@ -894,33 +894,33 @@ int main(int argc, char *argv[]) {
                         if ((type_frame >= 23) && (type_frame <= 27))
                         {
                             if (dump_decoded_frame && (dump_resume == false))
-                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, crc_show);
+                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, crc_show);
                             if( file_frames_dec != nullptr )
-                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame);
+                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame);
                         }
 
                         if (type_frame == 28)
                         {
                             if (dump_decoded_frame && (dump_resume == false))
-                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, crc_show);
+                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, crc_show);
                             if( file_frames_dec != nullptr )
-                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame);
+                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame);
                         }
 
                         if (type_frame == 29)
                         {
                             if (dump_decoded_frame && (dump_resume == false))
-                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, crc_show);
+                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, crc_show);
                             if( file_frames_dec != nullptr )
-                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame);
+                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame);
                         }
 
                         if (type_frame == 31)
                         {
                             if (dump_decoded_frame && (dump_resume == false))
-                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame, crc_show);
+                                printf("| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  %s |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame, crc_show);
                             if( file_frames_dec != nullptr )
-                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, loop_counter, k, score, df_value, oaci_value, type_frame);
+                                fprintf(file_frames_dec, "| %5d | %5d | %6d | %1.4f |  %2d | %06X |  %2d |          |          |      |           |           |     |         |         |       |  OK |\n", nbBonsCRCs, acq_counter, k, score, df_value, oaci_value, type_frame);
                         }
 
                         if( (dump_decoded_frame == false) && (dump_resume == false) )
@@ -967,10 +967,11 @@ int main(int argc, char *argv[]) {
                         // trame soit présente d'ici 480 ech.
             }
         }
-        loop_counter += 1;
+
+        acq_counter += 1;
 
 
-        if ( (dump_resume == true) && ( (loop_counter % acq_per_sec == 0) || (!radio->alive()) || (isFinished == true)) )
+        if ( (dump_resume == true) && ( (acq_counter % acq_per_sec == 0) || (!radio->alive()) || (isFinished == true)) )
         {
             printf("\e[1;1H\e[2J");
             const auto stop = std::chrono::system_clock::now();
@@ -991,13 +992,13 @@ int main(int argc, char *argv[]) {
             printf("-------+--------+----------+-------------------+-----------+-----------+-----------+-----------+-------+------+-----------+--------------------+--------+----------|\n");
             for (uint32_t i = 0; i < liste_v.size(); i += 1)
             {
-                if( liste_v.at(i)->get_messages() > 1 )    // Pour filter les bétises...
-                    liste_v.at(i)->print();
+                if( liste_v.at(i)->get_messages() > 1 )         // Pour filter les bétises...
+                    if( liste_v.at(i)->last_update() < 900 )    // On n'affiche que les avions des 15 dernieres minutes
+                        liste_v.at(i)->print();
             }
         }
-        //
-        // ON GARDE UNE TRACE DU TEMPS D'EXECUTION DE L'ITERATION POUR L'HISTOGRAMME DU REPORT
-        //
+
+
     }
 
     //
@@ -1068,10 +1069,10 @@ int main(int argc, char *argv[]) {
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
     double RTConstr = 1000.0f / (param.toDouble("fe") / buffer.size());
-    double avgTime = chrono::duration_cast<chrono::milliseconds>(elapsed).count() / (float) loop_counter;
+    double avgTime = chrono::duration_cast<chrono::milliseconds>(elapsed).count() / (float) acq_counter;
 
     printf("\n");
-    std::cout << "Nombre d'aquisition réalisées  : " << loop_counter << std::endl;
+    std::cout << "Nombre d'aquisition réalisées  : " << acq_counter << std::endl;
     std::cout << "Temps moyen par acquisition    : " << avgTime << " ms" << std::endl;
     std::cout << "Constrainte tps réel / iter    : " << RTConstr << " ms" << std::endl;
 

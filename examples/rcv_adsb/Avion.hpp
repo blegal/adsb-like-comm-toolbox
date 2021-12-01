@@ -247,6 +247,14 @@ public:
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    int32_t last_update()
+    {
+        const auto curr   = std::chrono::system_clock::now();
+        const int32_t seconds = std::chrono::duration_cast<std::chrono::seconds>(curr - lastUpdate).count();
+        return seconds;
+    }
+
+
     void print()
     {
         if( modified ) green();
@@ -268,9 +276,7 @@ public:
         printf("%5d km [%3d,%3d] | ", (int32_t) get_dist_cur(), (int32_t) get_dist_min(), (int32_t) get_dist_max());
         printf("%6d | ", get_messages());
 
-        const auto curr   = std::chrono::system_clock::now();
-        const int32_t seconds = std::chrono::duration_cast<std::chrono::seconds>(curr - lastUpdate).count();
-
+        const int32_t seconds = last_update();
         if( seconds > 60 ) printf("%5d mn |\n", seconds/60);
         else               printf("%6d s |\n",  seconds);
 
