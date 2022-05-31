@@ -28,6 +28,8 @@ ReceiverHackRF::ReceiverHackRF(float s_fc, float s_fe) : Receiver(s_fc, s_fe), b
     modules.push_back("000000000000000075b068dc317bae07");
     modules.push_back("0000000000000000088869dc242e9d1b");
     modules.push_back("0000000000000000088869dc334b441b");
+    modules.push_back("0000000000000000f77c60dc255ca8c3");
+    
 
     int result;
     result = hackrf_init();
