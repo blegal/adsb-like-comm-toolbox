@@ -217,6 +217,13 @@ public:
         modified = true;
     }
 
+    int32_t last_update()
+    {
+        const auto curr   = std::chrono::system_clock::now();
+        const int32_t seconds = std::chrono::duration_cast<std::chrono::seconds>(curr - lastUpdate).count();
+        return seconds;
+    }
+
     void print()
     {
         if( modified ) green();

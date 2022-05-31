@@ -94,6 +94,7 @@ target_link_libraries(rcv_usrp uhd)
 target_link_libraries(rcv_usrp hackrf)
 target_link_libraries(rcv_usrp SoapySDR)
 target_link_libraries(rcv_usrp bz2)
+target_link_libraries(rcv_usrp pthread)
 
 ########################################################################################################################
 
@@ -154,6 +155,7 @@ target_link_libraries(rcv_adsb uhd)
 target_link_libraries(rcv_adsb hackrf)
 target_link_libraries(rcv_adsb SoapySDR)
 target_link_libraries(rcv_adsb bz2)
+target_link_libraries(rcv_adsb pthread)
 
 ########################################################################################################################
 
@@ -214,6 +216,7 @@ target_link_libraries(rcv_calibration uhd)
 target_link_libraries(rcv_calibration hackrf)
 target_link_libraries(rcv_calibration SoapySDR)
 target_link_libraries(rcv_calibration bz2)
+target_link_libraries(rcv_calibration pthread)
 
 ########################################################################################################################
 
@@ -248,3 +251,4 @@ target_link_libraries(snd_usrp uhd)
 target_link_libraries(snd_usrp hackrf)
 target_link_libraries(snd_usrp SoapySDR)
 target_link_libraries(snd_usrp bz2)
+target_link_libraries(snd_usrp pthread)
