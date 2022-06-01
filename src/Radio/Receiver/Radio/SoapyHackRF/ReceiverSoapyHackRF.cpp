@@ -3,22 +3,6 @@
 
 ReceiverSoapyHackRF::ReceiverSoapyHackRF(const float s_fc, const float s_fe) : Receiver(s_fc, s_fe)
 {
-//    SoapySDR::KwargsList results = SoapySDR::Device::enumerate();
-//    SoapySDR::Kwargs::iterator it;
-//
-//    if( results.size() == 0 )
-//        exit( 0 );
-//
-//    for( int i = 0; i < results.size(); ++i)  // On prend toujours le permier de la liste
-//    {
-//        printf("Found device #%d:\n", i);
-//        for( it = results[i].begin(); it != results[i].end(); ++it)
-//        {
-//            printf("%s = %s\n", it->first.c_str(), it->second.c_str());
-//        }
-//        printf("\n");
-//    }
-
     //
     // On instancie un objet de type driver
     //

@@ -343,7 +343,8 @@ uint32_t check_crc(const uint8_t *msg/*, const uint32_t length*/) {
     return (calc_crc & 0xffffff) == 0;
 }
 
-static inline void flipbit(uint8_t *buffer, uint32_t bit_loc ){
+static inline void flipbit(uint8_t *buffer, uint32_t bit_loc )
+{
     //    buffer[bit_loc >> 3] ^= (1 << (bit_loc & 0x7));
     buffer[bit_loc / 8] ^= (1 << (7 - bit_loc%8));
 }
