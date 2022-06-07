@@ -33,3 +33,4 @@ examples/build/*
 examples/cmake-build-debug/*
 examples/.idea/*
 cmake-build-relwithdebinfo/*
+.vscode/settings.json
