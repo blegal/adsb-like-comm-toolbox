@@ -328,6 +328,7 @@ void init_crc_lut()
     }
 }
 
+
 template<int length>
 uint32_t check_crc(const uint8_t *msg/*, const uint32_t length*/) {
     uint32_t i;
@@ -342,25 +343,11 @@ uint32_t check_crc(const uint8_t *msg/*, const uint32_t length*/) {
     return (calc_crc & 0xffffff) == 0;
 }
 
-static inline void flipbit(uint8_t *buffer, uint32_t bit_loc ){
+static inline void flipbit(uint8_t *buffer, uint32_t bit_loc )
+{
     //    buffer[bit_loc >> 3] ^= (1 << (bit_loc & 0x7));
     buffer[bit_loc / 8] ^= (1 << (7 - bit_loc%8));
 }
-
-template<int length>
-uint32_t check_crc_2(const uint8_t *msg/*, const uint32_t length*/) {
-    uint32_t calc_crc = 0;
-    for (uint32_t i = 0; i < length - 3; i++) {
-        calc_crc = CRC_LUT[((calc_crc >> 16) ^ ((uint32_t) msg[i])) & 0xff] ^ (calc_crc << 8);
-    }
-    calc_crc = (calc_crc & 0xffffff); // ARG !!!
-    const uint32_t rx_crc = (((uint32_t)msg[length - 3]) << 16) | (((uint32_t)msg[length -2]) << 8) | ((uint32_t)msg[length -1]);
-    if( !(rx_crc ^ calc_crc) && (rx_crc != 0)){
-        return 1;
-    }
-    return 0;
-}
-
 
 float ComputeLatitude(const float f_latitude, const float ref_latitude, const int32_t CPR_format)
 {

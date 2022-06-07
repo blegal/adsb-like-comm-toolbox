@@ -6,7 +6,6 @@
 //! @brief 				Implements the ring buffer.
 //! @details
 //!						See README.rst in root dir for more info.
-
 #include <cstdint>
 #include <cstdlib>
 
@@ -38,102 +37,66 @@ RingBuff::~RingBuff()
 }
 
 
-uint32_t RingBuff::Write(const int8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic)
-{
-    //std::cout << "numBytes = '" << numBytes << "' .numElements = '" << this->numElements << "'." << std::endl;
-
-    // Check whether user only wants to write data if all data
-    // will fit in buffer
-    if(writeLogic == ReadWriteLogic::ALL)
-    {
-        if(numBytes > (this->capacity - this->numElements))
-        {
-            // Not enough space in buffer to write all elements,
-            // return 0
-            //! @debug
-            //std::cout << "numBytes '" << numBytes << "' > numElements '" << this->numElements << "'." << std::endl;
-            return 0;
-        }
-    }
-
-    const int8_t * currPos;
-    currPos = buff;
-
-    for(uint32_t i = 0; i < numBytes; i++)
-    {
-        if(this->numElements >= this->capacity)
-        {
-            // We have run out of space! Return how many bytes
-            // we managed to write
-            //std::cout << "Run out of space!" << std::endl;
-            return i;
-        }
-
-        // Write one byte to buffer
-        buffMemPtr[this->headPos] = *currPos++;
-
-        //! @debug
-        //std::cout << "Element '" << buffMemPtr[this->headPos] << "' written to buff pos '" << this->headPos << "'." << std::endl;
-
-        // Increment the head
-        this->headPos++;
-
-        // Increment the number of elements
-        this->numElements++;
-
-        // Check for wrap-around
-        if(this->headPos == this->capacity)
-        {
-            headPos = 0;
-        }
-    }
-
-    // All bytes where written
-    return numBytes;
-}
-
-
 uint32_t RingBuff::Write(const int8_t *buff, uint32_t numBytes)
 {
-    // Simplified overload of Write(const int8_t *buff, uint32_t numBytes, ReadWriteLogic writeLogic),
-    // default behaviour is to only write to buffer if all elements will fit
-    return this->Write(buff, numBytes, ReadWriteLogic::ALL);
+    //
+    //  Nombre de données que l'on peut copier directement (memcpy)
+    //
+    const int32_t direct_space = capacity - headPos;
+    if( numBytes <= direct_space )
+    {
+        int8_t* ptr = this->buffMemPtr + headPos;
+        for(int32_t i = 0; i < numBytes; i += 1)
+            ptr[i] = buff[i];
+        headPos += numBytes;
+    }
+    else
+    {
+        int8_t* ptr_1 = this->buffMemPtr + headPos;
+        for(int32_t i = 0; i < direct_space; i += 1)
+            ptr_1[i] = buff[i];
+
+        int8_t* ptr_2 = this->buffMemPtr;
+        for(int32_t i = 0; i < (numBytes-direct_space); i += 1)
+            ptr_2[i] = buff[i+direct_space];
+
+        headPos = (headPos + numBytes) % capacity;
+    }
+
+    numElements += numBytes;
+
+    return numBytes;
 }
 
 
 uint32_t RingBuff::Read(int8_t *buff, uint32_t numBytes)
 {
-    int8_t * currPos = buff;
-
-    for(uint32_t i = 0; i < numBytes; i++)
+    //
+    //  Nombre de données que l'on peut copier directement (memcpy)
+    //
+    const int32_t direct_space = capacity - tailPos;
+    if( numBytes <= direct_space )
     {
-        //
-        // Check if any data is available
-        if(this->numElements == 0)
-        {
-            // No more data available, return the number of elements
-            // we managed to read
-            return i;
-        }
+        const int8_t* ptr = this->buffMemPtr + tailPos;
+        for(int32_t i = 0; i < numBytes; i += 1)
+            buff[i] = ptr[i];
+        tailPos += numBytes;
+    }
+    else
+    {
+        const int8_t* ptr_1 = this->buffMemPtr + tailPos;
+        for(int32_t i = 0; i < direct_space; i += 1)
+            buff[i] = ptr_1[i];
 
-        // Read one byte from the FIFO buffer
-        *currPos++ = this->buffMemPtr[this->tailPos];
+        const int8_t* ptr_2 = this->buffMemPtr;
+        for(int32_t i = 0; i < (numBytes-direct_space); i += 1)
+            buff[i+direct_space] = ptr_2[i];
 
-        // Decrement the number of elements
-        this->numElements--;
-
-        // Increment the tail
-        this->tailPos++;
-
-        // Check for wrap-around
-        if(this->tailPos == this->capacity)
-        {
-            // Reset tail
-            this->tailPos = 0;
-        }
+        tailPos = (tailPos + numBytes) % capacity;
     }
 
-    // All bytes were read
+    numElements -= numBytes;
+
     return numBytes;
 }
 
@@ -164,22 +127,4 @@ uint32_t RingBuff::NumFreeElements() const
 uint32_t RingBuff::NumElements() const
 {
     return this->numElements;
-}
-
-
-bool RingBuff::IsData() const
-{
-    return (this->numElements > 0);
-}
-
-
-bool RingBuff::IsSpace() const
-{
-    if(this->numElements < this->capacity)
-        // There is at least one element free in buffer
-        return true;
-    else
-        // There are no elements free in buffer
-        return false;
-
 }
