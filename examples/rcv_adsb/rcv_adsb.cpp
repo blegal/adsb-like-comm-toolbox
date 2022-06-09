@@ -449,11 +449,16 @@ int main(int argc, char *argv[]) {
     printf("(II) HackRF module configuration :\n");
     printf("(II) -> HackRF antenna parameter   : enable\n");
     printf("(II) -> HackRF amplifier parameter : disable\n");
+    printf("(II)\n");
 
 
     //
     // Selection du module de conversion employé dans le programme
     //
+    printf("(II) Processing system implementation :\n");
+    printf("(II) -> Conversion IQ => module : %s\n", param.toString("mode_conv").c_str());
+    printf("(II) -> Correlation computation : %s\n", param.toString("mode_corr").c_str());
+    printf("(II)\n");
 
 
     //
