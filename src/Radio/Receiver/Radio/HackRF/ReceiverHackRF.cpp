@@ -23,11 +23,16 @@ ReceiverHackRF::ReceiverHackRF(float s_fc, float s_fe) : Receiver(s_fc, s_fe), b
     //
 
     std::vector<std::string> modules;
-    modules.push_back("0000000000000000088869dc3362561b");
-    modules.push_back("000000000000000026b468dc33776d8f");
-    modules.push_back("000000000000000075b068dc317bae07");
-    modules.push_back("0000000000000000088869dc242e9d1b");
     modules.push_back("0000000000000000088869dc334b441b");
+    modules.push_back("0000000000000000f77c60dc255ca8c3");
+    modules.push_back("000000000000000075b068dc317bae07");
+    modules.push_back("000000000000000026b468dc33776d8f");
+    modules.push_back("0000000000000000088869dc242e9d1b");
+    modules.push_back("0000000000000000088869dc3362561b");
+    modules.push_back("0000000000000000f77c60dc247c50c3");
+    modules.push_back("0000000000000000f77c60dc29897cc3");
+    modules.push_back("0000000000000000f77c60dc29876dc3");
+    modules.push_back("0000000000000000f77c60dc297136c3");
 
     int result;
     result = hackrf_init();
@@ -253,8 +258,13 @@ void ReceiverHackRF::stop_engine()
         exit( EXIT_FAILURE );
     }
 }
-
-
+//
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
 bool ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer, const uint32_t coverage)
 {
     //
@@ -265,9 +275,6 @@ bool ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer, cons
     {
         cbuffer[loop] = cbuffer[nOffset + loop];
     }
-    //
-    // Fin de la gestion du vieillissement du buffer
-    //
 
     int result = hackrf_is_streaming(device);
     if( result != HACKRF_TRUE ) {
@@ -276,10 +283,7 @@ bool ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer, cons
     }
 
     const uint32_t toRead = 2 * (cbuffer.size() - coverage); // le buffer parle en bytes (et non en nombre de couples I/Q)
-    //
-    // On verifie que l'on peut bien delivrer les données
-    //
-    if( toRead > buff.Capacity() )    // N : est exrimé en nombre de bytes (et non en nombre de couples I/Q)
+    if( toRead > buff.Capacity() )                           // N : est exrimé en nombre de bytes (et non en nombre de couples I/Q)
     {
         fprintf(stderr, "ReceiverHackRF::reception() failed: the number of data to read is higher than buffer size (%d)\n", toRead);
         exit( EXIT_FAILURE );
@@ -293,9 +297,8 @@ bool ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer, cons
         usleep(1000); // queue empty
     }
 
-    int8_t* buf = new int8_t[toRead];
+    int8_t* buf    = new int8_t[toRead];
     uint32_t nRead = buff.Read(buf, toRead);
-//    std::cout << "(II) --> reading.. nRead = " << nRead << " bytes" << std::endl;
     if( nRead != toRead )
     {
         fprintf(stderr, "ReceiverHackRF::reception() failed: the number of data to read is different than the resquest (%d)\n", toRead);
@@ -305,6 +308,99 @@ bool ReceiverHackRF::reception(std::vector< std::complex<float> >& cbuffer, cons
     for(uint32_t i = 0; i < toRead; i += 2)
     {
         std::complex<float> value( (float)buf[i] / 128.0f, (float)buf[i+1] / 128.0f );
+        cbuffer[i/2 + coverage] = value;
+    }
+    delete[] buf;
+    return true;
+}
+
+
+bool ReceiverHackRF::reception(std::vector< std::complex<int8_t> >& cbuffer, const uint32_t coverage)
+{
+    //
+    // On gere le vieillissement du buffer d'echantillons !
+    //
+    const uint32_t nOffset  = cbuffer.size() - coverage;
+    for(uint32_t loop = 0; loop < coverage; loop += 1)
+    {
+        cbuffer[loop] = cbuffer[nOffset + loop];
+    }
+
+    int result = hackrf_is_streaming(device);
+    if( result != HACKRF_TRUE ) {
+        fprintf(stderr, "ReceiverHackRF::reception() failed because device is not steraming: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
+        exit( EXIT_FAILURE );
+    }
+
+    const uint32_t toRead = 2 * (cbuffer.size() - coverage); // le buffer parle en bytes (et non en nombre de couples I/Q)
+    if( toRead > buff.Capacity() )                           // N : est exrimé en nombre de bytes (et non en nombre de couples I/Q)
+    {
+        fprintf(stderr, "ReceiverHackRF::reception() failed: the number of data to read is higher than buffer size (%d)\n", toRead);
+        exit( EXIT_FAILURE );
+    }
+
+    //
+    // On se met en attente du bon nombre de données
+    //
+    while(buff.NumElements() < toRead)     // les 2 sont exprimés en nombre de samples
+    {
+        usleep(1000); // queue empty
+    }
+
+    uint32_t nRead = buff.Read(((int8_t*)cbuffer.data()) + 2 * coverage, toRead);
+    if( nRead != toRead )
+    {
+        fprintf(stderr, "ReceiverHackRF::reception() failed: the number of data to read is different than the resquest (%d)\n", toRead);
+        exit( EXIT_FAILURE );
+    }
+
+    return true;
+}
+
+
+bool ReceiverHackRF::reception(std::vector< std::complex<int16_t> >& cbuffer, const uint32_t coverage)
+{
+    //
+    // On gere le vieillissement du buffer d'echantillons !
+    //
+    const uint32_t nOffset  = cbuffer.size() - coverage;
+    for(uint32_t loop = 0; loop < coverage; loop += 1)
+    {
+        cbuffer[loop] = cbuffer[nOffset + loop];
+    }
+
+    int result = hackrf_is_streaming(device);
+    if( result != HACKRF_TRUE ) {
+        fprintf(stderr, "ReceiverHackRF::reception() failed because device is not steraming: %s (%d)\n", hackrf_error_name((hackrf_error)result), result);
+        exit( EXIT_FAILURE );
+    }
+
+    const uint32_t toRead = 2 * (cbuffer.size() - coverage); // le buffer parle en bytes (et non en nombre de couples I/Q)
+    if( toRead > buff.Capacity() )                           // N : est exrimé en nombre de bytes (et non en nombre de couples I/Q)
+    {
+        fprintf(stderr, "ReceiverHackRF::reception() failed: the number of data to read is higher than buffer size (%d)\n", toRead);
+        exit( EXIT_FAILURE );
+    }
+
+    //
+    // On se met en attente du bon nombre de données
+    //
+    while(buff.NumElements() < toRead)     // les 2 sont exprimés en nombre de samples
+    {
+        usleep(1000); // queue empty
+    }
+
+    int8_t* buf    = new int8_t[toRead];
+    uint32_t nRead = buff.Read(buf, toRead);
+    if( nRead != toRead )
+    {
+        fprintf(stderr, "ReceiverHackRF::reception() failed: the number of data to read is different than the resquest (%d)\n", toRead);
+        exit( EXIT_FAILURE );
+    }
+
+    for(uint32_t i = 0; i < toRead; i += 2)
+    {
+        std::complex<int16_t> value( ((int32_t)buf[i]) * 256, ((int32_t)buf[i+1]) * 256);
         cbuffer[i/2 + coverage] = value;
     }
     delete[] buf;

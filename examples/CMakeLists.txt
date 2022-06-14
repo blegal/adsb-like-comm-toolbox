@@ -7,12 +7,9 @@ SET (CMAKE_C_COMPILER   /usr/bin/clang)
 SET (CMAKE_CXX_COMPILER /usr/bin/clang++)
 
 set(CMAKE_CXX_FLAGS "                   -Wall -Ofast -mcpu=native -mtune=native -Wno-unknown-pragmas")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/opt/hackrf/include")            # HackRF
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/boost/1.74.0/include")   # Boost
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/uhd/4.0.0.0/include -Wno-#pragma-messages")    # UHD
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Rpass=loop-vectorize")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/include")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/homebrew/Cellar/uhd/4.0.0.0_2/include")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/homebrew/Cellar/uhd/4.1.0.3/include")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/homebrew/Cellar/hackrf/2021.03.1/include")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/homebrew/Cellar/soapysdr/0.8.1/include")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/homebrew/Cellar/boost/1.76.0/include")
@@ -25,7 +22,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-L/usr/local/lib") # UHD
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/lib/libboost_system-mt.dylib") # UHD
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/opt/hackrf/lib/libhackrf.a") # UHD
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/opt/libusb/lib/libusb-1.0.a") # UHD
-#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/Cellar/uhd/4.0.0.0/lib/libuhd.dylib") # UHD
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /usr/local/Cellar/uhd/4.1.0.3/lib/libuhd.dylib") # UHD
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework CoreFoundation -framework IOKit") # UHD
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lncurses") # UHD
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib -lSoapySDR") # SoapySDR
@@ -33,7 +30,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-L/usr/local/lib") # UHD
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -luhd") # UHD
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lhackrf") # UHD
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lSoapySDR") # SoapySDR
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/Cellar/uhd/4.0.0.0_2/lib") # UHD
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/Cellar/uhd/4.1.0.3/lib") # UHD
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/Cellar/hackrf/2021.03.1/lib") # UHD
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/Cellar/soapysdr/0.8.1/lib") # UHD
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/opt/homebrew/opt/bzip2/lib") # UHD
@@ -140,6 +137,10 @@ set(SOURCE_FILES
         ../src/Radio/Receiver/File/ReceiverFileUHD.cpp
         ../src/Radio/Receiver/File/ReceiverFileBZ2.cpp
         ../src/Radio/Receiver/Library/ReceiverLibrary.cpp
+
+        ./rcv_adsb/brute_force/brute_force_1x.cpp
+        ./rcv_adsb/brute_force/brute_force_2x.cpp
+        ./rcv_adsb/brute_force/brute_force_3x.cpp
 
         ../src/Processing/PPM/demod/PPM_demod.cpp
         ../src/Processing/DataPacking/BitPacking/BitPacking.cpp

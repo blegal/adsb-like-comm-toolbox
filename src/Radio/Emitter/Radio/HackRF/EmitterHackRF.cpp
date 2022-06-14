@@ -224,7 +224,7 @@ void EmitterHackRF::start_engine( )
 void EmitterHackRF::stop_engine( )
 {
     fprintf(stderr, "(II) Emitter::stop_engine() is executed...\n");
-    while(buff.IsData() == true)
+    while(buff.NumElements() != 0)
     {
         usleep(1000); // queue empty
     }
