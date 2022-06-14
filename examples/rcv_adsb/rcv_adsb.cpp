@@ -1098,8 +1098,8 @@ int main(int argc, char *argv[]) {
 
     if( StoreDataSet == true )
     {
-        fclose(file_iq_raw    );
-        fclose(file_frames_bin);
+        //fclose(file_iq_raw    );
+        //fclose(file_frames_bin);
         fclose(file_frames_dec);
         fclose(file_planes    );
         fclose(file_coords    );
