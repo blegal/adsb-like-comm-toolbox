@@ -280,6 +280,32 @@ public:
         if( modified ) black();
         modified = false;
     }
+
+    void store(FILE* file)
+    {
+        fprintf(file, "%06X (type = %s, name = %s )\n", get_OACI(), toCodeName(get_type()), get_name());
+        //printf("%06X | %s | %s | ", get_OACI(), toCodeName(get_type()), get_name());
+        fprintf(file, " - last score %1.2f [min = %1.2f, max = %1.2f]\n", get_score(), get_min_score(), get_max_score());
+        if( GNSS ) fprintf(file, " - plane sensor : GNSS\n");
+        else       fprintf(file, " - plane sensor : BARO\n");
+                   fprintf(file, " - last position %9.6f | %9.6f\n", get_latitude(), get_longitude());
+        if(get_latitude() != 0) fprintf(file, " - last position %9.6f | %9.6f\n", get_latitude(), get_longitude());
+        else                    fprintf(file, " - last position --------- | ---------\n");
+        if(get_altitude() != 0) fprintf(file, " - last altitude %5d pds\n",   (int32_t) get_altitude());
+        else                    fprintf(file, " - last altitude ---------\n");
+        fprintf(file, " - others %4d km/h | %4d m/mn | %4d°\n", (int32_t) get_speed_horizontal(), (int32_t) get_speed_vertical(), (int32_t) get_angle());
+
+        printf(" - last distance %5d km [min = %3d km, max = %3d km]\n", (int32_t) get_dist_cur(), (int32_t) get_dist_min(), (int32_t) get_dist_max());
+        printf(" - #messages %6d\n", get_messages());
+
+//        const int32_t seconds = last_update();
+//        if( seconds > 60 ) printf("%5d mn |\n", seconds/60);
+//        else               printf("%6d s |\n",  seconds);
+
+        //if( modified ) black();
+        //modified = false;
+    }
+
 };
 
 #endif
