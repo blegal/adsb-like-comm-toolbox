@@ -12,6 +12,9 @@
 #include "../Radio/USRP/ReceiverUSRP.hpp"
 #include "../Radio/ThreadUSRP/ReceiverThreadUSRP.hpp"
 
+#include "../Radio/USRP/RcvUSRP_b100.hpp"
+#include "../Radio/ThreadUSRP/RcvThreadUSRP_b100.hpp"
+
 #include <algorithm>
 
 inline bool iequals(const string& a, const string& b)
@@ -86,7 +89,8 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
     //
     //
     } else if(
-            (type == "radio" && iequals(module, "usrp"))
+            (type == "radio" && (iequals(module, "usrp"))) ||
+            (type == "radio" && (iequals(module, "usrp-b205")))
             ) {
         ReceiverUSRP* r = new ReceiverUSRP(param.toDouble("fc"), param.toDouble("fe"));
         if( param.toInt("receiver_gain")  != -1 )
@@ -95,9 +99,28 @@ Receiver* ReceiverLibrary::allocate(Parameters& param)
 
     } else if(
             (type == "radio" && iequals(module, "threadusrp") ) ||
-            (type == "radio" && iequals(module, "thread_usrp"))
+            (type == "radio" && iequals(module, "thread_usrp")) ||
+            (type == "radio" && iequals(module, "threadusrp-b205") ) ||
+            (type == "radio" && iequals(module, "thread_usrp-b205"))
             ) {
         ReceiverThreadUSRP* r = new ReceiverThreadUSRP(param.toDouble("fc"), param.toDouble("fe"));
+        if( param.toInt("receiver_gain")  != -1 )
+            r->set_rx_gain( param.toInt("receiver_gain") );
+        radio = r;
+
+    } else if(
+            type == "radio" && (iequals(module, "usrp-b100"))
+            ) {
+        RcvUSRP_b100* r = new RcvUSRP_b100(param.toDouble("fc"), param.toDouble("fe"));
+        if( param.toInt("receiver_gain")  != -1 )
+            r->set_rx_gain( param.toInt("receiver_gain") );
+        radio = r;
+
+    } else if(
+            (type == "radio" && iequals(module, "threadusrp-b100") ) ||
+            (type == "radio" && iequals(module, "thread_usrp-b100"))
+            ) {
+        RcvThreadUSRP_b100* r = new RcvThreadUSRP_b100(param.toDouble("fc"), param.toDouble("fe"));
         if( param.toInt("receiver_gain")  != -1 )
             r->set_rx_gain( param.toInt("receiver_gain") );
         radio = r;

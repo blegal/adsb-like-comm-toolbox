@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 
+SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_BUILD_TYPE Release)
+
+SET (CMAKE_C_COMPILER   /usr/bin/clang)
+SET (CMAKE_CXX_COMPILER /usr/bin/clang++)
+
 set(CMAKE_CXX_FLAGS "                   -Wall -Ofast -march=native -mtune=native -Wno-unknown-pragmas")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/opt/hackrf/include")            # HackRF
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/boost/1.74.0/include")   # Boost
