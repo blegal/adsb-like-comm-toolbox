@@ -439,8 +439,8 @@ int main(int argc, char *argv[]) {
 
     if( StoreDataSet == true )
     {
-        file_iq_raw     = fopen( "file_iq_raw.cs8", "w" );
-        file_frames_bin = fopen( "file_frames_bin.txt", "w" );
+        //file_iq_raw     = fopen( "file_iq_raw.cs8", "w" );
+        //file_frames_bin = fopen( "file_frames_bin.txt", "w" );
         file_frames_dec = fopen( "file_frames_dec.txt", "w" );
         file_planes     = fopen( "file_planes.txt", "w" );
         file_coords     = fopen( "file_coords.txt", "w" );
@@ -1002,13 +1002,10 @@ int main(int argc, char *argv[]) {
             printf("-------+--------+----------+-------------------+-----------+-----------+-----------+-----------+-------+------+-----------+--------------------+--------+----------|\n");
             for (uint32_t i = 0; i < liste_v.size(); i += 1)
             {
-                if( liste_v.at(i)->get_messages() >= 1 )    // Pour filter les bétises...
-                    liste_v.at(i)->print();
+                if( liste_v.at(i)->get_messages() > 1 )
+                    if( liste_v.at(i)->last_update() <= 120 )
+                        liste_v.at(i)->print();
             }
-//            std::cout << std::endl;
-//            std::cout << std::endl;
-//            std::cout << "MESSAGES:" << std::endl;
-//            printf("|      n       |  t (in s)  |  Corr. |  DF |   AA   | FTC |    CS    | ALT (ft) | CPRF | LON (deg) | LAT (deg) | Speed.H | Speed.V | Angle | CRC |\n");
         }
         //
         // ON GARDE UNE TRACE DU TEMPS D'EXECUTION DE L'ITERATION POUR L'HISTOGRAMME DU REPORT

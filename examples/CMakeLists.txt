@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(CMAKE_CXX_FLAGS "                   -Wall -Ofast -march=native -mtune=native -Wno-unknown-pragmas")
+SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_BUILD_TYPE Release)
+
+SET (CMAKE_C_COMPILER   /usr/bin/clang)
+SET (CMAKE_CXX_COMPILER /usr/bin/clang++)
+
+set(CMAKE_CXX_FLAGS "                   -Wall -Ofast -mcpu=native -mtune=native -Wno-unknown-pragmas")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/opt/hackrf/include")            # HackRF
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/boost/1.74.0/include")   # Boost
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/Cellar/uhd/4.0.0.0/include -Wno-#pragma-messages")    # UHD
@@ -63,6 +69,8 @@ set(SOURCE_FILES
         ../src/Radio/Receiver/Radio/HackRF/ReceiverHackRF.cpp
         ../src/Radio/Receiver/Radio/USRP/ReceiverUSRP.cpp
         ../src/Radio/Receiver/Radio/ThreadUSRP/ReceiverThreadUSRP.cpp
+        ../src/Radio/Receiver/Radio/USRP/RcvUSRP_b100.cpp
+        ../src/Radio/Receiver/Radio/ThreadUSRP/RcvThreadUSRP_b100.cpp
 
         ../src/Radio/Receiver/File/ReceiverFileRAW.cpp
         ../src/Radio/Receiver/File/ReceiverFileStreamRAW.cpp
@@ -94,6 +102,7 @@ target_link_libraries(rcv_usrp uhd)
 target_link_libraries(rcv_usrp hackrf)
 target_link_libraries(rcv_usrp SoapySDR)
 target_link_libraries(rcv_usrp bz2)
+target_link_libraries(rcv_usrp pthread)
 
 ########################################################################################################################
 
@@ -123,6 +132,8 @@ set(SOURCE_FILES
         ../src/Radio/Receiver/Radio/HackRF/ReceiverHackRF.cpp
         ../src/Radio/Receiver/Radio/USRP/ReceiverUSRP.cpp
         ../src/Radio/Receiver/Radio/ThreadUSRP/ReceiverThreadUSRP.cpp
+        ../src/Radio/Receiver/Radio/USRP/RcvUSRP_b100.cpp
+        ../src/Radio/Receiver/Radio/ThreadUSRP/RcvThreadUSRP_b100.cpp
 
         ../src/Radio/Receiver/File/ReceiverFileRAW.cpp
         ../src/Radio/Receiver/File/ReceiverFileStreamRAW.cpp
@@ -154,6 +165,7 @@ target_link_libraries(rcv_adsb uhd)
 target_link_libraries(rcv_adsb hackrf)
 target_link_libraries(rcv_adsb SoapySDR)
 target_link_libraries(rcv_adsb bz2)
+target_link_libraries(rcv_adsb pthread)
 
 ########################################################################################################################
 
@@ -183,6 +195,8 @@ set(SOURCE_FILES
         ../src/Radio/Receiver/Radio/HackRF/ReceiverHackRF.cpp
         ../src/Radio/Receiver/Radio/USRP/ReceiverUSRP.cpp
         ../src/Radio/Receiver/Radio/ThreadUSRP/ReceiverThreadUSRP.cpp
+        ../src/Radio/Receiver/Radio/USRP/RcvUSRP_b100.cpp
+        ../src/Radio/Receiver/Radio/ThreadUSRP/RcvThreadUSRP_b100.cpp
 
         ../src/Radio/Receiver/File/ReceiverFileRAW.cpp
         ../src/Radio/Receiver/File/ReceiverFileStreamRAW.cpp
@@ -214,6 +228,7 @@ target_link_libraries(rcv_calibration uhd)
 target_link_libraries(rcv_calibration hackrf)
 target_link_libraries(rcv_calibration SoapySDR)
 target_link_libraries(rcv_calibration bz2)
+target_link_libraries(rcv_calibration pthread)
 
 ########################################################################################################################
 
@@ -248,3 +263,4 @@ target_link_libraries(snd_usrp uhd)
 target_link_libraries(snd_usrp hackrf)
 target_link_libraries(snd_usrp SoapySDR)
 target_link_libraries(snd_usrp bz2)
+target_link_libraries(snd_usrp pthread)
