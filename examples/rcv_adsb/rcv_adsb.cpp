@@ -247,10 +247,10 @@ int main(int argc, char *argv[]) {
                     {"amplifier",   required_argument, NULL, 'A'}, // changer la frequence echantillonnage
                     {"rcv_gain",    required_argument, NULL, 'L'}, // changer la frequence echantillonnage
                     {"rcv-gain",    required_argument, NULL, 'L'}, // changer la frequence echantillonnage
-                    {"brute-force-1x",  no_argument,       NULL, '1'}, // changer la frequence echantillonnage
-                    {"brute-force-2x",  no_argument,       NULL, '2'}, // changer la frequence echantillonnage
-                    {"brute-force-3x",  no_argument,       NULL, '3'}, // changer la frequence echantillonnage
-                    {"brute-force-llr", no_argument,       NULL, 'X'}, // changer la frequence echantillonnage
+                    {"brute-force-1x",  no_argument,   NULL, '1'}, // changer la frequence echantillonnage
+                    {"brute-force-2x",  no_argument,   NULL, '2'}, // changer la frequence echantillonnage
+                    {"brute-force-3x",  no_argument,   NULL, '3'}, // changer la frequence echantillonnage
+                    {"brute-force-llr", no_argument,   NULL, 'X'}, // changer la frequence echantillonnage
 
                     {"inter",       no_argument,       NULL, 'I'}, // changer la frequence echantillonnage
                     {"intra",       no_argument,       NULL, 'i'}, // changer la frequence echantillonnage
@@ -545,7 +545,7 @@ int main(int argc, char *argv[]) {
     bool firstAcq = true;
 //    const bool mode_inter = param.toBool("mode_inter");
 
-    uint32_t stream_ptr = 0;
+//    uint32_t stream_ptr = 0;
 
     const uint32_t verbose = param.toInt("verbose");
 
@@ -581,7 +581,7 @@ int main(int argc, char *argv[]) {
         printf("(II) RADIO RECEPTION (stream = %8u | nSample = %8lu)\n", stream_ptr, buffer.size() - coverage);
 #endif
 
-        stream_ptr += buffer.size() - coverage;
+//        stream_ptr += buffer.size() - coverage;
 #if 0
         int caff = cnt%64;
         if( caff ==   0 ) printf("Reception .   \r");
@@ -705,7 +705,7 @@ int main(int argc, char *argv[]) {
 
                 if ((crc_is_ok == true) || (crc_is_ok == false && verbose >= 2))
                 {
-                    char* crc_show;
+                    const char* crc_show;
                          if( crc_initial   == true ) crc_show = "\x1B[32mOK\x1B[0m";
                     else if( crc_brute_1x  == true ) crc_show = "\x1B[33mOK\x1B[0m";
                     else if( crc_brute_2x  == true ) crc_show = "\x1B[31;1mOK\x1B[0m";
@@ -1062,6 +1062,15 @@ int main(int argc, char *argv[]) {
         fprintf(file_coords, "\n");
         fprintf(file_coords, "geoplot(lat,lon,'x');\n");
         fprintf(file_coords, "geobasemap streets\n");
+    }
+
+    if( file_planes != nullptr )
+    {
+        for (uint32_t ii = 0; ii < liste_v.size(); ii += 1)    // pour tous les avions
+        {
+            if( liste_v.at(ii)->get_messages() > 1 )            // Pour filter les bétises...
+                liste_v.at(ii)->store(file_planes);
+        }
     }
 
     printf("\n================================================================\n");
